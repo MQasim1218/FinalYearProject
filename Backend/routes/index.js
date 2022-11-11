@@ -8,6 +8,7 @@ router.get('/', function (req, res, next) {
   // TODO: Return data to populate the homepage
   // NOTE: Show some general camapign as well as specific campaigns,
   // NOTE: Can display general statistics like areas where operational, total donations made etc.
+  res.send("Welcome to the FYP Backend")
 });
 
 router.get('/about', function (req, res, next) {
@@ -17,9 +18,5 @@ router.get('/about', function (req, res, next) {
   // NOTE: Have a mission statement, a goal and some other information.
   // NOTE: Can display general statistics like areas where operational, total donations made etc. 
 });
-
-router.get('/', function (req, res, next) {
-
-})
 
 module.exports = router;

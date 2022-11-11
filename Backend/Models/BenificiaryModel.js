@@ -47,4 +47,12 @@ const benificairySchema = mongoose.Schema({
     audit_reports: [{}],
     account_no: {},
     account_type: {}
-})
+},
+    {
+        timestamps: true,
+    }
+)
+
+const beneficiaryModel = mongoose.model('beneficiary', benificairySchema)
+
+module.exports = beneficiaryModel
