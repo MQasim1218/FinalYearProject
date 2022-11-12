@@ -3,8 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
+var beneficiaryRouter = require('./routes/benificiary');
+var adminRouter = require('./routes/admin');
+const { default: mongoose } = require('mongoose');
 
 var app = express();
 
@@ -17,9 +21,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
+
+mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("Successfully Connected to DB") })
 
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/beneficiary', beneficiaryRouter);
+app.use('/admin', adminRouter);
 
 console.log("Sucessfully Started Node App")
 

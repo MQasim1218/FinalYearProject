@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 const validator = require("validator");
 
 
@@ -19,7 +19,12 @@ const benificairySchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error("Email is invalid");
+            }
+        }
     },
     password: {
         type: String,
@@ -32,21 +37,30 @@ const benificairySchema = mongoose.Schema({
             }
         },
     },
+
     contact: {
         type: String,
         required: true,
         trim: true,
-        validate(value) {
-            let regex = '/[0-9]{11}/'
-            if (!regex.match(value)) {
-                throw new Error('Conatct cannot contain anything but Numbers')
-            }
-        }
     },
-    requested_campaigns: [{}],
-    audit_reports: [{}],
-    account_no: {},
-    account_type: {}
+
+    requested_campaigns: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'campaign'
+    }],
+
+    audit_reports: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'audit'
+    }],
+
+    account_no: {
+        type: String
+    },
+
+    account_type: {
+        type: String
+    }
 },
     {
         timestamps: true,
