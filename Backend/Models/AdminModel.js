@@ -56,14 +56,6 @@ const adminSchema = mongoose.Schema({
         ref: 'audit'
     }],
 
-
-    account_no: {
-        type: String
-    },
-
-    account_type: {
-        type: String
-    }
 },
     {
         timestamps: true,
@@ -72,4 +64,4 @@ const adminSchema = mongoose.Schema({
 
 const Admin = mongoose.model('admin', adminSchema)
 
-module.exports = Admin
+module.exports = { Admin, adminSchema }

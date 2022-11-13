@@ -1,6 +1,13 @@
 const mongoose = require("mongoose")
 
 let campaignSchema = mongoose.Schema({
+    campaign_type: {},
+    campaign_amount: {},
+    description: {},
+    location: {},
+    catagory: {},
+    donors: [{}],
+    beneficiry: [{}]
 
 },
     {
