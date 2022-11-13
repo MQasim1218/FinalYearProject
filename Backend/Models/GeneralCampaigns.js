@@ -1,21 +1,20 @@
 const mongoose = require("mongoose")
 
-let campaignSchema = mongoose.Schema({
+let generalCampaignSchema = mongoose.Schema({
     // [Widow-support, Student_supp, Monthly-help]
-    campaign_type: { type: String },
-    campaign_amount: {},
-    description: {},
-    location: {},
-    catagory: {},
-    donors: [{}],
-
+    campaign_type: { type: String, required: true },
+    campaign_amount: { type: String, required: true, trim: true },
+    description: { type: String, required: true },
+    location: { type: 'Point' },
+    catagory: { type: String, required: true },
+    donors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'donors' }],
 },
     {
         timestamps: true
     }
 )
 
-let Campaign = mongoose.model('speficif_campaign', campaignSchema)
+let GeneralCampaign = mongoose.model('general_campaign', generalCampaignSchema)
 
-module.exports = Campaign
+module.exports = GeneralCampaign
 

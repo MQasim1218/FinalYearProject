@@ -46,7 +46,7 @@ const benificairySchema = mongoose.Schema({
 
     requested_campaigns: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'campaign'
+        ref: 'specific_campaign'
     }],
 
     audit_reports: [{
@@ -67,6 +67,6 @@ const benificairySchema = mongoose.Schema({
     }
 )
 
-const beneficiaryModel = mongoose.model('beneficiary', benificairySchema)
+const beneficiaryModel = mongoose.model('benificiary', benificairySchema)
 
 module.exports = beneficiaryModel
