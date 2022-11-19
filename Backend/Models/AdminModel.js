@@ -44,6 +44,18 @@ const adminSchema = mongoose.Schema({
         trim: true,
     },
 
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+
     // Reference To the Campaigns Created by the Particular Admin
     created_campaigns: [{
         type: mongoose.Schema.ObjectId,
@@ -62,6 +74,23 @@ const adminSchema = mongoose.Schema({
     }
 )
 
+
+adminSchema.statics.findByCredentials = async (email, password) => {
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+        throw new Error("Unable to login");
+    }
+
+    // const isMatch = await bcrypt.compare(password, admin.password);
+
+    if (password !== admin.password) {
+        throw new Error("Unable to login");
+    }
+
+    return admin;
+};
+
 const Admin = mongoose.model('admin', adminSchema)
 
-module.exports = { Admin, adminSchema }
+module.exports = { Admin: Admin, adminSchema }

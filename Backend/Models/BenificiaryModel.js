@@ -60,7 +60,19 @@ const benificairySchema = mongoose.Schema({
 
     account_type: {
         type: String
-    }
+    },
+
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
 },
     {
         timestamps: true,
@@ -69,4 +81,4 @@ const benificairySchema = mongoose.Schema({
 
 const beneficiaryModel = mongoose.model('benificiary', benificairySchema)
 
-module.exports = beneficiaryModel
+module.exports = { beneficiaryModel, benificairySchema }

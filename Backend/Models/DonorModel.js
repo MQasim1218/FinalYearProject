@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const validator = require("validator");
+const accDetailsSchema = require('./AccountDetailsModel')
 
 
 const donorSchema = mongoose.Schema({
@@ -35,18 +36,20 @@ const donorSchema = mongoose.Schema({
         ref: 'general_campaign'
     }],
 
-    audit_reports: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'audit'
-    }],
 
-    account_no: {
-        type: String
+    account_details: { type: accDetailsSchema },
+
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
     },
-
-    account_type: {
-        type: String
-    }
 },
     {
         timestamps: true,

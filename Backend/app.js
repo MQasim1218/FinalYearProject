@@ -4,11 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+const { default: mongoose } = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var beneficiaryRouter = require('./routes/benificiary');
 var adminRouter = require('./routes/admin');
-const { default: mongoose } = require('mongoose');
 
 var app = express();
 
