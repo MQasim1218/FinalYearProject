@@ -8,7 +8,7 @@ import Donations from "./scenes/donations"
 import Recent from "./scenes/recentDonations"
 import Users from "./scenes/users"
 // import Bar from "./scenes/bar"
-// import Form from "./scenes/form"
+import CreateCampaign from "./scenes/createCampaign"
 // import Line from "./scenes/line"
 // import Pie from "./scenes/pie"
 // import FAQ from "./scenes/faq"
@@ -34,7 +34,7 @@ function App() {
             <Route path="/users" element = { <Users/>}/>
             <Route path="/recent" element = { <Recent/>}/>
             {/* <Route path="/bar" element = { <Bar/>}/> */}
-            {/* <Route path="/form" element = { <Form/>}/> */}
+            <Route path="/createCampaign" element = { <CreateCampaign/>}/>
             {/* <Route path="/line" element = { <Line/>}/> */}
             {/* <Route path="/pie" element = { <Pie/>}/> */}
             {/* <Route path="/faq" element = { <FAQ/>}/> */}

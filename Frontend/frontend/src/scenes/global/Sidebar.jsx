@@ -110,7 +110,7 @@ const Sidebar = () => {
                         <Item title="Donation Info" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Recent Donations" to="/recent" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Forms</Typography>
-                        <Item title="Create Campaign" to="/createcampaign" icon={<BorderColorOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Create Campaign" to="/createCampaign" icon={<BorderColorOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Manage Loans" to="/loans" icon={<CurrencyExchangeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
                         <Item title="View Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
