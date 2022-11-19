@@ -1,9 +1,8 @@
 import { tokens } from "../theme";
-import { Button } from "@mui/material";
 
 /*Dummy Data for Users and Map Countries*/
 
-export const mockDataTeam = [
+export const mockDataUsers = [
   {
     id: 1,
     name: "Jon Snow",
@@ -11,7 +10,6 @@ export const mockDataTeam = [
     age: 35,
     phone: "(665)121-5454",
     accounttype: "admin",
-    buttons: [<Button title="ASD"  />],
   },
   {
     id: 2,
@@ -79,7 +77,7 @@ export const mockDataTeam = [
   },
 ];
 
-export const mockDataContacts = [
+export const mockDataDonations = [
   {
     id: 1,
     name: "Jon Snow",
@@ -203,7 +201,7 @@ export const mockDataContacts = [
   },
 ];
 
-export const mockDataInvoices = [
+export const mockDataRecent = [
   {
     id: 1,
     name: "Jon Snow",

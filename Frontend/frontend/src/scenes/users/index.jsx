@@ -1,11 +1,11 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { tokens } from "../../theme"
-import { mockDataTeam } from "../../data/mockData"
+import { mockDataUsers } from "../../data/mockData"
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import Header from "../../components/Header";
 
-const Team = () => {
+const Users = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     // The columns gets all the data we specify below from the mockdata file and store it
@@ -32,11 +32,6 @@ const Team = () => {
       {
         field: "email",
         headerName: "Email",
-        flex: 1,
-      },
-      {
-        field: "button",
-        headerName: "Button",
         flex: 1,
       },
       {
@@ -101,10 +96,10 @@ const Team = () => {
               },
           }}
         >
-          <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} components={{ Toolbar: GridToolbar }} />
+          <DataGrid checkboxSelection rows={mockDataUsers} columns={columns} components={{ Toolbar: GridToolbar }} />
         </Box>
       </Box>
     );
   };
   
-  export default Team;
+  export default Users;

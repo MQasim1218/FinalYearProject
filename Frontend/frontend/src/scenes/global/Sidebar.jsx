@@ -6,15 +6,16 @@ import { Link } from "react-router-dom"
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
+import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 
 const Item = ({title, to, icon, selected, setSelected}) => {
     const theme = useTheme()
@@ -104,16 +105,19 @@ const Sidebar = () => {
                     {/* Menu Items here */}
                     <Box paddingLeft={isCollapsed ? undefined : '10%'}>
                         <Item title="Dashboard" to="/" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>User Data</Typography>
-                        <Item title="Users" to="/team" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Donation Info" to="/contacts" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Invoices" to="/invoices" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>User Management</Typography>
+                        <Item title="Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Donation Info" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Recent Donations" to="/recent" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Forms</Typography>
-                        <Item title="Profile Form" to="/form" icon={<PersonOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="FAQ" to="/faq" icon={<HelpOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Create Campaign" to="/createcampaign" icon={<BorderColorOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Manage Loans" to="/loans" icon={<CurrencyExchangeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
+                        <Item title="View Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
                         <Item title="Charts" to="/bar" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Geography Chart" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        
 
                     </Box>
 
