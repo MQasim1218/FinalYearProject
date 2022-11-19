@@ -1,9 +1,10 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid"
 import { tokens } from "../../theme"
 import { mockDataUsers } from "../../data/mockData"
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import Header from "../../components/Header";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Users = () => {
     const theme = useTheme();
@@ -59,8 +60,17 @@ const Users = () => {
           );
         },
       },
+      {
+        field: 'actions',
+        type: 'actions',
+        width: 100,
+        getActions: () => [
+          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
+        ],
+      },
     ];
-  
+    
+    
     return (
       <Box m="20px">
         <Header title="USERS" subtitle="Manage All The Users" />
@@ -101,5 +111,5 @@ const Users = () => {
       </Box>
     );
   };
-  
+
   export default Users;
