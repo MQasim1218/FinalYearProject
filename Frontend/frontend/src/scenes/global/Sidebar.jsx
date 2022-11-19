@@ -14,7 +14,7 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 
 const Item = ({title, to, icon, selected, setSelected}) => {
     const theme = useTheme()
@@ -106,7 +106,7 @@ const Sidebar = () => {
                         <Item title="Dashboard" to="/" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>User Data</Typography>
                         <Item title="Users" to="/team" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Contacts Info" to="/contacts" icon={<ContactsOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Donation Info" to="/contacts" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Invoices" to="/invoices" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Forms</Typography>
                         <Item title="Profile Form" to="/form" icon={<PersonOutlinedIcon/>} selected={selected} setSelected={setSelected} />
