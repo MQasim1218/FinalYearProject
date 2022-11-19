@@ -40,7 +40,7 @@ const adminSchema = mongoose.Schema({
 
     contact: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
     },
 
@@ -48,12 +48,13 @@ const adminSchema = mongoose.Schema({
         type: {
             type: String,
             enum: ['Point'],
-            required: true
+            // required: true
         },
         coordinates: {
             type: [Number],
             required: true
         }
+
     },
 
     // Reference To the Campaigns Created by the Particular Admin

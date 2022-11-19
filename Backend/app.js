@@ -8,7 +8,7 @@ const { default: mongoose } = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var beneficiaryRouter = require('./routes/benificiary');
-var adminRouter = require('./routes/admin');
+var adminRouter = require('./routes/AdminRouter');
 
 var app = express();
 
@@ -18,7 +18,7 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())

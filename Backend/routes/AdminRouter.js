@@ -1,6 +1,7 @@
 const express = require('express')
 const AdminModel = require('../Models/AdminModel')
 const AdminController = require('../Controllers/AdminController')
+const { Admin } = require('../Models/AdminModel')
 
 
 let router = express.Router()
@@ -21,25 +22,12 @@ let router = express.Router()
 
 router.post('/signup', AdminController.AddNewAdmin)
 
-router.get('/:id', )
+router.get('/:id', AdminController.GetAdmin)
 
-router.get('/', function (req, res, next) {
-    AdminModel.find({}).exec(function (error, data) {
-        if (error) {
-            return next(error);
-        }
-        res.json(data);
-    });
-});
+router.get('/', AdminController.GetAllAdmins)
 
-router.delete('/:id', function (req, res, next) {
-    AdminModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
-        if (error) {
-            next(error)
-        }
-        res.json(data)
-    })
-})
+router.delete('/:id', AdminController.DeleteAdmin)
+router.patch('/:id', AdminController.UpdateAdmin)
 
 
 module.exports = router
