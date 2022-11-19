@@ -35,6 +35,11 @@ const Team = () => {
         flex: 1,
       },
       {
+        field: "button",
+        headerName: "Button",
+        flex: 1,
+      },
+      {
         field: "accounttype",
         headerName: "Account Type",
         flex: 1,
@@ -91,7 +96,7 @@ const Team = () => {
             "& .MuiCheckbox-root": {
               color: `${colors.greenAccent[200]} !important`,
             },
-            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            "& .MuiDataGrid-toolbarContainer .MuiButton-text ": {
                 color: `${colors.grey[100]} !important`,
               },
           }}
