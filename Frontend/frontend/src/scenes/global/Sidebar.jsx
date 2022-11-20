@@ -54,7 +54,7 @@ const Sidebar = () => {
             }
         }}>
 
-            <ProSidebar collapsed={isCollapsed}>
+            <ProSidebar collapsed={isCollapsed} position= "-webkit-sticky">
                 <Menu iconShape="square">
                     {/*Logo and Menu Icons*/}
                     <MenuItem onClick={() => setIsCollapsed(!isCollapsed)} icon={isCollapsed ? <MenuOutlinedIcon/> : undefined} style={{ margin: "10px 0 20px 0", color: colors.grey[100], }}>

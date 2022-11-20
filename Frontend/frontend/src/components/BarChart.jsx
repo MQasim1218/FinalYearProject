@@ -64,9 +64,7 @@ const BarChart = ({ isDashboard = false }) => {
         keys={[
             'Education',
             'Meals',
-            'Widow',
             'NaturalDisaster',
-            'ChildCare',
             'Medical'
         ]}
         indexBy="City"
@@ -95,20 +93,6 @@ const BarChart = ({ isDashboard = false }) => {
                 spacing: 10
             }
         ]}
-        fill={[
-            {
-                match: {
-                    id: 'ChildCare'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'Widow'
-                },
-                id: 'lines'
-            }
-        ]}
         borderWidth={1}
         borderColor="#000000"
         axisTop={null}
@@ -117,7 +101,7 @@ const BarChart = ({ isDashboard = false }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'City',
+            legend: isDashboard ? undefined : 'City',
             legendPosition: 'middle',
             legendOffset: 32
         }}
@@ -125,7 +109,7 @@ const BarChart = ({ isDashboard = false }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Donations',
+            legend: isDashboard ? undefined : 'Donations',
             legendPosition: 'middle',
             legendOffset: -40
         }}
