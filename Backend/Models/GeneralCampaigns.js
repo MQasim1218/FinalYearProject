@@ -5,12 +5,11 @@ let generalCampaignSchema = mongoose.Schema({
     campaign_type: { type: String, required: true },
     campaign_amount: { type: String, required: true, trim: true },
     description: { type: String, required: true },
-    approved: { type: Boolean, required: true },
     location: {
         type: {
             type: String, // Don't do `{ location: { type: String } }`
             enum: ['Point'], // 'location.type' must be 'Point'
-            required: true
+            // required: true
         },
         coordinates: {
             type: [Number],

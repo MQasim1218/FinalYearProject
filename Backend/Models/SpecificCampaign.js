@@ -8,13 +8,14 @@ let campaignSchema = mongoose.Schema({
         type: {
             type: String, // Don't do `{ location: { type: String } }`
             enum: ['Point'], // 'location.type' must be 'Point'
-            required: true
+            // required: true
         },
         coordinates: {
             type: [Number],
             required: true
         }
     },
+    approved: { type: Boolean, required: true },
     catagory: { type: String, required: true },
     donors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'donors' }],
     beneficiry: [{ type: mongoose.Schema.Types.ObjectId, ref: 'benificiary' }]

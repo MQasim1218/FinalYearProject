@@ -22,23 +22,31 @@ const GetAllAdmins = async (req, res, next) => {
 
 
 const AddNewAdmin = async (req, res, next) => {
-    console.log("Got a request for creating a new Admin")
-    console.log(req.body)
-    let admin = await AdminModel.Admin.findOne({ email: req.body.email }).exec()
-    console.log(admin)
-    if (admin) {
-        res.send("Admin Already Exists")
-    } else {
+    try {
+        console.log("Got a request for creating a new Admin")
+        console.log(req.body)
+        let admin = await AdminModel.Admin.findOne({ email: req.body.email }).exec()
+        console.log(admin)
+        if (admin) {
+            res.send("Admin Already Exists")
+        } else {
 
-        console.log("Admin for given credentials deos not exist! Creating Admin Now!!")
-        AdminModel.Admin.create(req.body)
-            .then(function (data) {
-                console.log(data)
-                res.status(200)
-                res.json(data)
-            })
-            .catch((err) => { console.log(err) })
+            console.log("Admin for given credentials deos not exist! Creating Admin Now!!")
+            AdminModel.Admin.create(req.body)
+                .then(function (data) {
+                    console.log(data)
+                    res.status(200)
+                    res.json(data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                    res.send(err.message)
+                })
+        }
+    } catch (error) {
+        res.send("Error encountered: ", error.message)
     }
+
 }
 
 const UpdateAdmin = async (req, res, next) => {

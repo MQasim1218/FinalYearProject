@@ -26,6 +26,8 @@ const adminSchema = mongoose.Schema({
             }
         }
     },
+
+
     password: {
         type: String,
         required: true,
@@ -57,10 +59,15 @@ const adminSchema = mongoose.Schema({
 
     },
 
-    // Reference To the Campaigns Created by the Particular Admin
-    created_campaigns: [{
+    // Reference To the General Campaigns Created by the Particular Admin
+    specific_campaigns: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'campaign'
+        ref: 'specific_campaign'
+    }],
+
+    general_campaigns: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'general_campaign'
     }],
 
     // Audit Reports Done by the Particular Admin
