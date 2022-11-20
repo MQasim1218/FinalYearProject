@@ -7,11 +7,8 @@ import Dashboard from "./scenes/dashboard"
 import Donations from "./scenes/donations"
 import Recent from "./scenes/recentDonations"
 import Users from "./scenes/users"
-// import Bar from "./scenes/bar"
 import CreateCampaign from "./scenes/createCampaign"
-// import Line from "./scenes/line"
-// import Pie from "./scenes/pie"
-// import FAQ from "./scenes/faq"
+import Graphs from "./scenes/graphs"
 // import Geography from "./scenes/geography"
 
 function App() {
@@ -33,8 +30,8 @@ function App() {
             <Route path="/donations" element = { <Donations/>}/>
             <Route path="/users" element = { <Users/>}/>
             <Route path="/recent" element = { <Recent/>}/>
-            {/* <Route path="/bar" element = { <Bar/>}/> */}
             <Route path="/createCampaign" element = { <CreateCampaign/>}/>
+            <Route path="/graphs" element = { <Graphs/>}/>
             {/* <Route path="/line" element = { <Line/>}/> */}
             {/* <Route path="/pie" element = { <Pie/>}/> */}
             {/* <Route path="/faq" element = { <FAQ/>}/> */}

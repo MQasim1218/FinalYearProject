@@ -115,7 +115,7 @@ const Sidebar = () => {
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
                         <Item title="View Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
-                        <Item title="Charts" to="/bar" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Graphs" to="/graphs" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         
 
