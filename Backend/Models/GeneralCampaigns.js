@@ -19,7 +19,6 @@ let generalCampaignSchema = mongoose.Schema({
     },
     catagory: { type: String, required: true },
     donors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'donors' }],
-
 },
     {
         timestamps: true
