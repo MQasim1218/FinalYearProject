@@ -26,12 +26,12 @@ const Recent = () => {
       flex: 1,
     },
     {
-      field: "cost",
-      headerName: "Cost",
+      field: "donation",
+      headerName: "Donation",
       flex: 1,
       renderCell: (params) => (
         <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
+          ${params.row.donation}
         </Typography>
       ),
     },
