@@ -50,7 +50,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
             type: 'linear',
             min: 'auto',
             max: 'auto',
-            stacked: false,
+            stacked: true,
             reverse: false
         }}
         yFormat=" >-.2f"

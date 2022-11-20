@@ -9,7 +9,7 @@ import Recent from "./scenes/recentDonations"
 import Users from "./scenes/users"
 import CreateCampaign from "./scenes/createCampaign"
 import Graphs from "./scenes/graphs"
-// import Geography from "./scenes/geography"
+import GeographyMap from "./scenes/geographymap"
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,10 +32,7 @@ function App() {
             <Route path="/recent" element = { <Recent/>}/>
             <Route path="/createCampaign" element = { <CreateCampaign/>}/>
             <Route path="/graphs" element = { <Graphs/>}/>
-            {/* <Route path="/line" element = { <Line/>}/> */}
-            {/* <Route path="/pie" element = { <Pie/>}/> */}
-            {/* <Route path="/faq" element = { <FAQ/>}/> */}
-            {/* <Route path="/geography" element = { <Geography/>}/> */}
+            <Route path="/geography" element = { <GeographyMap/>}/>
           </Routes>
         </main>
       </div>
