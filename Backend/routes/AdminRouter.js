@@ -2,6 +2,7 @@ const express = require('express')
 const AdminModel = require('../Models/AdminModel')
 const AdminController = require('../Controllers/AdminController')
 const GeneralCampaignModel = require("../Models/GeneralCampaigns")
+const SpecificCampaignModel = require("../Models/SpecificCampaign")
 const { Admin } = require('../Models/AdminModel')
 
 
@@ -31,49 +32,25 @@ router.delete('/:id', AdminController.DeleteAdmin)
 
 router.patch('/:id', AdminController.UpdateAdmin)
 
-router.get('/adminCampigns/:id', async (req, res, next) => {
-    let admin = await AdminModel.Admin.findOne(req.params.id).populate('created_campaigns')
-    let campigns = admin.created_campaigns
-    if (campigns.length === 0) {
-        res.send("no campaigns found")
-    }
-
-})
-router.get('/allCampigns/:id', async (req, res, next) => {
-    let campaigns = await campaigns.Admin.findOne(req.params.id).populate('created_campaigns')
-    let campigns = admin.created_campaigns
-
-})
-
+// })
 // router.get('/allCampigns/:id', async (req, res, next) => {
-//     let admin = await AdminModel.Admin.findOne(req.params.id).populate('created_campaigns')
+//     let campaigns = await campaigns.Admin.findOne(req.params.id).populate('created_campaigns')
 //     let campigns = admin.created_campaigns
 
 // })
+router.get('/GeneralCampigns/:id', AdminController.ViewGeneralCampaigns)
 
-router.post('/:id/addGeneralCampign', async (req, res, next) => {
-    try {
-        let newCampaign = await GeneralCampaignModel.create(req.body)
-        console.log("New campaign created")
+router.get('/SpecificCampigns/:id', AdminController.ViewSpecificCampaigns)
 
-        let admin = await Admin.findById(req.params.id).exec()
-
-        await AdminModel.Admin.updateOne(
-            { _id: req.params.id },
-            { $push: { general_campaigns: newCampaign._id } }
-        ).exec()
-        res.json(admin)
-
-    } catch (err) {
-        console.log("err")
-        res.send(err)
-    }
-    console.log("Adding Campaign for the Admin: ", req.params.id)
-    // res.send("Got the control here")
-
+router.post('/:id/addGeneralCampign', AdminController.AddGeneralCampaign)
+router.get('/appealedCampigns', async () => {
+    let appealed = SpecificCampaignModel.find({ approved: false }).exec()
+    
 })
-router.get('/appealedCampigns')
-router.get('/approveCampign')
+router.patch('/approveCampign/:campaign_id', () => { })
+
+// Empty routes.. Will do these in a little while
+
 router.get('/adminCampigns')
 router.get('/adminCampigns')
 router.get('/adminCampigns')

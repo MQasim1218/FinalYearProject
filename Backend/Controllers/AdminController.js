@@ -98,7 +98,49 @@ const ChangeDetails = async (req, res, next) => {
 
 
 // Manipulate Campaigns
+const AddGeneralCampaign = async (req, res, next) => {
+    try {
+        let newCampaign = await GeneralCampaignModel.create(req.body)
+        console.log("New campaign created")
+
+        let admin = await Admin.findById(req.params.id).exec()
+
+        await AdminModel.Admin.updateOne(
+            { _id: req.params.id },
+            { $push: { general_campaigns: newCampaign._id } }
+        ).exec()
+        res.json(admin)
+
+    } catch (err) {
+        console.log("err")
+        res.send(err)
+    }
+    console.log("Adding Campaign for the Admin: ", req.params.id)
+    // res.send("Got the control here")
+
+}
 const ApproveCampaign = async (req, res, next) => {
+
+}
+const ViewGeneralCampaigns = async (req, res, next) => {
+    try {
+        let admin = await AdminModel.Admin.findById(req.params.id).populate('general_campaigns').exec()
+        let genr_ids = admin.general_campaigns
+        let genr_campaigns = await GeneralCampaignModel.find({ id: { $in: genr_ids } }).exec()
+        res.json(genr_campaigns)
+    } catch (error) {
+        res.status(500).send(err)
+    }
+}
+const ViewSpecificCampaigns = async (req, res, next) => {
+    try {
+        let admin = await AdminModel.Admin.findById(req.params.id).populate('specific_campaigns').exec()
+        let spec_ids = admin.specific_campaigns
+        let spec_campaigns = await SpecificCampaignModel.find({ id: { $in: spec_ids } }).exec()
+        res.json(spec_campaigns)
+    } catch (err) {
+        res.status(500).send(err)
+    }
 
 }
 
@@ -110,5 +152,12 @@ module.exports = {
     GetAllAdmins,
     ChangeAuthDetails,
     ApproveCampaign,
+    AddGeneralCampaign,
     DeleteAdmin,
+    ViewGeneralCampaigns,
+    ViewSpecificCampaigns,
+    a,
+    b,
+    c,
+    d
 }
