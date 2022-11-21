@@ -125,9 +125,7 @@ const AddGeneralCampaign = async (req, res, next) => {
     // res.send("Got the control here")
 
 }
-const ApproveCampaign = async (req, res, next) => {
 
-}
 const ViewGeneralCampaigns = async (req, res, next) => {
     try {
         let admin = await AdminModel.Admin.findById(req.params.id).populate('general_campaigns').exec()
@@ -147,7 +145,33 @@ const ViewSpecificCampaigns = async (req, res, next) => {
     } catch (err) {
         res.status(500).send(err)
     }
+}
+const ViewAppealedCampaigns = async (req, res, next) => {
+    console.log("over here")
+    try {
+        let appealed = await SpecificCampaignModel.find({ approved: false }).exec()
+        res.send(appealed)
+    } catch (error) {
+        res.send(error)
+    }
 
+}
+
+const ApproveCampaign = async (req, res, next) => {
+    try {
+        let camp = await SpecificCampaignModel.findById(req.params.campaign_id).exec()
+        console.log(camp)
+        if (camp.approved === true) {
+            res.send("This campaign is already approved!")
+        } else {
+            camp.approved = true
+            res.send(camp)
+            camp.save()
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err)
+    }
 }
 
 
