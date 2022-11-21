@@ -4,6 +4,7 @@ let generalCampaignSchema = mongoose.Schema({
     // [Widow-support, Student_supp, Monthly-help]
     campaign_type: { type: String, required: true },
     campaign_amount: { type: String, required: true, trim: true },
+    donated_amount: { type: String, required: true, trim: true },
     description: { type: String, required: true },
     location: {
         type: {
@@ -16,8 +17,12 @@ let generalCampaignSchema = mongoose.Schema({
             required: true
         }
     },
+    archived: {
+        type: Boolean,
+        default: false
+    },
     catagory: { type: String, required: true },
-    donors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'donors' }],
+    donations: [{ type: mongoose.Types.ObjectId, ref: 'donations' }]
 },
     {
         timestamps: true

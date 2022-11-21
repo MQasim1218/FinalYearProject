@@ -68,6 +68,7 @@ const UpdateAdmin = async (req, res, next) => {
     let newAdmin = await AdminModel.Admin.findById(req.params.id)
     res.json(newAdmin)
 }
+
 const DeleteAdmin = async (req, res, next) => {
     AdminModel.Admin.deleteOne({ _id: req.params.id }).exec(function (error, data) {
         if (error) {
