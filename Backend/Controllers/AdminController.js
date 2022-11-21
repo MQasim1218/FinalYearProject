@@ -2,6 +2,12 @@ const AdminModel = require("../Models/AdminModel")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
+    try {
+
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
     AdminModel.Admin.find({ _id: req.params.id })
         .exec(function (error, data) {
             if (error) {
@@ -129,7 +135,7 @@ const ViewGeneralCampaigns = async (req, res, next) => {
         let genr_campaigns = await GeneralCampaignModel.find({ id: { $in: genr_ids } }).exec()
         res.json(genr_campaigns)
     } catch (error) {
-        res.status(500).send(err)
+        res.status(500).send(error)
     }
 }
 const ViewSpecificCampaigns = async (req, res, next) => {
@@ -156,8 +162,4 @@ module.exports = {
     DeleteAdmin,
     ViewGeneralCampaigns,
     ViewSpecificCampaigns,
-    a,
-    b,
-    c,
-    d
 }

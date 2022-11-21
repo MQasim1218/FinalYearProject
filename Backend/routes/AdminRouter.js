@@ -3,7 +3,6 @@ const AdminModel = require('../Models/AdminModel')
 const AdminController = require('../Controllers/AdminController')
 const GeneralCampaignModel = require("../Models/GeneralCampaigns")
 const SpecificCampaignModel = require("../Models/SpecificCampaign")
-const { Admin } = require('../Models/AdminModel')
 
 
 let router = express.Router()
@@ -24,13 +23,18 @@ let router = express.Router()
 
 router.post('/signup', AdminController.AddNewAdmin)
 
-router.get('/:id', AdminController.GetAdmin)
+router.get('/appealedCampaigns', async (req, res, next) => {
+    console.log("over here")
+    try {
+        let appealed = await SpecificCampaignModel.find({ approved: false }).exec()
+        res.send(appealed)
 
-router.get('/', AdminController.GetAllAdmins)
+    } catch (error) {
+        res.send(error)
+    }
 
-router.delete('/:id', AdminController.DeleteAdmin)
+})
 
-router.patch('/:id', AdminController.UpdateAdmin)
 
 // })
 // router.get('/allCampigns/:id', async (req, res, next) => {
@@ -42,17 +46,39 @@ router.get('/GeneralCampigns/:id', AdminController.ViewGeneralCampaigns)
 
 router.get('/SpecificCampigns/:id', AdminController.ViewSpecificCampaigns)
 
-router.post('/:id/addGeneralCampign', AdminController.AddGeneralCampaign)
-router.get('/appealedCampigns', async () => {
-    let appealed = SpecificCampaignModel.find({ approved: false }).exec()
-    
+
+
+router.patch('/approveCampaign/:campaign_id', async (req, res, next) => {
+    try {
+        let camp = await SpecificCampaignModel.findById(req.params.campaign_id).exec()
+        console.log(camp)
+        if (camp.approved === true) {
+            res.send("This campaign is already approved!")
+        } else {
+            camp.approved = true
+            res.send(camp)
+            camp.save()
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err)
+    }
 })
-router.patch('/approveCampign/:campaign_id', () => { })
 
 // Empty routes.. Will do these in a little while
 
-router.get('/adminCampigns')
-router.get('/adminCampigns')
-router.get('/adminCampigns')
+router.get('/adminCampaigns')
+router.get('/adminCampaigns')
+router.get('/adminCampaigns')
+router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
+
+
+router.get('/:id', AdminController.GetAdmin)
+
+router.get('/', AdminController.GetAllAdmins)
+
+router.delete('/:id', AdminController.DeleteAdmin)
+
+router.patch('/:id', AdminController.UpdateAdmin)
 
 module.exports = router
