@@ -1,0 +1,24 @@
+[33m529d8a9[m[33m ([m[1;36mHEAD -> [m[1;32mWeb-Frontend-(Home)[m[33m, [m[1;31morigin/Web-Frontend-(Home)[m[33m)[m HEAD@{0}: checkout: moving from main to Web-Frontend-(Home)
+[33m9b00d28[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: merge origin/Web-Frontend-(Home): Merge made by the 'ort' strategy.
+[33mfaac43d[m HEAD@{2}: commit: fin today
+[33m779500c[m HEAD@{3}: commit: some minor changes wile brainstorming
+[33m8234306[m HEAD@{4}: commit: Starting with appealed campaigns
+[33m0bb718d[m HEAD@{5}: commit: approve campaign done
+[33m92ef524[m HEAD@{6}: commit: new func added to admin backend
+[33m7d89b69[m HEAD@{7}: commit: Adding campaign and adding campaigns for admin.
+[33m4ebd92c[m HEAD@{8}: commit: Starting work in the morning
+[33m5b9b918[m HEAD@{9}: commit: too less work in too much time
+[33mf45b93b[m HEAD@{10}: commit: 1122
+[33mde6282b[m HEAD@{11}: commit: almost done with models
+[33md6de31a[m HEAD@{12}: commit: models coming
+[33mbebd55a[m HEAD@{13}: commit: some models
+[33m3004332[m HEAD@{14}: commit: some changes
+[33mc79cf44[m HEAD@{15}: commit: ...
+[33mff09f41[m HEAD@{16}: commit: changes.
+[33m2f917bf[m HEAD@{17}: commit: ...
+[33m55a2582[m HEAD@{18}: commit: testing my account
+[33m79d2b01[m HEAD@{19}: commit: Setting up models and routes..
+[33mda27cb6[m HEAD@{20}: commit: incoming
+[33ma6e5e81[m HEAD@{21}: pull --ff --recurse-submodules --progress origin: Merge made by the 'ort' strategy.
+[33m5a75ee0[m HEAD@{22}: commit: Backend init
+[33me681886[m HEAD@{23}: clone: from https://github.com/MQasim1218/FinalYearProject.git
