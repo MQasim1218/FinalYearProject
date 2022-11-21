@@ -15,7 +15,8 @@ let campaignSchema = mongoose.Schema({
             required: true
         }
     },
-    approved: { type: Boolean, required: true },
+    approved: { type: Boolean, required: true, default: false },
+    rejected: { type: Boolean, required: true, default: false },
     catagory: { type: String, required: true },
     donors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'donors' }],
     beneficiry: [{ type: mongoose.Schema.Types.ObjectId, ref: 'benificiary' }]

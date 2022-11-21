@@ -79,15 +79,22 @@ const DeleteAdmin = async (req, res, next) => {
 
 // Authentication Operations
 const ChangeAuthDetails = async (req, res, next) => {
-    let admin = await AdminModel.Admin.findByIdAndUpdate(req.params.id,
-        {
-            email: req.body.email,
-            password: req.body.password,
-        }
-    )
-    let newAdmin = await AdminModel.Admin.findById(req.params.id)
-    res.json(newAdmin)
+    try {
+        let admin = await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+            {
+                email: req.body.email,
+                password: req.body.password,
+            }
+        )
+        let newAdmin = await AdminModel.Admin.findById(req.params.id)
+        res.json(newAdmin)
+
+    } catch (error) {
+        console.log("errror aa gya hai boss")
+        res.send(error.message)
+    }
 }
+
 const ChangeDetails = async (req, res, next) => {
     await AdminModel.Admin.findByIdAndUpdate(req.params.id,
         {
@@ -136,6 +143,7 @@ const ViewGeneralCampaigns = async (req, res, next) => {
         res.status(500).send(error)
     }
 }
+
 const ViewSpecificCampaigns = async (req, res, next) => {
     try {
         let admin = await AdminModel.Admin.findById(req.params.id).populate('specific_campaigns').exec()
@@ -146,6 +154,7 @@ const ViewSpecificCampaigns = async (req, res, next) => {
         res.status(500).send(err)
     }
 }
+
 const ViewAppealedCampaigns = async (req, res, next) => {
     console.log("over here")
     try {
@@ -154,19 +163,35 @@ const ViewAppealedCampaigns = async (req, res, next) => {
     } catch (error) {
         res.send(error)
     }
-
 }
 
 const ApproveCampaign = async (req, res, next) => {
     try {
         let camp = await SpecificCampaignModel.findById(req.params.campaign_id).exec()
         console.log(camp)
-        if (camp.approved === true) {
-            res.send("This campaign is already approved!")
-        } else {
+        if (camp.rejected === true) {
+            res.send("This campaign is already rejected, Cant be approved!")
+        } else if (camp.approved === false) {
             camp.approved = true
             res.send(camp)
             camp.save()
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err)
+    }
+}
+
+const RejectCampiagnRequest = async (req, res, next) => {
+    try {
+        let camp = await SpecificCampaignModel.findById(req.params.campaign_id).exec()
+        console.log(camp)
+        if (camp.approved === true) {
+            res.send("This campaign cannot be rejected!")
+        } else if (camp.rejected === false) {
+            camp.rejected = true
+            camp.save()
+            res.send(camp)
         }
     } catch (err) {
         console.log(err)
@@ -186,4 +211,6 @@ module.exports = {
     DeleteAdmin,
     ViewGeneralCampaigns,
     ViewSpecificCampaigns,
+    ViewAppealedCampaigns,
+    RejectCampiagnRequest
 }

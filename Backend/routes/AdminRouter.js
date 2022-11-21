@@ -14,16 +14,20 @@ let router = express.Router()
  * Create-Campaign => Campaign.add
  * UpdateCampaign => Campaign.update
  * DeleteCampaign => Campaign.delete
+ * ANCHOR: Approve/Disapprove-Incoming-Benificiary-Campaign-Request
  * 
- * Approve/Disapprove-Incoming-Benificiary-Campaign-Request
  * 
- * 
- * Audit-Campaign
+ * TODO: Audit-Campaign
+ * TODO: Analytics
+ * TODO: Reports
+ * TODO: Expenses
+ * TODO: 
  */
 
 router.post('/signup', AdminController.AddNewAdmin)
 
-router.get('/appealedCampaigns', )
+router.get('/appealedCampaigns', AdminController.ViewAppealedCampaigns)
+router.get('/rejectCampaignRequest/:campaign_id', AdminController.RejectCampiagnRequest)
 
 
 // })
@@ -40,11 +44,27 @@ router.get('/SpecificCampigns/:id', AdminController.ViewSpecificCampaigns)
 
 router.patch('/approveCampaign/:campaign_id', AdminController.ApproveCampaign)
 
-// Empty routes.. Will do these in a little while
+router.get('/rejectCampaign/:campaign_id', AdminController.RejectCampiagnRequest)
 
+// Empty routes.. Will do these in a little while
+router.get('/reports')
+router.post('/reports/monthly_donation/:month')
+router.post('/reports/yearly_donation/:month')
+router.post('/reports/credit_report/:month')
+router.post('/reports/balance_sheet/:month')
+
+
+
+router.get('/analytics/top_donors')
+router.get('/analytics/interactive_map')
+router.get('/analytics/interactive_map/city')
+router.post('/analytics/city')
+router.get('/analytics/donor')
+router.get('/analytics/benificiary')
+router.get('/analytics/')
 router.get('/adminCampaigns')
 router.get('/adminCampaigns')
-router.get('/')
+router.get('/adminCampaigns')
 
 
 router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
