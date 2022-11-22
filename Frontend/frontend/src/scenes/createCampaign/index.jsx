@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import axios from "axios"
+// import axios from "axios"
 
 //initializing all inputs with their keys
 const initialValues = {
@@ -31,10 +31,10 @@ const CreateCampaign = () => {
 
   //on submit, all inputs are stored in values
   const handleFormSubmit = async (values) => {
-    console.log(values);
+    // console.log(values);
 
-    let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    JSON.parse(data)
+    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
+    // JSON.parse(data)
   };
 
   return (
