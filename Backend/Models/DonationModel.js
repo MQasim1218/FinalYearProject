@@ -10,13 +10,11 @@ const donationSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'donor',
         required: true,
-
     },
-    benificiary: {
-        type: mongoose.Types.ObjectId,
-        ref: 'benificiary',
-        default: null
-    },
+    isLoan: {
+        type: Boolean,
+        default: false
+    }
     // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
 },
     {

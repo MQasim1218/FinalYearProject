@@ -15,6 +15,7 @@ let campaignSchema = mongoose.Schema({
             required: true
         }
     },
+    benificiary: { type: mongoose.Types.ObjectId, ref: 'benificairy' },
     approved: { type: Boolean, required: true, default: false },
     rejected: { type: Boolean, required: true, default: false },
     catagory: { type: String, required: true },
