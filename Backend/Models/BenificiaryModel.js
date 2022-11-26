@@ -3,9 +3,7 @@ const validator = require("validator");
 
 
 const benificairySchema = mongoose.Schema({
-    id: {
-        type: mongoose.Schema.Types.ObjectId
-    },
+
     name: {
         type: String,
         required: true,
@@ -74,9 +72,7 @@ const benificairySchema = mongoose.Schema({
         }
     },
 },
-    {
-        timestamps: true,
-    }
+    { timestamps: true }
 )
 
 const beneficiaryModel = mongoose.model('benificiary', benificairySchema)

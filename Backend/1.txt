@@ -8,6 +8,7 @@ Routes/Controllers
             Reject Loan
             View applealed Loan
             View all Loans
+            Waive Loan / Discount Loan
 
 2.  Benificiary:
 
@@ -24,12 +25,41 @@ Routes/Controllers
             View donations for particular Campaign
 
         Loans:
+            Appeal Loan
+            View all Loans for the benificiary
+            View donations for particular Loan
+            Return Loan to Organization
+        
+        Benificiary Analytics
+            Activity on a Campaign.
+            Donations for a time period.
+            Donations from a location.
+
+
+2.  Donor:
+
+        Authentication:
+            SignUp
+            SignIn
+            Get Donor
+            Update Account Details
+            Delete Account
+
+        Donation:
+            Make Donation
+            Search/View Campaigns
+            View Campaigns on Map
+            View all active
+            View donations for particular Donor
+
+        Loans:
             Appeal Campaign
             View all Campaigns for the benificiary
             View donations for particular Campaign
-        
-        Benificiary Analytics
-            Activity on a Campaign
-            Donations for a time period
-            Donations from a location
+            
 
+        Benificiary Analytics
+            Activity on a Campaign.
+            Donations for a time period.
+            Donations from a location.
+    
