@@ -209,6 +209,7 @@ module.exports = {
     GetAdmin,
     GetAllAdmins,
     ChangeAuthDetails,
+    ChangeDetails,
     ApproveCampaign,
     AddGeneralCampaign,
     DeleteAdmin,

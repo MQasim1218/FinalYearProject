@@ -1,5 +1,8 @@
 const donorModel = require("../Models/DonorModel")
-const donationModel = require("../Models/DonationModel")
+const DonationModel = require("../Models/DonationModel")
+const SpecificCampaign = require("../Models/SpecificCampaign")
+const GeneralCampaign = require("../Models/GeneralCampaigns")
+const { ViewSpecificCampaigns } = require("./AdminCntr")
 
 
 const DonorSignUp = async (req, res, next) => {
@@ -73,7 +76,7 @@ const Donate = async (req, res, next) => {
             { $push: { donations: donation_entry._id } }
         )
 
-        res.json(donation_entry)
+        res.json({ donation_entry, campiagn })
 
     } catch (error) {
         console.log(error)
@@ -81,11 +84,82 @@ const Donate = async (req, res, next) => {
     }
 }
 
+const UpdateDonor = async (req, res, next) => {
+    try {
+        await DonorModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                name: req.body.name,
+                age: req.body.age,
+                email: req.body.email,
+                password: req.body.password,
+                contact: req.body.contact,
+                location: req.body.location
+            }
+        )
+        let donor = await DonorModel.findById(req.params.id).exec()
+        res.json(donor)
+    } catch (error) {
+        console.log("Error while updating the Donor")
+        res.send(error)
+    }
+}
+
+const SearchCampaignsbyName = async (req, res, nest) => {
+    try {
+        SpecificCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` } })
+
+    } catch (error) {
+
+    }
+}
+
+const SearchCampaignByTitle = async (req, res, next) => {
+    try {
+        let available = { specific: null, general: null }
+
+        let spec_av = await SpecificCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` }, completed: false, approved: true }).exec()
+        let genr_av = await GeneralCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` }, completed: false, approved: true }).exec()
+
+        available.specific = spec_av
+        available.general = genr_av
+
+        res.json(JSON.stringify(available))
+
+    } catch (error) {
+        console.log("Error occured while searchign campaigns")
+        res.send("Error occured: " + error.message)
+    }
+}
+
+const GetDonatedCapmaigns = async (req, res, next) => { }
+
+const SearchAvailableCampaigns = async (req, res, next) => {
+    try {
+        let available = { specific: null, general: null }
+
+        let specific_av = await SpecificCampaign.find({ completed: false, approved: true }).exec()
+        if (specific_av) available.specific = specific_av
+
+        let general_av = await GeneralCampaign.find({ completed: false, approved: true })
+        if (general_av) available.general = general_av
+
+        res.json(JSON.stringify(available))
+
+    } catch (error) {
+        console.log("Got a error while fetching the campaigns")
+        console.log("Error: ", error.message)
+        res.send("Error occured: " + error.message)
+    }
+}
 
 
 module.exports = {
+    SearchCampaignByTitle,
+    SearchAvailableCampaigns,
     DonorSignIn,
     DonorSignUp,
+    UpdateDonor,
     AllDonors,
     GetDonor,
     Donate

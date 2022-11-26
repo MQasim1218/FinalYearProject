@@ -39,26 +39,26 @@ Routes/Controllers
 2.  Donor:
 
         Authentication:
-            SignUp
-            SignIn
-            Get Donor
-            Update Account Details
-            Delete Account
+            SignUp - DONE 
+            SignIn - DONE
+            Get Donor - DONE
+            Update Account Details - DONE
+            Delete Account - DONE
 
         Donation:
-            Make Donation
+            Make Donation - SomeWhat DONE
             Search/View Campaigns
             View Campaigns on Map
             View all active
             View donations for particular Donor
+            View Campaigns Where donated
 
         Loans:
             Appeal Campaign
             View all Campaigns for the benificiary
             View donations for particular Campaign
-            
 
-        Benificiary Analytics
+        Donor Analytics:
             Activity on a Campaign.
             Donations for a time period.
             Donations from a location.

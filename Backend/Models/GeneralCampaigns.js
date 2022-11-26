@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 let generalCampaignSchema = mongoose.Schema({
     // [Widow-support, Student_supp, Monthly-help]
-    campaign_type: { type: String, required: true },
+    campaign_title: { type: String, required: true },
     campaign_amount: { type: String, required: true, trim: true },
     donated_amount: { type: String, required: true, trim: true },
     description: { type: String, required: true },
@@ -22,7 +22,8 @@ let generalCampaignSchema = mongoose.Schema({
         default: false
     },
     catagory: { type: String, required: true },
-    donations: [{ type: mongoose.Types.ObjectId, ref: 'donations' }]
+    donations: [{ type: mongoose.Types.ObjectId, ref: 'donations' }],
+    completed: { type: Boolean, default: true }
 },
     {
         timestamps: true

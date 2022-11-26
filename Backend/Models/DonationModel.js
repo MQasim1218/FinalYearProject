@@ -11,10 +11,8 @@ const donationSchema = mongoose.Schema({
         ref: 'donor',
         required: true,
     },
-    isLoan: {
-        type: Boolean,
-        default: false
-    }
+    isLoan: { type: Boolean, default: false },
+
     // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
 },
     {
