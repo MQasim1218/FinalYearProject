@@ -50,7 +50,8 @@ const AddNewAdmin = async (req, res, next) => {
                 })
         }
     } catch (error) {
-        res.send("Error encountered: ", error.message)
+        console.log("Error encountered: ", error.message)
+        next(error)
     }
 
 }
@@ -114,15 +115,16 @@ const ChangeDetails = async (req, res, next) => {
 // Manipulate Campaigns
 const AddGeneralCampaign = async (req, res, next) => {
     try {
+        console.log("here in this place")
         let newCampaign = await GeneralCampaignModel.create(req.body)
         console.log("New campaign created")
 
-        let admin = await Admin.findById(req.params.id).exec()
 
         await AdminModel.Admin.updateOne(
             { _id: req.params.id },
             { $push: { general_campaigns: newCampaign._id } }
         ).exec()
+        let admin = await Admin.findById(req.params.id).exec()
         res.json(admin)
 
     } catch (err) {

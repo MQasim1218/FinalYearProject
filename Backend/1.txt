@@ -1,1 +1,35 @@
-esrftedsdfhgd
+TODOS FOR SATURDAY - 11/26/2022
+
+Routes/Controllers
+
+1.  ADMIN:
+        Loans:
+            Approve Loan
+            Reject Loan
+            View applealed Loan
+            View all Loans
+
+2.  Benificiary:
+
+        Authentication:
+            SignUp
+            SignIn
+            Get Benificiary
+            Update Account Details
+            Delete Account
+
+        Donation:
+            Appeal Campaign
+            View all Campaigns for the benificiary
+            View donations for particular Campaign
+
+        Loans:
+            Appeal Campaign
+            View all Campaigns for the benificiary
+            View donations for particular Campaign
+        
+        Benificiary Analytics
+            Activity on a Campaign
+            Donations for a time period
+            Donations from a location
+

@@ -50,7 +50,7 @@ router.get('/archivedCampaigns', async (req, res, next) => {
         res.json(general_capms.concat(specific_capms))
     } catch (error) {
         console.log('error is: ', error)
-        res.send(error.message)
+        next(error)
     }
 
 })
@@ -120,35 +120,35 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 
 
 // Empty routes.. Will do these in a little while
-router.get('/reports')
-router.get('/reports/monthly_donation/:month')
-router.get('/reports/yearly_donation/:year')
-router.post('/reports/credit_report/:month')
-router.post('/reports/balance_sheet/:month')
+// router.get('/reports')
 
 
+// router.get('/reports/monthly_donation/:month')
+// router.get('/reports/yearly_donation/:year')
+// router.post('/reports/credit_report/:month')
+// router.post('/reports/balance_sheet/:month')
 
-router.get('/analytics/top_donors')
-router.get('/analytics/interactive_map')
-router.get('/analytics/interactive_map/city')
-router.post('/analytics/city')
-router.get('/analytics/donor')
-router.get('/analytics/benificiary')
-router.get('/analytics/')
-router.get('/adminCampaigns')
-router.get('/adminCampaigns')
-router.get('/adminCampaigns')
+// router.get('/analytics/top_donors')
+// router.get('/analytics/interactive_map')
+// router.get('/analytics/interactive_map/city')
+// router.post('/analytics/city')
+// router.get('/analytics/donor')
+// router.get('/analytics/benificiary')
+// router.get('/analytics/')
+// router.get('/adminCampaigns')
+// router.get('/adminCampaigns')
+// router.get('/adminCampaigns')
 
 
 // Add Campaign
 router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
 // Get Admin
 router.get('/:id', AdminController.GetAdmin)
-// Get All Admins
-router.get('/', AdminController.GetAllAdmins)
 
 router.delete('/:id', AdminController.DeleteAdmin)
 
 router.patch('/:id', AdminController.UpdateAdmin)
 
+// Get All Admins
+router.get('/', AdminController.GetAllAdmins)
 module.exports = router
