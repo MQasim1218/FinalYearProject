@@ -35,11 +35,29 @@ router.get('/search_campaign/filter',
                         $regex: `/${req.body.title}/i`
                     },
                     // Have to implement search based on Location.
-                    
+
+                    createdAt: {
+                        $lte: req.body.end_date,
+                        $gte: req.body.start_date
+                    },
+
                     completed: false,
                     approved: true
                 }).exec()
-            let genr_av = await GeneralCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` }, completed: false, approved: true }).exec()
+            let genr_av = await GeneralCampaign.find({
+                campaign_title: {
+                    $regex: `/${req.body.title}/i`
+                },
+                // Have to implement search based on Location.
+
+                createdAt: {
+                    $lte: req.body.end_date,
+                    $gte: req.body.start_date
+                },
+
+                completed: false,
+                approved: true
+            }).exec()
 
             available.specific = spec_av
             available.general = genr_av

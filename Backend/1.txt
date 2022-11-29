@@ -29,14 +29,14 @@ Routes/Controllers
             View all Loans for the benificiary
             View donations for particular Loan
             Return Loan to Organization
+            Upload Files
         
         Benificiary Analytics
             Activity on a Campaign.
             Donations for a time period.
             Donations from a location.
 
-
-2.  Donor:
+3.  Donor:
 
         Authentication:
             SignUp - DONE 
@@ -63,3 +63,9 @@ Routes/Controllers
             Donations for a time period.
             Donations from a location.
     
+
+
+Authentication with jwt Tokens.
+Stipe Payments.
+Locations.
+Integration.

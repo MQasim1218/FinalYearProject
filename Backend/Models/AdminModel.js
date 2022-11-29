@@ -49,7 +49,7 @@ const adminSchema = mongoose.Schema({
     location: {
         type: {
             type: String,
-            enum: ['Point'],
+            enum: ['Point', 'Polygon'],
             // required: true
         },
         coordinates: {
