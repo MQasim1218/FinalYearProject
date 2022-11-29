@@ -17,6 +17,8 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 
+import StickyBox from "react-sticky-box";
+
 const Item = ({title, to, icon, selected, setSelected}) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
@@ -37,6 +39,7 @@ const Sidebar = () => {
     
 
     return (
+        
         <Box
             sx={{ 
             "& .pro-sidebar-inner": { background: `${colors.primary[400]} !important` },
@@ -51,10 +54,13 @@ const Sidebar = () => {
             },
             "& .pro-menu-item.active":{
                 color: "#6870fa !important"
+            },
+            "& .pro-sidebar .pro-menu":{
+                height: "100vh"
             }
         }}>
-
-            <ProSidebar collapsed={isCollapsed} position= "-webkit-sticky">
+            <StickyBox>
+            <ProSidebar collapsed={isCollapsed} >
                 <Menu iconShape="square">
                     {/*Logo and Menu Icons*/}
                     <MenuItem onClick={() => setIsCollapsed(!isCollapsed)} icon={isCollapsed ? <MenuOutlinedIcon/> : undefined} style={{ margin: "10px 0 20px 0", color: colors.grey[100], }}>
@@ -117,6 +123,7 @@ const Sidebar = () => {
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
                         <Item title="Graphs" to="/graphs" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+
                         
 
                     </Box>
@@ -124,8 +131,10 @@ const Sidebar = () => {
 
                 </Menu>
             </ProSidebar>
+            </StickyBox>
 
         </Box>
+        
         )
 }
 
