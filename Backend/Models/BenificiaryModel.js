@@ -47,15 +47,21 @@ const benificairySchema = mongoose.Schema({
         ref: 'specific_campaign'
     }],
 
+    requested_loans: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'loan'
+    }],
+
     audit_reports: [{
         type: mongoose.Schema.ObjectId,
         ref: 'audit'
     }],
 
+
+    // Need to see what happens with these things!!
     account_no: {
         type: String
     },
-
     account_type: {
         type: String
     },
