@@ -1,4 +1,4 @@
-const donorModel = require("../Models/DonorModel")
+const DonorModel = require("../Models/DonorModel")
 const DonationModel = require("../Models/DonationModel")
 const SpecificCampaign = require("../Models/SpecificCampaign")
 const GeneralCampaign = require("../Models/GeneralCampaigns")
@@ -6,7 +6,8 @@ const { ViewSpecificCampaigns } = require("./AdminCntr")
 
 
 const DonorSignUp = async (req, res, next) => {
-    let donor = await donorModel.find({ email: req.body.email }).exec()
+    let donor = await DonorModel.findOne({ email: req.body.email }).exec()
+    console.log(donor)
     if (!donor) {
         console.log("No donor with the given Email exists!!")
         console.log("Creating a donor now!!")
@@ -48,11 +49,11 @@ const AllDonors = async (req, res, next) => {
 }
 
 const GetDonor = async (req, res, next) => {
-    DonorModel.find({ _id: req.params.id })
+    DonorModel.findOne({ _id: req.params.id })
         .exec(function (error, data) {
             if (error) {
                 console.log("Resource not in donor/:id - Skipping this route altogether!!")
-                return next(error)
+                return next()
             }
             res.json(data)
         })
@@ -101,7 +102,8 @@ const UpdateDonor = async (req, res, next) => {
         res.json(donor)
     } catch (error) {
         console.log("Error while updating the Donor")
-        res.send(error)
+        // res.send(error.message)
+        next(error)
     }
 }
 
@@ -117,14 +119,16 @@ const SearchCampaignsbyName = async (req, res, nest) => {
 const SearchCampaignByTitle = async (req, res, next) => {
     try {
         let available = { specific: null, general: null }
-
-        let spec_av = await SpecificCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` }, completed: false, approved: true }).exec()
-        let genr_av = await GeneralCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` }, completed: false, approved: true }).exec()
+        // , completed: false, approved: true
+        console.log(req.body.title)
+        let spec_av = await SpecificCampaign.find({ campaign_title: /[${req.body.title}]+/gmi }).exec()
+        let genr_av = await GeneralCampaign.find({ campaign_title: /[${req.body.title}]+/gmi }).exec()
 
         available.specific = spec_av
         available.general = genr_av
 
-        res.json(JSON.stringify(available))
+        res.json(available)
+        // res.json(JSON.stringify(available))
 
     } catch (error) {
         console.log("Error occured while searchign campaigns")
@@ -138,13 +142,14 @@ const SearchAvailableCampaigns = async (req, res, next) => {
     try {
         let available = { specific: null, general: null }
 
-        let specific_av = await SpecificCampaign.find({ completed: false, approved: true }).exec()
+        let specific_av = await SpecificCampaign.find({ approved: true, completed: { $in: [false, null] } }).exec()
         if (specific_av) available.specific = specific_av
-
-        let general_av = await GeneralCampaign.find({ completed: false, approved: true })
+        // completed: false, approved: true
+        let general_av = await GeneralCampaign.find({ approved: true, completed: { $in: [false, null] } })
         if (general_av) available.general = general_av
 
-        res.json(JSON.stringify(available))
+        // res.json(JSON.stringify(available))
+        res.json(available)
 
     } catch (error) {
         console.log("Got a error while fetching the campaigns")

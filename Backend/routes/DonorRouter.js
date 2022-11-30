@@ -3,7 +3,6 @@ const DonorModel = require('../Models/DonorModel')
 const DonorController = require('../Controllers/DonorCntr')
 const SpecificCampaign = require('../Models/SpecificCampaign')
 const DonationModel = require('../Models/DonationModel')
-const donorModel = require('../Models/DonorModel')
 const GeneralCampaign = require('../Models/GeneralCampaigns')
 const { json } = require('express')
 let router = express.Router()
@@ -15,7 +14,7 @@ router.post('/signup', DonorController.DonorSignUp)
 router.get('/:id', DonorController.GetDonor)
 
 // Get all donors
-router.get('/allDonors', DonorController.AllDonors);
+router.get('/', DonorController.AllDonors);
 
 // Search Campaigns
 router.get('/available_campaigns', DonorController.SearchAvailableCampaigns)

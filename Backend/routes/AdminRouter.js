@@ -1,6 +1,6 @@
 const express = require('express')
 const AdminModel = require('../Models/AdminModel')
-const AdminController = require('../Controllers/AdminController')
+const AdminController = require('../Controllers/AdminCntr')
 const GeneralCampaignModel = require("../Models/GeneralCampaigns")
 const SpecificCampaignModel = require("../Models/SpecificCampaign")
 

@@ -20,6 +20,6 @@ const donationSchema = mongoose.Schema({
     }
 )
 
-const DonationModel = mongoose.model(donationSchema, 'donation')
+const DonationModel = mongoose.model('donation', donationSchema)
 
 module.exports = DonationModel

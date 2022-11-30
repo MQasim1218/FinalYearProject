@@ -3,6 +3,7 @@ const express = require('express')
 const BeneficiaryModel = require('../Models/BenificiaryModel')
 const SpecCapmaignModel = require('../Models/SpecificCampaign')
 const LoanModel = require('../Models/LoanModel')
+const Loan = require('../Models/LoanModel')
 
 
 let router = express.Router()
@@ -116,9 +117,9 @@ router.put("/campaign/:camp_id", async (req, res, next) => {
 })
 
 // Get all campaigns for a particular benif
-router.get("/:benif_id/campaigns", async (req, res, next) => {
+router.get("/:id/campaigns", async (req, res, next) => {
     try {
-        let ben = await BeneficiaryModel.beneficiaryModel.findById(req.params.benif_id).populate('requested_campaigns').exec()
+        let ben = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).populate('requested_campaigns').exec()
         if (ben) {
             res.json(ben.requested_campaigns)
         } else console.log("Benificiary id is not valid")
@@ -130,9 +131,9 @@ router.get("/:benif_id/campaigns", async (req, res, next) => {
 })
 
 // Get a campaign for a particular benif
-router.get("/:benif_id/campaigns/:camp_id", async (req, res, next) => {
+router.get("/:id/campaigns/:camp_id", async (req, res, next) => {
     try {
-        let ben = await BeneficiaryModel.beneficiaryModel.findById(req.params.benif_id).populate('requested_campaigns').exec()
+        let ben = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).populate('requested_campaigns').exec()
         if (ben) {
             let camp = ben.requested_campaigns.find(camp => val._id === req.params.camp_id)
             res.json(camp)
@@ -192,25 +193,54 @@ router.put("/loans/:loan_id", async (req, res, next) => {
 })
 
 // Get all loans for a particular user
-router.get("/loans", (req, res, next) => { })
+router.get("/:id/loans", async (req, res, next) => {
+    try {
+        let bf = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).exec()
+        if (bf) {
+            res.json(bf.requested_loans)
+        } else {
+            res.send("The benificiary has on campaigns")
+        }
+    } catch (error) {
+        console.log("Not able to get benificeries")
+    }
+
+})
 
 // Get a particular loans for a benificiary
-router.get("/loans/:loan_id", (req, res, next) => { })
+router.get("/:id/loans/:loan_id", async (req, res, next) => {
+    try {
+        let bf = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).exec()
+        if (bf) {
+            let loan = bf.requested_loans.find(loan => loan._id === req.params.loan_id)
+            res.json(loan)
+        } else {
+            res.send("The benificiary has on campaigns")
+        }
+    } catch (error) {
+        console.log("Not able to get benificeries")
+    }
+})
 
 // Get a particular loans for a benificiary
-router.post("/loans/return/:loan_id", (req, res, next) => { })
+router.post("/:id/loans/return/:loan_id", async (req, res, next) => {
+    let loan = LoanModel.findById(req.params.loan_id).exec()
+    if (!loan) {
+
+    }
+})
 
 
 // #################  Analytics  ##################
 // #################  Analytics  ##################
 
 // Activity on a Campaign
-router.get(path, function () { })
+// router.get(path, function () { })
 
-// Activity on Campaign(s) over a time period
-router.get(path, function () { })
+// // Activity on Campaign(s) over a time period
+// router.get(path, function () { })
 
-// Activity on Campaign(s) based on location
-router.get(path, function () { })
+// // Activity on Campaign(s) based on location
+// router.get(path, function () { })
 
 module.exports = router

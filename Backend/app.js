@@ -7,7 +7,8 @@ var cors = require('cors');
 const { default: mongoose } = require('mongoose');
 
 var indexRouter = require('./routes/index');
-var beneficiaryRouter = require('./routes/benificiary');
+var beneficiaryRouter = require('./routes/BenificiaryRouter');
+var donorRouter = require('./routes/DonorRouter');
 var adminRouter = require('./routes/AdminRouter');
 
 var app = express();
@@ -28,6 +29,7 @@ mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("S
 app.use('/', indexRouter);
 app.use('/beneficiary', beneficiaryRouter);
 app.use('/admin', adminRouter);
+app.use('/donor', donorRouter);
 
 console.log("Sucessfully Started Node App")
 
