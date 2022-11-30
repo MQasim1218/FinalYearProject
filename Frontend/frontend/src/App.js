@@ -10,6 +10,7 @@ import Users from "./scenes/users"
 import CreateCampaign from "./scenes/createCampaign"
 import Graphs from "./scenes/graphs"
 import GeographyMap from "./scenes/geographymap"
+import DonorDashboard from './scenes/donorDashboard';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -17,6 +18,7 @@ function App() {
   return ( 
     //Context for colormode, so we can use it anywhere.
   <ColorModeContext.Provider value={colorMode}>
+
     {/*ThemeProvider is used so that material UI has access to it as well.*/}
     <ThemeProvider theme={theme}>
     {/*CssBaseline resets the css to default on colorchange*/}
@@ -26,7 +28,7 @@ function App() {
         <main className="content">
           <Topbar/>
           <Routes>
-            <Route path="/" element = { <Dashboard/>}/>
+            <Route path="/" element = { <DonorDashboard/>}/>
             <Route path="/donations" element = { <Donations/>}/>
             <Route path="/users" element = { <Users/>}/>
             <Route path="/recent" element = { <Recent/>}/>

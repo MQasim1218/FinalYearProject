@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import Sidebar from "../global/Sidebar";
 
 
 //initializing all inputs with their keys
@@ -36,6 +37,7 @@ const handleFormSubmit = (values) => {
     }
 
     return (
+      
     <Box m="20px">
         <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign"/>
 
