@@ -31,7 +31,7 @@ const donorSchema = mongoose.Schema({
         ref: 'specific_campaign'
     }],
 
-    donated_campaigns_specific: [{
+    donated_campaigns_general: [{
         type: mongoose.Schema.ObjectId,
         ref: 'general_campaign'
     }],

@@ -5,6 +5,7 @@ const SpecificCampaign = require('../Models/SpecificCampaign')
 const DonationModel = require('../Models/DonationModel')
 const GeneralCampaign = require('../Models/GeneralCampaigns')
 const { json } = require('express')
+const { mongo, default: mongoose } = require('mongoose')
 let router = express.Router()
 
 // Donor SignUp
@@ -23,53 +24,7 @@ router.get('/available_campaigns', DonorController.SearchAvailableCampaigns)
 router.get('/search_campaign/title', DonorController.SearchCampaignByTitle)
 
 // Filter campiagns based on Time Range, Title and/or Location
-router.get('/search_campaign/filter',
-    async (req, res, next) => {
-        try {
-            let available = { specific: null, general: null }
-
-            let spec_av = await SpecificCampaign.find(
-                {
-                    campaign_title: {
-                        $regex: `/${req.body.title}/i`
-                    },
-                    // Have to implement search based on Location.
-
-                    createdAt: {
-                        $lte: req.body.end_date,
-                        $gte: req.body.start_date
-                    },
-
-                    completed: false,
-                    approved: true
-                }).exec()
-            let genr_av = await GeneralCampaign.find({
-                campaign_title: {
-                    $regex: `/${req.body.title}/i`
-                },
-                // Have to implement search based on Location.
-
-                createdAt: {
-                    $lte: req.body.end_date,
-                    $gte: req.body.start_date
-                },
-
-                completed: false,
-                approved: true
-            }).exec()
-
-            available.specific = spec_av
-            available.general = genr_av
-
-            res.json(JSON.stringify(available))
-
-        } catch (error) {
-            console.log("Error occured while searchign campaigns")
-            res.send("Error occured: " + error.message)
-        }
-    }
-)
-
+router.get('/search_campaign/filter', DonorController.SearchCampaignByFilter)
 
 // Update a donor 
 router.put('/:id', DonorController.UpdateDonor)
@@ -84,5 +39,7 @@ router.delete('/:id', function (req, res, next) {
 })
 
 router.post('/donate/:campaign_id', DonorController.Donate)
+
+router.get('/donations', DonorController.GetDonations)
 
 module.exports = router

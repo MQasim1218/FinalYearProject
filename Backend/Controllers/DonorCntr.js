@@ -68,11 +68,13 @@ const Donate = async (req, res, next) => {
         // The real part with Stripe need to be tackled in the later implementation.
 
         let donation_entry = await DonationModel.create(req.body)
-        if (donation_entry) {
-            res.status(500).send("couldnt craete donation for some reason\n Line: 53 Donor Controller")
+        if (!donation_entry) {
+            res.send("Couldnt create a donation entry!")
+            // res.status(500).send("Couldn't craete donation for some reason\n Line: 72 Donor Controller")
+            // res.json(donation_entry)
         }
 
-        let campiagn = SpecificCampaign.findByIdAndUpdate(
+        let campiagn = await SpecificCampaign.findByIdAndUpdate(
             req.params.campaign_id,
             { $push: { donations: donation_entry._id } }
         )
@@ -107,12 +109,64 @@ const UpdateDonor = async (req, res, next) => {
     }
 }
 
-const SearchCampaignsbyName = async (req, res, nest) => {
+const SearchCampaignByFilter = async (req, res, next) => {
     try {
-        SpecificCampaign.find({ campaign_title: { $regex: `/${req.body.title}/i` } })
+        console.log("the request is in here!")
+        let available = { specific: null, general: null }
+
+        let spec_av = await SpecificCampaign.find(
+            {
+                $or: [
+                    {
+                        campaign_title: {
+                            $regex: /[${req.body.title}]/igm
+                        }
+                    },
+                    // Have to implement search based on Location.
+                    // {
+                    //     location: {}
+                    // },
+
+                    {
+                        createdAt: {
+                            $lte: req.body.end_date,
+                            $gte: req.body.start_date
+                        }
+                    },
+
+                ],
+
+                completed: { $in: [false, null] },
+                approved: true
+            }).exec()
+        let genr_av = await GeneralCampaign.find({
+            $or: [{
+                campaign_title: {
+                    $regex: /[${req.body.title}]+/igm
+                }
+            },
+            // Have to implement search based on Location.
+
+            {
+                createdAt: {
+                    $lte: req.body.end_date,
+                    $gte: req.body.start_date
+                }
+            }
+            ],
+
+            completed: { $in: [false, null] },
+            approved: true
+        }).exec()
+
+        available.specific = spec_av
+        available.general = genr_av
+
+        res.json(available)
 
     } catch (error) {
-
+        console.log("Error occured while searchign campaigns")
+        res.send("Error occured: " + error.message)
     }
 }
 
@@ -138,6 +192,15 @@ const SearchCampaignByTitle = async (req, res, next) => {
 
 const GetDonatedCapmaigns = async (req, res, next) => { }
 
+const GetDonations = async (req, res, next) => {
+    try {
+        let donations = await DonationModel.find({ donor: req.body.donor_id })
+        res.json(donations)
+    } catch (error) {
+        res.send(error.message)
+    }
+}
+
 const SearchAvailableCampaigns = async (req, res, next) => {
     try {
         let available = { specific: null, general: null }
@@ -162,6 +225,8 @@ const SearchAvailableCampaigns = async (req, res, next) => {
 module.exports = {
     SearchCampaignByTitle,
     SearchAvailableCampaigns,
+    SearchCampaignByFilter,
+    GetDonations,
     DonorSignIn,
     DonorSignUp,
     UpdateDonor,
