@@ -11,6 +11,7 @@ import CreateCampaign from "./scenes/createCampaign"
 import Graphs from "./scenes/graphs"
 import GeographyMap from "./scenes/geographymap"
 import DonorDashboard from './scenes/donorDashboard';
+import BeneficiaryDashboard from './scenes/beneficiaryDashboard';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -28,7 +29,7 @@ function App() {
         <main className="content">
           <Topbar/>
           <Routes>
-            <Route path="/" element = { <DonorDashboard/>}/>
+            <Route path="/" element = { <BeneficiaryDashboard/>}/>
             <Route path="/donations" element = { <Donations/>}/>
             <Route path="/users" element = { <Users/>}/>
             <Route path="/recent" element = { <Recent/>}/>
