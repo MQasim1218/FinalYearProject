@@ -29,7 +29,7 @@ function App() {
         <main className="content">
           <Topbar/>
           <Routes>
-            <Route path="/" element = { <BeneficiaryDashboard/>}/>
+            <Route path="/" element = { <Dashboard/>}/>
             <Route path="/donations" element = { <Donations/>}/>
             <Route path="/users" element = { <Users/>}/>
             <Route path="/recent" element = { <Recent/>}/>
