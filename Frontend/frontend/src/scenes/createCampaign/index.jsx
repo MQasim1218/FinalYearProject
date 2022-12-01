@@ -45,165 +45,147 @@ const CreateCampaign = () => {
       }
     }
 
-    return (
-      
     getData()
+    return (() => console.log("No clean up"))
 
-
-  }, [])
-
-
-
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
-    console.log(values);
-
-    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    // JSON.parse(data)
-  };
-
-  return (
-    <Box m="20px">
-        <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign"/>
-    getData()
-
-
-  }, [])
+  }
+    , [])
+}
 
 
 
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
-    console.log(values);
 
-    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    // JSON.parse(data)
-  };
+//on submit, all inputs are stored in values
+const handleFormSubmit = async (values) => {
+  console.log(values);
 
-  return (
-    <Box m="20px">
-      <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign" />
-
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={userSchema}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Box
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              }}
-            >
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Campaign Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.campaignName}
-                name="campaignName"
-                error={!!touched.campaignName && !!errors.campaignName}
-                helperText={touched.campaignName && errors.campaignName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Campaign Type"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.campaignType}
-                name="campaignType"
-                error={!!touched.campaignType && !!errors.campaignType}
-                helperText={touched.campaignType && errors.campaignType}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="Campaign Goal"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.campaignGoal}
-                name="campaignGoal"
-                error={!!touched.campaignGoal && !!errors.campaignGoal}
-                helperText={touched.campaignGoal && errors.campaignGoal}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Campaign Genre"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.campaignGenre}
-                name="campaignGenre"
-                error={!!touched.campaignGenre && !!errors.campaignGenre}
-                helperText={touched.campaignGenre && errors.campaignGenre}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Campaign Location"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.campaignLocation}
-                name="campaignLocation"
-                error={!!touched.campaignLocation && !!errors.campaignLocation}
-                helperText={touched.campaignLocation && errors.campaignLocation}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Campaign Description"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.campaignDescription}
-                name="campaignDescription"
-                error={
-                  !!touched.campaignDescription && !!errors.campaignDescription
-                }
-                helperText={
-                  touched.campaignDescription && errors.campaignDescription
-                }
-                sx={{ gridColumn: "span 4" }}
-              />
-            </Box>
-
-            <Box display="flex" justifyContent="center" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Create New Campaign
-              </Button>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </Box>
-  );
+  // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
+  // JSON.parse(data)
 };
+
+
+return (
+  <Box m="20px">
+    <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign" />
+
+    <Formik
+      onSubmit={handleFormSubmit}
+      initialValues={initialValues}
+      validationSchema={userSchema}
+    >
+      {({
+        values,
+        errors,
+        touched,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <Box
+            display="grid"
+            gap="30px"
+            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Campaign Name"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.campaignName}
+              name="campaignName"
+              error={!!touched.campaignName && !!errors.campaignName}
+              helperText={touched.campaignName && errors.campaignName}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Campaign Type"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.campaignType}
+              name="campaignType"
+              error={!!touched.campaignType && !!errors.campaignType}
+              helperText={touched.campaignType && errors.campaignType}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="number"
+              label="Campaign Goal"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.campaignGoal}
+              name="campaignGoal"
+              error={!!touched.campaignGoal && !!errors.campaignGoal}
+              helperText={touched.campaignGoal && errors.campaignGoal}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Campaign Genre"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.campaignGenre}
+              name="campaignGenre"
+              error={!!touched.campaignGenre && !!errors.campaignGenre}
+              helperText={touched.campaignGenre && errors.campaignGenre}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Campaign Location"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.campaignLocation}
+              name="campaignLocation"
+              error={!!touched.campaignLocation && !!errors.campaignLocation}
+              helperText={touched.campaignLocation && errors.campaignLocation}
+              sx={{ gridColumn: "span 4" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Campaign Description"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.campaignDescription}
+              name="campaignDescription"
+              error={
+                !!touched.campaignDescription && !!errors.campaignDescription
+              }
+              helperText={
+                touched.campaignDescription && errors.campaignDescription
+              }
+              sx={{ gridColumn: "span 4" }}
+            />
+          </Box>
+
+          <Box display="flex" justifyContent="center" mt="20px">
+            <Button type="submit" color="secondary" variant="contained">
+              Create New Campaign
+            </Button>
+          </Box>
+        </form>
+      )}
+    </Formik>
+  </Box>
+);
+
 
 export default CreateCampaign;
