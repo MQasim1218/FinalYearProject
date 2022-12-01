@@ -3,9 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
+const { default: mongoose } = require('mongoose');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var beneficiaryRouter = require('./routes/BenificiaryRouter');
+var donorRouter = require('./routes/DonorRouter');
+var adminRouter = require('./routes/AdminRouter');
 
 var app = express();
 
@@ -15,20 +19,27 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
+
+mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("Successfully Connected to DB") })
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/benificiary', beneficiaryRouter);
+app.use('/admin', adminRouter);
+app.use('/donor', donorRouter);
+
+console.log("Sucessfully Started Node App")
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

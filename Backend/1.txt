@@ -1,1 +1,71 @@
-esrftedsdfhgd
+TODOS FOR SATURDAY - 11/26/2022
+
+Routes/Controllers
+
+1.  ADMIN:
+        Loans:
+            Approve Loan
+            Reject Loan
+            View applealed Loan
+            View all Loans
+            Waive Loan / Discount Loan
+
+2.  Benificiary:
+
+        Authentication:
+            SignUp
+            SignIn
+            Get Benificiary
+            Update Account Details
+            Delete Account
+
+        Donation:
+            Appeal Campaign
+            View all Campaigns for the benificiary
+            View donations for particular Campaign
+
+        Loans:
+            Appeal Loan
+            View all Loans for the benificiary
+            View donations for particular Loan
+            Return Loan to Organization
+            Upload Files
+        
+        Benificiary Analytics
+            Activity on a Campaign.
+            Donations for a time period.
+            Donations from a location.
+
+3.  Donor:
+
+        Authentication:
+            SignUp - DONE 
+            SignIn - DONE
+            Get Donor - DONE
+            Update Account Details - DONE
+            Delete Account - DONE
+
+        Donation:
+            Make Donation - SomeWhat DONE
+            Search/View Campaigns
+            View Campaigns on Map
+            View all active
+            View donations for particular Donor
+            View Campaigns Where donated
+
+        Loans:
+            Appeal Campaign
+            View all Campaigns for the benificiary
+            View donations for particular Campaign
+
+        Donor Analytics:
+            Activity on a Campaign.
+            Donations for a time period.
+            Donations from a location.
+    
+
+
+Authentication with jwt Tokens.
+Stipe Payments.
+Locations.
+Integration.
