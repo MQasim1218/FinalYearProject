@@ -63,23 +63,38 @@ const Donate = async (req, res, next) => {
     // Must recieve data
     // - Donation amount
     // - Donor ID 
+    // - Donation Type
     try {
         // Create a donation entry
         // The real part with Stripe need to be tackled in the later implementation.
-
         let donation_entry = await DonationModel.create(req.body)
         if (!donation_entry) {
             res.send("Couldnt create a donation entry!")
-            // res.status(500).send("Couldn't craete donation for some reason\n Line: 72 Donor Controller")
-            // res.json(donation_entry)
         }
+        let campaign = null
 
-        let campiagn = await SpecificCampaign.findByIdAndUpdate(
-            req.params.campaign_id,
-            { $push: { donations: donation_entry._id } }
-        )
+        if (req.body.camp_type === "Specific") {
+            campaign = await SpecificCampaign.findByIdAndUpdate(
+                req.params.campaign_id,
+                { $push: { donations: donation_entry._id } }
+            )
 
-        res.json({ donation_entry, campiagn })
+            await DonorModel.findByIdAndUpdate(
+                req.body.donor,
+                { $push: { donated_campaigns_specific: req.params.campaign_id } }
+            )
+        } else if (req.body.camp_type === "General") {
+            campaign = await GeneralCampaign.findByIdAndUpdate(
+                req.params.campaign_id,
+                { $push: { donations: donation_entry._id } }
+            )
+
+            await DonorModel.findByIdAndUpdate(
+                req.body.donor,
+                { $push: { donated_campaigns_general: req.params.campaign_id } }
+            )
+        }
+        res.json({ donation_entry, campaign })
 
     } catch (error) {
         console.log(error)
@@ -220,7 +235,6 @@ const SearchAvailableCampaigns = async (req, res, next) => {
         res.send("Error occured: " + error.message)
     }
 }
-
 
 module.exports = {
     SearchCampaignByTitle,

@@ -27,7 +27,7 @@ app.use(cors())
 mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("Successfully Connected to DB") })
 
 app.use('/', indexRouter);
-app.use('/beneficiary', beneficiaryRouter);
+app.use('/benificiary', beneficiaryRouter);
 app.use('/admin', adminRouter);
 app.use('/donor', donorRouter);
 

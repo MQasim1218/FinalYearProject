@@ -1,6 +1,6 @@
 const e = require('express')
 const express = require('express')
-const BeneficiaryModel = require('../Models/BenificiaryModel')
+const { beneficiaryModel } = require('../Models/BenificiaryModel')
 const SpecCapmaignModel = require('../Models/SpecificCampaign')
 const LoanModel = require('../Models/LoanModel')
 const Loan = require('../Models/LoanModel')
@@ -13,13 +13,16 @@ let router = express.Router()
 // #################  Authentication  ##################
 
 // Add a particular benificiary by his/her id
-router.post('/signup', (req, res, next) => {
-    BeneficiaryModel.create(req.body)
-        .then(function (data) {
-            console.log(data)
-            res.status(200)
-            res.json(data)
-        }).catch((err) => { console.log(err) })
+router.post('/signup', async (req, res, next) => {
+    let ben = await beneficiaryModel.findOne({ email: req.body.email }).exec()
+    if (!ben) {
+        beneficiaryModel.create(req.body)
+            .then(function (data) {
+                console.log(data)
+                res.status(200)
+                res.json(data)
+            }).catch((err) => { console.log(err) })
+    }
 })
 
 // Sign Benificiary into the account
@@ -31,7 +34,7 @@ router.post("/signin", (req, res, next) => { })
 
 // Get a particular benificiary by his/her id
 router.get('/:id', (req, res, next) => {
-    BeneficiaryModel.find({ _id: req.params.id })
+    beneficiaryModel.find({ _id: req.params.id })
         .exec(function (error, data) {
             if (error) {
                 return next(error)
@@ -43,7 +46,7 @@ router.get('/:id', (req, res, next) => {
 
 // Get all benificiaries
 router.get('/', function (req, res, next) {
-    BeneficiaryModel.find({}).exec(function (error, data) {
+    beneficiaryModel.find({}).exec(function (error, data) {
         if (error) {
             return next(error);
         }
@@ -54,7 +57,7 @@ router.get('/', function (req, res, next) {
 
 // Delete a benificiary.
 router.delete('/:id', function (req, res, next) {
-    BeneficiaryModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+    beneficiaryModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
         if (error) {
             next(error)
         }
@@ -76,7 +79,7 @@ router.post("/appeal/:benif_id/campaign", async (req, res, next) => {
         let sc = await SpecCapmaignModel.create(req.body)
         console.log(sc)
         sc.beneficiary = benif_id
-        BeneficiaryModel.beneficiaryModel.findByIdAndUpdate(
+        beneficiaryModel.findByIdAndUpdate(
             req.params.benif_id,
             { $push: { requested_campaigns: data._id } }
         )
@@ -119,7 +122,7 @@ router.put("/campaign/:camp_id", async (req, res, next) => {
 // Get all campaigns for a particular benif
 router.get("/:id/campaigns", async (req, res, next) => {
     try {
-        let ben = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).populate('requested_campaigns').exec()
+        let ben = await beneficiaryModel.findById(req.params.id).populate('requested_campaigns').exec()
         if (ben) {
             res.json(ben.requested_campaigns)
         } else console.log("Benificiary id is not valid")
@@ -133,7 +136,7 @@ router.get("/:id/campaigns", async (req, res, next) => {
 // Get a campaign for a particular benif
 router.get("/:id/campaigns/:camp_id", async (req, res, next) => {
     try {
-        let ben = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).populate('requested_campaigns').exec()
+        let ben = await beneficiaryModel.findById(req.params.id).populate('requested_campaigns').exec()
         if (ben) {
             let camp = ben.requested_campaigns.find(camp => val._id === req.params.camp_id)
             res.json(camp)
@@ -150,12 +153,13 @@ router.get("/:id/campaigns/:camp_id", async (req, res, next) => {
 // #################  Loans  ##################
 
 // Appeal Loan
-router.post("/appeal/:benif_id/loans", async (req, res, next) => {
+router.post("/appeal/:benif_id/loan", async (req, res, next) => {
     try {
         let loan = await LoanModel.create(req.body)
         console.log(loan)
-        loan.beneficiary = benif_id
-        BeneficiaryModel.beneficiaryModel.findByIdAndUpdate(
+        loan.beneficiary = req.params.benif_id
+
+        beneficiaryModel.findByIdAndUpdate(
             req.params.benif_id,
             { $push: { requested_loans: loan._id } }
         )
@@ -195,7 +199,7 @@ router.put("/loans/:loan_id", async (req, res, next) => {
 // Get all loans for a particular user
 router.get("/:id/loans", async (req, res, next) => {
     try {
-        let bf = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).exec()
+        let bf = await beneficiaryModel.findById(req.params.id).exec()
         if (bf) {
             res.json(bf.requested_loans)
         } else {
@@ -210,7 +214,7 @@ router.get("/:id/loans", async (req, res, next) => {
 // Get a particular loans for a benificiary
 router.get("/:id/loans/:loan_id", async (req, res, next) => {
     try {
-        let bf = await BeneficiaryModel.beneficiaryModel.findById(req.params.id).exec()
+        let bf = await beneficiaryModel.findById(req.params.id).exec()
         if (bf) {
             let loan = bf.requested_loans.find(loan => loan._id === req.params.loan_id)
             res.json(loan)
@@ -226,10 +230,10 @@ router.get("/:id/loans/:loan_id", async (req, res, next) => {
 router.post("/:id/loans/return/:loan_id", async (req, res, next) => {
     let loan = LoanModel.findById(req.params.loan_id).exec()
     if (!loan) {
-
+        console.log("Incorrect Loan Id entered!")
     }
-})
 
+})
 
 // #################  Analytics  ##################
 // #################  Analytics  ##################
