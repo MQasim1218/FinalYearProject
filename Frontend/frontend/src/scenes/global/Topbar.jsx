@@ -8,9 +8,13 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 const Topbar = () => {
+    const navigate = useNavigate();
+
     //Grabs the theme in react using mui
     const theme = useTheme()
     //token for light/dark theme, goes to theme.js
@@ -55,6 +59,11 @@ const Topbar = () => {
                         <LightModeOutlinedIcon/>
                     )} 
                 </IconButton>
+
+                <IconButton onClick={()=> navigate('/') } >
+                    <LogoutOutlinedIcon/>
+                </IconButton>
+
             </Box>
         </Box>
     )

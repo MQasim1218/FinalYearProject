@@ -110,7 +110,7 @@ const Sidebar = () => {
 
                     {/* Menu Items here */}
                     <Box paddingLeft={isCollapsed ? undefined : '10%'}>
-                        <Item title="Dashboard" to="/" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Dashboard" to="/admin" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Account Data</Typography>
                         <Item title="Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Donation Info" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
