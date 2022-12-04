@@ -12,7 +12,7 @@ let router = express.Router()
  * ! DONE: Campaign Managment Basic
  * ! DONE: User Authentication Basic
  * ! DONE: CRUD campaigns + Approve/Reject 
- * 
+ *  
  * TODO: Audit-Campaign
  * TODO: Analytics
  * TODO: Reports

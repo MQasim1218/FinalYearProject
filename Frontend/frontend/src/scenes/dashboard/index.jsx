@@ -40,17 +40,17 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
 
   // ANCHOR: ### Data feilds for the page ###
-  const [activeCampaigns, setActiveCamps] = useState(0)
+  const [activeCampaigns, setActiveCamps] = useState([])
   const [totDonations, setTotDon] = useState(0)
-  const [activeDonors, setActiveDonors] = useState(0)
-  const [activeBenifs, setActiveBenifs] = useState(0)
+  const [activeDonors, setActiveDonors] = useState([])
+  const [activeBenifs, setActiveBenifs] = useState([])
   const [Donations, setDonations] = useState([])
 
 
   /**
    * Lazy fetch all the dynamic data needed for the dashboard.
    */
-  useEffect(() => {
+  useEffect(async () => {
 
     // Get all the campaigns and count them
     // TODO: Cache these campaigns using context API
@@ -60,7 +60,8 @@ const Dashboard = () => {
         let res = await axios.get("http://localhost:5000/campaigns/")
         if (res.status < 300) {
           let data = res.data
-          // console.log(data)
+          console.log(data)
+          setActiveCamps(data)
           if (data !== null) return data
           else console.log("No data recieved!")
         }
@@ -76,6 +77,23 @@ const Dashboard = () => {
         if (res.status < 300) {
           let data = res.data
           console.log(data)
+          setActiveDonors(data)
+          if (data !== null) return data
+          else console.log("No data recieved!")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const getBenificiries = async () => {
+      // const res = await fetch('http://localhost:5000/admin')
+      try {
+        let res = await axios.get("http://localhost:5000/benificiary/")
+        if (res.status < 300) {
+          let data = res.data
+          console.log(data)
+          setActiveBenifs(data)
           if (data !== null) return data
           else console.log("No data recieved!")
         }
@@ -90,7 +108,7 @@ const Dashboard = () => {
         if (res.status < 300) {
           let data = res.data
           console.log(data)
-          if (data !== null) return data
+          if (data !== null) return setDonations(data)
           else console.log("No data recieved!")
           // new
         }
@@ -99,19 +117,15 @@ const Dashboard = () => {
       }
     }
 
-    let camps = getCampaigns()
-    let donors = getDonors()
-    let donations = getDonations()
-
-    console.log(donations)
-    setActiveCamps(camps.length)
-    setActiveDonors(donors.length)
-    setDonations(donations)
+    let donations = await getDonations()
+    let camps = await getCampaigns()
+    let dons = await getDonors()
+    let benifs = await getBenificiries()
 
 
+    
     return (() => console.log("No clean up"))
-  }
-    , [])
+  }, [])
 
 
 
@@ -167,7 +181,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={activeBenifs}
+            title={activeBenifs.length}
             subtitle="Active Beneficiaries"
             progress={false}
             increase="-21% This Month dyn"
@@ -186,7 +200,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={activeDonors}
+            title={activeDonors.length}
             subtitle="Active Donors"
             progress={false}
             increase="+15% This Month dyn"
@@ -205,7 +219,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={activeCampaigns}
+            title={activeCampaigns.length}
             subtitle="Active Campaigns"
             progress={false}
             increase="+43% This Month dyn"
@@ -286,7 +300,7 @@ const Dashboard = () => {
               borderBottom={`4px solid ${colors.primary[500]}`}
               p="15px"
             >
-              {console.log(transaction)}
+              {/* {console.log(transaction)} */}
               <Box>
                 <Typography
                   color={colors.greenAccent[500]}

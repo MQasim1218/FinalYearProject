@@ -16,8 +16,8 @@ var donationRouter = require('./routes/DonationRouter');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -30,7 +30,7 @@ mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("S
 
 app.use('/', indexRouter);
 app.use('/benificiary', beneficiaryRouter);
-app.use('/admin', adminRouter); 
+app.use('/admin', adminRouter);
 app.use('/donor', donorRouter);
 app.use('/donations', donationRouter);
 app.use('/campaigns', campaignsRouter);
