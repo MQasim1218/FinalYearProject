@@ -15,7 +15,7 @@ router.post('/signup', DonorController.DonorSignUp)
 router.get('/:id', DonorController.GetDonor)
 
 // Get all donors
-router.get('/', DonorController.AllDonors);
+router.get('/allDonors', DonorController.AllDonors);
 
 // Search Campaigns
 router.get('/available_campaigns', DonorController.SearchAvailableCampaigns)
@@ -41,5 +41,7 @@ router.delete('/:id', function (req, res, next) {
 router.post('/donate/:campaign_id', DonorController.Donate)
 
 router.get('/donations', DonorController.GetDonations)
+
+router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 
 module.exports = router

@@ -21,6 +21,7 @@ let router = express.Router()
  */
 
 router.post('/signup', AdminController.AddNewAdmin)
+// localhost:5000/admin/signup
 
 router.get(
     '/appealedCampaigns',

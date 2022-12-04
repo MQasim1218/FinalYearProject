@@ -30,7 +30,7 @@ mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("S
 
 app.use('/', indexRouter);
 app.use('/benificiary', beneficiaryRouter);
-app.use('/admin', adminRouter);
+app.use('/admin', adminRouter); 
 app.use('/donor', donorRouter);
 app.use('/donations', donationRouter);
 app.use('/campaigns', campaignsRouter);
