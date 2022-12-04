@@ -3,21 +3,22 @@ const AdminModel = require("../Models/AdminModel")
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
     try {
-
+        AdminModel.Admin.find({ _id: req.params.id })
+            .exec(function (error, data) {
+                if (error) {
+                    return next(error)
+                }
+                res.json(data)
+            })
     } catch (error) {
         console.log(error)
         next(error)
     }
-    AdminModel.Admin.find({ _id: req.params.id })
-        .exec(function (error, data) {
-            if (error) {
-                return next(error)
-            }
-            res.json(data)
-        })
+
 }
 
 const GetAllAdmins = async (req, res, next) => {
+    console.log(req.body)
     AdminModel.Admin.find({}).exec(function (error, data) {
         if (error) {
             return next(error);

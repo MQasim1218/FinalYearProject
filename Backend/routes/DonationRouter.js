@@ -13,6 +13,18 @@ router.get("/alldonations", async (req, res, next) => {
     }
 })
 
+router.get("/:id", async (req, res, next) => {
+    try {
+        let donation = await DonationModel
+            .find({ _id: req.params.id })
+            .exec()
+        res.json(donation)
+    } catch (error) {
+        console.log("NOt able to RetrIeve donations data")
+        res.send("cannot send data due to error: ", error)
+    }
+})
+
 router.post("/:id", async (req, res, next) => {
     try {
         let alldontions = await DonationModel.find({ _id: req.params.id }).exec()
@@ -26,6 +38,8 @@ router.post("/:id", async (req, res, next) => {
 router.patch("/:id", async (req, res, next) => {
 
 })
+
+module.exports = router
 
 
 

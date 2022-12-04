@@ -16,11 +16,70 @@ import GeographyMap from "../geographymap";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import axios from "axios";
+import { useState, useEffect } from "react";
 
+
+/**
+ * NOTE: Data to be fetched 
+ * ! Data we need on the dashboard
+ * ? Total number of active campaigns
+ * ? Total donations made
+ * ? Total number of Active donors (Donated in last 6 months)
+ * ? Total number of Benificiries (Have a campaign running)
+ * ? Total number of Active Campaigns (Completed::false, Approved::true)
+ * ? Recent donations made (fetch last 4-5)
+ * ? 
+ * 
+ * @returns Dynamic Dashboard Component
+ */
 
 const Dashboard = () => {
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // ANCHOR: ### Data feilds for the page ###
+  const [activeCampaigns, setActiveCamps] = useState(0)
+  const [totDonations, setTotDon] = useState(0)
+  const [activeDonors, setActiveDonors] = useState(0)
+  const [activeBenifs, setActiveBenifs] = useState(0)
+  const [recentDonations, setRecentDon] = useState([])
+
+
+  /**
+   * Lazy fetch all the dynamic data needed for the dashboard.
+   */
+  useEffect(() => {
+
+    // Get all the campaigns and count them
+    // TODO: Cache these campaigns using context API
+    const getCampaigns = async () => {
+      // const res = await fetch('http://localhost:5000/admin')
+      try {
+        let res = await axios.get("http://localhost:5000/campaigns/")
+        if (res.status < 300) {
+          let data = res.data
+          // console.log(data)
+          if (data !== null) {
+            console.log(data)
+            
+          }
+          else console.log("No data recieved!")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+
+
+    }
+
+    getCampaigns()
+    return (() => console.log("No clean up"))
+  }
+    , [])
+
+
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -54,10 +113,10 @@ const Dashboard = () => {
         justifyContent="center"
       >
         <StatBox
-          title="7,361"
+          title="7,361 dyn"
           subtitle="Donations Recieved"
-          progress="0.65"
-          increase="+14% This Month"
+          progress={false}
+          increase="+14% This Month dyn"
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -73,10 +132,10 @@ const Dashboard = () => {
         justifyContent="center"
       >
         <StatBox
-          title="1,256"
+          title="1,256 dyn"
           subtitle="Active Beneficiaries"
-          progress="0.50"
-          increase="-21% This Month"
+          progress={false}
+          increase="-21% This Month dyn"
           icon={
             <AssistWalkerOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -92,10 +151,10 @@ const Dashboard = () => {
         justifyContent="center"
       >
         <StatBox
-          title="3,441"
+          title="3,441 dyn"
           subtitle="Active Donors"
-          progress="0.80"
-          increase="+15% This Month"
+          progress={false}
+          increase="+15% This Month dyn"
           icon={
             <PersonAddIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -111,10 +170,10 @@ const Dashboard = () => {
         justifyContent="center"
       >
         <StatBox
-          title="14"
+          title="14 dyn"
           subtitle="Active Campaigns"
-          progress="0.85"
-          increase="+43% This Month"
+          progress={false}
+          increase="+43% This Month dyn"
           icon={
             <CampaignOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -149,7 +208,7 @@ const Dashboard = () => {
               fontWeight="bold"
               color={colors.greenAccent[500]}
             >
-              $59,342.32
+              $59,342.32 dyn
             </Typography>
           </Box>
           <Box>
@@ -179,7 +238,7 @@ const Dashboard = () => {
           p="15px"
         >
           <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-            Recent Transactions
+            Recent Donations::dyn
           </Typography>
         </Box>
         {mockTransactions.map((transaction, i) => (
@@ -238,7 +297,7 @@ const Dashboard = () => {
             color={colors.greenAccent[500]}
             sx={{ mt: "15px" }}
           >
-            $28,352 revenue generated for campaigns
+            $28,352 revenue generated for campaigns dyn
           </Typography>
           <Typography>Includes extra misc expenditures and costs</Typography>
         </Box>
@@ -277,7 +336,7 @@ const Dashboard = () => {
         </Box>
       </Box>
     </Box>
-  </Box>)
+  </Box >)
 }
 
 export default Dashboard;

@@ -3,8 +3,10 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import axois from "axios"
 
 import { useEffect } from "react";
+import axios from "axios";
 // import axios from "axios"
 
 //initializing all inputs with their keys
@@ -29,29 +31,7 @@ const userSchema = yup.object().shape({
 
 
 const CreateCampaign = () => {
-
-  useEffect(() => {
-
-    const getData = async () => {
-      const res = await fetch('http://localhost:5000/admin')
-      console.log("Got some data!")
-
-      if (res.ok) {
-        let data = await res.json()
-        console.log(data)
-        if (data !== null) console.log(data)
-        else console.log("No data recieved!")
-      }
-    }
-
-    getData()
-    return (() => console.log("No clean up"))
-
-  }
-    , [])
-
-
-//force width to not go below 600px
+  //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
 
