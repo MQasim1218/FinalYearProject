@@ -52,10 +52,10 @@ const benificairySchema = mongoose.Schema({
         ref: 'loan'
     }],
 
-    audit_reports: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'audit'
-    }],
+    // audit_reports: [{
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'audit'
+    // }],
 
 
     // Need to see what happens with these things!!
