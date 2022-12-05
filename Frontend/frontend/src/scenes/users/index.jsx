@@ -6,7 +6,7 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Users = () => {
   const theme = useTheme();
@@ -74,40 +74,30 @@ const Users = () => {
 
   // ! Data
   let [users, setUsers] = useState([])
+  let allUsr = []
 
-  useEffect(async () => {
-    let users = []
-    // Get all the campaigns and count them
-    // TODO: Cache these campaigns using context API
+  useEffect(() => {
+
     const getUsers = async () => {
-      // const res = await fetch('http://localhost:5000/admin')
-      try {
-        let donors = await axios.get("http://localhost:5000/donor/allDonors")
-        if (donors.status < 300) {
-          let data = res.data
-          console.log(data)
-          setUsers(...users, ...data)
-          // users.push(...data)
-          if (data !== null) return data
-          else console.log("No data recieved!")
-        }
-
-        let benifs = await axios.get("http://localhost:5000/benificiary/")
-        if (benifs.status < 300) {
-          let data = res.data
-          console.log(data)
-          setUser(...users, ...data)
-          if (data !== null) return data
-          else console.log("No data recieved!")
-        }
-      } catch (error) {
-        console.log(error)
+      let dons = await axios.get("http://localhost:5000/donor/allDonors")
+      if (dons.status < 400) {
+        console.log(dons.data)
+        allUsr = allUsr.concat(dons.data)
+      }
+      let benif = await axios.get('http://localhost:5000/benificiary/')
+      if (benif.status < 400) {
+        console.log(benif.data)
+        allUsr = allUsr.concat(benif.data)
       }
 
-      getUsers()
-      getBenificiries()
-      return (() => console.log("No clean up"))
+      setUsers(allUsr)
+
+      console.log("users: ", users)
     }
+
+    getUsers()
+
+    return (() => console.log("Nothing for clean up"))
   }, [])
 
   return (

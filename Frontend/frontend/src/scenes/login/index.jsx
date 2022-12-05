@@ -7,34 +7,37 @@ import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Register from "../signup";
+import axios from "axios";
 
 const initialValues = {
-    Username: "",
-    Email: "",
-    Password: "",
-    AccountType: "",
-  };
+  Username: "",
+  Email: "",
+  Password: "",
+  AccountType: "",
+};
 
 const userSchema = yup.object().shape({
-    Username: yup.string().required("Required"),
-    Email: yup.string().required("Required"),
-    Password: yup.string().required("Required"),
-    AccountType: yup.string().required("Required"),
+  Username: yup.string().required("Required"),
+  Email: yup.string().required("Required"),
+  Password: yup.string().required("Required"),
+  AccountType: yup.string().required("Required"),
 });
 
 const handleFormSubmit = async (values) => {
-    console.log(values);
+  console.log(values);
 
-  };
+  // let isCorrect = await axios.post('http://localhost:5000/admin/', values)
+  // alert(isCorrect)
+};
 
 const Login = () => {
-    const theme = useTheme()
-    const colors = tokens(theme.palette.mode)
-    const navigate = useNavigate();
-    return (
-        <Box padding="20px" height="auto" width="50vh" m="10% 0 0 38%"  border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]} >
-            <Header title="LOGIN" subtitle="Enter your Login details"/>
-            <Formik
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
+  const navigate = useNavigate();
+  return (
+    <Box padding="20px" height="auto" width="50vh" m="10% 0 0 38%" border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]} >
+      <Header title="LOGIN" subtitle="Enter your Login details" />
+      <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={userSchema}
@@ -64,9 +67,9 @@ const Login = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Email}
-                name="Email"
+                name="email"
                 error={!!touched.Email && !!errors.Email}
-                helperText={touched.Email && errors.Email}
+                // helperText={touched.Email && errors.Email}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -77,28 +80,28 @@ const Login = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Password}
-                name="Password"
+                name="password"
                 error={!!touched.Password && !!errors.Password}
-                helperText={touched.Password && errors.Password}
+                // helperText={touched.Password && errors.Password}
                 sx={{ gridColumn: "span 2" }}
               />
             </Box>
 
             <Box display="grid" justifyContent="center" mt="20px">
-              <Button onClick={()=>navigate('/admin')} type="submit" color="secondary" variant="contained">
+              <Button onClick={() => navigate('/admin')} type="submit" color="secondary" variant="contained">
                 Login
               </Button>
-              <Typography variant="h6" color={colors.blueAccent[300]} sx={{m: "20px 0 5px 0"}}>Dont have an account?</Typography>
-              <Button onClick={()=>navigate('/register')} type="submit" color="primary" variant="contained">
+              <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Dont have an account?</Typography>
+              <Button onClick={() => navigate('/register')} type="submit" color="primary" variant="contained">
                 Register
               </Button>
             </Box>
           </form>
         )}
       </Formik>
-        </Box>
-        
-    )
+    </Box>
+
+  )
 }
 
 export default Login

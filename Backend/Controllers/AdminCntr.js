@@ -37,7 +37,6 @@ const AddNewAdmin = async (req, res, next) => {
         if (admin) {
             res.send("Admin Already Exists")
         } else {
-
             console.log("Admin for given credentials deos not exist! Creating Admin Now!!")
             AdminModel.Admin.create(req.body)
                 .then(function (data) {
@@ -54,7 +53,29 @@ const AddNewAdmin = async (req, res, next) => {
         console.log("Error encountered: ", error.message)
         next(error)
     }
+}
 
+
+const SignInAdmin = async (req, res, next) => {
+    try {
+        console.log("Got a request for SignIn")
+        console.log(req.body)
+        let admin = await AdminModel.Admin.findOne({ email: req.body.email }).exec()
+        console.log(admin)
+        if (admin) {
+            console.log("Admin with the given Email Exists")
+            if (admin.password === req.body.password) {
+                res.send(true)
+            } else {
+                res.send(false)
+            }
+        } else {
+            res.send(false)
+        }
+    } catch (error) {
+        console.log("Error encountered: ", error.message)
+        next(error)
+    }
 }
 
 const UpdateAdmin = async (req, res, next) => {
@@ -205,17 +226,18 @@ const RejectCampiagnRequest = async (req, res, next) => {
 
 
 module.exports = {
+    GetAdmin,
     AddNewAdmin,
     UpdateAdmin,
-    GetAdmin,
+    DeleteAdmin,
+    SignInAdmin,
     GetAllAdmins,
-    ChangeAuthDetails,
     ChangeDetails,
     ApproveCampaign,
+    ChangeAuthDetails,
     AddGeneralCampaign,
-    DeleteAdmin,
     ViewGeneralCampaigns,
+    RejectCampiagnRequest,
     ViewSpecificCampaigns,
-    ViewAppealedCampaigns,
-    RejectCampiagnRequest
+    ViewAppealedCampaigns
 }
