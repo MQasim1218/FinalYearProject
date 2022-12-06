@@ -1,10 +1,12 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
 const { default: mongoose } = require('mongoose');
+require('dotenv').config()
+
 
 var indexRouter = require('./routes/index');
 var beneficiaryRouter = require('./routes/BenificiaryRouter');
@@ -26,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
-mongoose.connect("mongodb://localhost:27017/FYP_DB").then(() => { console.log("Successfully Connected to DB") })
+mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfully Connected to DB") })
 
 app.use('/', indexRouter);
 app.use('/benificiary', beneficiaryRouter);

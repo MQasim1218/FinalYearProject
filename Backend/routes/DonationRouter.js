@@ -25,22 +25,80 @@ router.get("/all/total", async (req, res, next) => {
         let alldontionsAmount = await DonationModel
             .aggregate([{
                 $group:
-                    { totalAmount: { $sum: "amount" } },
-                count: { $sum: 1 }
+                {
+                    totalAmount: { $sum: "amount" },
+                    count: { $sum: 1 }
+                },
+
             }])
             .exec()
-        console.log("Total donated amount is")
-        res.json(alldontionsAmount)
+
+        console.log("Total donated amount is: ", alldontionsAmount)
+        res.json({ total: alldontionsAmount })
+
     } catch (error) {
         console.log("NOt able to RetrIeve donations data")
         res.send("cannot send data due to error: ", error)
     }
 })
 
+
+
 // Get the total amount of donation amount made in a month.
-router.get("/:month/total",)
+router.get("/:month/total", (req, res, next) => {
+    try {
+        let year = today.getFullYear()
+        let sm = new Date(year, req.params.month, 0)
+        sm = new Date(sm.setDate(sm.getDate() + 1)).toISOString()
+        let em = new Date(year, mon, 31).toISOString()
+
+        let donationTotal = DonationModel.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $lte: em, // Less than end date
+                        $gte: sm // Less than start date
+                    }
+                },
+                $group: {
+                    totalAmount: { $sum: "amount" },
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        res.json({ monthTotal: donationTotal })
+    } catch (error) {
+        console.log(error.message)
+        res.send(error.message)
+    }
+})
+
 // Get all donations for a month
-router.get("/:month/",)
+router.get("/:month/", async (req, res, next) => {
+
+    try {
+        // let mon = today.getMonth() :: No need as we are getting this from the front end.
+        let year = today.getFullYear()
+        let sm = new Date(year, req.params.month, 0)
+        sm = new Date(sm.setDate(sm.getDate() + 1)).toISOString()
+        let em = new Date(year, mon, 31).toISOString()
+
+        let dons = DonationModel.find({
+            createdAt: {
+                $lte: em,
+                $gte: sm
+            }
+        })
+
+        res.json(dons)
+    } catch (error) {
+        console.log(error.message)
+        res.send(error.message)
+    }
+
+
+})
 
 
 // router.get("/recent", ...)
