@@ -79,9 +79,8 @@ router.get("/:month/", async (req, res, next) => {
 
     try {
         // let mon = today.getMonth() :: No need as we are getting this from the front end.
-        let year = today.getFullYear()
-        let sm = new Date(year, req.params.month, 0)
-        sm = new Date(sm.setDate(sm.getDate() + 1)).toISOString()
+        let year = (new Date()).getFullYear()
+        let sm = new Date(year, req.params.month, 1)
         let em = new Date(year, mon, 31).toISOString()
 
         let dons = DonationModel.find({
@@ -101,9 +100,30 @@ router.get("/:month/", async (req, res, next) => {
 })
 
 
-// router.get("/recent", ...)
+router.get("/recent", async (req, res, next) => {
+    try {
+        let dons = DonationModel.aggregate({
+            $sort: { createdAt: -1 },
+        }).limit(10)
+
+        res.json(dons)
+    } catch (error) {
+        console.log("Error occured while fetching recent donations!! Err: ", error.message)
+        res.send(error.message)
+    }
+})
 // router.get("/donations/month", ...)
 // router.get("/donations/month", ...)
+
+router.get("/all", async (req, res, next) => {
+    try {
+        let donation = await DonationModel.find({}).exec()
+        res.json(donation)
+    } catch (error) {
+        console.log("NOt able to RetrIeve donations data")
+        res.send("cannot send data due to error: ", error)
+    }
+})
 
 router.get("/:id", async (req, res, next) => {
     try {
@@ -119,16 +139,25 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/:id", async (req, res, next) => {
     try {
-        let alldontions = await DonationModel.find({ _id: req.params.id }).exec()
-        res.json(alldontions)
+        let donated = await DonationModel.create(req.body).exec()
+        res.json(donated)
     } catch (error) {
-        console.log("NOt able to RetrIeve donations data")
-        res.send("cannot send data due to error: ", error)
+        console.log("Not able to create Donation")
+        res.send("cannot create donation due to error: ", error.message)
     }
 })
 
 router.patch("/:id", async (req, res, next) => {
-
+    try {
+        let affirm = await DonationModel.findOneAndUpdate(
+            { _id: req.params.id },
+            req.body
+        ).exec()
+        res.json(affirm)
+    } catch (error) {
+        console.log("Not able to update donation data!! Err: ", error.message)
+        res.send("cannot update data due to error: ", error.message)
+    }
 })
 
 module.exports = router
