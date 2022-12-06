@@ -37,32 +37,33 @@ const Users = () => {
       headerName: "Email",
       flex: 1,
     },
+    // {
+    //   field: "accounttype",
+    //   headerName: "Account Type",
+    //   flex: 1,
+    //   renderCell: ({ row: { accounttype } }) => {
+    //     return (
+    //       <Box
+    //         width="60%"
+    //         m="0 auto"
+    //         p="5px"
+    //         display="flex"
+    //         justifyContent="center"
+    //         backgroundColor={
+    //           colors.greenAccent[400]
+    //         }
+    //         borderRadius="4px"
+    //       >
+    //         {accounttype === "admin" && <AdminPanelSettingsOutlinedIcon />}
+    //         <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+    //           {accounttype}
+    //         </Typography>
+    //       </Box>
+    //     );
+    //   },
+    // },
     {
-      field: "accounttype",
-      headerName: "Account Type",
-      flex: 1,
-      renderCell: ({ row: { accounttype } }) => {
-        return (
-          <Box
-            width="60%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor={
-              colors.greenAccent[400]
-            }
-            borderRadius="4px"
-          >
-            {accounttype === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {accounttype}
-            </Typography>
-          </Box>
-        );
-      },
-    },
-    {
+      // Okay
       field: 'actions',
       type: 'actions',
       width: 100,
@@ -74,12 +75,14 @@ const Users = () => {
 
   // ! Data
   let [users, setUsers] = useState([])
+  let [usrType, setUsrType] = useState(true) // True for Donor
 
   useEffect(() => {
 
     const getUsers = async () => {
       let dons = await axios.get("http://localhost:5000/donor/allDonors")
-      setUsers(dons.data)
+      let benifs = await axios.get("http://localhost:5000/benificiary")
+      setUsers(usrType ? dons.data : benifs.data)
       console.log("users: ", users)
     }
 
@@ -123,7 +126,7 @@ const Users = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataUsers} columns={columns} components={{ Toolbar: GridToolbar }} />
+        <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
       </Box>
     </Box>
   );
