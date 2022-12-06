@@ -28,7 +28,7 @@ const Users = () => {
       align: "left",
     },
     {
-      field: "phone",
+      field: "contact",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -50,7 +50,7 @@ const Users = () => {
             display="flex"
             justifyContent="center"
             backgroundColor={
-              colors.greenAccent[600]
+              colors.greenAccent[400]
             }
             borderRadius="4px"
           >
@@ -74,24 +74,12 @@ const Users = () => {
 
   // ! Data
   let [users, setUsers] = useState([])
-  let allUsr = []
 
   useEffect(() => {
 
     const getUsers = async () => {
       let dons = await axios.get("http://localhost:5000/donor/allDonors")
-      if (dons.status < 400) {
-        console.log(dons.data)
-        allUsr = allUsr.concat(dons.data)
-      }
-      let benif = await axios.get('http://localhost:5000/benificiary/')
-      if (benif.status < 400) {
-        console.log(benif.data)
-        allUsr = allUsr.concat(benif.data)
-      }
-
-      setUsers(allUsr)
-
+      setUsers(dons.data)
       console.log("users: ", users)
     }
 
@@ -102,7 +90,7 @@ const Users = () => {
 
   return (
     <Box m="20px">
-      <Header title="USERS" subtitle="Manage All The Users" />
+      <Header title="DONORS" subtitle="Manage All The Donors" />
       <Box
         m="40px 0 0 0"
         height="75vh"

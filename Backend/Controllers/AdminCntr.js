@@ -1,4 +1,6 @@
 const AdminModel = require("../Models/AdminModel")
+const GeneralCampaignModel = require("../Models/GeneralCampaigns")
+const SpecificCampaignModel = require("../Models/SpecificCampaign")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
@@ -136,8 +138,8 @@ const ChangeDetails = async (req, res, next) => {
 
 // Manipulate Campaigns
 const AddGeneralCampaign = async (req, res, next) => {
+
     try {
-        console.log("here in this place")
         let newCampaign = await GeneralCampaignModel.create(req.body)
         console.log("New campaign created")
 
@@ -150,7 +152,7 @@ const AddGeneralCampaign = async (req, res, next) => {
         res.json(admin)
 
     } catch (err) {
-        console.log("err")
+        console.log("err: ", err.message)
         res.send(err)
     }
     console.log("Adding Campaign for the Admin: ", req.params.id)

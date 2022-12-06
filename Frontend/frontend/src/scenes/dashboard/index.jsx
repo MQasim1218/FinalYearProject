@@ -124,7 +124,7 @@ const Dashboard = () => {
     getBenificiries()
 
     return (() => console.log("No clean up"))
-  }, [])
+  })
 
 
 
