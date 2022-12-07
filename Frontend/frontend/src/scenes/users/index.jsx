@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const Users = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    
     // The columns gets all the data we specify below from the mockdata file and store it
     const columns = [
       { field: "id", headerName: "ID" },

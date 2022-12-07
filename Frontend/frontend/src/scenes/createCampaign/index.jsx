@@ -13,7 +13,6 @@ import { useEffect } from "react";
 const initialValues = {
   campaign_title: "",
   required_amount: "",
-  donated_amount: "",
   description: "",
   location: "Islamabad",
   archived: "",
@@ -36,6 +35,7 @@ const userSchema = yup.object().shape({
 
 const CreateCampaign = () => {
 
+  //Options for location entry
   const locations = [
     {
       value: 'Islamabad',
@@ -55,6 +55,7 @@ const CreateCampaign = () => {
     },
   ];
 
+  //Options for category entry
   const catagorys = [
     {
       value: 'Education',
@@ -171,17 +172,6 @@ const CreateCampaign = () => {
               />
               <TextField
                 fullWidth
-                variant="filled"
-                type="number"
-                label="Donated Amount"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.donated_amount}
-                name="donated_amount"
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
                 select
                 variant="filled"
                 type="text"
@@ -199,21 +189,6 @@ const CreateCampaign = () => {
                 </MenuItem>
               ))}
               </TextField>
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Campaign Description *"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.description}
-                name="description"
-                error={!!touched.description && !!errors.description}
-                helperText={touched.description && errors.description}
-                sx={{ gridColumn: "span 4" }}
-                multiline
-                rows={4}
-              />
               <TextField
                 fullWidth
                 select
@@ -236,14 +211,19 @@ const CreateCampaign = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Donations Recieved"
+                type="text"
+                label="Campaign Description *"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.donations}
-                name="donations"
-                sx={{ gridColumn: "span 2", color: "white" }}
+                value={values.description}
+                name="description"
+                error={!!touched.description && !!errors.description}
+                helperText={touched.description && errors.description}
+                sx={{ gridColumn: "span 4" }}
+                multiline
+                rows={4}
               />
+              
               <FormControlLabel control={<Checkbox value={values.archived} sx={{color: "white",'&.Mui-checked': {color: "white",},}} />} label="Archived" />
               <FormControlLabel control={<Checkbox value={values.completed} sx={{color: "white",'&.Mui-checked': {color: "white",},}}/>} label="Completed" />
               
