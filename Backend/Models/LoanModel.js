@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 
 let loanSchema = mongoose.Schema({
-    loan_type: { type: String, required: true },
+    loan_title: { type: String, required: true },
+    loan_catagory: { type: String, required: true },
     loan_amount: { type: Number, required: true },
     donated_amount: { type: Number, default: 0 },
     returned_amount: { type: Number, default: 0 },
