@@ -78,23 +78,34 @@ export const mockDataUsers = [
 ];
 
 export const mockDataDonations = [
+  // {
+  //   // This is probably the format of documents that we shall recieve from the backend.
+  //   id: 1,
+  //   donor: {
+  //     name: "Jon Snow",
+  //     email: "jonsnow@gmail.com",
+  //     age: 35,
+  //     phone: "(665)121-5454",
+  //     address: "0912 Won Street, Alabama, SY 10001",
+  //   },
+  //   benificiary: {
+  //     name: "Jon Doe",
+  //     email: "johnDoe@gmail.com",
+  //     age: 28,
+  //     phone: "(665)191-3554",
+  //     address: "0912 Won Street, Alabama, SY 10001",
+  //   },
+  //   city: "New York",
+  //   date: "22/5/2022",
+  //   donationamount: "$123512",
+  // },
   {
-    // This is probably the format of documents that we shall recieve from the backend.
     id: 1,
-    donor: {
-      name: "Jon Snow",
-      email: "jonsnow@gmail.com",
-      age: 35,
-      phone: "(665)121-5454",
-      address: "0912 Won Street, Alabama, SY 10001",
-    },
-    benificiary: {
-      name: "Jon Doe",
-      email: "johnDoe@gmail.com",
-      age: 28,
-      phone: "(665)191-3554",
-      address: "0912 Won Street, Alabama, SY 10001",
-    },
+    name: "Aown Raza",
+    email: "AownRaza@gmail.com",
+    age: 21,
+    phone: "(+92)333-333333",
+    address: "1234 Main Street, New York, NY 10001",
     city: "New York",
     date: "22/5/2022",
     donationamount: "$123512",
