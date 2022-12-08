@@ -13,6 +13,7 @@ import GeographyMap from "./scenes/geographymap"
 import DonorDashboard from './scenes/donorDashboard';
 import Login from './scenes/login';
 import Register from './scenes/signup';
+import AllCampaigns from './scenes/allCampaigns';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -48,6 +49,7 @@ function App() {
             <Route path="/createCampaign" element = { <CreateCampaign/>}/>
             <Route path="/graphs" element = { <Graphs/>}/>
             <Route path="/geography" element = { <GeographyMap/>}/>
+            <Route path="/viewcampaign" element = { <AllCampaigns/>}/>
           </Routes>
         </main>
       </div>

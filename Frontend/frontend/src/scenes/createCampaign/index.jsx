@@ -15,10 +15,9 @@ const initialValues = {
   required_amount: "",
   description: "",
   location: "Islamabad",
-  archived: "",
+  archived: false,
   catagory: "Education",
-  donations: "",
-  completed: "",
+  completed: false,
 };
 
 //schema for validation
@@ -28,8 +27,6 @@ const userSchema = yup.object().shape({
   catagory: yup.string().required("Required"),
   description: yup.string().required("Required"),
   location: yup.string().required("Required"),
-  archived: yup.string().required("Required"),
-  completed: yup.string().required("Required"),
 });
 
 
@@ -107,6 +104,7 @@ const CreateCampaign = () => {
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
   };
+
 
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
@@ -224,13 +222,13 @@ const CreateCampaign = () => {
                 rows={4}
               />
               
-              <FormControlLabel control={<Checkbox value={values.archived} sx={{color: "white",'&.Mui-checked': {color: "white",},}} />} label="Archived" />
-              <FormControlLabel control={<Checkbox value={values.completed} sx={{color: "white",'&.Mui-checked': {color: "white",},}}/>} label="Completed" />
-              
+              <FormControlLabel control={<Checkbox name="archived" onBlur={handleBlur} onChange={handleChange} value={values.archived} sx={{color: "white",'&.Mui-checked': {color: "white",},}} />} label="Archived" />
+              <FormControlLabel control={<Checkbox name="completed" onBlur={handleBlur} onChange={handleChange} value={values.completed} sx={{color: "white",'&.Mui-checked': {color: "white",},}}/>} label="Completed" />
+
             </Box>
 
             <Box display="flex" justifyContent="center" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
+              <Button onClick={handleFormSubmit} type="submit" color="secondary" variant="contained">
                 Create New Campaign
               </Button>
             </Box>
