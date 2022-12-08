@@ -85,7 +85,7 @@ function LinearProgressWithLabel(props) {
 const AllCampaigns = () => {
 
     //dummy data
-    const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }]
+    const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
     //restrict for smaller screens
     const isNonMobile = useMediaQuery("(min-width: 1000px)")
     return (
