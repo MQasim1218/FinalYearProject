@@ -13,7 +13,7 @@ const Users = () => {
   const colors = tokens(theme.palette.mode);
   // The columns gets all the data we specify below from the mockdata file and store it
   const columns = [
-    { field: "id", headerName: "ID" },
+    { field: "_id", headerName: "ID" },
     {
       field: "name",
       headerName: "Name",
