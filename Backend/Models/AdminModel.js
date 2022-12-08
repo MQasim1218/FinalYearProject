@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
 
 
 const adminSchema = mongoose.Schema({
@@ -54,30 +55,29 @@ const adminSchema = mongoose.Schema({
         }
 
     },
-
-    // Reference To the specific Campaigns Created by the Particular Admin
     specific_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
-    }],
-
+    }], // Reference To the specific Campaigns Created by the Particular Admin
     general_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'general_campaign'
-    }],
-
+    }], // Reference To the general Campaigns Created by the Particular Admin
     // Audit Reports Done by the Particular Admin
     // audit_reports: [{
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'audit'
     // }],
-
 },
     {
         timestamps: true,
     }
 )
 
+const createJWT = async (_id) => {
+    let secret = process.env.JWT_SECRET
+    return jwt.sign({ id: _id }, secret, { expiresIn: '1h' })
+}
 
 adminSchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
@@ -87,7 +87,7 @@ adminSchema.statics.login = async function (email, password) {
         return null
     }
 
-    if (bcrypt.compareSync(password, user.password)) return user
+    if (bcrypt.compareSync(password, user.password)) return { admin: user, token: await createJWT(user._id) }
     console.log("The password provided is incorrect!")
     return null
 
@@ -122,4 +122,4 @@ adminSchema.statics.signup = async function (admin) {
 
 const Admin = mongoose.model('admin', adminSchema)
 
-module.exports = { Admin: Admin, adminSchema }
+module.exports = Admin

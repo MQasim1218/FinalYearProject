@@ -134,7 +134,7 @@ const SearchCampaignByFilter = async (req, res, next) => {
                 $or: [
                     {
                         campaign_title: {
-                            $regex: /[${req.body.title}]/igm
+                            $regex: /[${req.params.title}]/igm
                         }
                     },
                     // Have to implement search based on Location.
@@ -205,7 +205,14 @@ const SearchCampaignByTitle = async (req, res, next) => {
     }
 }
 
-const GetDonatedCapmaigns = async (req, res, next) => { }
+const GetDonatedCapmaigns = async (req, res, next) => {
+    try {
+        let donor = await DonorModel.findOne({ _id: req.params.id }).populate(['donated_campaigns_specific', 'donated_campaigns_general']).exec()
+        res.json([...donor.donated_campaigns_specific, ...donated_campaigns_general])
+    } catch (error) {
+        res.send(error.message)
+    }
+}
 
 const GetDonations = async (req, res, next) => {
     try {
@@ -236,14 +243,25 @@ const SearchAvailableCampaigns = async (req, res, next) => {
     }
 }
 
+const DeleteDonor = function (req, res, next) {
+    DonorModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+        if (error) {
+            next(error)
+        }
+        res.json(data)
+    })
+}
+
 module.exports = {
-    SearchCampaignByTitle,
     SearchAvailableCampaigns,
     SearchCampaignByFilter,
+    SearchCampaignByTitle,
+    GetDonatedCapmaigns,
     GetDonations,
     DonorSignIn,
     DonorSignUp,
     UpdateDonor,
+    DeleteDonor,
     AllDonors,
     GetDonor,
     Donate

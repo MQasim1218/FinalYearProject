@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const validator = require("validator");
-
+const jwt = require('jsonwebtoken')
 
 const benificairySchema = mongoose.Schema({
 
@@ -79,6 +79,12 @@ const benificairySchema = mongoose.Schema({
     { timestamps: true }
 )
 
+const createJWT = async (_id) => {
+    let secret = process.env.JWT_SECRET
+    return jwt.sign({ id: _id }, secret, { expiresIn: '1h' })
+}
+
+
 benificairySchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
     let user = await this.findOne({ email: email }).exec()
@@ -87,10 +93,9 @@ benificairySchema.statics.login = async function (email, password) {
         return null
     }
 
-    if (bcrypt.compareSync(password, user.password)) return user
-    console.log("The password provided is incorrect!")
+    if (bcrypt.compareSync(password, user.password)) return { benificiary: user, token: await createJWT(user._id) }
+    else console.log("The password provided is incorrect!")
     return null
-
 }
 
 benificairySchema.statics.signup = async function (benificiary) {

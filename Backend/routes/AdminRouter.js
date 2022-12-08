@@ -3,6 +3,7 @@ const AdminModel = require('../Models/AdminModel')
 const AdminController = require('../Controllers/AdminCntr')
 const GeneralCampaignModel = require("../Models/GeneralCampaigns")
 const SpecificCampaignModel = require("../Models/SpecificCampaign")
+const authorize = require('../middleware/authorization')
 
 
 let router = express.Router()
@@ -22,6 +23,9 @@ let router = express.Router()
 
 router.post('/signup', AdminController.AddNewAdmin)
 router.post('/signin', AdminController.SignInAdmin)
+
+router.use(authorize)
+
 // localhost:5000/admin/signup
 
 router.get(
@@ -90,13 +94,10 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 
 // Empty routes.. Will do these in a little while
 // router.get('/reports')
-
-
 // router.get('/reports/monthly_donation/:month')
 // router.get('/reports/yearly_donation/:year')
 // router.post('/reports/credit_report/:month')
 // router.post('/reports/balance_sheet/:month')
-
 // router.get('/analytics/top_donors')
 // router.get('/analytics/interactive_map')
 // router.get('/analytics/interactive_map/city')

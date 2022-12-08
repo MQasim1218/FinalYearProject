@@ -5,7 +5,7 @@ const SpecificCampaignModel = require("../Models/SpecificCampaign")
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
     try {
-        AdminModel.Admin.find({ _id: req.params.id })
+        AdminModel.find({ _id: req.params.id })
             .exec(function (error, data) {
                 if (error) {
                     return next(error)
@@ -21,7 +21,7 @@ const GetAdmin = async (req, res, next) => {
 
 const GetAllAdmins = async (req, res, next) => {
     console.log(req.body)
-    AdminModel.Admin.find({}).exec(function (error, data) {
+    AdminModel.find({}).exec(function (error, data) {
         if (error) {
             return next(error);
         }
@@ -34,13 +34,13 @@ const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
         console.log(req.body)
-        let admin = await AdminModel.Admin.findOne({ email: req.body.email }).exec()
+        let admin = await AdminModel.findOne({ email: req.body.email }).exec()
         console.log(admin)
         if (admin) {
             res.send("Admin Already Exists")
         } else {
             console.log("Admin for given credentials deos not exist! Creating Admin Now!!")
-            AdminModel.Admin.create(req.body)
+            AdminModel.create(req.body)
                 .then(function (data) {
                     console.log(data)
                     res.status(200)
@@ -62,7 +62,7 @@ const SignInAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for SignIn")
         console.log(req.body)
-        let admin = await AdminModel.Admin.findOne({ email: req.body.email }).exec()
+        let admin = await AdminModel.findOne({ email: req.body.email }).exec()
         console.log(admin)
         if (admin) {
             console.log("Admin with the given Email Exists")
@@ -81,7 +81,7 @@ const SignInAdmin = async (req, res, next) => {
 }
 
 const UpdateAdmin = async (req, res, next) => {
-    await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+    await AdminModel.findByIdAndUpdate(req.params.id,
         {
             name: req.body.name,
             email: req.body.email,
@@ -90,12 +90,12 @@ const UpdateAdmin = async (req, res, next) => {
             contact: req.body.contact
         }
     )
-    let newAdmin = await AdminModel.Admin.findById(req.params.id)
+    let newAdmin = await AdminModel.findById(req.params.id)
     res.json(newAdmin)
 }
 
 const DeleteAdmin = async (req, res, next) => {
-    AdminModel.Admin.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+    AdminModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
         if (error) {
             next(error)
         }
@@ -106,13 +106,13 @@ const DeleteAdmin = async (req, res, next) => {
 // Authentication Operations
 const ChangeAuthDetails = async (req, res, next) => {
     try {
-        let admin = await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+        let admin = await AdminModel.findByIdAndUpdate(req.params.id,
             {
                 email: req.body.email,
                 password: req.body.password,
             }
         )
-        let newAdmin = await AdminModel.Admin.findById(req.params.id)
+        let newAdmin = await AdminModel.findById(req.params.id)
         res.json(newAdmin)
 
     } catch (error) {
@@ -122,7 +122,7 @@ const ChangeAuthDetails = async (req, res, next) => {
 }
 
 const ChangeDetails = async (req, res, next) => {
-    await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+    await AdminModel.findByIdAndUpdate(req.params.id,
         {
             name: req.body.name,
             email: req.body.email,
@@ -131,7 +131,7 @@ const ChangeDetails = async (req, res, next) => {
             contact: req.body.contact
         }
     )
-    let newAdmin = await AdminModel.Admin.findById(req.params.id)
+    let newAdmin = await AdminModel.findById(req.params.id)
     res.json(newAdmin)
 }
 
@@ -144,11 +144,11 @@ const AddGeneralCampaign = async (req, res, next) => {
         console.log("New campaign created")
 
 
-        await AdminModel.Admin.updateOne(
+        await AdminModel.updateOne(
             { _id: req.params.id },
             { $push: { general_campaigns: newCampaign._id } }
         ).exec()
-        let admin = await Admin.findById(req.params.id).exec()
+        let admin = await AdminModel.findById(req.params.id).exec()
         res.json(admin)
 
     } catch (err) {
@@ -162,7 +162,7 @@ const AddGeneralCampaign = async (req, res, next) => {
 
 const ViewGeneralCampaigns = async (req, res, next) => {
     try {
-        let admin = await AdminModel.Admin.findById(req.params.id).populate('general_campaigns').exec()
+        let admin = await AdminModel.findById(req.params.id).populate('general_campaigns').exec()
         let genr_ids = admin.general_campaigns
         let genr_campaigns = await GeneralCampaignModel.find({ id: { $in: genr_ids } }).exec()
         res.json(genr_campaigns)
@@ -173,7 +173,7 @@ const ViewGeneralCampaigns = async (req, res, next) => {
 
 const ViewSpecificCampaigns = async (req, res, next) => {
     try {
-        let admin = await AdminModel.Admin.findById(req.params.id).populate('specific_campaigns').exec()
+        let admin = await AdminModel.findById(req.params.id).populate('specific_campaigns').exec()
         let spec_ids = admin.specific_campaigns
         let spec_campaigns = await SpecificCampaignModel.find({ id: { $in: spec_ids } }).exec()
         res.json(spec_campaigns)

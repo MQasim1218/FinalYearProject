@@ -4,6 +4,7 @@ const { beneficiaryModel } = require('../Models/BenificiaryModel')
 const SpecCapmaignModel = require('../Models/SpecificCampaign')
 const LoanModel = require('../Models/LoanModel')
 const Loan = require('../Models/LoanModel')
+const authorize = require('../middleware/authorization')
 
 
 let router = express.Router()
@@ -12,19 +13,31 @@ let router = express.Router()
 
 // Add a particular benificiary by his/her id
 router.post('/signup', async (req, res, next) => {
-    let ben = await beneficiaryModel.findOne({ email: req.body.email }).exec()
-    if (!ben) {
-        beneficiaryModel.create(req.body)
-            .then(function (data) {
-                console.log(data)
-                res.status(200)
-                res.json(data)
-            }).catch((err) => { console.log(err) })
+
+    let { beneficiary, token } = beneficiaryModel.signup(req.body)
+    if (!beneficiary) {
+        console.log("Authentication failed! Cant create your benificiary account!")
+        res.send("Cant create the benificiary account!")
     }
+
+    res.json({ ben: beneficiary, token: token })
+
+    // let ben = await beneficiaryModel.findOne({ email: req.body.email }).exec()
+    // if (!ben) {
+    //     beneficiaryModel.create(req.body)
+    //         .then(function (data) {
+    //             console.log(data)
+    //             res.status(200)
+    //             res.json(data)
+    //         }).catch((err) => { console.log(err) })
+    // }
 })
 
 // Sign Benificiary into the account
 router.post("/signin", (req, res, next) => { })
+
+router.use(authorize)
+
 // #################  CRUD  ##################
 // #################  CRUD  ##################
 

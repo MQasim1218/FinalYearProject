@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 const validator = require("validator");
 const bcrypt = require("bcrypt")
-const accDetailsSchema = require('./AccountDetailsModel')
-
+const accDetailsSchema = require('./AccountDetailsModel');
+const jwt = require("jsonwebtoken");
 
 const donorSchema = mongoose.Schema({
     id: { type: mongoose.Schema.Types.ObjectId },
@@ -57,6 +57,13 @@ const donorSchema = mongoose.Schema({
     }
 )
 
+
+const createJWT = async (_id) => {
+    let secret = process.env.JWT_SECRET
+    return jwt.sign({ id: _id }, secret, { expiresIn: '1h' })
+}
+
+
 donorSchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
     let user = await this.findOne({ email: email }).exec()
@@ -65,7 +72,7 @@ donorSchema.statics.login = async function (email, password) {
         return null
     }
 
-    if (bcrypt.compareSync(password, user.password)) return user
+    if (bcrypt.compareSync(password, user.password)) return { donor: user, token: await createJWT(user._id) }
     console.log("The password provided is incorrect!")
     return null
 
