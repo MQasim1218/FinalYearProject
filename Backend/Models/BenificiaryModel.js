@@ -35,13 +35,22 @@ const benificairySchema = mongoose.Schema({
             }
         },
     },
-
     contact: {
         type: String,
         required: true,
         trim: true,
     },
-
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     requested_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
@@ -51,7 +60,6 @@ const benificairySchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'loan'
     }],
-
     // audit_reports: [{
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'audit'
@@ -66,20 +74,51 @@ const benificairySchema = mongoose.Schema({
         type: String
     },
 
-    location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            required: true
-        },
-        coordinates: {
-            type: [Number],
-            required: true
-        }
-    },
+
 },
     { timestamps: true }
 )
+
+benificairySchema.statics.login = async function (email, password) {
+    // const emailEncrypted = await bcrypt.hash(email, salt)
+    let user = await this.findOne({ email: email }).exec()
+    if (!user) {
+        console.log("No benificiary with the provided email")
+        return null
+    }
+
+    if (bcrypt.compareSync(password, user.password)) return user
+    console.log("The password provided is incorrect!")
+    return null
+
+}
+
+benificairySchema.statics.signup = async function (benificiary) {
+    try {
+        const salt = await bcrypt.genSalt(13)
+        const passEncrypted = await bcrypt.hash(password, salt)
+
+        let { name, age, email, password, contact, location } = benificiary
+        let exists = await this.findOne({ email }).exec()
+        if (exists) {
+            console.log("Alreay a same benificairy with the same email exists")
+            console.log(exists)
+            return null
+        }
+
+        const user = await this.create({
+            name: name, email: email,
+            password: passEncrypted,
+            age: age, location: location,
+            contact: contact
+        })
+
+        return user
+    } catch (error) {
+        console.log("Error occured During signup! Err: ", error.message)
+        return null
+    }
+}
 
 const beneficiaryModel = mongoose.model('benificiary', benificairySchema)
 

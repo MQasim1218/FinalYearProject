@@ -7,8 +7,6 @@ const Loan = require('../Models/LoanModel')
 
 
 let router = express.Router()
-
-
 // #################  Authentication  ##################
 // #################  Authentication  ##################
 
@@ -27,8 +25,6 @@ router.post('/signup', async (req, res, next) => {
 
 // Sign Benificiary into the account
 router.post("/signin", (req, res, next) => { })
-
-
 // #################  CRUD  ##################
 // #################  CRUD  ##################
 

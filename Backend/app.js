@@ -12,7 +12,7 @@ var indexRouter = require('./routes/index');
 var beneficiaryRouter = require('./routes/BenificiaryRouter');
 var donorRouter = require('./routes/DonorRouter');
 var adminRouter = require('./routes/AdminRouter');
-var campaignsRouter = require('./routes/CampaignRouter');
+var campaignsRouter = require('./routes/CampaignGenRouter');
 var donationRouter = require('./routes/DonationRouter');
 
 var app = express();
