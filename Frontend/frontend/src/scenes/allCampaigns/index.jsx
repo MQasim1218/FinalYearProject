@@ -39,7 +39,7 @@ const Campaign = ({
                     ${Number(required_amount).toFixed(2)}
                 </Typography>
                 <LinearProgressWithLabel value={progress} />
-                <Collapse sx={{justifyContent: "center"}} in={isExpanded} timeout="auto" unmountOnExit sx={{ color: colors.primary[200] }}>
+                <Collapse sx={{justifyContent: "center", backgroundColor: colors.primary[500], borderRadius: "0.55rem", mt:"0.5rem"}} in={isExpanded} timeout="auto" unmountOnExit>
                 <CardContent >
                     <Typography variant='h5' color={colors.blueAccent[400]}>
                         Description:
