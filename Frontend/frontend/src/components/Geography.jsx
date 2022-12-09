@@ -8,7 +8,7 @@ const Geography = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <ResponsiveChoropleth
+    <ResponsiveChoropleth 
         data={data}
         theme={{
             axis: {

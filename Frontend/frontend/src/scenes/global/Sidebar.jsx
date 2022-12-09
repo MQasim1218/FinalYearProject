@@ -16,7 +16,6 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
-
 import StickyBox from "react-sticky-box";
 
 const Item = ({title, to, icon, selected, setSelected}) => {
@@ -36,8 +35,6 @@ const Sidebar = () => {
     const colors = tokens(theme.palette.mode)
     const [isCollapsed, setIsCollapsed] = useState(false)
     const [selected, setSelected] = useState("Dashboard")
-    
-
     return (
         
         <Box
