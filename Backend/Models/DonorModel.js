@@ -60,7 +60,7 @@ const donorSchema = mongoose.Schema({
 
 const createJWT = async (_id) => {
     let secret = process.env.JWT_SECRET
-    return jwt.sign({ id: _id }, secret, { expiresIn: '1h' })
+    return jwt.sign({ id: _id, userType: "Donor" }, secret, { expiresIn: '1h' })
 }
 
 
@@ -80,10 +80,10 @@ donorSchema.statics.login = async function (email, password) {
 
 donorSchema.statics.signup = async function (donor) {
     try {
+        let { name, age, email, password, contact, location } = donor
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
-        let { name, age, email, password, contact, location } = donor
         let exists = await this.findOne({ email }).exec()
         if (exists) {
             console.log("Alreay a same donor with the same email exists")
@@ -98,7 +98,7 @@ donorSchema.statics.signup = async function (donor) {
             contact: contact
         })
 
-        return user
+        return { donor: user, token: await createJWT(user._id) }
     } catch (error) {
         console.log("Error occured During signup! Err: ", error.message)
         return null

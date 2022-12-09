@@ -81,7 +81,7 @@ const benificairySchema = mongoose.Schema({
 
 const createJWT = async (_id) => {
     let secret = process.env.JWT_SECRET
-    return jwt.sign({ id: _id }, secret, { expiresIn: '1h' })
+    return jwt.sign({ id: _id, userType: "Benificiary" }, secret, { expiresIn: '1h' })
 }
 
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require("validator");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 
@@ -76,18 +77,20 @@ const adminSchema = mongoose.Schema({
 
 const createJWT = async (_id) => {
     let secret = process.env.JWT_SECRET
-    return jwt.sign({ id: _id }, secret, { expiresIn: '1h' })
+    return jwt.sign({ id: _id, userType: "Admin" }, secret, { expiresIn: '1h' })
 }
 
 adminSchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
     let user = await this.findOne({ email: email }).exec()
+    console.log("I am here!!")
     if (!user) {
         console.log("No admin with the provided email")
         return null
     }
-
-    if (bcrypt.compareSync(password, user.password)) return { admin: user, token: await createJWT(user._id) }
+    let token = await createJWT(user._id)
+    console.log(token)
+    if (bcrypt.compareSync(password, user.password)) return { admin: user, token: token }
     console.log("The password provided is incorrect!")
     return null
 
@@ -95,10 +98,10 @@ adminSchema.statics.login = async function (email, password) {
 
 adminSchema.statics.signup = async function (admin) {
     try {
+        let { name, age, email, password, contact, location } = admin
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
-        let { name, age, email, password, contact, location } = admin
         let exists = await this.findOne({ email }).exec()
         if (exists) {
             console.log("Alreay a same user exists")
@@ -112,8 +115,9 @@ adminSchema.statics.signup = async function (admin) {
             age: age, location: location,
             contact: contact
         })
-
-        return user
+        let token = await createJWT(user._id)
+        console.log("Created Token: ", token)
+        return { admin: user, token: token }
     } catch (error) {
         console.log("Error occured During signup! Err: ", error.message)
         return null

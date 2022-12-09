@@ -33,46 +33,30 @@ const GetAllAdmins = async (req, res, next) => {
 const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
-        console.log(req.body)
-        let admin = await AdminModel.findOne({ email: req.body.email }).exec()
-        console.log(admin)
-        if (admin) {
-            res.send("Admin Already Exists")
-        } else {
-            console.log("Admin for given credentials deos not exist! Creating Admin Now!!")
-            AdminModel.create(req.body)
-                .then(function (data) {
-                    console.log(data)
-                    res.status(200)
-                    res.json(data)
-                })
-                .catch((err) => {
-                    console.log(err)
-                    res.send(err.message)
-                })
+        let { admin, token } = await AdminModel.signup(req.body)
+        console.log("I am here")
+        console.log("Admin: ", admin)
+        if (!admin) {
+            console.log("Cannot create an admin. SOme error occured!")
+            return res.send("Admin creation failed!")
         }
+        res.json({ admin: admin, token: token })
     } catch (error) {
         console.log("Error encountered: ", error.message)
-        next(error)
+        res.send("Admin Creation Failed")
+        // next(error)
     }
 }
 
 
 const SignInAdmin = async (req, res, next) => {
     try {
-        console.log("Got a request for SignIn")
-        console.log(req.body)
-        let admin = await AdminModel.findOne({ email: req.body.email }).exec()
-        console.log(admin)
+        let { admin, token } = await AdminModel.login(req.body.email, req.body.password)
         if (admin) {
-            console.log("Admin with the given Email Exists")
-            if (admin.password === req.body.password) {
-                res.send(true)
-            } else {
-                res.send(false)
-            }
+            console.log("Admin logged in: ", admin)
+            res.json({ admin, token })
         } else {
-            res.send(false)
+            
         }
     } catch (error) {
         console.log("Error encountered: ", error.message)

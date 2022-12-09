@@ -22,12 +22,11 @@ let router = express.Router()
  */
 
 router.post('/signup', AdminController.AddNewAdmin)
-router.post('/signin', AdminController.SignInAdmin)
+router.post('/login', AdminController.SignInAdmin)
 
 router.use(authorize)
 
 // localhost:5000/admin/signup
-
 router.get(
     '/appealedCampaigns',
     AdminController.ViewAppealedCampaigns

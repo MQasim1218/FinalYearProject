@@ -8,19 +8,23 @@ const authorize = async (req, res, next) => {
 
 
     let auth = req.headers.authorization
-    let { userType } = req.body
+    // let { userType } = req.body
+
+    // if (userType == null || userType == "") {
+    //     return res.send("Authorization failed, User Type not specified!")
+    // }
     // console.log("auth: ", auth)
-    if (auth == null) {
+    if (auth === null) {
         console.log("No token recieved in the header!!")
         return res.status(401).send("You are not authenticated!!")
     }
     let token = auth.split(' ')[1]
     try {
         let jwtPayload = jwt.verify(token, process.env.JWT_SECRET)
-        let { id } = jwtPayload
+        let { id, userType } = jwtPayload
         if (id == null) {
             console.log("The User Id not stored in the Token!!")
-            res.status(404).json({ User: null })
+            res.status(404).send("No user Id stored in the Token")
         }
 
         // REVIEW - Not 100% certian about this part. Will delve into this implemetation soon! 

@@ -6,19 +6,32 @@ const { ViewSpecificCampaigns } = require("./AdminCntr")
 
 
 const DonorSignUp = async (req, res, next) => {
-    let donor = await DonorModel.findOne({ email: req.body.email }).exec()
-    console.log(donor)
-    if (!donor) {
-        console.log("No donor with the given Email exists!!")
-        console.log("Creating a donor now!!")
-        DonorModel.create(req.body)
-            .then(function (data) {
-                console.log(data)
-                res.status(200)
-                res.json(data)
-            }).catch((err) => { console.log(err) })
-    } else
-        res.status(500).send("donor already exists!")
+    // let donor = await DonorModel.findOne({ email: req.body.email }).exec()
+    // console.log(donor)
+    // if (!donor) {
+    //     console.log("No donor with the given Email exists!!")
+    //     console.log("Creating a donor now!!")
+    //     DonorModel.create(req.body)
+    //         .then(function (data) {
+    //             console.log(data)
+    //             res.status(200)
+    //             res.json(data)
+    //         }).catch((err) => { console.log(err) })
+    // } else
+    //     res.status(500).send("donor already exists!")
+    try {
+        console.log("Got a request for creating a new Admin")
+        let { donor, token } = await DonorModel.signup(req.body)
+        console.log("Donor: ", donor)
+        if (!donor) {
+            console.log("Cannot create an donor. Some error occured!")
+            return res.send("Donor creation failed!")
+        }
+        res.json({ donor: donor, token: token })
+    } catch (error) {
+        console.log("Error encountered: ", error.message)
+        res.send("Donor Creation Failed")
+    }
 
 }
 
