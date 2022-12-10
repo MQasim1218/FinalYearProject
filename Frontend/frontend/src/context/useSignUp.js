@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useAuthContext } from "../hooks/useAuth"
 
 
-const useSignUp = (user_type) => {
+const useSignUp = () => {
     const [err, setError] = useState(null)
     const [loadn, setLoadn] = useState(true)
     const { dispatch } = useAuthContext()
@@ -13,7 +13,7 @@ const useSignUp = (user_type) => {
         setLoadn(true)
         setLoadn(null)
 
-        const res = await axios.post(`/${user_type}/signup`, user)
+        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user)
 
 
         if (!res.status < 300) {
@@ -24,13 +24,14 @@ const useSignUp = (user_type) => {
             const { user, token } = res.data
 
             // Save the Json web token to the browser!!
-            localStorage.setItem("user", JSON.stringify(user, token))
+            localStorage.setItem("user", JSON.stringify({ user, token }))
 
             // Update the UserContext::Set Logged user to the user object fields!
             dispatch({
                 type: "LOGIN",
                 payload: { user, token }
             })
+
             setLoadn(false)
         }
     }

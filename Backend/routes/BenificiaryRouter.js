@@ -12,15 +12,16 @@ let router = express.Router()
 // #################  Authentication  ##################
 
 // Add a particular benificiary by his/her id
+// FIXME - There is an error with Benificiary signup. The user is created in db but an error is returned...
 router.post('/signup', async (req, res, next) => {
 
     let { beneficiary, token } = beneficiaryModel.signup(req.body)
     if (!beneficiary) {
         console.log("Authentication failed! Cant create your benificiary account!")
-        res.send("Cant create the benificiary account!")
+        return res.send("Cant create the benificiary account!")
     }
 
-    res.json({ ben: beneficiary, token: token })
+    return res.json({ ben: beneficiary, token: token })
 
     // let ben = await beneficiaryModel.findOne({ email: req.body.email }).exec()
     // if (!ben) {

@@ -10,8 +10,8 @@ import useSignUp from "../../context/useSignUp";
 const initialValues = {
   name: "",
   email: "",
-  Password: "",
-  AccountType: "",
+  password: "",
+  userType: "",
 };
 
 const userSchema = yup.object().shape({
@@ -29,13 +29,12 @@ const Register = () => {
 
 
   // UseSignUp hook to authenticate and store user to the database!
-  const { SignUp, loadn, err } = useSignUp()
+  const { signup, loadn, err } = useSignUp()
 
   const handleFormSubmit = async (values) => {
-    console.log(values);
-    console.log("I am here")
+    console.log("User Type: ", values);
+    await signup(values)
     // navigate('/')
-    // await SignUp(values.AccountType)
   };
 
 
@@ -87,7 +86,7 @@ const Register = () => {
                 value={values.email}
                 name="email"
                 error={!!touched.email && !!errors.email}
-                // helperText={touched.Email && errors.Email}
+                // helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -115,11 +114,11 @@ const Register = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={!!touched.userType && !!errors.userType}
-                  // helperText={touched.AccountType && errors.AccountType}
+                  // helperText={touched.userType && errors.userType}
                   sx={{ gridColumn: "span 2" }}
                 >
-                  <MenuItem value={10}>Donor</MenuItem>
-                  <MenuItem value={20}>Beneficiary</MenuItem>
+                  <MenuItem value={"donor"}>Donor</MenuItem>
+                  <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
                 </Select>
               </FormControl>
             </Box>
