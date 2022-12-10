@@ -1,22 +1,14 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
 import Geography from "../../components/Geography";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
-import GeographyMap from "../geographymap";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
-
+import AllCampaigns from "../allCampaigns";
 
 const DonorDashboard = () => {
     const theme = useTheme();
@@ -129,7 +121,7 @@ const DonorDashboard = () => {
         </Box>
       </Box>
       <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Campaigns</Typography>
+              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 0 10px"}}>Campaigns</Typography>
             </Box>
       <Box
         display="grid"
@@ -141,43 +133,10 @@ const DonorDashboard = () => {
         
         <Box
           gridColumn="span 12"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          //gridRow="span 1"
+          //backgroundColor={colors.primary[400]}
         >
-          {/* <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Donations Accumulated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box> */}
-          {/* <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box> */}
+          <AllCampaigns isDashboard= {true}/>
         </Box>
         {/* <Box
           gridColumn="span 4"
@@ -232,7 +191,7 @@ const DonorDashboard = () => {
         </Box> */}
         </Box>
 
-        <Box> 
+        <Box mt="3rem"> 
               <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
             </Box>
 

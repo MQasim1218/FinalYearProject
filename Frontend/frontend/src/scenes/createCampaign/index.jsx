@@ -1,13 +1,10 @@
-import { Box, Button, TextField, useTheme, Checkbox , FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
+import { Box, Button, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
-import { useState } from "react";
-
-import { useEffect } from "react";
-// import axios from "axios"
+import { useState, useEffect } from "react";
 
 //initializing all inputs with their keys
 const initialValues = {
@@ -93,7 +90,7 @@ const CreateCampaign = () => {
     , [])
 
 
-//force width to not go below 600px
+  //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
 
@@ -221,9 +218,9 @@ const CreateCampaign = () => {
                 multiline
                 rows={4}
               />
-              
-              <FormControlLabel control={<Checkbox name="archived" onBlur={handleBlur} onChange={handleChange} value={values.archived} sx={{color: "white",'&.Mui-checked': {color: "white",},}} />} label="Archived" />
-              <FormControlLabel control={<Checkbox name="completed" onBlur={handleBlur} onChange={handleChange} value={values.completed} sx={{color: "white",'&.Mui-checked': {color: "white",},}}/>} label="Completed" />
+
+              <FormControlLabel control={<Checkbox name="archived" onBlur={handleBlur} onChange={handleChange} value={values.archived} sx={{ color: "white", '&.Mui-checked': { color: "white", }, }} />} label="Archived" />
+              <FormControlLabel control={<Checkbox name="completed" onBlur={handleBlur} onChange={handleChange} value={values.completed} sx={{ color: "white", '&.Mui-checked': { color: "white", }, }} />} label="Completed" />
 
             </Box>
 

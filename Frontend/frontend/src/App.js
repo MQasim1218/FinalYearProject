@@ -14,6 +14,7 @@ import DonorDashboard from './scenes/donorDashboard';
 import Login from './scenes/login';
 import Register from './scenes/signup';
 import AllCampaigns from './scenes/allCampaigns';
+import UserSidebar from './scenes/global/UserSidebar';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -38,11 +39,11 @@ function App() {
     </div>
     ) : 
       <div className="app">
-        <Sidebar/>
+        <UserSidebar/>
         <main className="content">
           <Topbar/>
           <Routes>
-            <Route path="/admin" element = { <Dashboard/>}/>
+            <Route path="/donordashboard" element = { <DonorDashboard/>}/>
             <Route path="/donations" element = { <Donations/>}/>
             <Route path="/users" element = { <Users/>}/>
             <Route path="/recent" element = { <Recent/>}/>

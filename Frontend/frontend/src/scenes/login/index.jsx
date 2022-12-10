@@ -23,6 +23,7 @@ const userSchema = yup.object().shape({
 
 const handleFormSubmit = async (values) => {
     console.log(values);
+    //onClick={()=>navigate('/admin')}
 
   };
 
@@ -84,7 +85,7 @@ const Login = () => {
             </Box>
 
             <Box display="grid" justifyContent="center" mt="20px">
-              <Button onClick={()=>navigate('/admin')} type="submit" color="secondary" variant="contained">
+              <Button type="submit" color="secondary" variant="contained">
                 Login
               </Button>
               <Typography variant="h6" color={colors.blueAccent[300]} sx={{m: "20px 0 5px 0"}}>Dont have an account?</Typography>
