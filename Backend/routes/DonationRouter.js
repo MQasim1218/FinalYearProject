@@ -19,28 +19,30 @@ router.get("/all", async (req, res, next) => {
         res.send("cannot send data due to error: ", error)
     }
 })
-router.get("/all/total", async (req, res, next) => {
-    try {
-        // let alldontions = await DonationModel.find({}).exec()
-        let alldontionsAmount = await DonationModel
-            .aggregate([{
-                $group:
-                {
-                    totalAmount: { $sum: "amount" },
-                    count: { $sum: 1 }
-                },
 
-            }])
-            .exec()
+//FIXME - Consider removing this as this has been dealt with in the backend!
+// router.get("/all/total", async (req, res, next) => {
+//     try {
+//         // let alldontions = await DonationModel.find({}).exec()
+//         let alldontionsAmount = await DonationModel
+//             .aggregate([{
+//                 $group:
+//                 {
+//                     totalAmount: { $sum: "amount" },
+//                     count: { $sum: 1 }
+//                 },
 
-        console.log("Total donated amount is: ", alldontionsAmount)
-        res.json({ total: alldontionsAmount })
+//             }])
+//             .exec()
 
-    } catch (error) {
-        console.log("NOt able to RetrIeve donations data")
-        res.send("cannot send data due to error: ", error)
-    }
-})
+//         console.log("Total donated amount is: ", alldontionsAmount)
+//         res.json({ total: alldontionsAmount })
+
+//     } catch (error) {
+//         console.log("NOt able to RetrIeve donations data")
+//         res.send("cannot send data due to error: ", error)
+//     }
+// })
 
 
 
