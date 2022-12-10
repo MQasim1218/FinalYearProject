@@ -12,7 +12,8 @@ var indexRouter = require('./routes/index');
 var beneficiaryRouter = require('./routes/BenificiaryRouter');
 var donorRouter = require('./routes/DonorRouter');
 var adminRouter = require('./routes/AdminRouter');
-var campaignsRouter = require('./routes/CampaignGenRouter');
+var campaignsGenRouter = require('./routes/CampaignGenRouter');
+var campaignsSpecRouter = require('./routes/CampaignSpecRouter');
 var donationRouter = require('./routes/DonationRouter');
 
 var app = express();
@@ -35,7 +36,8 @@ app.use('/benificiary', beneficiaryRouter);
 app.use('/admin', adminRouter);
 app.use('/donor', donorRouter);
 app.use('/donations', donationRouter);
-app.use('/campaigns', campaignsRouter);
+app.use('/gen_campaigns', campaignsGenRouter);
+app.use('/spec_campaigns', campaignsSpecRouter);
 
 console.log("Sucessfully Started Node App")
 

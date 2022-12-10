@@ -18,14 +18,15 @@ const GetAllCampaigns = async (req, res, next) => {
         res.json(gnrl)
     } catch (error) {
         console.log(error)
-        next(error)
+        // next(error)
+        res.send(error.message)
     }
 }
 
 const GetOneCampaign = async (req, res, next) => {
     // console.log(req.body)
     try {
-        let gnrl = GeneralCampaigns.findById(req.params.id).exec()
+        let gnrl = await GeneralCampaigns.findById(req.params.id).exec()
         res.json(gnrl)
     } catch (error) {
         console.log(error)

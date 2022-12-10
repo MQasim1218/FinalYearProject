@@ -53,10 +53,12 @@ const DonorSignIn = async (req, res, next) => {
 }
 
 const AllDonors = async (req, res, next) => {
+    console.log("FrontEnd Request Here")
     DonorModel.find({}).exec(function (error, data) {
         if (error) {
             return next(error);
         }
+        console.log(data)
         res.json(data);
     });
 }

@@ -24,7 +24,7 @@ let router = express.Router()
 router.post('/signup', AdminController.AddNewAdmin)
 router.post('/login', AdminController.SignInAdmin)
 
-router.use(authorize)
+// router.use(authorize)
 
 // localhost:5000/admin/signup
 router.get(

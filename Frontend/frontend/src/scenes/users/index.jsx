@@ -13,7 +13,7 @@ const Users = () => {
   const colors = tokens(theme.palette.mode);
   // The columns gets all the data we specify below from the mockdata file and store it
   const columns = [
-    { field: "_id", headerName: "ID" },
+    { field: "id", headerName: "ID" },
     {
       field: "name",
       headerName: "Name",
@@ -37,31 +37,31 @@ const Users = () => {
       headerName: "Email",
       flex: 1,
     },
-    // {
-    //   field: "accounttype",
-    //   headerName: "Account Type",
-    //   flex: 1,
-    //   renderCell: ({ row: { accounttype } }) => {
-    //     return (
-    //       <Box
-    //         width="60%"
-    //         m="0 auto"
-    //         p="5px"
-    //         display="flex"
-    //         justifyContent="center"
-    //         backgroundColor={
-    //           colors.greenAccent[400]
-    //         }
-    //         borderRadius="4px"
-    //       >
-    //         {accounttype === "admin" && <AdminPanelSettingsOutlinedIcon />}
-    //         <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-    //           {accounttype}
-    //         </Typography>
-    //       </Box>
-    //     );
-    //   },
-    // },
+    {
+      field: "accounttype",
+      headerName: "Account Type",
+      flex: 1,
+      renderCell: ({ row: { accounttype } }) => {
+        return (
+          <Box
+            width="60%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor={
+              colors.greenAccent[400]
+            }
+            borderRadius="4px"
+          >
+            {accounttype === "admin" && <AdminPanelSettingsOutlinedIcon />}
+            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+              {accounttype}
+            </Typography>
+          </Box>
+        );
+      },
+    },
     {
       // Okay
       field: 'actions',
@@ -75,25 +75,50 @@ const Users = () => {
 
   // ! Data
   let [users, setUsers] = useState([])
-  let [usrType, setUsrType] = useState(true) // True for Donor
+  let [isLoading, setIsLoading] = useState(true)
+  let [view, setView] = useState("donors") // True for Donor
 
   useEffect(() => {
 
-    const getUsers = async () => {
-      let dons = await axios.get("http://localhost:5000/donor/allDonors")
-      let benifs = await axios.get("http://localhost:5000/benificiary")
-      setUsers(usrType ? dons.data : benifs.data)
-      console.log("users: ", users)
+    console.log("Re run use Effect")
+    const fetchUsers = async () => {
+      try {
+        let res = null
+        if (view === "donors") {
+          res = await axios.get("http://localhost:5000/donor/allDonors")
+          setIsLoading(false)
+        } else {
+          res = await axios.get("http://localhost:5000/benificiary")
+          setIsLoading(false)
+        }
+
+        if (res.status < 300) {
+          let data = res.data
+          // console.log(data)
+          if (data !== null) return data
+          else console.log("No data recieved!")
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
-
-    getUsers()
-
-    return (() => console.log("Nothing for clean up"))
-  }, [])
+    // console.log("kdfiodno")
+    fetchUsers().then((data) => {
+      console.log(data)
+      setIsLoading(false)
+      let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
+      setUsers(usrz)
+    })
+    return (() => {
+      console.log("Nothing for clean up")
+      setIsLoading(false)
+    })
+  }, [view])
 
   return (
     <Box m="20px">
-      <Header title="DONORS" subtitle="Manage All The Donors" />
+
+      <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -126,7 +151,21 @@ const Users = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+        <FormControl >
+          <InputLabel>View</InputLabel>
+          <Select value={view} label="View" onChange={(e) => setView(e.target.value)}>
+            <MenuItem value="donors">Donor</MenuItem>
+            <MenuItem value="beneficiaries">Beneficiary</MenuItem>
+          </Select>
+        </FormControl>
+        {
+
+          isLoading ?
+            <Typography varient="h4" alignItems="center" justifyContent="center">
+              Data Grid Loading
+            </Typography> :
+            <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+        }
       </Box>
     </Box>
   );

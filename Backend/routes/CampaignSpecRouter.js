@@ -15,7 +15,7 @@ const GetAllCampaigns = async (req, res, next) => {
     try {
         console.log("I am here")
         let spec = await SpecificCampaigns.find({}).exec()
-        res.json(gnrl)
+        res.json(spec)
     } catch (error) {
         console.log(error)
         next(error)
