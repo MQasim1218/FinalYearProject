@@ -10,8 +10,8 @@ const useSignUp = () => {
 
     const signup = async (user) => {
         // user is an object created by the form details
-        setLoadn(true)
-        setLoadn(null)
+        setLoadn(false)
+        setError(null)
 
         const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user)
 
@@ -28,7 +28,7 @@ const useSignUp = () => {
 
             // Update the UserContext::Set Logged user to the user object fields!
             dispatch({
-                type: "LOGIN",
+                type: "SIGNUP",
                 payload: { user, token }
             })
 
