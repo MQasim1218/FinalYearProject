@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import { useAuthContext } from "../hooks/useAuth"
+import { useAuthContext } from "./useAuth"
 
 
 const useSignUp = () => {
