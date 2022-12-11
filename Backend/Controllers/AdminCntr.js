@@ -1,24 +1,27 @@
 const AdminModel = require("../Models/AdminModel")
+const GeneralCampaignModel = require("../Models/GeneralCampaigns")
+const SpecificCampaignModel = require("../Models/SpecificCampaign")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
     try {
-
+        AdminModel.find({ _id: req.params.id })
+            .exec(function (error, data) {
+                if (error) {
+                    return next(error)
+                }
+                res.json(data)
+            })
     } catch (error) {
         console.log(error)
         next(error)
     }
-    AdminModel.Admin.find({ _id: req.params.id })
-        .exec(function (error, data) {
-            if (error) {
-                return next(error)
-            }
-            res.json(data)
-        })
+
 }
 
 const GetAllAdmins = async (req, res, next) => {
-    AdminModel.Admin.find({}).exec(function (error, data) {
+    console.log(req.body)
+    AdminModel.find({}).exec(function (error, data) {
         if (error) {
             return next(error);
         }
@@ -30,34 +33,39 @@ const GetAllAdmins = async (req, res, next) => {
 const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
-        console.log(req.body)
-        let admin = await AdminModel.Admin.findOne({ email: req.body.email }).exec()
-        console.log(admin)
-        if (admin) {
-            res.send("Admin Already Exists")
-        } else {
+        let { admin, token } = await AdminModel.signup(req.body)
+        console.log("I am here")
+        console.log("Admin: ", admin)
+        if (!admin) {
+            console.log("Cannot create an admin. SOme error occured!")
+            return res.send("Admin creation failed!")
+        }
+        res.json({ admin: admin, token: token })
+    } catch (error) {
+        console.log("Error encountered: ", error.message)
+        res.send("Admin Creation Failed")
+        // next(error)
+    }
+}
 
-            console.log("Admin for given credentials deos not exist! Creating Admin Now!!")
-            AdminModel.Admin.create(req.body)
-                .then(function (data) {
-                    console.log(data)
-                    res.status(200)
-                    res.json(data)
-                })
-                .catch((err) => {
-                    console.log(err)
-                    res.send(err.message)
-                })
+
+const SignInAdmin = async (req, res, next) => {
+    try {
+        let { admin, token } = await AdminModel.login(req.body.email, req.body.password)
+        if (admin) {
+            console.log("Admin logged in: ", admin)
+            res.json({ admin, token })
+        } else {
+            
         }
     } catch (error) {
         console.log("Error encountered: ", error.message)
         next(error)
     }
-
 }
 
 const UpdateAdmin = async (req, res, next) => {
-    await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+    await AdminModel.findByIdAndUpdate(req.params.id,
         {
             name: req.body.name,
             email: req.body.email,
@@ -66,12 +74,12 @@ const UpdateAdmin = async (req, res, next) => {
             contact: req.body.contact
         }
     )
-    let newAdmin = await AdminModel.Admin.findById(req.params.id)
+    let newAdmin = await AdminModel.findById(req.params.id)
     res.json(newAdmin)
 }
 
 const DeleteAdmin = async (req, res, next) => {
-    AdminModel.Admin.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+    AdminModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
         if (error) {
             next(error)
         }
@@ -82,13 +90,13 @@ const DeleteAdmin = async (req, res, next) => {
 // Authentication Operations
 const ChangeAuthDetails = async (req, res, next) => {
     try {
-        let admin = await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+        let admin = await AdminModel.findByIdAndUpdate(req.params.id,
             {
                 email: req.body.email,
                 password: req.body.password,
             }
         )
-        let newAdmin = await AdminModel.Admin.findById(req.params.id)
+        let newAdmin = await AdminModel.findById(req.params.id)
         res.json(newAdmin)
 
     } catch (error) {
@@ -98,7 +106,7 @@ const ChangeAuthDetails = async (req, res, next) => {
 }
 
 const ChangeDetails = async (req, res, next) => {
-    await AdminModel.Admin.findByIdAndUpdate(req.params.id,
+    await AdminModel.findByIdAndUpdate(req.params.id,
         {
             name: req.body.name,
             email: req.body.email,
@@ -107,28 +115,28 @@ const ChangeDetails = async (req, res, next) => {
             contact: req.body.contact
         }
     )
-    let newAdmin = await AdminModel.Admin.findById(req.params.id)
+    let newAdmin = await AdminModel.findById(req.params.id)
     res.json(newAdmin)
 }
 
 
 // Manipulate Campaigns
 const AddGeneralCampaign = async (req, res, next) => {
+
     try {
-        console.log("here in this place")
         let newCampaign = await GeneralCampaignModel.create(req.body)
         console.log("New campaign created")
 
 
-        await AdminModel.Admin.updateOne(
+        await AdminModel.updateOne(
             { _id: req.params.id },
             { $push: { general_campaigns: newCampaign._id } }
         ).exec()
-        let admin = await Admin.findById(req.params.id).exec()
+        let admin = await AdminModel.findById(req.params.id).exec()
         res.json(admin)
 
     } catch (err) {
-        console.log("err")
+        console.log("err: ", err.message)
         res.send(err)
     }
     console.log("Adding Campaign for the Admin: ", req.params.id)
@@ -138,7 +146,7 @@ const AddGeneralCampaign = async (req, res, next) => {
 
 const ViewGeneralCampaigns = async (req, res, next) => {
     try {
-        let admin = await AdminModel.Admin.findById(req.params.id).populate('general_campaigns').exec()
+        let admin = await AdminModel.findById(req.params.id).populate('general_campaigns').exec()
         let genr_ids = admin.general_campaigns
         let genr_campaigns = await GeneralCampaignModel.find({ id: { $in: genr_ids } }).exec()
         res.json(genr_campaigns)
@@ -149,7 +157,7 @@ const ViewGeneralCampaigns = async (req, res, next) => {
 
 const ViewSpecificCampaigns = async (req, res, next) => {
     try {
-        let admin = await AdminModel.Admin.findById(req.params.id).populate('specific_campaigns').exec()
+        let admin = await AdminModel.findById(req.params.id).populate('specific_campaigns').exec()
         let spec_ids = admin.specific_campaigns
         let spec_campaigns = await SpecificCampaignModel.find({ id: { $in: spec_ids } }).exec()
         res.json(spec_campaigns)
@@ -204,17 +212,18 @@ const RejectCampiagnRequest = async (req, res, next) => {
 
 
 module.exports = {
+    GetAdmin,
     AddNewAdmin,
     UpdateAdmin,
-    GetAdmin,
+    DeleteAdmin,
+    SignInAdmin,
     GetAllAdmins,
-    ChangeAuthDetails,
     ChangeDetails,
     ApproveCampaign,
+    ChangeAuthDetails,
     AddGeneralCampaign,
-    DeleteAdmin,
     ViewGeneralCampaigns,
+    RejectCampiagnRequest,
     ViewSpecificCampaigns,
-    ViewAppealedCampaigns,
-    RejectCampiagnRequest
+    ViewAppealedCampaigns
 }

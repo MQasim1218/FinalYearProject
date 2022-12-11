@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const validator = require("validator");
-const accDetailsSchema = require('./AccountDetailsModel')
-
+const bcrypt = require("bcrypt")
+const accDetailsSchema = require('./AccountDetailsModel');
+const jwt = require("jsonwebtoken");
 
 const donorSchema = mongoose.Schema({
     id: { type: mongoose.Schema.Types.ObjectId },
@@ -25,7 +26,17 @@ const donorSchema = mongoose.Schema({
     },
 
     contact: { type: String, required: true, trim: true },
-
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            // required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     donated_campaigns_specific: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
@@ -39,22 +50,61 @@ const donorSchema = mongoose.Schema({
 
     account_details: { type: accDetailsSchema },
 
-    location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            // required: true
-        },
-        coordinates: {
-            type: [Number],
-            // required: true
-        }
-    },
+
 },
     {
         timestamps: true,
     }
 )
+
+
+const createJWT = async (_id) => {
+    let secret = process.env.JWT_SECRET
+    return jwt.sign({ id: _id, userType: "Donor" }, secret, { expiresIn: '1h' })
+}
+
+
+donorSchema.statics.login = async function (email, password) {
+    // const emailEncrypted = await bcrypt.hash(email, salt)
+    let user = await this.findOne({ email: email }).exec()
+    if (!user) {
+        console.log("No donor with the provided email")
+        return null
+    }
+
+    if (bcrypt.compareSync(password, user.password)) return { donor: user, token: await createJWT(user._id) }
+    console.log("The password provided is incorrect!")
+    return null
+
+}
+
+donorSchema.statics.signup = async function (donor) {
+    try {
+        let { name, age, email, password, contact, location } = donor
+        const salt = await bcrypt.genSalt(13)
+        const passEncrypted = await bcrypt.hash(password, salt)
+
+        let exists = await this.findOne({ email }).exec()
+        if (exists) {
+            console.log("Alreay a same donor with the same email exists")
+            console.log(exists)
+            return null
+        }
+
+        const user = await this.create({
+            name: name, email: email,
+            password: passEncrypted,
+            age: age, location: location,
+            contact: contact
+        })
+
+        return { donor: user, token: await createJWT(user._id) }
+    } catch (error) {
+        console.log("Error occured During signup! Err: ", error.message)
+        return null
+    }
+}
+
 
 const donorModel = mongoose.model('donor', donorSchema)
 

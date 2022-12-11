@@ -6,19 +6,32 @@ const { ViewSpecificCampaigns } = require("./AdminCntr")
 
 
 const DonorSignUp = async (req, res, next) => {
-    let donor = await DonorModel.findOne({ email: req.body.email }).exec()
-    console.log(donor)
-    if (!donor) {
-        console.log("No donor with the given Email exists!!")
-        console.log("Creating a donor now!!")
-        DonorModel.create(req.body)
-            .then(function (data) {
-                console.log(data)
-                res.status(200)
-                res.json(data)
-            }).catch((err) => { console.log(err) })
-    } else
-        res.status(500).send("donor already exists!")
+    // let donor = await DonorModel.findOne({ email: req.body.email }).exec()
+    // console.log(donor)
+    // if (!donor) {
+    //     console.log("No donor with the given Email exists!!")
+    //     console.log("Creating a donor now!!")
+    //     DonorModel.create(req.body)
+    //         .then(function (data) {
+    //             console.log(data)
+    //             res.status(200)
+    //             res.json(data)
+    //         }).catch((err) => { console.log(err) })
+    // } else
+    //     res.status(500).send("donor already exists!")
+    try {
+        console.log("Got a request for creating a new Admin")
+        let { donor, token } = await DonorModel.signup(req.body)
+        console.log("Donor: ", donor)
+        if (!donor) {
+            console.log("Cannot create an donor. Some error occured!")
+            return res.send("Donor creation failed!")
+        }
+        res.json({ donor: donor, token: token })
+    } catch (error) {
+        console.log("Error encountered: ", error.message)
+        res.send("Donor Creation Failed")
+    }
 
 }
 
@@ -40,10 +53,12 @@ const DonorSignIn = async (req, res, next) => {
 }
 
 const AllDonors = async (req, res, next) => {
+    console.log("FrontEnd Request Here")
     DonorModel.find({}).exec(function (error, data) {
         if (error) {
             return next(error);
         }
+        console.log(data)
         res.json(data);
     });
 }
@@ -134,7 +149,7 @@ const SearchCampaignByFilter = async (req, res, next) => {
                 $or: [
                     {
                         campaign_title: {
-                            $regex: /[${req.body.title}]/igm
+                            $regex: /[${req.params.title}]/igm
                         }
                     },
                     // Have to implement search based on Location.
@@ -205,7 +220,14 @@ const SearchCampaignByTitle = async (req, res, next) => {
     }
 }
 
-const GetDonatedCapmaigns = async (req, res, next) => { }
+const GetDonatedCapmaigns = async (req, res, next) => {
+    try {
+        let donor = await DonorModel.findOne({ _id: req.params.id }).populate(['donated_campaigns_specific', 'donated_campaigns_general']).exec()
+        res.json([...donor.donated_campaigns_specific, ...donated_campaigns_general])
+    } catch (error) {
+        res.send(error.message)
+    }
+}
 
 const GetDonations = async (req, res, next) => {
     try {
@@ -236,14 +258,25 @@ const SearchAvailableCampaigns = async (req, res, next) => {
     }
 }
 
+const DeleteDonor = function (req, res, next) {
+    DonorModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+        if (error) {
+            next(error)
+        }
+        res.json(data)
+    })
+}
+
 module.exports = {
-    SearchCampaignByTitle,
     SearchAvailableCampaigns,
     SearchCampaignByFilter,
+    SearchCampaignByTitle,
+    GetDonatedCapmaigns,
     GetDonations,
     DonorSignIn,
     DonorSignUp,
     UpdateDonor,
+    DeleteDonor,
     AllDonors,
     GetDonor,
     Donate

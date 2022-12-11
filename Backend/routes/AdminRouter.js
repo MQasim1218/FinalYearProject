@@ -3,6 +3,7 @@ const AdminModel = require('../Models/AdminModel')
 const AdminController = require('../Controllers/AdminCntr')
 const GeneralCampaignModel = require("../Models/GeneralCampaigns")
 const SpecificCampaignModel = require("../Models/SpecificCampaign")
+const authorize = require('../middleware/authorization')
 
 
 let router = express.Router()
@@ -12,7 +13,7 @@ let router = express.Router()
  * ! DONE: Campaign Managment Basic
  * ! DONE: User Authentication Basic
  * ! DONE: CRUD campaigns + Approve/Reject 
- * 
+ *  
  * TODO: Audit-Campaign
  * TODO: Analytics
  * TODO: Reports
@@ -21,17 +22,26 @@ let router = express.Router()
  */
 
 router.post('/signup', AdminController.AddNewAdmin)
+router.post('/login', AdminController.SignInAdmin)
 
-router.get('/appealedCampaigns', AdminController.ViewAppealedCampaigns)
+// router.use(authorize)
 
+// localhost:5000/admin/signup
+router.get(
+    '/appealedCampaigns',
+    AdminController.ViewAppealedCampaigns
+)
 
 // })
 // router.get('/allCampigns/:id', async (req, res, next) => {
 //     let campaigns = await campaigns.Admin.findOne(req.params.id).populate('created_campaigns')
 //     let campigns = admin.created_campaigns
-
 // })
-router.get('/GeneralCampigns/:id', AdminController.ViewGeneralCampaigns)
+
+router.get(
+    '/GeneralCampigns/:id',
+    AdminController.ViewGeneralCampaigns
+)
 
 router.get('/SpecificCampigns/:id', AdminController.ViewSpecificCampaigns)
 
@@ -54,45 +64,7 @@ router.get('/archivedCampaigns', async (req, res, next) => {
     }
 
 })
-router.get('/archivedCampaign/:campaign_id', async (req, res, next) => {
-    try {
-        let gen_camp = await GeneralCampaignModel.find({ _id: req.params.campaign_id }).exec()
-        if (gen_camp !== null) res.json(gen_camp)
-        else {
-            let spc_camp = await SpecificCampaignModel.find({ _id: req.params.campaign_id }).exec()
-            if (spc_camp !== null) res.json(spc_camp)
-            else { console.log("No capmaign found!!"); res.status(404).send("Didnt fond what you loooking for") }
-        }
-    } catch (error) {
-        next(error)
-    }
-})
-router.get('/archivedCampaign/:campaign_id', async (req, res, next) => {
-    try {
-        let gen_camp = await GeneralCampaignModel.find({ _id: req.params.campaign_id }).exec()
-        if (gen_camp !== null) res.json(gen_camp)
-        else {
-            let spc_camp = await SpecificCampaignModel.find({ _id: req.params.campaign_id }).exec()
-            if (spc_camp !== null) res.json(spc_camp)
-            else { console.log("No capmaign found!!"); res.status(404).send("Didnt fond what you loooking for") }
-        }
-    } catch (error) {
-        next(error)
-    }
-})
-router.get('/archivedCampaign/:campaign_id', async (req, res, next) => {
-    try {
-        let gen_camp = await GeneralCampaignModel.find({ _id: req.params.campaign_id }).exec()
-        if (gen_camp !== null) res.json(gen_camp)
-        else {
-            let spc_camp = await SpecificCampaignModel.find({ _id: req.params.campaign_id }).exec()
-            if (spc_camp !== null) res.json(spc_camp)
-            else { console.log("No capmaign found!!"); res.status(404).send("Didnt fond what you loooking for") }
-        }
-    } catch (error) {
-        next(error)
-    }
-})
+
 // Archive a campaign
 router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
     try {
@@ -121,13 +93,10 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 
 // Empty routes.. Will do these in a little while
 // router.get('/reports')
-
-
 // router.get('/reports/monthly_donation/:month')
 // router.get('/reports/yearly_donation/:year')
 // router.post('/reports/credit_report/:month')
 // router.post('/reports/balance_sheet/:month')
-
 // router.get('/analytics/top_donors')
 // router.get('/analytics/interactive_map')
 // router.get('/analytics/interactive_map/city')

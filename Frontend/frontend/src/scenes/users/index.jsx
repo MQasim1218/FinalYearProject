@@ -5,14 +5,12 @@ import { mockDataUsers, mockDataBeneficiary, mockDataDonor } from "../../data/mo
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Users = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  const [view, setView] = useState("donor")
-
   // The columns gets all the data we specify below from the mockdata file and store it
   const columns = [
     { field: "id", headerName: "ID" },
@@ -30,7 +28,7 @@ const Users = () => {
       align: "left",
     },
     {
-      field: "phone",
+      field: "contact",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -52,7 +50,7 @@ const Users = () => {
             display="flex"
             justifyContent="center"
             backgroundColor={
-              colors.greenAccent[600]
+              colors.greenAccent[400]
             }
             borderRadius="4px"
           >
@@ -65,6 +63,7 @@ const Users = () => {
       },
     },
     {
+      // Okay
       field: 'actions',
       type: 'actions',
       width: 100,
@@ -74,10 +73,52 @@ const Users = () => {
     },
   ];
 
+  // ! Data
+  let [users, setUsers] = useState([])
+  let [isLoading, setIsLoading] = useState(true)
+  let [view, setView] = useState("donors") // True for Donor
+
+  useEffect(() => {
+
+    console.log("Re run use Effect")
+    const fetchUsers = async () => {
+      try {
+        let res = null
+        if (view === "donors") {
+          res = await axios.get("http://localhost:5000/donor/allDonors")
+          setIsLoading(false)
+        } else {
+          res = await axios.get("http://localhost:5000/benificiary")
+          setIsLoading(false)
+        }
+
+        if (res.status < 300) {
+          let data = res.data
+          // console.log(data)
+          if (data !== null) return data
+          else console.log("No data recieved!")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    // console.log("kdfiodno")
+    fetchUsers().then((data) => {
+      console.log(data)
+      setIsLoading(false)
+      let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
+      setUsers(usrz)
+    })
+    return (() => {
+      console.log("Nothing for clean up")
+      setIsLoading(false)
+    })
+  }, [view])
 
   return (
     <Box m="20px">
-      <Header title="USERS" subtitle="Manage All The Users" />
+
+      <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -113,12 +154,18 @@ const Users = () => {
         <FormControl >
           <InputLabel>View</InputLabel>
           <Select value={view} label="View" onChange={(e) => setView(e.target.value)}>
-            <MenuItem value="donor">Donor</MenuItem>
-            <MenuItem value="beneficiary">Beneficiary</MenuItem>
+            <MenuItem value="donors">Donor</MenuItem>
+            <MenuItem value="beneficiaries">Beneficiary</MenuItem>
           </Select>
         </FormControl>
-        {view === "donor" ? (<DataGrid checkboxSelection rows={mockDataDonor} columns={columns} components={{ Toolbar: GridToolbar }} />):(<DataGrid checkboxSelection rows={mockDataBeneficiary} columns={columns} components={{ Toolbar: GridToolbar }} />)}
-        
+        {
+
+          isLoading ?
+            <Typography varient="h4" alignItems="center" justifyContent="center">
+              Data Grid Loading
+            </Typography> :
+            <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+        }
       </Box>
     </Box>
   );

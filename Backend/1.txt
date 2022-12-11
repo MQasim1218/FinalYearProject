@@ -65,7 +65,14 @@ Routes/Controllers
     
 
 
-Authentication with jwt Tokens.
-Stipe Payments.
-Locations.
-Integration.
+{
+    Authentication with jwt Tokens.
+    Stipe Payments.
+    Locations.
+    Integration.
+}
+
+{
+    New Routes:
+        
+}
