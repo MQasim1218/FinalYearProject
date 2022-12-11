@@ -1,6 +1,6 @@
-import {Box, IconButton, useTheme} from "@mui/material";
+import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
-import {ColorModeContext, tokens} from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -10,7 +10,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Navigate, useNavigate } from "react-router-dom";
-
+import useLogout from "../../context/useLogout";
 
 const Topbar = () => {
     const navigate = useNavigate();
@@ -22,46 +22,55 @@ const Topbar = () => {
     //to allow to toggle states for colormode
     const colorMode = useContext(ColorModeContext)
 
-    return(
+    // Get the logout function from the context-hook
+    const { logout } = useLogout()
+
+
+    return (
         //Box is basically div component from mui, but you can put CSS props in it
         <Box display="flex" justifyContent="space-between" p={2}>
             {/*Search Bar*/}
             <Box display="flex" backgroundColor={colors.primary[400]} borderRadius="3px" >
-                <InputBase sx={{ml: 2, flex: 1}} placeholder="Search"/>
-                <IconButton type="button" sx={{ p:1 }}>
-                    <SearchIcon/>
+                <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+                <IconButton type="button" sx={{ p: 1 }}>
+                    <SearchIcon />
                 </IconButton>
             </Box>
 
             {/*Header Tags if needed*/}
-            <Box> 
+            <Box>
             </Box>
 
 
             {/*Icons*/}
-            <Box display="flex"> 
+            <Box display="flex">
                 <IconButton>
-                    <NotificationsOutlinedIcon/>
+                    <NotificationsOutlinedIcon />
                 </IconButton>
 
                 <IconButton>
-                    <SettingsOutlinedIcon/>
+                    <SettingsOutlinedIcon />
                 </IconButton>
 
                 <IconButton>
-                    <PersonOutlinedIcon/>
+                    <PersonOutlinedIcon />
                 </IconButton>
 
                 <IconButton onClick={colorMode.toggleColorMode}>
                     {theme.palette.mode === "dark" ? (
-                        <DarkModeOutlinedIcon/>
+                        <DarkModeOutlinedIcon />
                     ) : (
-                        <LightModeOutlinedIcon/>
-                    )} 
+                        <LightModeOutlinedIcon />
+                    )}
                 </IconButton>
 
-                <IconButton onClick={()=> navigate('/') } >
-                    <LogoutOutlinedIcon/>
+                <IconButton
+                    onClick={async () => {
+                        await logout()
+                        navigate('/')
+                    }}
+                >
+                    <LogoutOutlinedIcon />
                 </IconButton>
 
             </Box>

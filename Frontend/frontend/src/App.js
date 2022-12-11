@@ -1,5 +1,5 @@
-import {ColorModeContext, useMode} from './theme';
-import {CssBaseline, ThemeProvider} from '@mui/material';
+import { ColorModeContext, useMode } from './theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Topbar from "./scenes/global/Topbar"
 import Sidebar from "./scenes/global/Sidebar"
@@ -20,13 +20,13 @@ function App() {
   const [theme, colorMode] = useMode();
   const location = useLocation()
 
-  return ( 
+  return (
     //Context for colormode, so we can use it anywhere.
-  <ColorModeContext.Provider value={colorMode}>
-    {/*ThemeProvider is used so that material UI has access to it as well.*/}
-    <ThemeProvider theme={theme}>
-    {/*CssBaseline resets the css to default on colorchange*/}
-      <CssBaseline/>
+    <ColorModeContext.Provider value={colorMode}>
+      {/*ThemeProvider is used so that material UI has access to it as well.*/}
+      <ThemeProvider theme={theme}>
+        {/*CssBaseline resets the css to default on colorchange*/}
+        <CssBaseline />
 
     {location.pathname === `/` || location.pathname === `/register` ? (
       <div className="app">
@@ -57,7 +57,7 @@ function App() {
       }
     </ThemeProvider>
     </ColorModeContext.Provider>
-  
+
   );
 }
 
