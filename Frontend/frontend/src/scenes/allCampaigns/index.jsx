@@ -179,28 +179,29 @@ const AllCampaigns = ({ isDashboard = false }) => {
                     <Box m="1.5rem 2.5rem">
                         <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
                         <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}>
-                            {campaigns.map((
-                            {campaigns.map((
-                                {
-                                    id,
-                                    campaign_title,
-                                    required_amount,
-                                    location,
-                                    category,
-                                    description,
-                                    progress
-                                }
-                            ) => (
-                                <Campaign
-                                    key={id}
-                                    id={id}
-                                    campaign_title={campaign_title}
-                                    required_amount={required_amount}
-                                    location={location}
-                                    category={category}
-                                    description={description}
-                                    progress={progress} />
-                            ))}
+                            {
+                                campaigns.map((
+                                    {
+                                        id,
+                                        campaign_title,
+                                        required_amount,
+                                        location,
+                                        category,
+                                        description,
+                                        progress
+                                    }
+                                ) => (
+                                    <Campaign
+                                        key={id}
+                                        id={id}
+                                        campaign_title={campaign_title}
+                                        required_amount={required_amount}
+                                        location={location}
+                                        category={category}
+                                        description={description}
+                                        progress={progress} />
+                                ))
+                            }
                         </Box>
                     </Box>)
 
@@ -232,7 +233,7 @@ const AllCampaigns = ({ isDashboard = false }) => {
                         ))}
                     </Box>)}
             </Box>
-        </Box>
+        </Box >
 
 
     )
