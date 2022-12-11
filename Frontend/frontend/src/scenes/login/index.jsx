@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -6,8 +5,8 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
 import { Navigate, useNavigate } from "react-router-dom";
-import Register from "../signup";
-import axios from "axios";
+import useLogin from "../../hooks/useLogin";
+
 
 const initialValues = {
   email: "",
@@ -21,12 +20,7 @@ const userSchema = yup.object().shape({
   userType: yup.string().required("Required"),
 });
 
-const handleFormSubmit = async (values) => {
-  console.log(values);
-  // console.log("I am here")
-  alert("no error so far")
-  // onClick = {() => navigate('/admin')}
-};
+
 
 // ! Frontend
 
@@ -34,6 +28,16 @@ const Login = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
+  const { login } = useLogin()
+
+  const handleFormSubmit = async (values) => {
+    console.log(values);
+    console.log("Here trying to login with a user!!")
+    let { email, password, userType } = values
+    let { user, token } = await login(email, password, userType)
+    // alert("no error so far")
+    navigate('/admin')
+  };
 
   // console.log("first")
   return (
