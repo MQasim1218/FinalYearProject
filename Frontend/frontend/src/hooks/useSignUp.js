@@ -19,6 +19,7 @@ const useSignUp = () => {
         if (!res.status < 300) {
             setLoadn(true)
             setError("Failed to create user account")
+            return false
         } else {
             // Extract data from the response
             const { user, token } = res.data
@@ -33,6 +34,7 @@ const useSignUp = () => {
             })
 
             setLoadn(false)
+            return true
         }
     }
     return { signup, loadn, err }

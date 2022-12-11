@@ -35,7 +35,7 @@ const Login = () => {
     // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
     await login(email, password, userType)
-    alert("no error so far")
+    console.log("no error so far")
     // navigate('/admin')
   };
 

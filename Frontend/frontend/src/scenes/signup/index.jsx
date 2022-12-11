@@ -33,8 +33,7 @@ const Register = () => {
 
   const handleFormSubmit = async (values) => {
     console.log("Form values: ", values);
-    await signup(values)
-    // navigate('/')
+    (await signup(values) ? navigate(`/${values.userType}/dashboard`) : navigate('/'))
   };
 
 

@@ -11,11 +11,11 @@ const useLogin = () => {
 
         setLoadn(false)
         setError(null)
-        console.log("EMail: ", email)
+        console.log("Email: ", email)
         const res = await axios.post(`http://localhost:5000/${userType}/login`, { email, password })
-        console.log("first")
         if (res.status < 400) {
 
+            console.log("first")
             console.log("Trying to Login")
             let user = res.data
             console.log(user)
