@@ -179,7 +179,7 @@ const AllCampaigns = ({ isDashboard = false }) => {
                     <Box m="1.5rem 2.5rem">
                         <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
                         <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}>
-                            {data.map((
+                            {campaigns.map((
                                 {
                                     id,
                                     campaign_title,
@@ -201,7 +201,7 @@ const AllCampaigns = ({ isDashboard = false }) => {
                                     progress={progress} />
                             ))}
                         </Box> </Box>) : (<Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: undefined } }}>
-                            {data.map((
+                            {campaigns.map((
                                 {
                                     id,
                                     campaign_title,
