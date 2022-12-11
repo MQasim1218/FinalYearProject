@@ -10,25 +10,22 @@ import Register from "../signup";
 import axios from "axios";
 
 const initialValues = {
-  Username: "",
-  Email: "",
-  Password: "",
-  AccountType: "",
+  email: "",
+  password: "",
+  userType: "",
 };
 
 const userSchema = yup.object().shape({
-  Username: yup.string().required("Required"),
-  Email: yup.string().required("Required"),
-  Password: yup.string().required("Required"),
-  AccountType: yup.string().required("Required"),
+  email: yup.string().required("Required"),
+  password: yup.string().required("Required"),
+  userType: yup.string().required("Required"),
 });
 
 const handleFormSubmit = async (values) => {
   console.log(values);
-  console.log("I am here")
+  // console.log("I am here")
+  alert("no error so far")
   // onClick = {() => navigate('/admin')}
-  // let isCorrect = await axios.post('http://localhost:5000/admin/', values)
-  // alert(isCorrect)
 };
 
 // ! Frontend
@@ -75,10 +72,10 @@ const Login = () => {
                 label="Email"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.Email}
-                name="Email"
-                error={!!touched.Email && !!errors.Email}
-                // helperText={touched.Email && errors.Email}
+                value={values.email}
+                name="email"
+                error={!!touched.email && !!errors.email}
+                // helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -97,10 +94,8 @@ const Login = () => {
             </Box>
 
             <Box display="grid" justifyContent="center" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-              <Button type="submit" color="secondary" variant="contained">
-                Login
-              </Button>
+              {/* <Button type="submit" color="secondary" variant="contained" /> */}
+              <Button type="submit" color="secondary" variant="contained"> Login </Button>
               <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Dont have an account?</Typography>
               <Button onClick={() => navigate('/register')} type="submit" color="primary" variant="contained">
                 Register

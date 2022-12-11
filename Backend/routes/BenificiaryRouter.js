@@ -35,7 +35,7 @@ router.post('/signup', async (req, res, next) => {
 })
 
 // Sign Benificiary into the account
-router.post("/signin", (req, res, next) => { })
+router.post("/login", (req, res, next) => { })
 
 // router.use(authorize)
 

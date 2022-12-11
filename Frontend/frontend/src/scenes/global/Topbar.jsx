@@ -10,7 +10,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Navigate, useNavigate } from "react-router-dom";
-import useLogout from "../../context/useLogout";
+import useLogout from "../../hooks/useLogout";
 
 const Topbar = () => {
     const navigate = useNavigate();

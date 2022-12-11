@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
 import { Navigate, useNavigate } from "react-router-dom";
-import useSignUp from "../../context/useSignUp";
+import useSignUp from "../../hooks/useSignUp";
 
 const initialValues = {
   name: "",

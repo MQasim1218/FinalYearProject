@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import { useAuthContext } from "./useAuth"
+import { useAuthContext } from "./useAuthContext"
 
 
 const useSignUp = () => {
@@ -13,7 +13,7 @@ const useSignUp = () => {
         setLoadn(false)
         setError(null)
 
-        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user)
+        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, JSON.stringify(user))
 
 
         if (!res.status < 300) {
