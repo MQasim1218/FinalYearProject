@@ -94,7 +94,6 @@ const Users = () => {
 
         if (res.status < 300) {
           let data = res.data
-          // console.log(data)
           if (data !== null) return data
           else console.log("No data recieved!")
         }

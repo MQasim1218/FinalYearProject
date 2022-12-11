@@ -20,7 +20,7 @@ const DonorSignUp = async (req, res, next) => {
     // } else
     //     res.status(500).send("donor already exists!")
     try {
-        console.log("Got a request for creating a new Admin")
+        console.log("Got a request for creating a new Donor")
         let { donor, token } = await DonorModel.signup(req.body)
         console.log("Donor: ", donor)
         if (!donor) {

@@ -24,21 +24,27 @@ const userSchema = yup.object().shape({
 });
 
 const handleFormSubmit = async (values) => {
-    console.log(values);
-    //onClick={()=>navigate('/admin')}
-
+  console.log(values);
+  console.log("I am here")
+  // onClick = {() => navigate('/admin')}
   // let isCorrect = await axios.post('http://localhost:5000/admin/', values)
   // alert(isCorrect)
 };
+
+// ! Frontend
 
 const Login = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
+
+  // console.log("first")
   return (
     <Box padding="20px" height="auto" width="50vh" m="10% 0 0 38%" border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]} >
       <Header title="LOGIN" subtitle="Enter your Login details" />
+
       <Formik
+
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={userSchema}
@@ -51,7 +57,9 @@ const Login = () => {
           handleChange,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}>
+
             <Box
               display="grid"
               gap="30px"
@@ -89,6 +97,7 @@ const Login = () => {
             </Box>
 
             <Box display="grid" justifyContent="center" mt="20px">
+              <Button type="submit" color="secondary" variant="contained">
               <Button type="submit" color="secondary" variant="contained">
                 Login
               </Button>

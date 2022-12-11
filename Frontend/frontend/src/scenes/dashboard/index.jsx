@@ -40,7 +40,7 @@ const Dashboard = () => {
   const [totDonations, setTotDon] = useState(0)
   const [activeDonors, setActiveDonors] = useState([])
   const [activeBenifs, setActiveBenifs] = useState([])
-  const [Donations, setDonations] = useState([])
+  const [donations, setDonations] = useState([])
 
 
   /**
@@ -53,11 +53,11 @@ const Dashboard = () => {
     const getCampaigns = async () => {
       // const res = await fetch('http://localhost:5000/admin')
       try {
-        let res = await axios.get("http://localhost:5000/campaigns/")
-        if (res.status < 300) {
-          let data = res.data
-          console.log(data)
-          setActiveCamps(data)
+        let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
+        let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
+
+        if (gen_res.status < 300 && gen_res.status < 300) {
+          let data = gen_res.data.concat(spec_res.data)
           if (data !== null) return data
           else console.log("No data recieved!")
         }
@@ -89,7 +89,6 @@ const Dashboard = () => {
         if (res.status < 300) {
           let data = res.data
           console.log(data)
-          setActiveBenifs(data)
           if (data !== null) return data
           else console.log("No data recieved!")
         }
@@ -101,23 +100,39 @@ const Dashboard = () => {
     const getDonations = async () => {
       try {
         let res = await axios.get("http://localhost:5000/donations/all/")
-        if (res.status < 300) {
+        if (res.status < 400) {
           let data = res.data
-          console.log(data)
-          setDonations(data)
           if (data !== null) return data
           else console.log("No data recieved!")
-          // new
         }
+
       } catch (error) {
         console.log(error)
       }
     }
 
-    getDonations()
-    getCampaigns()
-    getDonors()
-    getBenificiries()
+    getDonations().then((dons) => {
+      console.log(dons)
+      setDonations(dons)
+
+      let tot = 0
+      dons.forEach(don => {
+        tot += don.amount
+      });
+      console.log(tot)
+      // alert(tot)
+      setTotDon(tot)
+    })
+
+    getCampaigns().then((camps) => {
+      setActiveCamps(camps)
+    })
+    getDonors().then((dons) => {
+      setActiveDonors(dons)
+    })
+    getBenificiries().then((benifs) => {
+      setActiveBenifs(benifs)
+    })
 
     return (() => console.log("No clean up"))
   }, [])
@@ -157,7 +172,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="7,361 dyn"
+            title={totDonations}
             subtitle="Donations Recieved"
             progress={false}
             increase="+14% This Month dyn"
@@ -252,7 +267,7 @@ const Dashboard = () => {
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                $59,342.32 dyn
+                ${totDonations}
               </Typography>
             </Box>
             <Box>
@@ -285,7 +300,7 @@ const Dashboard = () => {
               Recent Donations::dyn
             </Typography>
           </Box>
-          {Donations.map((transaction, i) => (
+          {donations.map((transaction, i) => (
             <Box
 
               key={`${transaction._id}`}

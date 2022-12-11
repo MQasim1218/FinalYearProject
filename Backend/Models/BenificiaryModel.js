@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const validator = require("validator");
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const benificairySchema = mongoose.Schema({
 
@@ -11,7 +12,7 @@ const benificairySchema = mongoose.Schema({
     },
     age: {
         type: Number,
-        required: true,
+        // required: true,
         trim: true
     },
     email: {
@@ -37,18 +38,18 @@ const benificairySchema = mongoose.Schema({
     },
     contact: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
     },
     location: {
         type: {
             type: String,
             enum: ['Point'],
-            required: true
+            // required: true
         },
         coordinates: {
             type: [Number],
-            required: true
+            // required: true
         }
     },
     requested_campaigns: [{
@@ -98,12 +99,15 @@ benificairySchema.statics.login = async function (email, password) {
     return null
 }
 
+
 benificairySchema.statics.signup = async function (benificiary) {
     try {
+        let { name, email, password } = benificiary
+        // let { name, age, email, password, contact, location } = benificiary
+
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
-        let { name, age, email, password, contact, location } = benificiary
         let exists = await this.findOne({ email }).exec()
         if (exists) {
             console.log("Alreay a same benificairy with the same email exists")
@@ -114,8 +118,8 @@ benificairySchema.statics.signup = async function (benificiary) {
         const user = await this.create({
             name: name, email: email,
             password: passEncrypted,
-            age: age, location: location,
-            contact: contact
+            // age: age, location: location,
+            // contact: contact
         })
 
         return user
