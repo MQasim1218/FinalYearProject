@@ -68,7 +68,7 @@ const Login = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Email}
-                name="email"
+                name="Email"
                 error={!!touched.Email && !!errors.Email}
                 // helperText={touched.Email && errors.Email}
                 sx={{ gridColumn: "span 2" }}
@@ -81,7 +81,7 @@ const Login = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Password}
-                name="password"
+                name="Password"
                 error={!!touched.Password && !!errors.Password}
                 // helperText={touched.Password && errors.Password}
                 sx={{ gridColumn: "span 2" }}

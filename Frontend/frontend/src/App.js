@@ -15,6 +15,7 @@ import Login from './scenes/login';
 import Register from './scenes/signup';
 import AllCampaigns from './scenes/allCampaigns';
 import UserSidebar from './scenes/global/UserSidebar';
+import AreaAnalytics from './scenes/areaAnalytics';
 
 function App() {
   const [theme, colorMode] = useMode();

@@ -4,16 +4,12 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
-<<<<<<< HEAD
-import { useState, useEffect } from "react";
-=======
 import { useState } from "react";
 import axois from "axios"
 
 import { useEffect } from "react";
 import axios from "axios";
 // import axios from "axios"
->>>>>>> ec5ddeb8c471f0b974a7655ec5df00262155e800
 
 //initializing all inputs with their keys
 const initialValues = {
