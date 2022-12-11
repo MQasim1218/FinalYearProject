@@ -83,7 +83,7 @@ function LinearProgressWithLabel(props) {
 }
 
 
-const AllCampaigns = ({ isDashboard = false }) => {
+const AllCampaigns = ({ isDashboard = false, title="ALL CAMPAIGNS", subtitle="See the list of all campaigns" }) => {
 
     //dummy data
     // const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
@@ -144,7 +144,7 @@ const AllCampaigns = ({ isDashboard = false }) => {
 
     return (
         <Box m="1.5rem 2.5rem" >
-            <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
+            <Header title={title} subtitle={subtitle} />
             <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))"
                 justifyContent="space-between" rowGap="20px" columnGap="1.33%"
                 sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
@@ -177,7 +177,7 @@ const AllCampaigns = ({ isDashboard = false }) => {
             <Box>
                 {!isDashboard ? (
                     <Box m="1.5rem 2.5rem">
-                        <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
+                        <Header title={title} subtitle={subtitle} />
                         <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}>
                             {campaigns.map((
                                 {

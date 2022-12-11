@@ -25,6 +25,7 @@ import GeographyMapDonor from './scenes/geographyMapDonor';
 import DonationReports from './scenes/donationReports';
 import ExpenditureReports from './scenes/expenditureReports';
 import CampaignInfo from './scenes/campaignInfo';
+import DonorInfo from './scenes/donorInfo';
 
 
 function App() {
@@ -73,6 +74,8 @@ function App() {
             <Route path="/donationreports" element = { <DonationReports/>}/>
             <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
             <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
+            <Route path="/donorinfo" element = { <DonorInfo/>}/>
+
 
 
           </Routes>
