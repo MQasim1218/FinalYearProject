@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Header from "../../components/Header";
@@ -31,12 +31,12 @@ const Login = () => {
   const { login } = useLogin()
 
   const handleFormSubmit = async (values) => {
-    console.log(values);
-    console.log("Here trying to login with a user!!")
+    console.log("Form values: ", values);
+    // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
-    let { user, token } = await login(email, password, userType)
-    // alert("no error so far")
-    navigate('/admin')
+    await login(email, password, userType)
+    alert("no error so far")
+    // navigate('/admin')
   };
 
   // console.log("first")
@@ -69,6 +69,7 @@ const Login = () => {
                 "& > div": { gridColumn: "span 4" },
               }}
             >
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -82,6 +83,7 @@ const Login = () => {
                 // helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -89,12 +91,33 @@ const Login = () => {
                 label="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.Password}
-                name="Password"
-                error={!!touched.Password && !!errors.Password}
-                // helperText={touched.Password && errors.Password}
+                value={values.password}
+                name="password"
+                error={!!touched.password && !!errors.password}
+                // helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 2" }}
               />
+
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  variant="filled"
+                  type="text"
+                  value={values.userType}
+                  name="userType"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={!!touched.userType && !!errors.userType}
+                  // helperText={touched.userType && errors.userType}
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  <MenuItem value={"donor"}>Donor</MenuItem>
+                  <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
+                </Select>
+              </FormControl>
+
             </Box>
 
             <Box display="grid" justifyContent="center" mt="20px">
@@ -105,6 +128,7 @@ const Login = () => {
                 Register
               </Button>
             </Box>
+
           </form>
         )}
       </Formik>

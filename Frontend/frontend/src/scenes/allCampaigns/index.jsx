@@ -100,14 +100,8 @@ const AllCampaigns = ({ isDashboard = false }) => {
         // console.log("Re run use Effect")
         const fetchCampaigns = async () => {
             try {
-                let res = null
-                // if (view === "donors") {
                 let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-                // setIsLoadn(false)
-                // } else {
                 let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-                // setIsLoadn(false)
-                // }
 
                 if (gen_res.status < 300 && gen_res.status < 300) {
                     let data = gen_res.data.concat(spec_res.data)
@@ -116,12 +110,6 @@ const AllCampaigns = ({ isDashboard = false }) => {
                     else console.log("No data recieved!")
                 }
 
-                // if (gen_res.status < 300) {
-                //     let data = gen_res.data
-                //     console.log(data)
-                //     if (data !== null) return data
-                //     else console.log("No data recieved!")
-                // }
             } catch (error) {
                 console.log(error)
             }
@@ -178,7 +166,18 @@ const AllCampaigns = ({ isDashboard = false }) => {
                 {!isDashboard ? (
                     <Box m="1.5rem 2.5rem">
                         <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
-                        <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}>
+                        <Box mt="20px" display="grid"
+                            gridTemplateColumns="repeat(4,minmax(0,1fr))"
+                            justifyContent="space-between"
+                            rowGap="20px"
+                            columnGap="1.33%"
+                            sx={{
+                                "& > div": {
+                                    gridColumn:
+                                        isNonMobile ? undefined : "span 4"
+                                }
+                            }}
+                        >
                             {
                                 campaigns.map((
                                     {

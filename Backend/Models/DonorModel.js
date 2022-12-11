@@ -4,12 +4,25 @@ const bcrypt = require("bcrypt")
 const accDetailsSchema = require('./AccountDetailsModel');
 const jwt = require("jsonwebtoken");
 
+
+// FIXME - for testing purposes, required sanction is commented out.. 
+// TODO: Needs to be re-enabled for later
 const donorSchema = mongoose.Schema({
     id: { type: mongoose.Schema.Types.ObjectId },
-    name: { type: String, required: true, trim: true },
-    age: { type: Number, required: true, trim: true },
+    name: {
+        type: String,
+        // required: true,
+        trim: true
+    },
+    age: {
+        type: Number,
+        // required: true,
+        trim: true
+    },
     email: {
-        type: String, required: true, trim: true,
+        type: String,
+        required: true,
+        trim: true,
         validate(value) {
             if (!validator.isEmail(value)) {
                 throw new Error("Email is invalid");
@@ -17,7 +30,10 @@ const donorSchema = mongoose.Schema({
         }
     },
     password: {
-        type: String, required: true, minlength: 7, trim: true,
+        type: String,
+        required: true,
+        minlength: 7,
+        // trim: true,
         validate(value) {
             if (value.toLowerCase().includes("password")) {
                 throw new Error('Password cannot contain the word: "password"');
@@ -25,7 +41,11 @@ const donorSchema = mongoose.Schema({
         },
     },
 
-    contact: { type: String, required: true, trim: true },
+    contact: {
+        type: String,
+        // required: true,
+        trim: true
+    },
     location: {
         type: {
             type: String,
@@ -34,7 +54,8 @@ const donorSchema = mongoose.Schema({
         },
         coordinates: {
             type: [Number],
-            required: true
+            // required: true
+            default: [0, 0]
         }
     },
     donated_campaigns_specific: [{
@@ -66,13 +87,19 @@ const createJWT = async (_id) => {
 
 donorSchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
+    console.log(email)
     let user = await this.findOne({ email: email }).exec()
     if (!user) {
         console.log("No donor with the provided email")
         return null
     }
 
+    console.log("Queried Donor: ", user)
     if (bcrypt.compareSync(password, user.password)) return { donor: user, token: await createJWT(user._id) }
+    // if (password === user.password) {
+    // console.log("first")
+    // return { donor: user, token: await createJWT(user._id) }
+    // }
     console.log("The password provided is incorrect!")
     return null
 

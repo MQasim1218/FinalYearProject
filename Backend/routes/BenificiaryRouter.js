@@ -21,7 +21,10 @@ router.post('/signup', async (req, res, next) => {
         return res.send("Cant create the benificiary account!")
     }
 
-    return res.json({ beneficiary, token })
+    return res.json({
+        user: beneficiary,
+        token: token
+    })
 
     // let ben = await beneficiaryModel.findOne({ email: req.body.email }).exec()
     // if (!ben) {

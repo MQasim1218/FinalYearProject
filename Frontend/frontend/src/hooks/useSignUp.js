@@ -13,7 +13,7 @@ const useSignUp = () => {
         setLoadn(false)
         setError(null)
 
-        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, JSON.stringify(user))
+        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user)
 
 
         if (!res.status < 300) {
@@ -28,7 +28,7 @@ const useSignUp = () => {
 
             // Update the UserContext::Set Logged user to the user object fields!
             dispatch({
-                type: "SIGNUP",
+                type: "LOGIN",
                 payload: { user, token }
             })
 

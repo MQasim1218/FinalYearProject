@@ -14,7 +14,6 @@ export const authReducer = (state, action) => {
             // Do not update the user. Keep it same as the current state!
             return { user: state }
     }
-    console.log("User Authentication State: ", state)
 }
 
 export const LoggedUserProvider = ({ children }) => {

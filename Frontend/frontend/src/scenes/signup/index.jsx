@@ -32,7 +32,7 @@ const Register = () => {
   const { signup, loadn, err } = useSignUp()
 
   const handleFormSubmit = async (values) => {
-    console.log("User Type: ", values);
+    console.log("Form values: ", values);
     await signup(values)
     // navigate('/')
   };

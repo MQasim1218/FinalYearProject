@@ -122,7 +122,10 @@ benificairySchema.statics.signup = async function (benificiary) {
             // contact: contact
         })
 
-        return user
+        return {
+            benificiary: user,
+            token: await createJWT(user._id)
+        }
     } catch (error) {
         console.log("Error occured During signup! Err: ", error.message)
         return null

@@ -13,7 +13,7 @@ let router = express.Router()
 router.post('/signup', DonorController.DonorSignUp)
 
 // Donor Login
-router.post('/login', DonorController.DonorSignUp)
+router.post('/login', DonorController.DonorSignIn)
 
 // Index page for Donors. Nothing here!
 router.get('/', (req, res, next) => { res.send("Welcome to donor page") })

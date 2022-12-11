@@ -11,19 +11,21 @@ const useLogin = () => {
 
         setLoadn(false)
         setError(null)
-
-        const res = await axios.post(`http://localhost:5000/${userType}/login`, JSON.stringify({ email, password }))
-
+        console.log("EMail: ", email)
+        const res = await axios.post(`http://localhost:5000/${userType}/login`, { email, password })
+        console.log("first")
         if (res.status < 400) {
 
-            let { user, token } = res.data
+            console.log("Trying to Login")
+            let user = res.data
+            console.log(user)
             // Add the user to the localstorage
-            localStorage.setItem("user", JSON.stringify({ user, token }))
+            localStorage.setItem("user", JSON.stringify({ user }))
 
             dispatch(
                 {
                     type: 'LOGIN',
-                    payload: { user, token }
+                    payload: { user }
                 }
             )
             setLoadn(false)
