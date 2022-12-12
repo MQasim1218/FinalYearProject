@@ -122,7 +122,7 @@ const Login = () => {
 
             <Box display="grid" justifyContent="center" mt="20px">
               {/* <Button type="submit" color="secondary" variant="contained" /> */}
-              <Button type="submit" color="secondary" variant="contained"> Login </Button>
+              <Button onClick={() => navigate('/donordashboard')} type="submit" color="secondary" variant="contained"> Login </Button>
               <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Dont have an account?</Typography>
               <Button onClick={() => navigate('/register')} type="submit" color="primary" variant="contained">
                 Register

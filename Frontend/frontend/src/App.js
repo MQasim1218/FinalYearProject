@@ -16,6 +16,17 @@ import Register from './scenes/signup';
 import AllCampaigns from './scenes/allCampaigns';
 import UserSidebar from './scenes/global/UserSidebar';
 import AreaAnalytics from './scenes/areaAnalytics';
+import Donate from './scenes/donate';
+import ViewDonations from './scenes/viewDonations';
+import ViewCampaigns from './scenes/viewCampaigns';
+import UserAnalytics from './scenes/userAnalytics';
+import TimeAnalytics from './scenes/timeAnalytics';
+import GeographyMapDonor from './scenes/geographyMapDonor';
+import DonationReports from './scenes/donationReports';
+import ExpenditureReports from './scenes/expenditureReports';
+import CampaignInfo from './scenes/campaignInfo';
+import DonorInfo from './scenes/donorInfo';
+
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -29,35 +40,49 @@ function App() {
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
 
-        {location.pathname === `/` || location.pathname === `/register` ? (
-          <div className="app">
-            <main className="content">
-              <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Routes>
-            </main>
-          </div>
-        ) :
-          <div className="app">
-            <UserSidebar />
-            <main className="content">
-              <Topbar />
-              <Routes>
-                <Route path="/admin" element={<Dashboard />} />
-                <Route path="/donor" element={<DonorDashboard />} />
-                <Route path="/donations" element={<Donations />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/recent" element={<Recent />} />
-                <Route path="/createCampaign" element={<CreateCampaign />} />
-                <Route path="/graphs" element={<Graphs />} />
-                <Route path="/geography" element={<GeographyMap />} />
-                <Route path="/viewcampaign" element={<AllCampaigns />} />
-              </Routes>
-            </main>
-          </div>
-        }
-      </ThemeProvider>
+    {location.pathname === `/` || location.pathname === `/register` ? (
+      <div className="app">
+      <main className="content">
+        <Routes>
+          <Route path="/" element = { <Login/>}/>
+          <Route path="/register" element = { <Register/>}/>
+        </Routes>
+      </main>
+    </div>
+    ) : 
+      <div className="app">
+        <UserSidebar/>
+        <main className="content">
+          <Topbar/>
+          <Routes>
+            <Route path="/donordashboard" element = { <DonorDashboard/>}/>
+            <Route path="/admindashboard" element = { <Dashboard/>}/>
+            <Route path="/donations" element = { <Donations/>}/>
+            <Route path="/users" element = { <Users/>}/>
+            <Route path="/recent" element = { <Recent/>}/>
+            <Route path="/createCampaign" element = { <CreateCampaign/>}/>
+            <Route path="/graphs" element = { <Graphs/>}/>
+            <Route path="/geography" element = { <GeographyMap/>}/>
+            <Route path="/viewcampaign" element = { <AllCampaigns/>}/>
+            <Route path="/donate" element = { <Donate/>}/>
+            <Route path="/viewdonations" element = { <ViewDonations/>}/>
+            <Route path="/viewcampaigns" element = { <ViewCampaigns/>}/>
+            <Route path="/useranalytics" element = { <UserAnalytics/>}/>
+            <Route path="/areaanalytics" element = { <AreaAnalytics/>}/>
+            <Route path="/timeanalytics" element = { <TimeAnalytics/>}/>
+            <Route path="/geographymap" element = { <GeographyMapDonor/>}/>
+            <Route path="/donationreports" element = { <DonationReports/>}/>
+            <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
+            <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
+            <Route path="/donorinfo" element = { <DonorInfo/>}/>
+
+
+
+          </Routes>
+        </main>
+      </div>
+      }
+    </ThemeProvider>
     </ColorModeContext.Provider>
 
   );

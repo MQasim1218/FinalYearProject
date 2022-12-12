@@ -817,6 +817,100 @@ export const mockLineData = [
   },
 ];
 
+export const mockCampaignLineData = [
+  {
+    id: "Donations",
+    color: tokens("dark").greenAccent[500],
+    data: [
+      {
+        x: "Monday",
+        y: 101,
+      },
+      {
+        x: "Tuesday",
+        y: 75,
+      },
+      {
+        x: "Wednesday",
+        y: 36,
+      },
+      {
+        x: "Thursday",
+        y: 116,
+      },
+      {
+        x: "Friday",
+        y: 222,
+      },
+      {
+        x: "Saturday",
+        y: 236,
+      },
+      {
+        x: "Sunday",
+        y: 88,
+      },
+    ],
+  },
+];
+
+export const mockUserLineData = [
+  {
+    id: "Donations",
+    color: tokens("dark").greenAccent[500],
+    data: [
+      {
+        x: "January",
+        y: 110,
+      },
+      {
+        x: "February",
+        y: 67,
+      },
+      {
+        x: "March",
+        y: 90,
+      },
+      {
+        x: "April",
+        y: 55,
+      },
+      {
+        x: "May",
+        y: 70,
+      },
+      {
+        x: "June",
+        y: 122,
+      },
+      {
+        x: "July",
+        y: 208,
+      },
+      {
+        x: "August",
+        y: 259,
+      },
+      {
+        x: "September",
+        y: 199,
+      },
+      {
+        x: "October",
+        y: 120,
+      },
+      {
+        x: "November",
+        y: 107,
+      },
+      {
+        x: "December",
+        y: 90,
+      },
+    ],
+  },
+];
+
 export const mockGeographyData = [
   {
     id: "AFG",
