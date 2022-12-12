@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Card, CardActions, CardContent, Collapse, Button, Typography, Rating, useTheme, useMediaQuery } from "@mui/material";
-import Header from '../../components/Header';
-import { tokens } from '../../theme';
+import Header from '../components/Header';
+import { tokens } from '../theme';
 import { borderRadius, color } from '@mui/system';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 //template for each campaign
 const Campaign = ({
@@ -21,15 +21,18 @@ const Campaign = ({
 
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
+    const navigate = useNavigate()
 
     //defining the see more button for each campaign
     const [isExpanded, setIsExpanded] = useState(false)
     return (
         <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem" }}>
             <CardContent>
-                <Typography variant='h3' color={colors.grey[100]} gutterBottom>
+                <Button onClick={() => navigate('/campaigninfo')}>
+                <Typography variant='h4' color={colors.grey[100]} gutterBottom>
                     {campaign_title}
                 </Typography>
+                </Button>
                 <Typography variant='h4' color={colors.blueAccent[400]}>
                     {category}
                 </Typography>
@@ -83,73 +86,22 @@ function LinearProgressWithLabel(props) {
 }
 
 
-const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
+const HomeScreenCampaigns = ({ isDashboard = false, title, subtitle }) => {
 
     //dummy data
-    // const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
+    const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 },{ id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
     //restrict for smaller screens
     const isNonMobile = useMediaQuery("(min-width: 1000px)")
-
-    // Msg while data is Loading!!
-    const [isLoadn, setIsLoadn] = useState(true)
-    const [campaigns, setCampaigns] = useState([])
-
-    // ############### USE Effect Hook #################
-    useEffect(() => {
-
-        // console.log("Re run use Effect")
-        const fetchCampaigns = async () => {
-            try {
-                let res = null
-                // if (view === "donors") {
-                let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-                // setIsLoadn(false)
-                // } else {
-                let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-                // setIsLoadn(false)
-                // }
-
-                if (gen_res.status < 300 && gen_res.status < 300) {
-                    let data = gen_res.data.concat(spec_res.data)
-                    // console.log(data)
-                    if (data !== null) return data
-                    else console.log("No data recieved!")
-                }
-
-                // if (gen_res.status < 300) {
-                //     let data = gen_res.data
-                //     console.log(data)
-                //     if (data !== null) return data
-                //     else console.log("No data recieved!")
-                // }
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        // console.log("kdfiodno")
-        fetchCampaigns().then((data) => {
-            console.log(data)
-            setIsLoadn(false)
-            let camps = data.map((camp, indx) => ({ ...camp, id: indx + 1 }))
-            setCampaigns(camps)
-        })
-        return (() => {
-            console.log("Nothing for clean up")
-            setIsLoadn(false)
-        })
-
-    }, []
-    )
 
 
     return (
         <Box m="1.5rem 2.5rem" >
             <Header title={title} subtitle={subtitle} />
-            <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))"
+            {/* <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))"
                 justifyContent="space-between" rowGap="20px" columnGap="1.33%"
                 sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
             >
-                {campaigns.map((
+                {data.map((
                     {
                         id,
                         campaign_title,
@@ -170,7 +122,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                         description={description}
                         progress={progress} />
                 ))}
-            </Box>
+            </Box> */}
 
 
 
@@ -179,7 +131,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                     <Box m="1.5rem 2.5rem">
                         <Header title={title} subtitle={subtitle} />
                         <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}>
-                            {campaigns.map((
+                            {data.map((
                                 {
                                     id,
                                     campaign_title,
@@ -206,7 +158,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                     :
 
                     (<Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: undefined } }}>
-                        {campaigns.map((
+                        {data.map((
                             {
                                 id,
                                 campaign_title,
@@ -237,4 +189,4 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
     )
 }
 
-export default AllCampaigns
+export default HomeScreenCampaigns

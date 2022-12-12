@@ -9,6 +9,7 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import AllCampaigns from "../allCampaigns";
+import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
 
 const DonorDashboard = () => {
     const theme = useTheme();
@@ -121,7 +122,7 @@ const DonorDashboard = () => {
         </Box>
       </Box>
       <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 0 10px"}}>Campaigns</Typography>
+              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 0 10px"}}>Latest Campaigns</Typography>
             </Box>
       <Box
         display="grid"
@@ -136,7 +137,7 @@ const DonorDashboard = () => {
           //gridRow="span 1"
           //backgroundColor={colors.primary[400]}
         >
-          <AllCampaigns isDashboard= {true}/>
+          <HomeScreenCampaigns isDashboard= {true}/>
         </Box>
         {/* <Box
           gridColumn="span 4"
@@ -191,7 +192,7 @@ const DonorDashboard = () => {
         </Box> */}
         </Box>
 
-        <Box mt="3rem"> 
+        <Box mt="5rem"> 
               <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
             </Box>
 

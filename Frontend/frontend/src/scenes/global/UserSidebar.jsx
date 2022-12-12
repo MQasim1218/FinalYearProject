@@ -114,8 +114,8 @@ const UserSidebar = () => {
                     {/* Menu Items here */}
                     <Box paddingLeft={isCollapsed ? undefined : '10%'}>
                         <Item title="Dashboard" to="/donordashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Donate</Typography>
-                        <Item title="Donate" to="/donate" icon={<VolunteerActivismOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Donations</Typography>
+                        {/* <Item title="Donate" to="/donate" icon={<VolunteerActivismOutlinedIcon/>} selected={selected} setSelected={setSelected} /> */}
                         <Item title="View Donations" to="/viewdonations" icon={<PreviewOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Campaigns</Typography>
                         <Item title="View Campaigns" to="/viewcampaigns" icon={<CampaignOutlinedIcon/>} selected={selected} setSelected={setSelected} />
