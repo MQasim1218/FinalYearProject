@@ -18,6 +18,17 @@ export const authReducer = (state, action) => {
 
 export const LoggedUserProvider = ({ children }) => {
     let [state, dispatch] = useReducer(authReducer, { user: null })
+
+    useEffect(() => {
+
+        let user = JSON.parse(localStorage.getItem('user'))
+        if (user) dispatch({ type: 'LOGIN', payload: user })
+        return () => {
+
+        }
+    }, [])
+
+
     console.log("User Authentication State: ", state)
 
     return (

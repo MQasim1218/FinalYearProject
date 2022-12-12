@@ -7,6 +7,6 @@ export const useAuthContext = () => {
     if (!loggedUser) {
         console.log("Cannot invoke the Authenticated User from outside the App Component")
     }
-    console.log('Logged-User: ', loggedUser)
+    // console.log('Logged-User: ', loggedUser)
     return loggedUser
 }
