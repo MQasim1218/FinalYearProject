@@ -1,8 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
 import { useAuthContext } from "./useAuthContext"
-import { useState } from "react"
-import axios from "axios"
 
 const useLogin = () => {
     const { dispatch } = useAuthContext()

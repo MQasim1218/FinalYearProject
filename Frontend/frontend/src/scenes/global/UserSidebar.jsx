@@ -5,17 +5,17 @@ import { Box, IconButton, Typography, useTheme } from '@mui/material'
 import { Link } from "react-router-dom"
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+// import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+// import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+// import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+// import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
+// import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
-import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
+// import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+// import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+// import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
+// import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 import StickyBox from "react-sticky-box";
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
 import PreviewOutlinedIcon from '@mui/icons-material/PreviewOutlined';
@@ -115,25 +115,6 @@ const UserSidebar = () => {
                         <Box paddingLeft={isCollapsed ? undefined : '10%'}>
                             <Item title="Dashboard" to="/donordashboard" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Donate</Typography>
-                            <Item title="Donate" to="/" icon={<VolunteerActivismOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="View Donations" to="/" icon={<PreviewOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Campaigns</Typography>
-                            <Item title="View Campaigns" to="/" icon={<CampaignOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Analytics</Typography>
-                            <Item title="User Analytics" to="/" icon={<ContactsOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Area Analytics" to="/" icon={<InsertChartOutlinedOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Time Analytics" to="/" icon={<TimelineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Geography Map" to="/" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Reports</Typography>
-                            <Item title="Donation Reports" to="/" icon={<SummarizeOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Expenditure Reports" to="/" icon={<RequestQuoteOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                        </Box>
-                    )}
-
-                        {/* Menu Items here */}
-                        <Box paddingLeft={isCollapsed ? undefined : '10%'}>
-                            <Item title="Dashboard" to="/donordashboard" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Donate</Typography>
                             <Item title="Donate" to="/donate" icon={<VolunteerActivismOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="View Donations" to="/viewdonations" icon={<PreviewOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Campaigns</Typography>
@@ -147,8 +128,6 @@ const UserSidebar = () => {
                             <Item title="Donation Reports" to="/donationreports" icon={<SummarizeOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Expenditure Reports" to="/expenditurereports" icon={<RequestQuoteOutlinedIcon />} selected={selected} setSelected={setSelected} />
                         </Box>
-
-
                     </Menu>
                 </ProSidebar>
             </StickyBox>
