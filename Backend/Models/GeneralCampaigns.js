@@ -14,16 +14,26 @@ let generalCampaignSchema = mongoose.Schema({
         },
         coordinates: {
             type: [Number],
-            required: true
+            // required: true
         }
     },
     archived: {
         type: Boolean,
         default: false
     },
-    catagory: { type: String, Enum: ["ABC", "DEF", "GHI"], required: true },
-    donations: [{ type: mongoose.Types.ObjectId, ref: 'donation' }],
-    completed: { type: Boolean, default: true }
+    catagory: {
+        type: String,
+        Enum: ["ABC", "DEF", "GHI"],
+        // required: true
+    },
+    donations: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'donation'
+    }],
+    completed: {
+        type: Boolean,
+        default: true
+    }
 },
     {
         timestamps: true

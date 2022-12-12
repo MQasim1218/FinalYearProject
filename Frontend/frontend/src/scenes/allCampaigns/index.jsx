@@ -126,8 +126,7 @@ const AllCampaigns = ({ isDashboard = false }) => {
             setIsLoadn(false)
         })
 
-    }, []
-    )
+    }, [])
 
 
     return (
