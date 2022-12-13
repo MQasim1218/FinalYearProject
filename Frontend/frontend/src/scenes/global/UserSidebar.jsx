@@ -239,8 +239,29 @@ const UserSidebar = () => {
                                 setSelected={setSelected}
                             />
                         </Box>
-                    </Menu>
-                </ProSidebar>
+                    )}
+
+                    {/* Menu Items here */}
+                    <Box paddingLeft={isCollapsed ? undefined : '10%'}>
+                        <Item title="Dashboard" to="/donordashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Donations</Typography>
+                        {/* <Item title="Donate" to="/donate" icon={<VolunteerActivismOutlinedIcon/>} selected={selected} setSelected={setSelected} /> */}
+                        <Item title="View Donations" to="/viewdonations" icon={<PreviewOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Campaigns</Typography>
+                        <Item title="View Campaigns" to="/viewcampaigns" icon={<CampaignOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
+                        <Item title="User Analytics" to="/useranalytics" icon={<ContactsOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Area Analytics" to="/areaanalytics" icon={<InsertChartOutlinedOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Time Analytics" to="/timeanalytics" icon={<TimelineOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Geography Map" to="/geographymap" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Reports</Typography>
+                        <Item title="Donation Reports" to="/donationreports" icon={<SummarizeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Expenditure Reports" to="/expenditurereports" icon={<RequestQuoteOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                    </Box>
+
+
+                </Menu>
+            </ProSidebar>
             </StickyBox>
         </Box>
     );

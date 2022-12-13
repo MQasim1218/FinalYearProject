@@ -16,6 +16,7 @@ import LineChart from "../../components/LineChart";
 import CampaignLineChart from "../../components/CampaignLineChart";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
+import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
 
 
 const CampaignInfo = () => {
@@ -346,7 +347,7 @@ const CampaignInfo = () => {
     </Box>
 
     <Box mt="2rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Browse</Typography>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Browse Similar Campaigns</Typography>
     </Box>
 
     <Box
@@ -359,9 +360,8 @@ const CampaignInfo = () => {
       <Box
         gridColumn="span 12"
         gridRow="span 2"
-        backgroundColor={colors.primary[400]}
       >
-          <AllCampaigns isDashboard= {true} title = "Similar Campaigns" subtitle="Browse similar campaigns"/>
+          <HomeScreenCampaigns isDashboard= {true} title = "" subtitle=""/>
       </Box>
     </Box>
   </Box>)

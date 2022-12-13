@@ -131,7 +131,7 @@ const DonorInfo = () => {
   
     return (<Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="User Info" subtitle="View information about your selected user" />
+        <Header title="User Info" subtitle="View user information" />
       </Box>
   
       <Box>

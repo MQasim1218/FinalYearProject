@@ -12,6 +12,7 @@ import AllCampaigns from "../allCampaigns";
 import { useState, useEffect } from "react";
 import useAxiosGet from '../../hooks/useAxiosGet'
 import axios from "axios";
+import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
 
 const DonorDashboard = () => {
   const theme = useTheme();
@@ -136,45 +137,45 @@ const DonorDashboard = () => {
             }
           />
         </Box> */}
-      <Box
-        gridColumn="span 4"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={donorDonations.length}
-          subtitle="Campaigns Participated"
-          progress="0.85"
-          increase="This Month: 1"
-          icon={
-            <CampaignOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="4"
+            subtitle="Campaigns Participated"
+            progress="0.85"
+            increase="This Month: 1"
+            icon={
+              <CampaignOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
       </Box>
-    </Box>
-    <Box>
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 0 10px" }}>Campaigns</Typography>
-    </Box>
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px"
-    >
-      {/* ROW 2 */}
-
+      <Box> 
+              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 0 10px"}}>Latest Campaigns</Typography>
+            </Box>
       <Box
-        gridColumn="span 12"
-      //gridRow="span 1"
-      //backgroundColor={colors.primary[400]}
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px"
       >
-        {/* <AllCampaigns isDashboard={true} /> */}
-      </Box>
-      {/* <Box
+        {/* ROW 2 */}
+        
+        <Box
+          gridColumn="span 12"
+          //gridRow="span 1"
+          //backgroundColor={colors.primary[400]}
+        >
+          <HomeScreenCampaigns isDashboard= {true}/>
+        </Box>
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -227,9 +228,9 @@ const DonorDashboard = () => {
         </Box> */}
     </Box>
 
-    <Box mt="3rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Charity Analytics</Typography>
-    </Box>
+        <Box mt="5rem"> 
+              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
+            </Box>
 
     <Box
       display="grid"
