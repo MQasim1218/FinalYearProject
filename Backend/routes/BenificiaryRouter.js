@@ -11,6 +11,8 @@ let router = express.Router()
 // #################  Authentication  ##################
 // #################  Authentication  ##################
 
+
+
 // Add a particular benificiary by his/her id
 // FIXME - There is an error with Benificiary signup. The user is created in db but an error is returned...
 router.post('/signup', async (req, res, next) => {
@@ -61,7 +63,7 @@ router.post("/login", async (req, res, next) => {
     })
 })
 
-// router.use(authorize)
+router.use(authorize)
 
 // #################  CRUD  ##################
 // #################  CRUD  ##################

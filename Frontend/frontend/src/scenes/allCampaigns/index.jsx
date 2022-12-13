@@ -5,7 +5,7 @@ import { tokens } from '../../theme';
 import { borderRadius, color } from '@mui/system';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import axios from 'axios';
-
+import { useAuthContext } from "../../hooks/useAuthContext"
 //template for each campaign
 const Campaign = ({
     id,
@@ -93,15 +93,35 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
     // Msg while data is Loading!!
     const [isLoadn, setIsLoadn] = useState(true)
     const [campaigns, setCampaigns] = useState([])
+    const { user } = useAuthContext()
 
     // ############### USE Effect Hook #################
     useEffect(() => {
 
+        console.log(user)
         // console.log("Re run use Effect")
         const fetchCampaigns = async () => {
             try {
-                let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-                let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
+                let gen_res = await axios.get(
+                    "http://localhost:5000/gen_campaigns/",
+                    {
+                        headers: {
+                            'Content-Type': 'application-json',
+                            'Authorization': `Bearer ${user.token}`,
+                        },
+
+                    }
+                )
+                let spec_res = await axios.get(
+                    "http://localhost:5000/spec_campaigns",
+                    {
+                        headers: {
+                            'Content-Type': 'application-json',
+                            'Authorization': `Bearer ${user.token}`,
+                        },
+
+                    }
+                )
 
                 if (gen_res.status < 300 && gen_res.status < 300) {
                     let data = gen_res.data.concat(spec_res.data)
@@ -115,12 +135,19 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
             }
         }
         // console.log("kdfiodno")
-        fetchCampaigns().then((data) => {
-            console.log(data)
-            setIsLoadn(false)
-            let camps = data.map((camp, indx) => ({ ...camp, id: indx + 1 }))
-            setCampaigns(camps)
-        })
+
+        if (user) {
+            fetchCampaigns().then((data) => {
+                console.log(data)
+                setIsLoadn(false)
+                let camps = data.map((camp, indx) => ({ ...camp, id: indx + 1 }))
+                setCampaigns(camps)
+            })
+        } else {
+            console.log("No user is Logged in")
+            alert("No user is logged in!!")
+        }
+
         return (() => {
             console.log("Nothing for clean up")
             setIsLoadn(false)

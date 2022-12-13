@@ -20,260 +20,261 @@ import UserBox from '../../components/UserBox';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
 import UserLineChart from '../../components/UserLineChart';
+import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
 
 const DonorInfo = () => {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-  
-    const [activeCampaigns, setActiveCamps] = useState([])
-    const [totDonations, setTotDon] = useState(0)
-    const [activeDonors, setActiveDonors] = useState([])
-    const [activeBenifs, setActiveBenifs] = useState([])
-    const [donations, setDonations] = useState([])
-  
-  
-    /**
-     * Lazy fetch all the dynamic data needed for the dashboard.
-     */
-  
-    //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
-  
-    // useEffect(() => {
-  
-    //   //   // Get all the campaigns and count them
-    //   //   // TODO: Cache these campaigns using context API
-    //   const getCampaigns = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-    //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-  
-    //       if (gen_res.status < 300 && gen_res.status < 300) {
-    //         let data = gen_res.data.concat(spec_res.data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-  
-    //   const getDonors = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         console.log(data)
-    //         setActiveDonors(data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-  
-    //   const getBenificiries = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/benificiary/")
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         console.log(data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-  
-    //   const getDonations = async () => {
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/donations/all/")
-    //       if (res.status < 400) {
-    //         let data = res.data
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-  
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-  
-    //   getDonations().then((dons) => {
-    //     console.log(dons)
-    //     setDonations(dons)
-  
-    //     let tot = 0
-    //     dons.forEach(don => {
-    //       tot += don.amount
-    //     });
-    //     console.log(tot)
-    //     // alert(tot)
-    //     setTotDon(tot)
-    //   })
-  
-    //   getCampaigns().then((camps) => {
-    //     setActiveCamps(camps)
-    //   })
-    //   getDonors().then((dons) => {
-    //     setActiveDonors(dons)
-    //   })
-    //   getBenificiries().then((benifs) => {
-    //     setActiveBenifs(benifs)
-    //   })
-  
-    //   return (() => console.log("No clean up"))
-    // }, [])
-  
-    return (<Box m="20px">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="User Info" subtitle="View user information" />
-      </Box>
-  
-      <Box>
-        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
-      </Box>
-  
-      {/* Grids and Charts */}
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const [activeCampaigns, setActiveCamps] = useState([])
+  const [totDonations, setTotDon] = useState(0)
+  const [activeDonors, setActiveDonors] = useState([])
+  const [activeBenifs, setActiveBenifs] = useState([])
+  const [donations, setDonations] = useState([])
+
+
+  /**
+   * Lazy fetch all the dynamic data needed for the dashboard.
+   */
+
+  //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
+
+  // useEffect(() => {
+
+  //   //   // Get all the campaigns and count them
+  //   //   // TODO: Cache these campaigns using context API
+  //   const getCampaigns = async () => {
+  //     // const res = await fetch('http://localhost:5000/admin')
+  //     try {
+  //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
+  //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
+
+  //       if (gen_res.status < 300 && gen_res.status < 300) {
+  //         let data = gen_res.data.concat(spec_res.data)
+  //         if (data !== null) return data
+  //         else console.log("No data recieved!")
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+
+  //   const getDonors = async () => {
+  //     // const res = await fetch('http://localhost:5000/admin')
+  //     try {
+  //       let res = await axios.get("http://localhost:5000/donor/allDonors")
+  //       if (res.status < 300) {
+  //         let data = res.data
+  //         console.log(data)
+  //         setActiveDonors(data)
+  //         if (data !== null) return data
+  //         else console.log("No data recieved!")
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+
+  //   const getBenificiries = async () => {
+  //     // const res = await fetch('http://localhost:5000/admin')
+  //     try {
+  //       let res = await axios.get("http://localhost:5000/benificiary/")
+  //       if (res.status < 300) {
+  //         let data = res.data
+  //         console.log(data)
+  //         if (data !== null) return data
+  //         else console.log("No data recieved!")
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+
+  //   const getDonations = async () => {
+  //     try {
+  //       let res = await axios.get("http://localhost:5000/donations/all/")
+  //       if (res.status < 400) {
+  //         let data = res.data
+  //         if (data !== null) return data
+  //         else console.log("No data recieved!")
+  //       }
+
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+
+  //   getDonations().then((dons) => {
+  //     console.log(dons)
+  //     setDonations(dons)
+
+  //     let tot = 0
+  //     dons.forEach(don => {
+  //       tot += don.amount
+  //     });
+  //     console.log(tot)
+  //     // alert(tot)
+  //     setTotDon(tot)
+  //   })
+
+  //   getCampaigns().then((camps) => {
+  //     setActiveCamps(camps)
+  //   })
+  //   getDonors().then((dons) => {
+  //     setActiveDonors(dons)
+  //   })
+  //   getBenificiries().then((benifs) => {
+  //     setActiveBenifs(benifs)
+  //   })
+
+  //   return (() => console.log("No clean up"))
+  // }, [])
+
+  return (<Box m="20px">
+    <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Header title="User Info" subtitle="View user information" />
+    </Box>
+
+    <Box>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
+    </Box>
+
+    {/* Grids and Charts */}
+    <Box
+      display="grid"
+      gridTemplateColumns="repeat(12, 1fr)"
+      gridAutoRows="140px"
+      gap="20px"
+    >
+      {/* ROW 1 */}
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
+        gridColumn="span 4"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
       >
-        {/* ROW 1 */}
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <UserBox
-            name="Aown R."
-            accounttype="Donor"
-            picture={<PersonOutlineOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />}
-            participated="5"
-            joindate="16-Oct-2019"
-            latestdonation="10-Dec-22"
-          />
-        </Box>
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="$500"
-            subtitle="Highest One Time Donation"
-            increase="This Month: $190"
-            icon={
-              <AttachMoneyOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="Account Tier"
-            subtitle="Gold"
-            increase="Awarded by: ADMIN"
-            icon={
-              <LocalPoliceOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-      </Box>
-      <Box mt="2rem">
-        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>User Analyitcs</Typography>
+        <UserBox
+          name="Aown R."
+          accounttype="Donor"
+          picture={<PersonOutlineOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />}
+          participated="5"
+          joindate="16-Oct-2019"
+          latestdonation="10-Dec-22"
+        />
       </Box>
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
+        gridColumn="span 4"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
       >
-        {/* ROW 2 */}
+        <StatBox
+          title="$500"
+          subtitle="Highest One Time Donation"
+          increase="This Month: $190"
+          icon={
+            <AttachMoneyOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 4"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title="Account Tier"
+          subtitle="Gold"
+          increase="Awarded by: ADMIN"
+          icon={
+            <LocalPoliceOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+    </Box>
+    <Box mt="2rem">
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>User Analyitcs</Typography>
+    </Box>
+    <Box
+      display="grid"
+      gridTemplateColumns="repeat(12, 1fr)"
+      gridAutoRows="140px"
+      gap="20px"
+    >
+      {/* ROW 2 */}
+      <Box
+        gridColumn="span 4"
+        gridRow="span 2"
+        backgroundColor={colors.primary[400]}
+        overflow="auto"
+      >
         <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`4px solid ${colors.primary[500]}`}
+          colors={colors.grey[100]}
+          p="15px"
         >
+          <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+            All Donations
+          </Typography>
+        </Box>
+        {donations.map((transaction, i) => (
           <Box
+
+            key={`${transaction._id}`}
             display="flex"
             justifyContent="space-between"
             alignItems="center"
             borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
             p="15px"
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              All Donations
-            </Typography>
-          </Box>
-          {donations.map((transaction, i) => (
-            <Box
-  
-              key={`${transaction._id}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              {/* {console.log(transaction)} */}
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction._id.slice(0, 8)}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.donor.name}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.grey[900]}
+            {/* {console.log(transaction)} */}
+            <Box>
+              <Typography
+                color={colors.greenAccent[500]}
+                variant="h5"
+                fontWeight="600"
               >
-                ${transaction.amount}
-              </Box>
+                {transaction._id.slice(0, 8)}
+              </Typography>
+              <Typography color={colors.grey[100]}>
+                {transaction.donor.name}
+              </Typography>
             </Box>
-          ))}
-        </Box>
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Yearly Donations</Typography>
-          <UserLineChart isDashboard={true} />
-        </Box>
-  
-        {/* <Box
+            <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+            <Box
+              backgroundColor={colors.greenAccent[500]}
+              p="5px 10px"
+              borderRadius="4px"
+              color={colors.grey[900]}
+            >
+              ${transaction.amount}
+            </Box>
+          </Box>
+        ))}
+      </Box>
+      <Box
+        gridColumn="span 8"
+        gridRow="span 2"
+        backgroundColor={colors.primary[400]}
+      >
+        <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Yearly Donations</Typography>
+        <UserLineChart isDashboard={true} />
+      </Box>
+
+      {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -324,28 +325,28 @@ const DonorInfo = () => {
             </Box>
           ))}
         </Box> */}
-      </Box>
-  
-      <Box mt="2rem">
-        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Campaigns Info</Typography>
-      </Box>
-  
+    </Box>
+
+    <Box mt="2rem">
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Campaigns Info</Typography>
+    </Box>
+
+    <Box
+      display="grid"
+      gridTemplateColumns="repeat(12, 1fr)"
+      gridAutoRows="140px"
+      gap="20px"
+    >
+      {/* ROW 3 */}
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
+        gridColumn="span 12"
+        gridRow="span 2"
+      //backgroundColor={colors.primary[400]}
       >
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 12"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-            <AllCampaigns isDashboard= {true} title = "Latest Donated Campaigns" subtitle="The last three recently donated campaigns of this user"/>
-        </Box>
+        <HomeScreenCampaigns isDashboard={true} title="Latest Donated Campaigns" subtitle="The last three recently donated campaigns of this user" />
       </Box>
-    </Box>)
+    </Box>
+  </Box>)
 }
 
 export default DonorInfo

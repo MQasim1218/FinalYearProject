@@ -18,7 +18,7 @@ router.post('/login', DonorController.DonorSignIn)
 // Index page for Donors. Nothing here!
 router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 
-// router.use(authorize)
+router.use(authorize)
 
 // Get all donors
 router.get('/allDonors', DonorController.AllDonors);

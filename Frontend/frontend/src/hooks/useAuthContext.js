@@ -10,3 +10,4 @@ export const useAuthContext = () => {
     // console.log('Logged-User: ', loggedUser)
     return loggedUser
 }
+

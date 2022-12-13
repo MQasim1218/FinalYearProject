@@ -41,7 +41,7 @@ const adminSchema = mongoose.Schema({
     }, // required
     contact: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
     }, // required
     location: {
@@ -52,7 +52,7 @@ const adminSchema = mongoose.Schema({
         },
         coordinates: {
             type: [Number],
-            required: true
+            // required: true
         }
 
     },

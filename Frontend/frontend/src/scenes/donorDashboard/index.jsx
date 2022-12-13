@@ -22,13 +22,18 @@ const DonorDashboard = () => {
   const [totDonations, setTotalDonations] = useState(0)
 
 
-
-
   useEffect(() => {
     const DonorDonations = async () => {
       // FIXME !!
       let donor_id = "63875b08b5a303b2acbf5c6d" // Hardconded value for the sake of testing purpose!!
-      let res = await axios.get(`http://localhost:5000/donor/${donor_id}/donations`)
+      let res = await axios.get(
+        `http://localhost:5000/donor/${donor_id}/donations`,
+        {
+          headers: {
+            // 'Authorization': `Bearer ${}`
+          }
+        }
+      )
       if (res.status < 400) return res.data
       else return null
     }

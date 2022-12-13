@@ -35,8 +35,8 @@ const Login = () => {
     // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
     await login(email, password, userType)
-    console.log("no error so far")
-    // navigate('/admin')
+    alert(`${userType} login sucessful`)
+    navigate(`/${userType}dashboard`)
   };
 
   // console.log("first")
@@ -122,7 +122,7 @@ const Login = () => {
 
             <Box display="grid" justifyContent="center" mt="20px">
               {/* <Button type="submit" color="secondary" variant="contained" /> */}
-              <Button onClick={() => navigate('/donordashboard')} type="submit" color="secondary" variant="contained"> Login </Button>
+              <Button type="submit" color="secondary" variant="contained"> Login </Button>
               <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Dont have an account?</Typography>
               <Button onClick={() => navigate('/register')} type="submit" color="primary" variant="contained">
                 Register
