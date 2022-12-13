@@ -51,7 +51,7 @@ function App() {
     </div>
     ) : 
       <div className="app">
-        <UserSidebar/>
+         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` ? (<Sidebar/>) : (<UserSidebar/>)}
         <main className="content">
           <Topbar/>
           <Routes>
@@ -70,13 +70,11 @@ function App() {
             <Route path="/useranalytics" element = { <DonorInfo/>}/>
             <Route path="/areaanalytics" element = { <AreaAnalytics/>}/>
             <Route path="/timeanalytics" element = { <TimeAnalytics/>}/>
-            <Route path="/geographymap" element = { <GeographyMapDonor/>}/>
+            <Route path="/donorgeographymap" element = { <GeographyMapDonor/>}/>
             <Route path="/donationreports" element = { <DonationReports/>}/>
             <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
             <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
             <Route path="/donorinfo" element = { <DonorInfo/>}/>
-
-
 
           </Routes>
         </main>
@@ -89,3 +87,13 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+			
+
+
+

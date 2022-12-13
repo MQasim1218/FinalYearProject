@@ -123,7 +123,7 @@ const UserSidebar = () => {
                         <Item title="User Analytics" to="/useranalytics" icon={<ContactsOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Area Analytics" to="/areaanalytics" icon={<InsertChartOutlinedOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Time Analytics" to="/timeanalytics" icon={<TimelineOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Geography Map" to="/geographymap" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Geography Map" to="/donorgeographymap" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Reports</Typography>
                         <Item title="Donation Reports" to="/donationreports" icon={<SummarizeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Expenditure Reports" to="/expenditurereports" icon={<RequestQuoteOutlinedIcon/>} selected={selected} setSelected={setSelected} />
