@@ -89,7 +89,9 @@ function App() {
                 {/* FIXME: Also need to shuffle the routes based on thier fucntionality */}
                 {/* FIXME: Also need some restructuring */}
                 {/* FIXME: Not all routes are accessible to all users, thus they need to be restricted from other users.. like benificiary cant donate */}
-                {/* <Route path="/donordashboard" element={user ? <DonorDashboard /> : <Login />} />
+                {/* 
+                
+                <Route path="/donordashboard/donate/:capmaignID" element={user ? <DonorDashboard /> : <Login />} />
                 <Route path="/admindashboard" element={user ? <Dashboard /> : <Login />} />
 
                 <Route path="/donations" element={user ? <Donations /> : <Login />} />
@@ -112,7 +114,8 @@ function App() {
                 <Route path="/donationreports" element={user ? <DonationReports /> : <Login />} />
                 <Route path="/expenditurereports" element={user ? <ExpenditureReports /> : <Login />} />
                 <Route path="/campaigninfo" element={user ? <CampaignInfo /> : <Login />} />
-                <Route path="/donorinfo" element={user ? <DonorInfo /> : <Login />} /> */}
+                <Route path="/donorinfo" element={user ? <DonorInfo /> : <Login />} /> 
+                */}
 
               </Routes>
             </main>
