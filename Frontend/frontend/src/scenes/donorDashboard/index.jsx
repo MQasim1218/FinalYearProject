@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import useAxiosGet from '../../hooks/useAxiosGet'
 import axios from "axios";
 import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const DonorDashboard = () => {
   const theme = useTheme();
@@ -20,17 +21,20 @@ const DonorDashboard = () => {
 
   const [donorDonations, setDonorDonations] = useState([])
   const [totDonations, setTotalDonations] = useState(0)
-
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const DonorDonations = async () => {
       // FIXME !!
-      let donor_id = "63875b08b5a303b2acbf5c6d" // Hardconded value for the sake of testing purpose!!
+      let donor_id = user.user.user._id // Hardconded value for the sake of testing purpose!!
+      console.log("Id:", donor_id)
+      console.log("token:", user.user.token)
+
       let res = await axios.get(
         `http://localhost:5000/donor/${donor_id}/donations`,
         {
           headers: {
-            // 'Authorization': `Bearer ${}`
+            'Authorization': `Bearer ${user.user.token}`
           }
         }
       )
@@ -142,45 +146,45 @@ const DonorDashboard = () => {
             }
           />
         </Box> */}
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="4"
-            subtitle="Campaigns Participated"
-            progress="0.85"
-            increase="This Month: 1"
-            icon={
-              <CampaignOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-      </Box>
-      <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 0 10px"}}>Latest Campaigns</Typography>
-            </Box>
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
+        gridColumn="span 4"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
       >
-        {/* ROW 2 */}
-        
-        <Box
-          gridColumn="span 12"
-          //gridRow="span 1"
-          //backgroundColor={colors.primary[400]}
-        >
-          <HomeScreenCampaigns isDashboard= {true}/>
-        </Box>
-        {/* <Box
+        <StatBox
+          title={donorDonations.length}
+          subtitle="Campaigns Participated"
+          progress="0.85"
+          increase="This Month: 1"
+          icon={
+            <CampaignOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+    </Box>
+    <Box>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 0 10px" }}>Latest Campaigns</Typography>
+    </Box>
+    <Box
+      display="grid"
+      gridTemplateColumns="repeat(12, 1fr)"
+      gridAutoRows="140px"
+      gap="20px"
+    >
+      {/* ROW 2 */}
+
+      <Box
+        gridColumn="span 12"
+      //gridRow="span 1"
+      //backgroundColor={colors.primary[400]}
+      >
+        <HomeScreenCampaigns isDashboard={true} />
+      </Box>
+      {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -233,9 +237,9 @@ const DonorDashboard = () => {
         </Box> */}
     </Box>
 
-        <Box mt="5rem"> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
-            </Box>
+    <Box mt="5rem">
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Charity Analytics</Typography>
+    </Box>
 
     <Box
       display="grid"

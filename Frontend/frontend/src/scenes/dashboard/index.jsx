@@ -297,7 +297,7 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Donations::dyn
+              Recent Donations
             </Typography>
           </Box>
           {donations.map((transaction, i) => (

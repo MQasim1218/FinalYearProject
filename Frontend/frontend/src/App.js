@@ -70,7 +70,7 @@ function App() {
                 <Route path="/createCampaign" element={<CreateCampaign />} />
                 <Route path="/graphs" element={<Graphs />} />
                 <Route path="/geography" element={<GeographyMap />} />
-                <Route path="/viewcampaign" element={<AllCampaigns />} />
+                {/* <Route path="/viewcampaign" element={<AllCampaigns />} /> */}
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/viewdonations" element={<ViewDonations />} />
                 <Route path="/viewcampaigns" element={<AllCampaigns />} />

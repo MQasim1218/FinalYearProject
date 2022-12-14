@@ -51,7 +51,7 @@ const UserSidebar = () => {
     const [selected, setSelected] = useState("Dashboard");
     const { user } = useAuthContext();
 
-    console.log("Current State is: ", user)
+    // console.log("Current State is: ", user.user.user.name)
 
     return (
         <Box
@@ -93,6 +93,7 @@ const UserSidebar = () => {
                                     ml="15px"
                                 >
                                     <Typography variant="h3" color={colors.grey[100]}>
+                                        {/* {user.user.user.user.name} */}
                                         DONOR
                                     </Typography>
                                     <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -132,7 +133,7 @@ const UserSidebar = () => {
                                         fontWeight="bold"
                                         sx={{ m: "10px 0 0 0" }}
                                     >
-                                        {user ? user.name : "No User"}
+                                        {user ? user.user.user.name : "No User"}
                                     </Typography>
                                 </Box>
                             </Box>

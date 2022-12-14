@@ -249,8 +249,9 @@ const GetDonatedCapmaigns = async (req, res, next) => {
 
 const GetDonations = async (req, res, next) => {
     try {
-        let donations = await DonationModel.find({ donor: req.params.id })
-        // console.log(donations)
+        let donations = await DonationModel.find({ donor: req.params.id }).populate('donor')
+
+        console.log(donations)
         res.json(donations)
     } catch (error) {
         res.send(error.message)

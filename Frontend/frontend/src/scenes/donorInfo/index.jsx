@@ -21,17 +21,14 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
 import UserLineChart from '../../components/UserLineChart';
 import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const DonorInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [activeCampaigns, setActiveCamps] = useState([])
-  const [totDonations, setTotDon] = useState(0)
-  const [activeDonors, setActiveDonors] = useState([])
-  const [activeBenifs, setActiveBenifs] = useState([])
   const [donations, setDonations] = useState([])
-
+  const { user } = useAuthContext()
 
   /**
    * Lazy fetch all the dynamic data needed for the dashboard.
@@ -39,96 +36,95 @@ const DonorInfo = () => {
 
   //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   //   // Get all the campaigns and count them
-  //   //   // TODO: Cache these campaigns using context API
-  //   const getCampaigns = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-  //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
+    //   //   // Get all the campaigns and count them
+    //   //   // TODO: Cache these campaigns using context API
+    //   const getCampaigns = async () => {
+    //     // const res = await fetch('http://localhost:5000/admin')
+    //     try {
+    //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
+    //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
 
-  //       if (gen_res.status < 300 && gen_res.status < 300) {
-  //         let data = gen_res.data.concat(spec_res.data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+    //       if (gen_res.status < 300 && gen_res.status < 300) {
+    //         let data = gen_res.data.concat(spec_res.data)
+    //         if (data !== null) return data
+    //         else console.log("No data recieved!")
+    //       }
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
 
-  //   const getDonors = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         setActiveDonors(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+    //   const getDonors = async () => {
+    //     // const res = await fetch('http://localhost:5000/admin')
+    //     try {
+    //       let res = await axios.get("http://localhost:5000/donor/allDonors")
+    //       if (res.status < 300) {
+    //         let data = res.data
+    //         console.log(data)
+    //         setActiveDonors(data)
+    //         if (data !== null) return data
+    //         else console.log("No data recieved!")
+    //       }
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
 
-  //   const getBenificiries = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/benificiary/")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+    //   const getBenificiries = async () => {
+    //     // const res = await fetch('http://localhost:5000/admin')
+    //     try {
+    //       let res = await axios.get("http://localhost:5000/benificiary/")
+    //       if (res.status < 300) {
+    //         let data = res.data
+    //         console.log(data)
+    //         if (data !== null) return data
+    //         else console.log("No data recieved!")
+    //       }
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
 
-  //   const getDonations = async () => {
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donations/all/")
-  //       if (res.status < 400) {
-  //         let data = res.data
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
+    const getDonations = async () => {
+      try {
+        let donor_id = user.user.user._id
+        let res = await axios.get(
+          `http://localhost:5000/donor/${donor_id}/donations`,
+          {
+            headers: {
+              'Authorization': `Bearer ${user.user.token}`
+            }
+          }
+        )
+        if (res.status < 400) {
+          if (res.data !== null) return res.data
+          else console.log("No data recieved!")
+        }
 
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
-  //   getDonations().then((dons) => {
-  //     console.log(dons)
-  //     setDonations(dons)
+    getDonations().then((dons) => {
+      console.log(dons)
+      setDonations(dons)
+    })
 
-  //     let tot = 0
-  //     dons.forEach(don => {
-  //       tot += don.amount
-  //     });
-  //     console.log(tot)
-  //     // alert(tot)
-  //     setTotDon(tot)
-  //   })
+    //   getCampaigns().then((camps) => {
+    //     setActiveCamps(camps)
+    //   })
+    //   getDonors().then((dons) => {
+    //     setActiveDonors(dons)
+    //   })
+    //   getBenificiries().then((benifs) => {
+    //     setActiveBenifs(benifs)
+    //   })
 
-  //   getCampaigns().then((camps) => {
-  //     setActiveCamps(camps)
-  //   })
-  //   getDonors().then((dons) => {
-  //     setActiveDonors(dons)
-  //   })
-  //   getBenificiries().then((benifs) => {
-  //     setActiveBenifs(benifs)
-  //   })
-
-  //   return (() => console.log("No clean up"))
-  // }, [])
+    return (() => console.log("No clean up"))
+  }, [])
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -155,13 +151,13 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <UserBox
-          name="Aown R."
+          name={user.user.user.name}
           accounttype="Donor"
           picture={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
           participated="5"
-          joindate="16-Oct-2019"
+          joindate={user.user.user.createdAt.slice(0, 10)}
           latestdonation="10-Dec-22"
         />
       </Box>
@@ -227,7 +223,7 @@ const DonorInfo = () => {
           p="15px"
         >
           <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-            All Donations
+            Recent Donations
           </Typography>
         </Box>
         {donations.map((transaction, i) => (

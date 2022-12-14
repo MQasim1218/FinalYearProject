@@ -96,10 +96,6 @@ donorSchema.statics.login = async function (email, password) {
 
     console.log("Queried Donor: ", user)
     if (bcrypt.compareSync(password, user.password)) return { donor: user, token: await createJWT(user._id) }
-    // if (password === user.password) {
-    // console.log("first")
-    // return { donor: user, token: await createJWT(user._id) }
-    // }
     console.log("The password provided is incorrect!")
     return null
 

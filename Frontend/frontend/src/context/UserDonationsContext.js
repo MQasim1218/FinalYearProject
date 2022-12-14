@@ -4,33 +4,33 @@ export const UserContext = createContext(null)
 
 export const authReducer = (state, action) => {
     switch (action.type) {
-        case 'LOGIN':
+        case 'FETCH':
             // Set the 'user' to the value contained in the payload 
-            console.log()
-            return { user: action.payload }
+            // console.log()
+            return { dons: action.payload }
         case 'LOGOUT':
-            // Re-Set the user value back to null 
-            return { user: null }
+            return { dons: null }
         default:
             // Do not update the user. Keep it same as the current state!
-            return { user: state }
+            return { dons: state }
     }
 }
 
-export const LoggedUserProvider = ({ children }) => {
-    let [state, dispatch] = useReducer(authReducer, { user: null })
+export const UserDonationsProvider = ({ children }) => {
+    let [state, dispatch] = useReducer(donsReducer, { donations: [] })
 
     useEffect(() => {
 
-        let user = JSON.parse(localStorage.getItem('user'))
-        if (user) dispatch({ type: 'LOGIN', payload: user })
+        let dons = JSON.parse(localStorage.getItem('donations'))
+        if (dons) dispatch({ type: 'FETCH', payload: dons })
         return () => {
+            console.log('this is it boss.. all you donated!!')
             // console.log("Some stupid error occuring in this code!")
         }
     }, [])
 
 
-    console.log("User Authentication State: ", state)
+    console.log("Donations State: ", state)
 
     return (
         <UserContext.Provider value={{ ...state, dispatch }}>
