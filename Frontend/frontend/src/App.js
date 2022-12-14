@@ -43,45 +43,41 @@ function App() {
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
 
-        {location.pathname === `/` || location.pathname === `/register` ? (
-          <div className="app">
-            <main className="content">
-              <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Routes>
-            </main>
-          </div>
-        ) :
-          <div className="app">
-            <UserSidebar />
-            {/* <Sidebar /> */}
-            <main className="content">
-              <Topbar />
-              <Routes>
-
-                {/* ##### FREE ROUTES ##### */}
-
-                <Route path="/donordashboard" element={<DonorDashboard />} />
-                <Route path="/admindashboard" element={<Dashboard />} />
-                <Route path="/donations" element={<Donations />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/recent" element={<Recent />} />
-                <Route path="/createCampaign" element={<CreateCampaign />} />
-                <Route path="/graphs" element={<Graphs />} />
-                <Route path="/geography" element={<GeographyMap />} />
-                {/* <Route path="/viewcampaign" element={<AllCampaigns />} /> */}
-                <Route path="/donate" element={<Donate />} />
-                <Route path="/viewdonations" element={<ViewDonations />} />
-                <Route path="/viewcampaigns" element={<AllCampaigns />} />
-                <Route path="/useranalytics" element={<DonorInfo />} />
-                <Route path="/areaanalytics" element={<AreaAnalytics />} />
-                <Route path="/timeanalytics" element={<TimeAnalytics />} />
-                <Route path="/geographymap" element={<GeographyMapDonor />} />
-                <Route path="/donationreports" element={<DonationReports />} />
-                <Route path="/expenditurereports" element={<ExpenditureReports />} />
-                <Route path="/campaigninfo" element={<CampaignInfo />} />
-                <Route path="/donorinfo" element={<DonorInfo />} />
+    {location.pathname === `/` || location.pathname === `/register` ? (
+      <div className="app">
+      <main className="content">
+        <Routes>
+          <Route path="/" element = { <Login/>}/>
+          <Route path="/register" element = { <Register/>}/>
+        </Routes>
+      </main>
+    </div>
+    ) : 
+      <div className="app">
+         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` ? (<Sidebar/>) : (<UserSidebar/>)}
+        <main className="content">
+          <Topbar/>
+          <Routes>
+            <Route path="/donordashboard" element = { <DonorDashboard/>}/>
+            <Route path="/admindashboard" element = { <Dashboard/>}/>
+            <Route path="/donations" element = { <Donations/>}/>
+            <Route path="/users" element = { <Users/>}/>
+            <Route path="/recent" element = { <Recent/>}/>
+            <Route path="/createCampaign" element = { <CreateCampaign/>}/>
+            <Route path="/graphs" element = { <Graphs/>}/>
+            <Route path="/geography" element = { <GeographyMap/>}/>
+            <Route path="/viewcampaign" element = { <AllCampaigns/>}/>
+            <Route path="/donate" element = { <Donate/>}/>
+            <Route path="/viewdonations" element = { <ViewDonations/>}/>
+            <Route path="/viewcampaigns" element = { <AllCampaigns/>}/>
+            <Route path="/useranalytics" element = { <DonorInfo/>}/>
+            <Route path="/areaanalytics" element = { <AreaAnalytics/>}/>
+            <Route path="/timeanalytics" element = { <TimeAnalytics/>}/>
+            <Route path="/donorgeographymap" element = { <GeographyMapDonor/>}/>
+            <Route path="/donationreports" element = { <DonationReports/>}/>
+            <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
+            <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
+            <Route path="/donorinfo" element = { <DonorInfo/>}/>
 
 
                 {/* ##### Restricted Routes ##### */}
@@ -128,3 +124,13 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+			
+
+
+
