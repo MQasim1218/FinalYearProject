@@ -115,6 +115,7 @@ const Login = () => {
                 >
                   <MenuItem value={"donor"}>Donor</MenuItem>
                   <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
+                  <MenuItem value={"admin"}>Admin</MenuItem>
                 </Select>
               </FormControl>
 

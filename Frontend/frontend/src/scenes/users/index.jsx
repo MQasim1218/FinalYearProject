@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Users = () => {
   const theme = useTheme();
@@ -77,6 +78,7 @@ const Users = () => {
   let [users, setUsers] = useState([])
   let [isLoading, setIsLoading] = useState(true)
   let [view, setView] = useState("donors") // True for Donor
+  let { user } = useAuthContext()
 
   useEffect(() => {
 
@@ -85,7 +87,15 @@ const Users = () => {
       try {
         let res = null
         if (view === "donors") {
-          res = await axios.get("http://localhost:5000/donor/allDonors")
+          res = await axios.get(
+            "http://localhost:5000/donor/allDonors",
+            {
+              headers: {
+                'Authorization': `Bearer ${user.user.token}`
+              }
+            }
+
+          )
           setIsLoading(false)
         } else {
           res = await axios.get("http://localhost:5000/benificiary")

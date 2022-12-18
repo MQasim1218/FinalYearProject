@@ -191,7 +191,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={activeBenifs.length}
+            // title={activeBenifs.length}
+            title="6"
             subtitle="Active Beneficiaries"
             progress={false}
             increase="-21% This Month dyn"
@@ -210,7 +211,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={activeDonors.length}
+            // title={activeDonors.length}
+            title="10"
             subtitle="Active Donors"
             progress={false}
             increase="+15% This Month dyn"

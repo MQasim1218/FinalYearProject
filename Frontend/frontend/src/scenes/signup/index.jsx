@@ -33,7 +33,7 @@ const Register = () => {
 
   const handleFormSubmit = async (values) => {
     console.log("Form values: ", values);
-    (await signup(values) ? navigate(`/${values.userType}/dashboard`) : navigate('/'))
+    (await signup(values) ? navigate(`/${values.userType}dashboard`) : navigate('/'))
   };
 
 
@@ -118,6 +118,7 @@ const Register = () => {
                 >
                   <MenuItem value={"donor"}>Donor</MenuItem>
                   <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
+                  <MenuItem value={"admin"}>Admin</MenuItem>
                 </Select>
               </FormControl>
             </Box>
