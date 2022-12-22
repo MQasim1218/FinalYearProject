@@ -26,7 +26,8 @@ import DonationReports from './scenes/donationReports';
 import ExpenditureReports from './scenes/expenditureReports';
 import CampaignInfo from './scenes/campaignInfo';
 import DonorInfo from './scenes/donorInfo';
-
+import AdminAnalytics from './scenes/adminAnalytics';
+import SuperSidebar from './scenes/global/SuperSidebar';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -39,7 +40,6 @@ function App() {
       <ThemeProvider theme={theme}>
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
-
     {location.pathname === `/` || location.pathname === `/register` ? (
       <div className="app">
       <main className="content">
@@ -51,7 +51,7 @@ function App() {
     </div>
     ) : 
       <div className="app">
-         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` ? (<Sidebar/>) : (<UserSidebar/>)}
+         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` || location.pathname === `/adminanalytics` ? (<Sidebar/>) : (<UserSidebar/>)}
         <main className="content">
           <Topbar/>
           <Routes>
@@ -74,15 +74,14 @@ function App() {
             <Route path="/donationreports" element = { <DonationReports/>}/>
             <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
             <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
-            <Route path="/donorinfo" element = { <DonorInfo/>}/>
-
+            <Route path="/donorinfo" element = { <DonorInfo/>}/>    
+            <Route path="/adminanalytics" element = { <AdminAnalytics/> }/>
           </Routes>
         </main>
       </div>
       }
     </ThemeProvider>
     </ColorModeContext.Provider>
-
   );
 }
 
