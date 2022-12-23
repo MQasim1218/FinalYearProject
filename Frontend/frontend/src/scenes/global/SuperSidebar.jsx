@@ -18,8 +18,8 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
-
-
+import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
+import PriceCheckOutlinedIcon from '@mui/icons-material/PriceCheckOutlined';
 
 
 const Item = ({title, to, icon, selected, setSelected}) => {
@@ -117,10 +117,13 @@ const SuperSidebar = () => {
                         <Item title="All Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="All Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="All Donations" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Allocate Donations</Typography>
+                        <Item title="Give Donations" to="/superdonation" icon={<PriceCheckOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
                         <Item title="Graphs" to="/graphs" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Reports" to="/adminanalytics" icon={<AnalyticsOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Reports" to="/superreports" icon={<SummarizeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                     </Box>
 
 

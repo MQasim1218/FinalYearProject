@@ -28,6 +28,8 @@ import CampaignInfo from './scenes/campaignInfo';
 import DonorInfo from './scenes/donorInfo';
 import AdminAnalytics from './scenes/adminAnalytics';
 import SuperSidebar from './scenes/global/SuperSidebar';
+import SuperReports from './scenes/superReports';
+import SuperDonation from './scenes/superDonation';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -51,7 +53,7 @@ function App() {
     </div>
     ) : 
       <div className="app">
-         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` || location.pathname === `/adminanalytics` ? (<Sidebar/>) : (<UserSidebar/>)}
+         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` || location.pathname === `/adminanalytics` || location.pathname === `/superreports` || location.pathname === `/superdonation` ? (<SuperSidebar/>) : (<UserSidebar/>)}
         <main className="content">
           <Topbar/>
           <Routes>
@@ -76,6 +78,10 @@ function App() {
             <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
             <Route path="/donorinfo" element = { <DonorInfo/>}/>    
             <Route path="/adminanalytics" element = { <AdminAnalytics/> }/>
+            <Route path="/superreports" element = { <SuperReports/> }/>
+            <Route path="/superdonation" element = { <SuperDonation/> }/>
+
+
           </Routes>
         </main>
       </div>

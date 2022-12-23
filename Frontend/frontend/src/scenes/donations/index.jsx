@@ -1,13 +1,22 @@
-import { Box } from "@mui/material";
+import { Box, Typography, useTheme, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataDonations } from "../../data/mockData";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+
+
+
+
+
+
 
 const Donations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  let [users, setUsers] = useState([])
+  let [isLoading, setIsLoading] = useState(true)
+  let [view, setView] = useState("donor")
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -90,6 +99,15 @@ const Donations = () => {
           },
         }}
       >
+        <FormControl >
+          <InputLabel>Filter</InputLabel>
+          <Select value={view} label="View" onChange={(e) => setView(e.target.value)}>
+            <MenuItem value="donor">Donor</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="superadmin">Super Admin</MenuItem>
+            <MenuItem value="category">Category</MenuItem>
+          </Select>
+        </FormControl>
         <DataGrid
           checkboxSelection
           rows={mockDataDonations}

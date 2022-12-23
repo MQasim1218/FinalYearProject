@@ -154,7 +154,7 @@ const Users = () => {
           <InputLabel>View</InputLabel>
           <Select value={view} label="View" onChange={(e) => setView(e.target.value)}>
             <MenuItem value="donors">Donor</MenuItem>
-            <MenuItem value="beneficiaries">Beneficiary</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
           </Select>
         </FormControl>
         {
