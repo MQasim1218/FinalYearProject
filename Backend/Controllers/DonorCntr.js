@@ -39,6 +39,7 @@ const DonorSignUp = async (req, res, next) => {
 }
 
 const DonorSignIn = async (req, res, next) => {
+    console.log("In donor signin")
     console.log("Request Recieved: ", req.body)
 
     let { email, password } = req.body
