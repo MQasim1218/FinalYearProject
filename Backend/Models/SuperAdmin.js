@@ -4,20 +4,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 
-const adminSchema = mongoose.Schema({
-    id: {
-        type: mongoose.Schema.Types.ObjectId
-    },
+const SuperAdminSchema = mongoose.Schema({
     name: {
         type: String,
-        // required: true,
+        required: true,
         trim: true
     }, // required
+
     age: {
         type: Number,
-        // required: true,
+        required: true,
         trim: true
     }, // required
+
     email: {
         type: String,
         // required: true,
@@ -28,6 +27,7 @@ const adminSchema = mongoose.Schema({
             }
         }
     }, // required
+
     password: {
         type: String,
         // required: true,
@@ -39,11 +39,13 @@ const adminSchema = mongoose.Schema({
             }
         },
     }, // required
+
     contact: {
         type: String,
         // required: true,
         trim: true,
     }, // required
+
     location: {
         type: {
             type: String,
@@ -54,22 +56,23 @@ const adminSchema = mongoose.Schema({
             type: [Number],
             // required: true
         }
-
     },
-    specific_campaigns: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'specific_campaign'
-    }], // Reference To the specific Campaigns Created by the Particular Admin
-    general_campaigns: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'general_campaign'
-    }], // Reference To the general Campaigns Created by the Particular Admin
+
+    Donations: {
+        type: mongoose.Types.ObjectId,
+        ref: 'AdminDonation'
+    },
+
+    DonorReference: {
+        name: String,
+        
+    }
+
     // Audit Reports Done by the Particular Admin
     // audit_reports: [{
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'audit'
     // }],
-    
 },
     {
         timestamps: true,

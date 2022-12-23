@@ -19,8 +19,14 @@ router.get("/all", async (req, res, next) => {
         res.send("cannot send data due to error: ", error)
     }
 })
+// Donor / Admin / SuperAdmin
 
-//FIXME - Consider removing this as this has been dealt with in the backend!
+// router.get("/all/admin", async (req, res, next) => {}) // Admin -> Campaign
+// router.get("/all/superAdmin", async (req, res, next) => {}) // SuperAdmin -> Admin
+
+
+
+// FIXME - Consider removing this as this has been dealt with in the backend!
 // router.get("/all/total", async (req, res, next) => {
 //     try {
 //         // let alldontions = await DonationModel.find({}).exec()
