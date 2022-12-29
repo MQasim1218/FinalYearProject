@@ -26,6 +26,10 @@ import DonationReports from './scenes/donationReports';
 import ExpenditureReports from './scenes/expenditureReports';
 import CampaignInfo from './scenes/campaignInfo';
 import DonorInfo from './scenes/donorInfo';
+import AdminAnalytics from './scenes/adminAnalytics';
+import SuperSidebar from './scenes/global/SuperSidebar';
+import SuperReports from './scenes/superReports';
+import SuperDonation from './scenes/superDonation';
 import { useAuthContext } from './hooks/useAuthContext';
 
 
@@ -42,7 +46,6 @@ function App() {
       <ThemeProvider theme={theme}>
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
-
     {location.pathname === `/` || location.pathname === `/register` ? (
       <div className="app">
       <main className="content">
@@ -54,7 +57,7 @@ function App() {
     </div>
     ) : 
       <div className="app">
-         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` ? (<Sidebar/>) : (<UserSidebar/>)}
+         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` || location.pathname === `/adminanalytics` || location.pathname === `/superreports` || location.pathname === `/superdonation` ? (<SuperSidebar/>) : (<UserSidebar/>)}
         <main className="content">
           <Topbar/>
           <Routes>
@@ -79,47 +82,12 @@ function App() {
             <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
             <Route path="/donorinfo" element = { <DonorInfo/>}/>
 
-
-                {/* ##### Restricted Routes ##### */}
-                {/* FIXME: These routes need to be user for the main deployment*/}
-                {/* FIXME: Also need to shuffle the routes based on thier fucntionality */}
-                {/* FIXME: Also need some restructuring */}
-                {/* FIXME: Not all routes are accessible to all users, thus they need to be restricted from other users.. like benificiary cant donate */}
-                {/* 
-                
-                <Route path="/donordashboard/donate/:capmaignID" element={user ? <DonorDashboard /> : <Login />} />
-                <Route path="/admindashboard" element={user ? <Dashboard /> : <Login />} />
-
-                <Route path="/donations" element={user ? <Donations /> : <Login />} />
-                <Route path="/users" element={user ? <Users /> : <Login />} />
-                <Route path="/recent" element={user ? <Recent /> : <Login />} />
-
-                <Route path="/createCampaign" element={user ? <CreateCampaign /> : <Login />} />
-                <Route path="/graphs" element={user ? <Graphs /> : <Login />} />
-                <Route path="/donate" element={user ? <Donate /> : <Login />} />
-                <Route path="/geography" element={user ? <GeographyMap /> : <Login />} />
-                <Route path="/viewcampaign" element={user ? <AllCampaigns /> : <Login />} />
-
-                <Route path="/viewdonations" element={user ? <ViewDonations /> : <Login />} />
-                <Route path="/viewcampaigns" element={user ? <ViewCampaigns /> : <Login />} />
-                <Route path="/useranalytics" element={user ? <UserAnalytics /> : <Login />} />
-                <Route path="/areaanalytics" element={user ? <AreaAnalytics /> : <Login />} />
-                <Route path="/timeanalytics" element={user ? <TimeAnalytics /> : <Login />} />
-
-                <Route path="/geographymap" element={user ? <GeographyMapDonor /> : <Login />} />
-                <Route path="/donationreports" element={user ? <DonationReports /> : <Login />} />
-                <Route path="/expenditurereports" element={user ? <ExpenditureReports /> : <Login />} />
-                <Route path="/campaigninfo" element={user ? <CampaignInfo /> : <Login />} />
-                <Route path="/donorinfo" element={user ? <DonorInfo /> : <Login />} /> 
-                */}
-
-              </Routes>
-            </main>
-          </div>
-        }
-      </ThemeProvider>
+          </Routes>
+        </main>
+      </div>
+      }
+    </ThemeProvider>
     </ColorModeContext.Provider>
-
   );
 }
 

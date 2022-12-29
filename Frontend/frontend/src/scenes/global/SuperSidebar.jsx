@@ -18,6 +18,8 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
+import PriceCheckOutlinedIcon from '@mui/icons-material/PriceCheckOutlined';
 
 
 const Item = ({title, to, icon, selected, setSelected}) => {
@@ -32,7 +34,8 @@ const Item = ({title, to, icon, selected, setSelected}) => {
     )
 }
 
-const Sidebar = () => {
+
+const SuperSidebar = () => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
     const [isCollapsed, setIsCollapsed] = useState(false)
@@ -66,7 +69,7 @@ const Sidebar = () => {
                         {!isCollapsed && (
                             <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
                                 <Typography variant="h3" color={colors.grey[100]} >
-                                    ADMIN
+                                    SUPER ADMIN
                                 </Typography>
                                 <IconButton onClick={()=> setIsCollapsed(!isCollapsed)} >
                                     <MenuOutlinedIcon/>
@@ -102,7 +105,7 @@ const Sidebar = () => {
                             </Box>
 
                             <Box textAlign="center">
-                                <Typography variant="h3" color={colors.grey[100]} fontWeight="bold" sx={{ m: "10px 0 0 0" }} >Aown R.</Typography>
+                                <Typography variant="h3" color={colors.grey[100]} fontWeight="bold" sx={{ m: "10px 0 0 0" }} >A. Salam</Typography>
                             </Box>
                         </Box>
                     )}
@@ -110,22 +113,17 @@ const Sidebar = () => {
                     {/* Menu Items here */}
                     <Box paddingLeft={isCollapsed ? undefined : '10%'}>
                         <Item title="Dashboard" to="/admindashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Account Data</Typography>
-                        <Item title="Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Donation Info" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Recent Donations" to="/recent" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Forms</Typography>
-                        <Item title="Create Campaign" to="/createCampaign" icon={<BorderColorOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        {/* <Item title="Manage Loans" to="/loans" icon={<CurrencyExchangeOutlinedIcon/>} selected={selected} setSelected={setSelected} /> */}
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
-                        <Item title="View Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="All Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="All Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="All Donations" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Allocate Donations</Typography>
+                        <Item title="Give Donations" to="/superdonation" icon={<PriceCheckOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
                         <Item title="Graphs" to="/graphs" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Self Analytics" to="/adminanalytics" icon={<AnalyticsOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-
-                        
-
+                        <Item title="Reports" to="/superreports" icon={<SummarizeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                     </Box>
 
 
@@ -138,4 +136,4 @@ const Sidebar = () => {
         )
 }
 
-export default Sidebar;
+export default SuperSidebar
