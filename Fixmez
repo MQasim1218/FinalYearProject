@@ -1,0 +1,2 @@
+// FIXME: Global context user is nested 3 levels deep => user.user.user._____
+// TODO: Need to set the logged in user to user.token/user.user.name

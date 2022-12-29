@@ -4,53 +4,110 @@ import { tokens } from "../../theme";
 import { mockDataDonations } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const ViewDonations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [donations, setDonations] = useState([])
+  const { user } = useAuthContext()
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "date", headerName: "Date" },
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 0.5
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      flex: 1
+    },
+
+    {
+      field: "name",
+      headerName: "Donor Name",
+      type: "number",
+      flex: 1
+
+      // headerAlign: "left",
+      // align: "left",
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "isLoan",
+      headerName: "Donation Type",
+      flex: 1,
+    },
     // {
-    //   field: "name",
-    //   headerName: "Name",
+    //   field: "email",
+    //   headerName: "Email Used",
     //   flex: 1,
-    //   cellClassName: "name-column--cell",
     // },
     // {
-    //   field: "age",
-    //   headerName: "Age",
-    //   type: "number",
-    //   headerAlign: "left",
-    //   align: "left",
+    //   field: "address",
+    //   headerName: "Address",
+    //   flex: 1,
     // },
-    {
-      field: "phone",
-      headerName: "Phone Number Used",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email Used",
-      flex: 1,
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-    },
-    {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
-    {
-      field: "donationamount",
-      headerName: "Donation Amount",
-      flex: 1,
-    },
+    // {
+    //   field: "city",
+    //   headerName: "City",
+    //   flex: 1,
+    // },
+    // {
+    //   field: "donationamount",
+    //   headerName: "Donation Amount",
+    //   flex: 1,
+    // },
   ];
+
+
+  useEffect(() => {
+
+    const getDonations = async () => {
+      let id = user.user.user._id
+      console.log("Token: ", user.user.token)
+      console.log("User Id: ", user.user.user._id)
+      let res = await axios.get(
+        `http://localhost:5000/donor/${id}/donations`,
+        {
+          headers: {
+            'Authorization': `Bearer ${user.user.token}`,
+            'Content-Type': 'application-json'
+          }
+        }
+      )
+
+      if (res.status < 400) {
+        // FIXME: Needs to get rid of user.user.user.name! Only user.obj.name
+        console.log("I guess we getting the donations for ", user.user.user.name)
+        return res.data
+      }
+      else return null
+    }
+
+
+    getDonations().then((donations) => {
+      let dons = donations.map((don, indx) => ({
+        id: indx + 1,
+        name: don.donor.name,
+        date: don.createdAt,
+        amount: don.amount,
+        isLoan: don.isLoan
+      }))
+      setDonations(dons)
+    })
+
+    return () => { }
+  }, [])
+
 
   return (
     <Box m="20px">
@@ -92,7 +149,8 @@ const ViewDonations = () => {
       >
         <DataGrid
           checkboxSelection
-          rows={mockDataDonations}
+          // rows={mockDataDonations}
+          rows={donations}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

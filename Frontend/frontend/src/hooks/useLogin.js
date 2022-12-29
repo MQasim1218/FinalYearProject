@@ -1,6 +1,6 @@
-import { useAuthContext } from "./useAuthContext"
-import { useState } from "react"
 import axios from "axios"
+import { useState } from "react"
+import { useAuthContext } from "./useAuthContext"
 
 const useLogin = () => {
     const { dispatch } = useAuthContext()
@@ -11,19 +11,21 @@ const useLogin = () => {
 
         setLoadn(false)
         setError(null)
-
-        const res = await axios.post(`http://localhost:5000/${userType}/login`, JSON.stringify({ email, password }))
-
+        console.log("Email: ", email)
+        const res = await axios.post(`http://localhost:5000/${userType}/login`, { email, password })
         if (res.status < 400) {
 
-            let { user, token } = res.data
+            console.log("first")
+            console.log("Trying to Login")
+            let user = res.data
+            console.log(user)
             // Add the user to the localstorage
-            localStorage.setItem("user", JSON.stringify({ user, token }))
+            localStorage.setItem("user", JSON.stringify({ user }))
 
             dispatch(
                 {
                     type: 'LOGIN',
-                    payload: { user, token }
+                    payload: { user }
                 }
             )
             setLoadn(false)

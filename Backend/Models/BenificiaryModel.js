@@ -27,9 +27,9 @@ const benificairySchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
         minlength: 7,
-        trim: true,
+        // trim: true,
         validate(value) {
             if (value.toLowerCase().includes("password")) {
                 throw new Error('Password cannot contain the word: "password"');
@@ -93,7 +93,7 @@ benificairySchema.statics.login = async function (email, password) {
         console.log("No benificiary with the provided email")
         return null
     }
-
+    // console.log(user)
     if (bcrypt.compareSync(password, user.password)) return { benificiary: user, token: await createJWT(user._id) }
     else console.log("The password provided is incorrect!")
     return null
@@ -103,6 +103,7 @@ benificairySchema.statics.login = async function (email, password) {
 benificairySchema.statics.signup = async function (benificiary) {
     try {
         let { name, email, password } = benificiary
+        // FIXME: Set the inputs back to normal.
         // let { name, age, email, password, contact, location } = benificiary
 
         const salt = await bcrypt.genSalt(13)
@@ -122,7 +123,12 @@ benificairySchema.statics.signup = async function (benificiary) {
             // contact: contact
         })
 
-        return user
+        console.log("Benificiary returned: ", user)
+
+        return {
+            benif: user,
+            token: await createJWT(user._id)
+        }
     } catch (error) {
         console.log("Error occured During signup! Err: ", error.message)
         return null

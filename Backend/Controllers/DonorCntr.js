@@ -21,13 +21,16 @@ const DonorSignUp = async (req, res, next) => {
     //     res.status(500).send("donor already exists!")
     try {
         console.log("Got a request for creating a new Donor")
-        let { donor, token } = await DonorModel.signup(req.body)
-        console.log("Donor: ", donor)
-        if (!donor) {
+        let auth_res = await DonorModel.signup(req.body)
+        if (!auth_res) {
             console.log("Cannot create an donor. Some error occured!")
             return res.send("Donor creation failed!")
         }
-        res.json({ donor: donor, token: token })
+
+        // If values are returned from the signup function
+        let { donor, token } = auth_res
+        console.log("Donor: ", donor)
+        res.json({ user: donor, token: token })
     } catch (error) {
         console.log("Error encountered: ", error.message)
         res.send("Donor Creation Failed")
@@ -36,20 +39,36 @@ const DonorSignUp = async (req, res, next) => {
 }
 
 const DonorSignIn = async (req, res, next) => {
-    let donor = await DonorModel.find({ email: req.body.email }).exec()
-    if (!donor) {
-        console.log("No donor with the given Email exists!!")
-        res.status(404).send("Donor credentials are incorrect")
-    } else {
-        // res.status(500).send("donor found")
-        console.log("Donor found!!")
-        if (req.body.password === donor.password) {
-            console.log("Donor signed in")
-            res.json(donor)
-        } else {
-            res.status(404).send("Incorrect password entered")
-        }
+    console.log("In donor signin")
+    console.log("Request Recieved: ", req.body)
+
+    let { email, password } = req.body
+    let login_res = await DonorModel.login(email, password)
+
+    if (!login_res) {
+        console.log("Some error occured while Donor Authentication")
+        return res.status(500).send("Can not sign you in due to some error")
     }
+    let { donor, token } = login_res
+    return res.json({
+        user: donor,
+        token: token
+    })
+    // let donor = await DonorModel.findOne({ email: req.body.email }).exec()
+    // console.log(donor)
+    // if (!donor) {
+    // console.log("No donor with the given Email exists!!")
+    // res.status(404).send("Donor credentials are incorrect")
+    // } else {
+    // res.status(500).send("donor found")
+    // console.log("Donor found!!")
+    // if (req.body.password === donor.password) {
+    // console.log("Donor signed in")
+    // res.json(donor)
+    // } else {
+    // res.status(404).send("Incorrect password entered")
+    // }
+    // }
 }
 
 const AllDonors = async (req, res, next) => {
@@ -231,7 +250,9 @@ const GetDonatedCapmaigns = async (req, res, next) => {
 
 const GetDonations = async (req, res, next) => {
     try {
-        let donations = await DonationModel.find({ donor: req.body.donor_id })
+        let donations = await DonationModel.find({ donor: req.params.id }).populate('donor')
+
+        console.log(donations)
         res.json(donations)
     } catch (error) {
         res.send(error.message)

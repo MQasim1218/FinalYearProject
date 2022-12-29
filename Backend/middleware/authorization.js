@@ -1,7 +1,7 @@
 const AdminModel = require("../Models/AdminModel")
 const { beneficiaryModel } = require("../Models/BenificiaryModel")
 const donorModel = require("../Models/DonorModel")
-
+const jwt = require('jsonwebtoken')
 
 
 const authorize = async (req, res, next) => {
@@ -14,13 +14,17 @@ const authorize = async (req, res, next) => {
     //     return res.send("Authorization failed, User Type not specified!")
     // }
     // console.log("auth: ", auth)
-    if (auth === null) {
+    if (auth == null) {
         console.log("No token recieved in the header!!")
         return res.status(401).send("You are not authenticated!!")
     }
+
+
     let token = auth.split(' ')[1]
+    console.log("Token: ", token)
     try {
         let jwtPayload = jwt.verify(token, process.env.JWT_SECRET)
+        console.log("jwtPayload recieved is: ", jwtPayload)
         let { id, userType } = jwtPayload
         if (id == null) {
             console.log("The User Id not stored in the Token!!")
@@ -41,13 +45,13 @@ const authorize = async (req, res, next) => {
             default:
                 break;
         }
-        if (req.user != null)
-            return res.send("Token verification failed")
+        if (req.user === null)
+            return res.send("Token not recognized!")
 
         next()
     } catch (error) {
         console.log("Token verification failed")
-        res.send("Token unrecognized")
+        res.status(404).send(`Token verification failed: ${error.message}`)
     }
 }
 

@@ -32,9 +32,8 @@ const Register = () => {
   const { signup, loadn, err } = useSignUp()
 
   const handleFormSubmit = async (values) => {
-    console.log("User Type: ", values);
-    await signup(values)
-    // navigate('/')
+    console.log("Form values: ", values);
+    (await signup(values) ? navigate(`/${values.userType}dashboard`) : navigate('/'))
   };
 
 
@@ -119,6 +118,7 @@ const Register = () => {
                 >
                   <MenuItem value={"donor"}>Donor</MenuItem>
                   <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
+                  <MenuItem value={"admin"}>Admin</MenuItem>
                 </Select>
               </FormControl>
             </Box>

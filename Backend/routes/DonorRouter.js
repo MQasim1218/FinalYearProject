@@ -13,12 +13,12 @@ let router = express.Router()
 router.post('/signup', DonorController.DonorSignUp)
 
 // Donor Login
-router.post('/login', DonorController.DonorSignUp)
+router.post('/login', DonorController.DonorSignIn)
 
 // Index page for Donors. Nothing here!
 router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 
-// router.use(authorize)
+router.use(authorize)
 
 // Get all donors
 router.get('/allDonors', DonorController.AllDonors);
@@ -35,6 +35,7 @@ router.get('/search_campaign/title', DonorController.SearchCampaignByTitle)
 // Filter campiagns based on Time Range, Title and/or Location
 router.get('/search_campaign/filter', DonorController.SearchCampaignByFilter)
 
+router.get('/:id/donations', DonorController.GetDonations)
 // Donor retrival
 router.get('/:id', DonorController.GetDonor)
 
@@ -45,7 +46,6 @@ router.delete('/:id',)
 
 router.post('/donate/:campaign_id', DonorController.Donate)
 
-router.get('/donations', DonorController.GetDonations)
 
 
 module.exports = router

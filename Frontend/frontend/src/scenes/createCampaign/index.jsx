@@ -23,7 +23,7 @@ const initialValues = {
 };
 
 //schema for validation
-const userSchema = yup.object().shape({
+const campaignSchema = yup.object().shape({
   campaign_title: yup.string().required("Required"),
   required_amount: yup.string().required("Required"),
   catagory: yup.string().required("Required"),
@@ -77,15 +77,7 @@ const CreateCampaign = () => {
   useEffect(() => {
 
     const getData = async () => {
-      const res = await fetch('http://localhost:5000/admin')
-      console.log("Got some data!")
 
-      if (res.ok) {
-        let data = await res.json()
-        console.log(data)
-        if (data !== null) console.log(data)
-        else console.log("No data recieved!")
-      }
     }
 
     getData()
@@ -103,8 +95,10 @@ const CreateCampaign = () => {
   const handleFormSubmit = async (values) => {
     console.log(values);
 
+    let camp = await axios.post(`http://localhost:5000/admin/637e3efa875994b2bc99e2b9/addGeneralCampaign`, values)
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
+    console.log("camp created: ", camp)
   };
 
 
@@ -118,7 +112,7 @@ const CreateCampaign = () => {
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
-        validationSchema={userSchema}
+        validationSchema={campaignSchema}
       >
         {({
           values,
@@ -230,7 +224,7 @@ const CreateCampaign = () => {
             </Box>
 
             <Box display="flex" justifyContent="center" mt="20px">
-              <Button onClick={handleFormSubmit} type="submit" color="secondary" variant="contained">
+              <Button type="submit" color="secondary" variant="contained">
                 Create New Campaign
               </Button>
             </Box>

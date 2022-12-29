@@ -39,7 +39,6 @@ app.use('/donations', donationRouter);
 app.use('/gen_campaigns', campaignsGenRouter);
 app.use('/spec_campaigns', campaignsSpecRouter);
 
-console.log("Sucessfully Started Node App")
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

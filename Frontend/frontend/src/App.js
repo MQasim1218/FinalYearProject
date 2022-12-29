@@ -37,10 +37,14 @@ import AdminDonations from "./scenes/donations/adminDonations"
 import SuperAdminDonations from "./scenes/donations/superAdminDonations"
 import CategoryDonations from "./scenes/donations/categoryDonations"
 
+import { useAuthContext } from './hooks/useAuthContext';
+
 
 function App() {
-  const [theme, colorMode] = useMode();
+  const [theme, colorMode] = useMode()
   const location = useLocation()
+  const { user } = useAuthContext();
+
 
   return (
     //Context for colormode, so we can use it anywhere.
@@ -96,6 +100,7 @@ function App() {
 
 
 
+            <Route path="/donorinfo" element = { <DonorInfo/>}/>
 
           </Routes>
         </main>

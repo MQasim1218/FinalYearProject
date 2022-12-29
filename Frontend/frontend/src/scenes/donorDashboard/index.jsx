@@ -5,20 +5,66 @@ import Geography from "../../components/Geography";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
-import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import AssistWalkerOutlinedIcon from "@mui/icons-material/AssistWalkerOutlined";
+import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import AllCampaigns from "../allCampaigns";
+import { useState, useEffect } from "react";
+import useAxiosGet from "../../hooks/useAxiosGet";
+import axios from "axios";
 import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const DonorDashboard = () => {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
-    return (<Box m="20px">
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Header title="Donor Dashboard" subtitle="Welcome to donor dashboard" />
-                {/* <Box>
+  const [donorDonations, setDonorDonations] = useState([]);
+  const [totDonations, setTotalDonations] = useState(0);
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    const DonorDonations = async () => {
+      // FIXME !!
+      let donor_id = user.user.user._id; // Hardconded value for the sake of testing purpose!!
+      console.log("Id:", donor_id);
+      console.log("token:", user.user.token);
+
+      let res = await axios.get(
+        `http://localhost:5000/donor/${donor_id}/donations`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.user.token}`,
+          },
+        }
+      );
+      if (res.status < 400) return res.data;
+      else return null;
+    };
+    // let donations_data = useAxiosGet("http://localhost:5000/donor/donations").then((data) => {
+
+    DonorDonations()
+      .then((donations) => {
+        if (donations === null) throw Error("No data recieved");
+
+        let tot = 0;
+        donations.forEach((don) => (tot += don.amount));
+        setTotalDonations(tot);
+        setDonorDonations(donations);
+        console.log(donorDonations);
+      })
+      .catch((error) => console.log("Error: ", error.message));
+
+    return () => {
+      console.log("Cleaning up the mess.. not quite actually.");
+    };
+  }, []);
+
+  return (
+    <Box m="20px">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="Donor Dashboard" subtitle="Welcome to donor dashboard" />
+        {/* <Box>
                     <Button sx={{
                     backgroundColor: colors.blueAccent[700],
                     color: colors.grey[100],
@@ -30,13 +76,19 @@ const DonorDashboard = () => {
                         Download Reports
                     </Button>
                 </Box> */}
-            </Box>
+      </Box>
 
-            <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "0px 0 10px 10px"}}>Your Analytics</Typography>
-            </Box>
+      <Box>
+        <Typography
+          variant="h4"
+          color={colors.blueAccent[500]}
+          sx={{ m: "0px 0 10px 10px" }}
+        >
+          Your Analytics
+        </Typography>
+      </Box>
 
-            {/* Grids and Charts */}
+      {/* Grids and Charts */}
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -52,7 +104,7 @@ const DonorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="$761"
+            title={totDonations}
             subtitle="Total Donated"
             progress="0.65"
             increase="This Month: $110"
@@ -109,7 +161,7 @@ const DonorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="4"
+            title={donorDonations.length}
             subtitle="Campaigns Participated"
             progress="0.85"
             increase="This Month: 1"
@@ -121,9 +173,15 @@ const DonorDashboard = () => {
           />
         </Box>
       </Box>
-      <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 0 10px"}}>Latest Campaigns</Typography>
-            </Box>
+      <Box>
+        <Typography
+          variant="h4"
+          color={colors.blueAccent[500]}
+          sx={{ m: "15px 0 0 10px" }}
+        >
+          Latest Campaigns
+        </Typography>
+      </Box>
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -131,13 +189,13 @@ const DonorDashboard = () => {
         gap="20px"
       >
         {/* ROW 2 */}
-        
+
         <Box
           gridColumn="span 12"
-          //gridRow="span 1"
-          //backgroundColor={colors.primary[400]}
+        //gridRow="span 1"
+        //backgroundColor={colors.primary[400]}
         >
-          <HomeScreenCampaigns isDashboard= {true}/>
+          <HomeScreenCampaigns isDashboard={true} />
         </Box>
         {/* <Box
           gridColumn="span 4"
@@ -190,13 +248,19 @@ const DonorDashboard = () => {
             </Box>
           ))}
         </Box> */}
-        </Box>
+      </Box>
 
-        <Box mt="5rem"> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
-            </Box>
+      <Box mt="5rem">
+        <Typography
+          variant="h4"
+          color={colors.blueAccent[500]}
+          sx={{ m: "15px 0 10px 10px" }}
+        >
+          Charity Analytics
+        </Typography>
+      </Box>
 
-        <Box
+      <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
@@ -258,12 +322,13 @@ const DonorDashboard = () => {
           >
             Geography Map
           </Typography>
-          <Box height="200px" >
-            <Geography isDashboard={true}/>
+          <Box height="200px">
+            <Geography isDashboard={true} />
           </Box>
         </Box>
       </Box>
-    </Box>)
-}
+    </Box>
+  );
+};
 
 export default DonorDashboard;

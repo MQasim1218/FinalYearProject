@@ -13,12 +13,13 @@ const useSignUp = () => {
         setLoadn(false)
         setError(null)
 
-        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, JSON.stringify(user))
+        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user)
 
 
         if (!res.status < 300) {
             setLoadn(true)
             setError("Failed to create user account")
+            return false
         } else {
             // Extract data from the response
             const { user, token } = res.data
@@ -28,11 +29,12 @@ const useSignUp = () => {
 
             // Update the UserContext::Set Logged user to the user object fields!
             dispatch({
-                type: "SIGNUP",
+                type: "LOGIN",
                 payload: { user, token }
             })
 
             setLoadn(false)
+            return true
         }
     }
     return { signup, loadn, err }

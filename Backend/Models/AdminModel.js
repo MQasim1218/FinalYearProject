@@ -10,17 +10,17 @@ const adminSchema = mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
+        // required: true,
         trim: true
     }, // required
     age: {
         type: Number,
-        required: true,
+        // required: true,
         trim: true
     }, // required
     email: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
         validate(value) {
             if (!validator.isEmail(value)) {
@@ -30,7 +30,7 @@ const adminSchema = mongoose.Schema({
     }, // required
     password: {
         type: String,
-        required: true,
+        // required: true,
         minlength: 7,
         trim: true,
         validate(value) {
@@ -41,7 +41,7 @@ const adminSchema = mongoose.Schema({
     }, // required
     contact: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
     }, // required
     location: {
@@ -52,7 +52,7 @@ const adminSchema = mongoose.Schema({
         },
         coordinates: {
             type: [Number],
-            required: true
+            // required: true
         }
 
     },
@@ -69,6 +69,7 @@ const adminSchema = mongoose.Schema({
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'audit'
     // }],
+    
 },
     {
         timestamps: true,
