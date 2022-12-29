@@ -1,12 +1,12 @@
 import { Box, Typography, useTheme, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataDonations } from "../../data/mockData";
-import Header from "../../components/Header";
+import { tokens } from "../../../theme";
+import { mockDataDonations } from "../../../data/mockData";
+import Header from "../../../components/Header";
 import { useEffect, useState } from "react";
 
 
-const Donations = () => {
+const DonorDonations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   let [users, setUsers] = useState([])
@@ -59,8 +59,7 @@ const Donations = () => {
   return (
     <Box m="20px">
       <Header
-        title="DONATIONS"
-        subtitle="List of Users and Donation Info"
+        title={view.toLocaleUpperCase() + " DONATIONS"} subtitle={"Manage " + view + " donations"}
       />
       <Box
         m="40px 0 0 0"
@@ -105,4 +104,4 @@ const Donations = () => {
   );
 };
 
-export default Donations;
+export default DonorDonations;

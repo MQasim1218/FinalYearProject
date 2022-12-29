@@ -115,8 +115,16 @@ const SuperSidebar = () => {
                         <Item title="Dashboard" to="/admindashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
                         <Item title="All Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="All Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="All Donations" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Users</Typography>
+                        <Item title="Admins" to="/admins" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Donors" to="/donors" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Donations</Typography>
+                        
+                        <Item title="Donor Donations" to="/donordonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Admin Donations" to="/admindonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Super Admin Donations" to="/superadmindonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Category Donations" to="/categorydonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Allocate Donations</Typography>
                         <Item title="Give Donations" to="/superdonation" icon={<PriceCheckOutlinedIcon/>} selected={selected} setSelected={setSelected} />
 
