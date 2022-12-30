@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const validator = require("validator");
 const bcrypt = require("bcrypt")
-const accDetailsSchema = require('../AccountDetailsModel');
+const accDetailsSchema = require('./AccountDetailsModel');
 const jwt = require("jsonwebtoken");
 
 

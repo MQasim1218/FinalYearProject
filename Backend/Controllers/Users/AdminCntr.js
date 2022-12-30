@@ -1,6 +1,6 @@
 const AdminModel = require("../../Models/Users/AdminModel")
 const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
-const SpecificCampaignModel = require("../../Models/SpecificCampaign")
+const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
