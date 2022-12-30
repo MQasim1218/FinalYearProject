@@ -1,7 +1,7 @@
-const DonorModel = require("../Models/DonorModel")
-const DonationModel = require("../Models/DonationModel")
-const SpecificCampaign = require("../Models/SpecificCampaign")
-const GeneralCampaign = require("../Models/GeneralCampaigns")
+const DonorModel = require("../../Models/DonorModel")
+const DonationModel = require("../../Models/DonationModel")
+const SpecificCampaign = require("../../Models/SpecificCampaign")
+const GeneralCampaign = require("../../Models/GeneralCampaigns")
 const { ViewSpecificCampaigns } = require("./AdminCntr")
 
 

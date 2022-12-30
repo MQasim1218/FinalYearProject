@@ -1,9 +1,9 @@
 const express = require('express')
-const AdminModel = require('../Models/AdminModel')
+const AdminModel = require('../../Models/AdminModel')
 const AdminController = require('../Controllers/AdminCntr')
-const GeneralCampaignModel = require("../Models/GeneralCampaigns")
-const SpecificCampaignModel = require("../Models/SpecificCampaign")
-const authorize = require('../middleware/authorization')
+const GeneralCampaignModel = require("../../Models/GeneralCampaigns")
+const SpecificCampaignModel = require("../../Models/SpecificCampaign")
+const authorize = require('../../middleware/authorization')
 
 
 let router = express.Router()
@@ -82,7 +82,7 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
             )
                 .exec()
             if (spc_ack !== null) res.json(spc_ack)
-            else { console.log("No capmaign found!!"); res.status(404).send("Didnt fond what you loooking for") }
+            else { console.log("No capmaign found!!"); res.status(404).send("Didnt find what you loooking for") }
         }
     } catch (error) {
         next(error)

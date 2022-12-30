@@ -5,7 +5,7 @@
  *      2. Describe what each route shall serve.
  *      3.  
  */
-const GeneralCampaigns = require("../Models/GeneralCampaigns")
+const SpecificCampaigns = require("../../Models/SpecificCampaign")
 const express = require('express')
 const router = express.Router()
 
@@ -14,22 +14,21 @@ const GetAllCampaigns = async (req, res, next) => {
     // console.log(req.body)
     try {
         console.log("I am here")
-        let gnrl = await GeneralCampaigns.find({}).exec()
-        res.json(gnrl)
+        let spec = await SpecificCampaigns.find({}).exec()
+        res.json(spec)
     } catch (error) {
         console.log(error)
-        // next(error)
-        res.send(error.message)
+        next(error)
     }
 }
 
 const GetOneCampaign = async (req, res, next) => {
     // console.log(req.body)
     try {
-        let gnrl = await GeneralCampaigns.findById(req.params.id).exec()
-        res.json(gnrl)
+        let spec = SpecificCampaigns.findById(req.params.id).exec()
+        res.json(spec)
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
         // res.send(error.message)
         next(error)
     }

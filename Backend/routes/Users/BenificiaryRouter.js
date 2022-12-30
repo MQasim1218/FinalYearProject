@@ -1,10 +1,9 @@
-const e = require('express')
 const express = require('express')
-const { beneficiaryModel } = require('../Models/BenificiaryModel')
-const SpecCapmaignModel = require('../Models/SpecificCampaign')
-const LoanModel = require('../Models/LoanModel')
-const Loan = require('../Models/LoanModel')
-const authorize = require('../middleware/authorization')
+const { beneficiaryModel } = require('../../Models/BenificiaryModel')
+const SpecCapmaignModel = require('../../Models/SpecificCampaign')
+const LoanModel = require('../../Models/LoanModel')
+const Loan = require('../../Models/LoanModel')
+const authorize = require('../../middleware/authorization')
 
 
 let router = express.Router()

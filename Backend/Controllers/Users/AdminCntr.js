@@ -1,6 +1,6 @@
-const AdminModel = require("../Models/AdminModel")
-const GeneralCampaignModel = require("../Models/GeneralCampaigns")
-const SpecificCampaignModel = require("../Models/SpecificCampaign")
+const AdminModel = require("../../Models/Users/AdminModel")
+const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
+const SpecificCampaignModel = require("../../Models/SpecificCampaign")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
@@ -29,7 +29,6 @@ const GetAllAdmins = async (req, res, next) => {
     });
 }
 
-
 const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
@@ -47,7 +46,6 @@ const AddNewAdmin = async (req, res, next) => {
         // next(error)
     }
 }
-
 
 const SignInAdmin = async (req, res, next) => {
     try {
@@ -119,7 +117,6 @@ const ChangeDetails = async (req, res, next) => {
     let newAdmin = await AdminModel.findById(req.params.id)
     res.json(newAdmin)
 }
-
 
 // Manipulate Campaigns
 const AddGeneralCampaign = async (req, res, next) => {
