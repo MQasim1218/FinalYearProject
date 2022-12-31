@@ -48,18 +48,18 @@ router.get('admin/:year/:month/:category?', SuperAdminController.GetMonthDonatio
 
 // REVIEW: Donations to an Admin between a Specified timeperiod
 // Get all supAdmin donations -- Filter for a particular category!!
-router.get('/admin/:id/range/:end_date/:end_date/:category?', SuperAdminController.GetAllDonationstoAdmin)
+router.get('/admin/:id/range/:end_date/:end_date/:category?', SuperAdminController.TODO)
 
 // Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/range/:start_date/:category?', SuperAdminController.GetYearDonationstoAdmin)
+router.get('/admin/range/:start_date/:category?', SuperAdminController.TODO)
 
 // Get donations made by the SuperAdmin in a timeRange
-router.get('admin/range/:start_date/:end_date/:category?', SuperAdminController.GetMonthDonationstoAdmin)
+router.get('admin/range/:start_date/:end_date/:category?', SuperAdminController.TODO)
 
 
 
 // Get all the Donations made by superadmin to an Admins sorted by the dates
-router.post('/donate/:admin', SuperAdminController.DonateToAdmin)
+router.post('/donate', SuperAdminController.DonateToAdmin)
 
 
 //// ! There is a requirement that the Super Admin registers the Donation Made by Donors against thier names.
