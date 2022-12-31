@@ -170,6 +170,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          borderRadius="10px"
         >
           <StatBox
             title="10"
@@ -189,6 +190,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          borderRadius="10px"
         >
           <StatBox
             title="10"
@@ -208,6 +210,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          borderRadius="10px"
         >
           <StatBox
             title="10"
@@ -227,6 +230,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          borderRadius="10px"
         >
           <StatBox
             title="10"
