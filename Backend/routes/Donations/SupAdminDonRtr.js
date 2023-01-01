@@ -38,23 +38,23 @@ router.get('/range/:start_date/:end_date/:category?', SuperAdminController.TODO)
 
 // REVIEW - Doantions to a Particular Donor
 // Get all supadmin donations -- Filter for a particular category!!
-router.get('/admin/:id/:category?', SuperAdminController.GetAllDonationstoAdmin)
+router.get('/admin/:admin_id/:category?', SuperAdminController.GetAllDonationstoAdmin)
 
 // Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/:year/:category?', SuperAdminController.GetYearDonationstoAdmin)
+router.get('/admin/:admin_id/:year/:category?', SuperAdminController.GetYearDonationstoAdmin)
 
 // Get donations made by the SuperAdmin in a timeRange
-router.get('admin/:year/:month/:category?', SuperAdminController.GetMonthDonationstoAdmin)
+router.get('/admin/:admin_id/:year/:month/:category?', SuperAdminController.GetMonthDonationstoAdmin)
 
 // REVIEW: Donations to an Admin between a Specified timeperiod
 // Get all supAdmin donations -- Filter for a particular category!!
-router.get('/admin/:id/range/:end_date/:end_date/:category?', SuperAdminController.TODO)
+router.get('/admin/:admin_id/range/:end_date/:category?', SuperAdminController.TODO)
 
 // Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/range/:start_date/:category?', SuperAdminController.TODO)
+router.get('/admin/:admin_id/range/:start_date/:category?', SuperAdminController.TODO)
 
 // Get donations made by the SuperAdmin in a timeRange
-router.get('admin/range/:start_date/:end_date/:category?', SuperAdminController.TODO)
+router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SuperAdminController.TODO)
 
 
 

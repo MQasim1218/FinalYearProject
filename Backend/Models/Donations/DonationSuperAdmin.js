@@ -13,7 +13,12 @@ const donorDonationSchema = mongoose.Schema({
     },
     donordonationId: {
         type: mongoose.Types.ObjectId,
-        required: true``
+        required: true
+    },
+    category: {
+        type: String,
+        required: true,
+        default: 'General'
     }
 
 
