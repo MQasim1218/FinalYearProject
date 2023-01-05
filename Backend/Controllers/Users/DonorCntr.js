@@ -1,4 +1,4 @@
-const DonorModel = require("../../Models/DonorModel")
+const DonorModel = require("../../Models/Users/DonorModel")
 const DonationModel = require("../../Models/DonationModel")
 const SpecificCampaign = require("../../Models/SpecificCampaign")
 const GeneralCampaign = require("../../Models/GeneralCampaigns")
@@ -30,7 +30,7 @@ const DonorSignUp = async (req, res, next) => {
         // If values are returned from the signup function
         let { donor, token } = auth_res
         console.log("Donor: ", donor)
-        res.json({ user: donor, token: token })
+        res.json({ donor, token: token })
     } catch (error) {
         console.log("Error encountered: ", error.message)
         res.send("Donor Creation Failed")

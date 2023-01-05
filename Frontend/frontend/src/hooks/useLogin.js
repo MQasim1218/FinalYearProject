@@ -20,12 +20,12 @@ const useLogin = () => {
             let user = res.data
             console.log(user)
             // Add the user to the localstorage
-            localStorage.setItem("user", JSON.stringify({ user }))
+            localStorage.setItem("user", JSON.stringify(user))
 
             dispatch(
                 {
                     type: 'LOGIN',
-                    payload: { user }
+                    payload: user
                 }
             )
             setLoadn(false)
