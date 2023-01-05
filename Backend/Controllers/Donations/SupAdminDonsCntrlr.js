@@ -174,7 +174,7 @@ const GetDonations_TimeRange = async (req, res, next) => {
 // * Donations made by SuperAdmin to a Particular Admin
 
 // All the doantions made to a particular admin since day 1
-const AdminAllDonations = async (req, res, next) => {
+const AllDonationsToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
         let adminId = req.params.admin_id
@@ -196,7 +196,7 @@ const AdminAllDonations = async (req, res, next) => {
 }
 
 // All the Donations to a particular Admin in an year. 
-const AdminYearDonations = async (req, res, next) => {
+const YearDonations_ToAdmin = async (req, res, next) => {
     try {
 
         let cat = req.params.category
@@ -230,7 +230,7 @@ const AdminYearDonations = async (req, res, next) => {
 }
 
 // Get Donations made in a month...
-const AdminMonthDonations = async (req, res, next) => {
+const MonthDonations_ToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
         let year = req.params.year
@@ -264,7 +264,7 @@ const AdminMonthDonations = async (req, res, next) => {
 }
 
 // Get Donations after a particular date
-const AdminDonations_After = async (req, res, next) => {
+const DonationsAfter_ToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
         let start_date = req.params.start_date
@@ -296,7 +296,7 @@ const AdminDonations_After = async (req, res, next) => {
 }
 
 
-const AdminDonations_Before = async (req, res, next) => {
+const Donations_Before_ToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
         let end_date = req.params.end_date
@@ -327,7 +327,7 @@ const AdminDonations_Before = async (req, res, next) => {
 }
 
 // Get Donations made in a month...
-const AdminDonations_TimeRange = async (req, res, next) => {
+const Donations_TimeRange_ToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
         let start_date = req.params.start_date

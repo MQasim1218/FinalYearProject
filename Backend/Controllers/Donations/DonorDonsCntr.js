@@ -20,7 +20,6 @@ const GetAllDonations = async (req, res, next) => {
     }
 }
 
-
 // Get all the Donations 
 const GetYearDonations = async (req, res, next) => {
     try {
@@ -49,7 +48,6 @@ const GetYearDonations = async (req, res, next) => {
         res.send(error)
     }
 }
-
 
 // Get Donations made by all the donors in a month...
 const GetMonthDonations = async (req, res, next) => {
@@ -83,7 +81,7 @@ const GetMonthDonations = async (req, res, next) => {
 }
 
 
-const GetDonationsAfter = async (req, res, next) => {
+const GetDonations_After = async (req, res, next) => {
     try {
         let cat = req.params.category
         let start_date = req.params.start_date
@@ -112,7 +110,7 @@ const GetDonationsAfter = async (req, res, next) => {
 }
 
 
-const GetDonationsBefore = async (req, res, next) => {
+const GetDonations_Before = async (req, res, next) => {
     try {
         let cat = req.params.category
         let start_date = req.params.end_date
@@ -171,4 +169,102 @@ const GetDonations_TimeRange = async (req, res, next) => {
     }
 }
 
-// * Individual donations by each seperate donor to charity.
+// * Individual donations by each seperate donor to ??? Campaign ?? Category.
+
+
+// REVIEW: Important todos!.
+// Donation(s) expended - Admins
+// Donation(s) expended - Admin -> Campaigns
+// Donation(s) expended - Campaigns over time.
+//
+
+const DonorAllDonations = async (req, res, next) => {
+    try {
+        let cat = req.params.category
+        let donor_id = req.params.donor_id
+        if (cat == null) {
+            // Get all the donations made by the Donors
+            let Dons = await DonorDons.find({
+                donor: donor_id
+            }).exec()
+            res.json(Dons)
+        } else {
+            // Get all the Donations by specific donor for a particular category.
+            let Dons = await DonorDons.find({
+                category: cat,
+                donor: donor_id
+            }).exec()
+            res.json(Dons)
+        }
+    } catch (error) {
+        console.log('error encountered while retrieving Siepr Admin donations!\nError: ', error)
+        res.send(error)
+    }
+}
+
+// Get donations of a donor in a year!
+const DonorYearDonations = async (req, res, next) => {
+    try {
+        let cat = req.params.category
+        let donor_id = req.params.donor_id
+        if (cat == null) {
+            // Get all the donations by the super Admin in a year.
+            let Dons = await DonorDons.find({
+                createdAt: {
+                    $gte: ISODate(`${year}-01-01`),
+                    $lt: ISODate(`${year + 1}-01-01`)
+                },
+                donor: donor_id
+            }).exec()
+            res.json(Dons)
+        } else {
+            let Dons = await DonorDons.find({
+                createdAt: {
+                    $gte: ISODate(`${year}-01-01`),
+                    $lt: ISODate(`${year + 1}-01-01`)
+                },
+                category: cat,
+                donor: donor_id
+            }).exec()
+            res.json(Dons)
+        }
+    } catch (error) {
+        console.log('error encountered while retrieving Siepr Admin donations!\nError: ', error)
+        res.send(error)
+    }
+}
+
+// Get the month donations of a donor!! 
+const DonorMonthDonations = async (req, res, next) => {
+    try {
+        let cat = req.params.category
+        let year = req.params.year
+        let month = req.params.month
+        let donor_id = req.params.donor_id
+
+        if (cat == null) {
+            // Get all the donations by the super Admin in a month.
+            let Dons = await DonorDons.find({
+                createdAt: {
+                    $gte: ISODate(`${year}-${month}-01`),
+                    $lt: ISODate(`${year}-${month + 1}-01`)
+                },
+                donor: donor_id
+            }).exec()
+            res.json(Dons)
+        } else {
+            let Dons = await DonorDons.find({
+                createdAt: {
+                    $gte: ISODate(`${year}-${month}-01`),
+                    $lt: ISODate(`${year}-${month + 1}-01`)
+                },
+                category: cat,
+                donor: donor_id
+            }).exec()
+            res.json(Dons)
+        }
+    } catch (error) {
+        console.log('error encountered while retrieving Donors donations!\nError: ', error)
+        res.send(error)
+    }
+}
