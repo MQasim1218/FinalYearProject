@@ -295,7 +295,7 @@ const DonationsAfter_ToAdmin = async (req, res, next) => {
 
 }
 
-
+// Get Donations to Admin before a particular date
 const Donations_Before_ToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
@@ -371,7 +371,7 @@ module.exports = {
     GetYearDonations, // Get Donations made by Admin in a year.
     GetMonthDonations, // Doantions by Sup Admin in a Month 
     GetAdminDonations, // Donations sent to an Admin come here.
-
-
+    Donations_TimeRange_ToAdmin,
+    Donations_Before_ToAdmin,
     DonateToAdmin, // Send money to Admin
 }

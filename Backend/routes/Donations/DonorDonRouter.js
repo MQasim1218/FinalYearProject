@@ -11,6 +11,7 @@
 
 
 const router = require('express').Router()
+const DonorDonationController = require('../../Controllers/Donations/DonorDonsCntr')
 
 /**
  *  ############################# SECTION #############################
@@ -18,24 +19,24 @@ const router = require('express').Router()
  */
 
 // All the donation made by all the donors.
-router.get('/:category?', DonorDonationController.TODO)
+router.get('/:category?', DonorDonationController.GetAllDonations)
 
 // All donations by the donors in a year
-router.get('/:year/:category?', DonorDonationController.TODO)
+router.get('/:year/:category?', DonorDonationController.GetYearDonations)
 
 // All donations by donors in a month
-router.get('/:year/:month/:category?', DonorDonationController.TODO)
+router.get('/:year/:month/:category?', DonorDonationController.GetMonthDonations)
 
 // REVIEW: Donations by all donors recieved between a Specified timeperiod
 
 // Get donations made by the Donors before a date
-router.get('/range/:end_date/:category?', DonorDonationController.TODO)
+router.get('/range/:end_date/:category?', DonorDonationController.GetDonations_Before)
 
 // Get donations made by the Donors after a date
-router.get('/range/:start_date/:category?', DonorDonationController.TODO)
+router.get('/range/:start_date/:category?', DonorDonationController.GetDonations_After)
 
 // Get donations made by the Donors between a timeperiod
-router.get('/range/:start_date/:end_date/:category?', DonorDonationController.TODO)
+router.get('/range/:start_date/:end_date/:category?', DonorDonationController.GetDonations_TimeRange)
 
 
 
@@ -47,15 +48,17 @@ router.get('/range/:start_date/:end_date/:category?', DonorDonationController.TO
 
 
 // All the donation made by a donor.
-router.get('/:donor_id/:category?', DonorDonationController.TODO)
+router.get('/:donor_id/:category?', DonorDonationController.DonorAllDonations)
 
 // All donations in a year
-router.get('/:donor_id/:year/:category?', DonorDonationController.TODO)
+router.get('/:donor_id/:year/:category?', DonorDonationController.DonorYearDonations)
 
 // All donations in a year
-router.get('/:donor_id/:year/:month/:category?', DonorDonationController.TODO)
+router.get('/:donor_id/:year/:month/:category?', DonorDonationController.DonorMonthDonations)
 
 // REVIEW: Donations between a Specified timeperiod
+// ! Below here.. most things need to be implemented!!
+// ! Hope we pass todays scrutiny.
 
 // Get donations made by a Donor before a date
 router.get('/:donor_id/range/:end_date/:category?', DonorDonationController.TODO)

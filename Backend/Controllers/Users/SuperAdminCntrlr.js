@@ -16,7 +16,9 @@
 
 
 // NOTE: This function returns all the Donations made by the SuperAdmin. 
-const UpdateAccountDetails = async (req, res, next) => { }
+const UpdateAccountDetails = async (req, res, next) => {
+
+}
 
 // Get all the Donations 
 const ChangePassword = async (req, res, next) => { }

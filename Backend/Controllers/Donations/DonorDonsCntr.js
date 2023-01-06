@@ -268,3 +268,17 @@ const DonorMonthDonations = async (req, res, next) => {
         res.send(error)
     }
 }
+
+
+module.exports = {
+    DonorDons,
+    DonorAllDonations,
+    DonorMonthDonations,
+    DonorYearDonations,
+    GetAllDonations,
+    GetDonations_After,
+    GetDonations_Before,
+    GetDonations_TimeRange,
+    GetYearDonations,
+    GetMonthDonations
+}
