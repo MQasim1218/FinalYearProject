@@ -30,6 +30,13 @@ import AdminAnalytics from './scenes/adminAnalytics';
 import SuperSidebar from './scenes/global/SuperSidebar';
 import SuperReports from './scenes/superReports';
 import SuperDonation from './scenes/superDonation';
+import Admins from './scenes/admins';
+import Donors from './scenes/donors';
+import DonorDonations from "./scenes/donations/donorDonations"
+import AdminDonations from "./scenes/donations/adminDonations"
+import SuperAdminDonations from "./scenes/donations/superAdminDonations"
+import CategoryDonations from "./scenes/donations/categoryDonations"
+
 import { useAuthContext } from './hooks/useAuthContext';
 
 
@@ -57,7 +64,7 @@ function App() {
     </div>
     ) : 
       <div className="app">
-         {location.pathname === `/admindashboard` || location.pathname === `/donations` || location.pathname === `/users`|| location.pathname === `/recent` || location.pathname === `/createCampaign` || location.pathname === `/graphs` || location.pathname === `/geography` || location.pathname === `/viewcampaign` || location.pathname === `/adminanalytics` || location.pathname === `/superreports` || location.pathname === `/superdonation` ? (<SuperSidebar/>) : (<UserSidebar/>)}
+         {location.pathname === `/donordashboard` || location.pathname === `/viewdonations` || location.pathname === `/viewcampaigns`|| location.pathname === `/useranalytics` || location.pathname === `/areaanalytics` || location.pathname === `/timeanalytics` || location.pathname === `/donorgeographymap` || location.pathname === `/donationreports` || location.pathname === `/expenditurereports`  ? (<UserSidebar/>) : (<SuperSidebar/>)}
         <main className="content">
           <Topbar/>
           <Routes>
@@ -80,6 +87,19 @@ function App() {
             <Route path="/donationreports" element = { <DonationReports/>}/>
             <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
             <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
+            <Route path="/donorinfo" element = { <DonorInfo/>}/>    
+            <Route path="/adminanalytics" element = { <AdminAnalytics/> }/>
+            <Route path="/superreports" element = { <SuperReports/> }/>
+            <Route path="/superdonation" element = { <SuperDonation/> }/>
+            <Route path="/admins" element = { <Admins/> }/>
+            <Route path="/donors" element = { <Donors/> }/>
+            <Route path="/donordonations" element = { <DonorDonations/> }/>
+            <Route path="/admindonations" element = { <AdminDonations/> }/>
+            <Route path="/superadmindonations" element = { <SuperAdminDonations/> }/>
+            <Route path="/categorydonations" element = { <CategoryDonations/> }/>
+
+
+
             <Route path="/donorinfo" element = { <DonorInfo/>}/>
 
           </Routes>

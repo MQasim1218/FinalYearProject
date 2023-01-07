@@ -28,7 +28,9 @@ const DonorInfo = () => {
   const colors = tokens(theme.palette.mode);
 
   const [donations, setDonations] = useState([])
-  const { user } = useAuthContext()
+
+  //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
+  //const { user } = useAuthContext('aown')
 
   /**
    * Lazy fetch all the dynamic data needed for the dashboard.
@@ -87,43 +89,44 @@ const DonorInfo = () => {
     //     }
     //   }
 
-    const getDonations = async () => {
-      try {
-        let donor_id = user.user.user._id
-        let res = await axios.get(
-          `http://localhost:5000/donor/${donor_id}/donations`,
-          {
-            headers: {
-              'Authorization': `Bearer ${user.user.token}`
-            }
-          }
-        )
-        if (res.status < 400) {
-          if (res.data !== null) return res.data
-          else console.log("No data recieved!")
-        }
+    //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
+    // const getDonations = async () => {
+    //   try {
+    //     let donor_id = user.user.user._id
+    //     let res = await axios.get(
+    //       `http://localhost:5000/donor/${donor_id}/donations`,
+    //       {
+    //         headers: {
+    //           'Authorization': `Bearer ${user.user.token}`
+    //         }
+    //       }
+    //     )
+    //     if (res.status < 400) {
+    //       if (res.data !== null) return res.data
+    //       else console.log("No data recieved!")
+    //     }
 
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
 
-    getDonations().then((dons) => {
-      console.log(dons)
-      setDonations(dons)
-    })
+    // getDonations().then((dons) => {
+    //   console.log(dons)
+    //   setDonations(dons)
+    // })
 
-    //   getCampaigns().then((camps) => {
-    //     setActiveCamps(camps)
-    //   })
-    //   getDonors().then((dons) => {
-    //     setActiveDonors(dons)
-    //   })
-    //   getBenificiries().then((benifs) => {
-    //     setActiveBenifs(benifs)
-    //   })
+    // //   getCampaigns().then((camps) => {
+    // //     setActiveCamps(camps)
+    // //   })
+    // //   getDonors().then((dons) => {
+    // //     setActiveDonors(dons)
+    // //   })
+    // //   getBenificiries().then((benifs) => {
+    // //     setActiveBenifs(benifs)
+    // //   })
 
-    return (() => console.log("No clean up"))
+    // return (() => console.log("No clean up"))
   }, [])
 
   return (<Box m="20px">
@@ -151,13 +154,13 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <UserBox
-          name={user.user.user.name}
+          name="{user.user.user.name}"
           accounttype="Donor"
           picture={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
           participated="5"
-          joindate={user.user.user.createdAt.slice(0, 10)}
+          joindate="{user.user.user.createdAt.slice(0, 10)}"
           latestdonation="10-Dec-22"
         />
       </Box>

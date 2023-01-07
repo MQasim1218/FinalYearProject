@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid"
 import { tokens } from "../../theme"
 import { mockDataUsers, mockDataBeneficiary, mockDataDonor } from "../../data/mockData"
@@ -7,11 +7,22 @@ import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import StatBox from "../../components/StatBox";
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import LineChart from "../../components/LineChart";
+import PersonOutlineOutlined from "@mui/icons-material/PersonOutlineOutlined";
+import CalendarChart from "../../components/CalendarChart";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
-const Users = () => {
+
+const Donors = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const currentYear = new Date().getFullYear();
   // The columns gets all the data we specify below from the mockdata file and store it
   const columns = [
     { field: "id", headerName: "ID" },
@@ -39,29 +50,20 @@ const Users = () => {
       flex: 1,
     },
     {
-      field: "accounttype",
-      headerName: "Account Type",
+      field: "totaldonations",
+      headerName: "Total Donations",
       flex: 1,
-      renderCell: ({ row: { accounttype } }) => {
-        return (
-          <Box
-            width="60%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor={
-              colors.greenAccent[400]
-            }
-            borderRadius="4px"
-          >
-            {accounttype === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {accounttype}
-            </Typography>
-          </Box>
-        );
-      },
+    },
+    
+    {
+      
+      // Okay
+      field: 'actions',
+      type: 'actions',
+      width: 100,
+      getActions: () => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" />,
+      ],
     },
     {
       // Okay
@@ -77,8 +79,9 @@ const Users = () => {
   // ! Data
   let [users, setUsers] = useState([])
   let [isLoading, setIsLoading] = useState(true)
-  let [view, setView] = useState("donors") // True for Donor
-  let { user } = useAuthContext()
+
+  //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
+  let [view, setView] = useState("donors")
 
   useEffect(() => {
 
@@ -86,16 +89,9 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         let res = null
+  //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
         if (view === "donors") {
-          res = await axios.get(
-            "http://localhost:5000/donor/allDonors",
-            {
-              headers: {
-                'Authorization': `Bearer ${user.user.token}`
-              }
-            }
-
-          )
+          res = await axios.get("http://localhost:5000/donor/allDonors")
           setIsLoading(false)
         } else {
           res = await axios.get("http://localhost:5000/benificiary")
@@ -128,6 +124,87 @@ const Users = () => {
     <Box m="20px">
 
       <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px">
+        {/* ROW 1 */}
+        <Box
+          gridColumn="span 6"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="110"
+            subtitle="Total Donors"
+            progress={false}
+            icon={
+              <PersonAddIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 6"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="$10,500"
+            subtitle="Total Donations"
+            progress={false}
+            increase={"+25% in "+currentYear} 
+            icon={
+              <AttachMoneyOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        
+
+        {/* ROW 2 */}
+        <Box
+          gridColumn="span 12"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Activity Calendar
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            <CalendarChart isDashboard={true} />
+          </Box>
+        </Box>
+        
+      </Box>
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -173,4 +250,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Donors;
