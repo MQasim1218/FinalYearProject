@@ -16,12 +16,16 @@ var donorRouter = require('./routes/Users/DonorRouter');
 var adminRouter = require('./routes/Users/AdminRouter');
 var superAdminRouter = require('./routes/Users/SuperAdminRouter')
 
-// NOTE: All dampaigns routers
+// NOTE: All campaigns routers
 var campaignsGenRouter = require('./routes/Campaigns/CampaignGenRouter');
 var campaignsSpecRouter = require('./routes/Campaigns/CampaignSpecRouter');
 
 // NOTE: All donation routers
 var adminDonationRouter = require('./routes/Donations/AdminDonRouter');
+var donorDonationRouter = require('./routes/Donations/DonorDonRouter');
+var superAdminDonationRouter = require('./routes/Donations/SupAdminDonRtr');
+
+// TODO: Reports and Analytics routers need to be configured as required!!  
 
 var app = express();
 
@@ -48,7 +52,7 @@ app.use('/donor', donorRouter);
 
 // Donation Routers
 app.use('/adminDonations', adminDonationRouter);
-app.use('/donorDonations', adminDonationRouter);
+app.use('/donorDonations', donorDonationRouter);
 app.use('/superAdminDonations', adminDonationRouter);
 app.use('/benificiaryDonation', adminDonationRouter);
 

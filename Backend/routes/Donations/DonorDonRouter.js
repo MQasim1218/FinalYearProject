@@ -61,13 +61,13 @@ router.get('/:donor_id/:year/:month/:category?', DonorDonationController.DonorMo
 // ! Hope we pass todays scrutiny.
 
 // Get donations made by a Donor before a date
-router.get('/:donor_id/range/:end_date/:category?', DonorDonationController.TODO)
+// router.get('/:donor_id/range/:end_date/:category?', DonorDonationController.TODO)
 
 // Get donations made by a Donor after a date
-router.get('/:donor_id/range/:start_date/:category?', DonorDonationController.TODO)
+// router.get('/:donor_id/range/:start_date/:category?', DonorDonationController.TODO)
 
 // Get donations made by a Donor between a timeperiod
-router.get('/:donor_id/range/:start_date/:end_date/:category?', DonorDonationController.TODO)
+// router.get('/:donor_id/range/:start_date/:end_date/:category?', DonorDonationController.TODO)
 
 // Get all Admin donation entries for a particular donor donations!!
 // Track where all the money of this donor has been spent!!
@@ -80,9 +80,11 @@ router.get('/:donor_id/range/:start_date/:end_date/:category?', DonorDonationCon
  * 4. Track the campaigns where the money was spent.. 
  * 5. Return the campaigns where the money went!!
  */
-router.get('/:donor_id/expended_donations/:category?',)
+// router.get('/:donor_id/expended_donations/:category?',)
 
 // Get all Admin donation entries for a single donation by a particular donor!!
 // Usage: Is donation mese kitna part Student Support ke lye gaya hai..
 // Example2: Is donation ka kon kon se Campaigns me istemaal hua hai. 
-router.get('/expended_donations/:donation_id/:category?',)
+// router.get('/expended_donations/:donation_id/:category?',)
+
+module.exports = router

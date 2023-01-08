@@ -10,61 +10,52 @@
  */
 
 const router = require('express').Router()
-import {
-    GetAllDonations,
-    GetYearDonations,
-    GetMonthDonations,
-    GetAllDonationstoAdmin,
-    GetYearDonationstoAdmin,
-    GetMonthDonationstoAdmin,
-    GetAdminDonations,
-    DonateToAdmin,
-    MakeDonationToAdmin
-} from '../../Controllers/Donations/SupAdminDonsCntrlr'
+const SupAdminDonCntr = require('../../Controllers/Donations/SupAdminDonsCntrlr')
+
+
 // REVIEW - *** All_Donations *** Based on Time!!
 
 // Get all supadmin donations -- Filter for a particular category!!
-router.get('/:category?', GetAllDonations)
+router.get('/:category?', SupAdminDonCntr.GetAllDonations)
 
 // Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/:year/:category?', GetYearDonations)
+router.get('/:year/:category?', SupAdminDonCntr.GetYearDonations)
 
 // Get donations made by the SuperAdmin in a Month
-router.get('/:year/:month/:category?', GetMonthDonations)
+router.get('/:year/:month/:category?', SupAdminDonCntr.GetMonthDonations)
 
 
 // REVIEW: Donations between a Specified timeperiod
 // Get donations made by the SuperAdmin before a date
-router.get('/range/:end_date/:category?', TODO)
+router.get('/range/:end_date/:category?', SupAdminDonCntr.GetDonations_Before)
 
 // Get donations made by the SuperAdmin after a date
-router.get('/range/:start_date/:category?', TODO)
+router.get('/range/:start_date/:category?', SupAdminDonCntr.GetDonations_After)
 
 // Get donations made by the SuperAdmin between a timeperiod
-router.get('/range/:start_date/:end_date/:category?', TODO)
+router.get('/range/:start_date/:end_date/:category?', SupAdminDonCntr.GetDonations_TimeRange)
 
 
 
-
-// REVIEW - Doantions to a Particular Donor
+// REVIEW - Doantions to a Particular Admin
 // Get all supadmin donations -- Filter for a particular category!!
-router.get('/admin/:admin_id/:category?', GetAllDonationstoAdmin)
+router.get('/admin/:admin_id/:category?', SupAdminDonCntr.AllDonationsToAdmin)
 
 // Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/:admin_id/:year/:category?', GetYearDonationstoAdmin)
+router.get('/admin/:admin_id/:year/:category?', SupAdminDonCntr.YearDonations_ToAdmin)
 
 // Get donations made by the SuperAdmin in a timeRange
-router.get('/admin/:admin_id/:year/:month/:category?', GetMonthDonationstoAdmin)
+router.get('/admin/:admin_id/:year/:month/:category?', SupAdminDonCntr.MonthDonations_ToAdmin)
 
 // REVIEW: Donations to an Admin between a Specified timeperiod
 // Get all supAdmin donations -- Filter for a particular category!!
-router.get('/admin/:admin_id/range/:end_date/:category?', TODO)
+router.get('/admin/:admin_id/range/:end_date/:category?', SupAdminDonCntr.Donations_Before_ToAdmin)
 
 // Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/:admin_id/range/:start_date/:category?', TODO)
+router.get('/admin/:admin_id/range/:start_date/:category?', SupAdminDonCntr.Donations_After_ToAdmin)
 
 // Get donations made by the SuperAdmin in a timeRange
-router.get('admin/:admin_id/range/:start_date/:end_date/:category?', TODO)
+router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SupAdminDonCntr.Donations_TimeRange_ToAdmin)
 
 
 
@@ -72,14 +63,12 @@ router.get('admin/:admin_id/range/:start_date/:end_date/:category?', TODO)
 router.post('/donate', DonateToAdmin)
 
 
-//// ! There is a requirement that the Super Admin registers the Donation Made by Donors against thier names.
-//// ! Our FYP requires the DONOR to Make the Donation. Should I implement both ways or just the Institute requirement for now?
-//// ! Shall we incorporate a mechanism to allow donors to make thier own donations...
+// ! There is a requirement that the Super Admin registers the Donation Made by Donors against thier names.
+// ! Our FYP requires the DONOR to Make the Donation. Should I implement both ways or just the Institute requirement for now?
+// ! Shall we incorporate a mechanism to allow donors to make thier own donations...
 
-router.post('/registerDonation', TODO)
+// Register a donation made by the Donor
+// router.post('/registerDonation', TODO)
 
 
 
-
-// Make a Donations to an Admin
-router.post('/donate/:Admin', MakeDonationToAdmin)

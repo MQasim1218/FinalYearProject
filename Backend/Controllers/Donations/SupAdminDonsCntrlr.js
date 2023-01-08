@@ -264,7 +264,7 @@ const MonthDonations_ToAdmin = async (req, res, next) => {
 }
 
 // Get Donations after a particular date
-const DonationsAfter_ToAdmin = async (req, res, next) => {
+const Donations_After_ToAdmin = async (req, res, next) => {
     try {
         let cat = req.params.category
         let start_date = req.params.start_date
@@ -367,11 +367,22 @@ const DonateToAdmin = async (req, res, next) => { }
 // Get All the donations 
 
 module.exports = {
+    // All donations made by the Admin
     GetAllDonations, // Get all the donations made by an Admin.
     GetYearDonations, // Get Donations made by Admin in a year.
     GetMonthDonations, // Doantions by Sup Admin in a Month 
-    GetAdminDonations, // Donations sent to an Admin come here.
-    Donations_TimeRange_ToAdmin,
+    GetDonations_After,
+    GetDonations_Before,
+    GetDonations_TimeRange,
+
+    // All donations made by SuperAdmin to Admins
+    AllDonationsToAdmin,
+    YearDonations_ToAdmin,
+    MonthDonations_ToAdmin,
     Donations_Before_ToAdmin,
-    DonateToAdmin, // Send money to Admin
+    Donations_After_ToAdmin,
+    Donations_TimeRange_ToAdmin,
+
+    // Send money to Admin
+    DonateToAdmin,
 }

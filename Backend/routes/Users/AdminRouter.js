@@ -120,4 +120,6 @@ router.patch('/:id', AdminController.UpdateAdmin)
 
 // Get All Admins
 router.get('/', AdminController.GetAllAdmins)
+
+
 module.exports = router

@@ -12,6 +12,7 @@
 const router = require('express').Router()
 const AdminDonationController = require('../../Controllers/Donations/AdminDonsCntrlr')
 
+
 // REVIEW - *** All_Donations *** Based on Time!!
 // Get all Admin donations to campaigns -- Filter for a particular category!!
 router.get('/:category?', AdminDonationController.GetAllDonations)
@@ -93,3 +94,5 @@ router.post('/donate', AdminDonationController.DonateToCampaign)
 
 router.post('/registerDonation', AdminDonationController.SpecificDonation)
 
+
+module.exports = router
