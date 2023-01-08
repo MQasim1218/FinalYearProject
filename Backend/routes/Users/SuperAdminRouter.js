@@ -1,8 +1,8 @@
 const express = require('express')
-const AdminModel = require('../../Models/AdminModel')
-const AdminController = require('../Controllers/AdminCntr')
-const GeneralCampaignModel = require("../../Models/GeneralCampaigns")
-const SpecificCampaignModel = require("../../Models/SpecificCampaign")
+const AdminModel = require('../../Models/Users/AdminModel')
+const AdminController = require('../../Controllers/Users/AdminCntr')
+const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
+const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
 const authorize = require('../../middleware/authorization')
 
 

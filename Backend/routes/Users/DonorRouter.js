@@ -1,13 +1,13 @@
 const express = require('express')
 
 const DonorModel = require('../../Models/Users/DonorModel')
-const DonorController = require('../Controllers/Users/DonorCntr')
+const DonorController = require('../../Controllers/Users/DonorCntr')
 
-const SpecificCampaign = require('../../Models/Users/SpecificCampaign')
+const SpecificCampaign = require('../../Models/Campaings/SpecificCampaign')
+const GeneralCampaign = require('../../Models/Campaings/GeneralCampaigns')
 
 // I need to set the heck with donations!!
-const DonationModel = require('../../Models/Donations/')
-const GeneralCampaign = require('../../Models/Campaings/GeneralCampaigns')
+const DonorDonationModel = require('../../Models/Donations/DonationDonor')
 
 const authorize = require('../../middleware/authorization')
 

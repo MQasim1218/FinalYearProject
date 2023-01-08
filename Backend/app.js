@@ -14,14 +14,14 @@ var indexRouter = require('./routes/index');
 var beneficiaryRouter = require('./routes/Users/BenificiaryRouter');
 var donorRouter = require('./routes/Users/DonorRouter');
 var adminRouter = require('./routes/Users/AdminRouter');
-var superAdminRouter = require('./routes/Users/')
+var superAdminRouter = require('./routes/Users/SuperAdminRouter')
 
 // NOTE: All dampaigns routers
 var campaignsGenRouter = require('./routes/Campaigns/CampaignGenRouter');
 var campaignsSpecRouter = require('./routes/Campaigns/CampaignSpecRouter');
 
 // NOTE: All donation routers
-var donationRouter = require('./routes/Donations/AdminDonRouter');
+var adminDonationRouter = require('./routes/Donations/AdminDonRouter');
 
 var app = express();
 
@@ -39,10 +39,20 @@ app.use(cors())
 mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfully Connected to DB") })
 
 app.use('/', indexRouter);
+
+// User Routers
 app.use('/benificiary', beneficiaryRouter);
 app.use('/admin', adminRouter);
+app.use('/superAdmin', adminRouter);
 app.use('/donor', donorRouter);
-app.use('/donations', donationRouter);
+
+// Donation Routers
+app.use('/adminDonations', adminDonationRouter);
+app.use('/donorDonations', adminDonationRouter);
+app.use('/superAdminDonations', adminDonationRouter);
+app.use('/benificiaryDonation', adminDonationRouter);
+
+
 app.use('/gen_campaigns', campaignsGenRouter);
 app.use('/spec_campaigns', campaignsSpecRouter);
 
