@@ -60,7 +60,7 @@ router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SupAdminDon
 
 
 // Get all the Donations made by superadmin to an Admins sorted by the dates
-router.post('/donate', DonateToAdmin)
+router.post('/donate', SupAdminDonCntr.DonateToAdmin)
 
 
 // ! There is a requirement that the Super Admin registers the Donation Made by Donors against thier names.
