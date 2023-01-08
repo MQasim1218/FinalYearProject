@@ -1,11 +1,19 @@
 const express = require('express')
-const DonorModel = require('../../Models/DonorModel')
-const DonorController = require('../Controllers/DonorCntr')
-const SpecificCampaign = require('../../Models/SpecificCampaign')
-const DonationModel = require('../../Models/DonationModel')
-const GeneralCampaign = require('../../Models/GeneralCampaigns')
-const { json } = require('express')
+
+const DonorModel = require('../../Models/Users/DonorModel')
+const DonorController = require('../Controllers/Users/DonorCntr')
+
+const SpecificCampaign = require('../../Models/Users/SpecificCampaign')
+
+// I need to set the heck with donations!!
+const DonationModel = require('../../Models/Donations/')
+const GeneralCampaign = require('../../Models/Campaings/GeneralCampaigns')
+
 const authorize = require('../../middleware/authorization')
+
+const { json } = require('express')
+
+
 const { mongo, default: mongoose } = require('mongoose')
 let router = express.Router()
 

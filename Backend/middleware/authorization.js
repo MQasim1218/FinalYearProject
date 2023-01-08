@@ -1,6 +1,6 @@
-const AdminModel = require("../Models/AdminModel")
-const { beneficiaryModel } = require("../Models/BenificiaryModel")
-const donorModel = require("../Models/DonorModel")
+const AdminModel = require("../Models/Users/AdminModel")
+const { beneficiaryModel } = require("../Models/Users/BenificiaryModel")
+const donorModel = require("../Models/Users/DonorModel")
 const jwt = require('jsonwebtoken')
 
 

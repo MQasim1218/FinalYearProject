@@ -9,12 +9,19 @@ require('dotenv').config()
 
 
 var indexRouter = require('./routes/index');
-var beneficiaryRouter = require('./routes/BenificiaryRouter');
-var donorRouter = require('./routes/DonorRouter');
-var adminRouter = require('./routes/AdminRouter');
-var campaignsGenRouter = require('./routes/CampaignGenRouter');
-var campaignsSpecRouter = require('./routes/CampaignSpecRouter');
-var donationRouter = require('./routes/DonationRouter');
+
+// NOTE: All user routers
+var beneficiaryRouter = require('./routes/Users/BenificiaryRouter');
+var donorRouter = require('./routes/Users/DonorRouter');
+var adminRouter = require('./routes/Users/AdminRouter');
+var superAdminRouter = require('./routes/Users/')
+
+// NOTE: All dampaigns routers
+var campaignsGenRouter = require('./routes/Campaigns/CampaignGenRouter');
+var campaignsSpecRouter = require('./routes/Campaigns/CampaignSpecRouter');
+
+// NOTE: All donation routers
+var donationRouter = require('./routes/Donations/AdminDonRouter');
 
 var app = express();
 
