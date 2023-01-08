@@ -53,8 +53,7 @@ app.use('/donor', donorRouter);
 // Donation Routers
 app.use('/adminDonations', adminDonationRouter);
 app.use('/donorDonations', donorDonationRouter);
-app.use('/superAdminDonations', adminDonationRouter);
-app.use('/benificiaryDonation', adminDonationRouter);
+app.use('/superAdminDonations', superAdminDonationRouter);
 
 
 app.use('/gen_campaigns', campaignsGenRouter);

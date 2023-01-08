@@ -71,4 +71,5 @@ router.post('/donate', SupAdminDonCntr.DonateToAdmin)
 // router.post('/registerDonation', TODO)
 
 
+module.exports = router
 
