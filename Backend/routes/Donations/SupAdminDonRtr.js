@@ -15,6 +15,7 @@ const SupAdminDonCntr = require('../../Controllers/Donations/SupAdminDonsCntrlr'
 
 // REVIEW - *** All_Donations *** Based on Time!!
 
+
 // Get all supadmin donations -- Filter for a particular category!!
 router.get('/:category?', SupAdminDonCntr.GetAllDonations)
 
@@ -26,6 +27,7 @@ router.get('/:year/:month/:category?', SupAdminDonCntr.GetMonthDonations)
 
 
 // REVIEW: Donations between a Specified timeperiod
+
 // Get donations made by the SuperAdmin before a date
 router.get('/range/:end_date/:category?', SupAdminDonCntr.GetDonations_Before)
 
@@ -34,8 +36,9 @@ router.get('/range/:start_date/:category?', SupAdminDonCntr.GetDonations_After)
 
 // Get donations made by the SuperAdmin between a timeperiod
 router.get('/range/:start_date/:end_date/:category?', SupAdminDonCntr.GetDonations_TimeRange)
+// ! All the donations given a time
 
-
+// ! SuperAdmin ==> Admin1
 
 // REVIEW - Doantions to a Particular Admin
 // Get all supadmin donations -- Filter for a particular category!!
