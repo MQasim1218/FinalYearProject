@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import adminDonReducer from './redux-features/donations/adminDonSlice'
+import superAdminDonReducer from './redux-features/donations/SupAdminDonSlice'
+import donorDonReducer from './redux-features/donations/DonorDonSlice'
 
 const store = configureStore({
     reducer: {
@@ -19,7 +21,7 @@ const store = configureStore({
         // Campaign Reducers 📸
         cowCamp: adminDonReducer,
         disasterCamp: disasterCampReducer,
-        
+
 
 
         adminDonation: adminDonReducer,
