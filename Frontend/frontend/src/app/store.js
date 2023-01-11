@@ -7,8 +7,7 @@ import donorDonReducer from './redux-features/donations/DonorDonSlice'
 import categoryDonReducer from './redux-features/donations/CategoriesDonSlice'
 
 // User Reducers 🌄
-import adminsReducer from './redux-features/users/AdminsSlice'
-import adminReducer from './redux-features/users/AdminSlice'
+import { adminApi } from './redux-features/users/AdminSlice'
 import donorsReducer from './redux-features/users/DonorsSlice'
 import donorReducer from './redux-features/users/DonorSlice'
 import superAdminReducer from './redux-features/users/'
@@ -26,8 +25,7 @@ const store = configureStore({
 
         // User Reducers 🌄
         superAdmin: superAdminReducer,
-        adminsAll: adminsReducer,
-        adminIndv: adminReducer,
+        [adminApi.reducerPath]: adminApi.reducer,
         donorsAll: donorsReducer,
         donorIndv: donorReducer,
 
@@ -37,7 +35,13 @@ const store = configureStore({
         // disasterCamp: disasterCampReducer,
 
 
-    }
+    },
+
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat([
+            adminApi.middleware,
+            donorApi.middleware,
+        ])
 })
 
 export default store
