@@ -1,5 +1,9 @@
 
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-const apiAdmin = createApi()
+export const rootAdminApi = createApi({
+    reducerPath: 'Admin',
+    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.BACKEND_BASE_ROUTE}/admin` }),
+    endpoints: (bldr) => ({})
+})
