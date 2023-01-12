@@ -91,7 +91,7 @@ adminSchema.statics.login = async function (email, password) {
     }
     let token = await createJWT(user._id)
     console.log(token)
-    if (bcrypt.compareSync(password, user.password)) return { admin: user, token: token }
+    if (bcrypt.compareSync(password, user.password)) return { user, token }
     console.log("The password provided is incorrect!")
     return null
 
@@ -118,7 +118,7 @@ adminSchema.statics.signup = async function (admin) {
         })
         let token = await createJWT(user._id)
         console.log("Created Token: ", token)
-        return { admin: user, token: token }
+        return { user, token }
     } catch (error) {
         console.log("Error occured During signup! Err: ", error.message)
         return null

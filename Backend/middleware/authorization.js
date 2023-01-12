@@ -31,7 +31,9 @@ const authorize = async (req, res, next) => {
             res.status(404).send("No user Id stored in the Token")
         }
 
-        // REVIEW - Not 100% certian about this part. Will delve into this implemetation soon! 
+        // REVIEW - Not 100% certian about this part.
+        // Basically this deals with finding the user if available and setting it with the req
+        // Will delve into this implemetation soon!
         switch (userType) {
             case "admin" || "Admin":
                 req.user = await AdminModel.findById(id).exec()
