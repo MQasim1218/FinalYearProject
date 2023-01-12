@@ -38,6 +38,7 @@ import SuperAdminDonations from "./scenes/donations/superAdminDonations"
 import CategoryDonations from "./scenes/donations/categoryDonations"
 
 import { useAuthContext } from './hooks/useAuthContext';
+import DonationRegistration from './scenes/donationRegisteration';
 
 
 function App() {
@@ -97,6 +98,7 @@ function App() {
             <Route path="/admindonations" element = { <AdminDonations/> }/>
             <Route path="/superadmindonations" element = { <SuperAdminDonations/> }/>
             <Route path="/categorydonations" element = { <CategoryDonations/> }/>
+            <Route path="/registerdonation" element = { <DonationRegistration/> }/>
 
 
 
