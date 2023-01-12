@@ -1,18 +1,27 @@
 const { default: mongoose } = require("mongoose");
 
-const donationSchema = mongoose.Schema({
+const donorDonationSchema = mongoose.Schema({
     amount: {
         type: Number,
         required: true,
         default: true
     },
-    donor: {
+    admin: {
         type: mongoose.Types.ObjectId,
-        ref: 'donor',
+        ref: 'admin',
         required: true,
     },
-    isLoan: { type: Boolean, default: false },
-    camp_type: { type: String, enum: ["Specific", "General"], required: true }
+    donordonationId: {
+        type: mongoose.Types.ObjectId,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true,
+        default: 'General'
+    }
+
+
 
     // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
 },
@@ -21,6 +30,6 @@ const donationSchema = mongoose.Schema({
     }
 )
 
-const DonationModel = mongoose.model('donation', donationSchema)
+const DonationModel = mongoose.model('SuperAdminDonation', donorDonationSchema)
 
 module.exports = DonationModel

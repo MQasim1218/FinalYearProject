@@ -9,12 +9,23 @@ require('dotenv').config()
 
 
 var indexRouter = require('./routes/index');
-var beneficiaryRouter = require('./routes/BenificiaryRouter');
-var donorRouter = require('./routes/DonorRouter');
-var adminRouter = require('./routes/AdminRouter');
-var campaignsGenRouter = require('./routes/CampaignGenRouter');
-var campaignsSpecRouter = require('./routes/CampaignSpecRouter');
-var donationRouter = require('./routes/DonationRouter');
+
+// NOTE: All user routers
+var beneficiaryRouter = require('./routes/Users/BenificiaryRouter');
+var donorRouter = require('./routes/Users/DonorRouter');
+var adminRouter = require('./routes/Users/AdminRouter');
+var superAdminRouter = require('./routes/Users/SuperAdminRouter')
+
+// NOTE: All campaigns routers
+var campaignsGenRouter = require('./routes/Campaigns/CampaignGenRouter');
+var campaignsSpecRouter = require('./routes/Campaigns/CampaignSpecRouter');
+
+// NOTE: All donation routers
+var adminDonationRouter = require('./routes/Donations/AdminDonRouter');
+var donorDonationRouter = require('./routes/Donations/DonorDonRouter');
+var superAdminDonationRouter = require('./routes/Donations/SupAdminDonRtr');
+
+// TODO: Reports and Analytics routers need to be configured as required!!  
 
 var app = express();
 
@@ -32,10 +43,19 @@ app.use(cors())
 mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfully Connected to DB") })
 
 app.use('/', indexRouter);
+
+// User Routers
 app.use('/benificiary', beneficiaryRouter);
 app.use('/admin', adminRouter);
+app.use('/superAdmin', adminRouter);
 app.use('/donor', donorRouter);
-app.use('/donations', donationRouter);
+
+// Donation Routers
+app.use('/adminDonations', adminDonationRouter);
+app.use('/donorDonations', donorDonationRouter);
+app.use('/superAdminDonations', superAdminDonationRouter);
+
+
 app.use('/gen_campaigns', campaignsGenRouter);
 app.use('/spec_campaigns', campaignsSpecRouter);
 

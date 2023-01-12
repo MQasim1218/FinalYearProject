@@ -69,7 +69,7 @@ const adminSchema = mongoose.Schema({
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'audit'
     // }],
-    
+
 },
     {
         timestamps: true,

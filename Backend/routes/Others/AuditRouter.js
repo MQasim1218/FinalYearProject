@@ -1,4 +1,4 @@
-const AuditModel = require("../Models/AuditModel")
+const AuditModel = require("../../Models/AuditModel")
 
 router.get("/all", async (req, res, next) => {
     try {

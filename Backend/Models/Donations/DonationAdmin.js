@@ -16,6 +16,10 @@ const adminDonationSchema = mongoose.Schema({
         ref: 'general_campaign',
         required: true
     },
+    donorId: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+    }
 
     // isLoan: { type: Boolean, default: false },
     // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.

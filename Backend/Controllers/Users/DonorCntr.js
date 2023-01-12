@@ -1,8 +1,10 @@
-const DonorModel = require("../Models/DonorModel")
-const DonationModel = require("../Models/DonationModel")
-const SpecificCampaign = require("../Models/SpecificCampaign")
-const GeneralCampaign = require("../Models/GeneralCampaigns")
-const { ViewSpecificCampaigns } = require("./AdminCntr")
+const DonorModel = require("../../Models/Users/DonorModel")
+
+
+// ! This file needs serious updates to routes and the controller functions
+const DonorDonations = require("../../Models/Donations/DonationDonor")
+const SpecificCampaign = require("../../Models/Campaings/SpecificCampaign")
+const GeneralCampaign = require("../../Models/Campaings/GeneralCampaigns")
 
 
 const DonorSignUp = async (req, res, next) => {
@@ -30,7 +32,7 @@ const DonorSignUp = async (req, res, next) => {
         // If values are returned from the signup function
         let { donor, token } = auth_res
         console.log("Donor: ", donor)
-        res.json({ user: donor, token: token })
+        res.json({ donor, token: token })
     } catch (error) {
         console.log("Error encountered: ", error.message)
         res.send("Donor Creation Failed")
@@ -101,34 +103,39 @@ const Donate = async (req, res, next) => {
     try {
         // Create a donation entry
         // The real part with Stripe need to be tackled in the later implementation.
-        let donation_entry = await DonationModel.create(req.body)
+        let donation_entry = await DonorDonations.create(req.body)
         if (!donation_entry) {
-            res.send("Couldnt create a donation entry!")
+            res.send("Couldnt create a donation entry for the donor!!")
         }
-        let campaign = null
 
-        if (req.body.camp_type === "Specific") {
-            campaign = await SpecificCampaign.findByIdAndUpdate(
-                req.params.campaign_id,
-                { $push: { donations: donation_entry._id } }
-            )
+        // ! This needs tobe looked into..
+        // ! As our donor can no longer directly donate to a campaign, this is no longer a valid operation!
+        // ! Keeping this so that maybe later, we may add fuctionality for direct donations.
+        // ! Which basically go directly to the Admin controlling the donation
+        // let campaign = null
 
-            await DonorModel.findByIdAndUpdate(
-                req.body.donor,
-                { $push: { donated_campaigns_specific: req.params.campaign_id } }
-            )
-        } else if (req.body.camp_type === "General") {
-            campaign = await GeneralCampaign.findByIdAndUpdate(
-                req.params.campaign_id,
-                { $push: { donations: donation_entry._id } }
-            )
+        // if (req.body.camp_type === "Specific") {
+        //     campaign = await SpecificCampaign.findByIdAndUpdate(
+        //         req.params.campaign_id,
+        //         { $push: { donations: donation_entry._id } }
+        //     )
 
-            await DonorModel.findByIdAndUpdate(
-                req.body.donor,
-                { $push: { donated_campaigns_general: req.params.campaign_id } }
-            )
-        }
-        res.json({ donation_entry, campaign })
+        //     await DonorModel.findByIdAndUpdate(
+        //         req.body.donor,
+        //         { $push: { donated_campaigns_specific: req.params.campaign_id } }
+        //     )
+        // } else if (req.body.camp_type === "General") {
+        //     campaign = await GeneralCampaign.findByIdAndUpdate(
+        //         req.params.campaign_id,
+        //         { $push: { donations: donation_entry._id } }
+        //     )
+
+        //     await DonorModel.findByIdAndUpdate(
+        //         req.body.donor,
+        //         { $push: { donated_campaigns_general: req.params.campaign_id } }
+        //     )
+        // }
+        res.json(donation_entry)
 
     } catch (error) {
         console.log(error)
@@ -158,6 +165,12 @@ const UpdateDonor = async (req, res, next) => {
     }
 }
 
+/**
+ * NOTE: This whole controller lets donors search campaigns.
+ * Since a donor cannot directly donate to a campaign, is it necessary to let donor browse??
+ * It can be a lead page to each donation page with a single 
+ * ...donate button to make a general donation to a category. 
+ */
 const SearchCampaignByFilter = async (req, res, next) => {
     try {
         console.log("the request is in here!")

@@ -5,7 +5,7 @@
  *      2. Describe what each route shall serve.
  *      3.  
  */
-const GeneralCampaigns = require("../Models/GeneralCampaigns")
+const GeneralCampaigns = require("../../Models/Campaings/GeneralCampaigns")
 const express = require('express')
 const router = express.Router()
 
