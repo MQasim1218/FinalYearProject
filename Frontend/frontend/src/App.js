@@ -36,15 +36,35 @@ import DonorDonations from "./scenes/donations/donorDonations"
 import AdminDonations from "./scenes/donations/adminDonations"
 import SuperAdminDonations from "./scenes/donations/superAdminDonations"
 import CategoryDonations from "./scenes/donations/categoryDonations"
-
+import AccountTypeContext from './accountTypeContext';
 import { useAuthContext } from './hooks/useAuthContext';
 import DonationRegistration from './scenes/donationRegisteration';
+import Sidebars from './scenes/global/Sidebars';
+import { useState, useEffect } from 'react';
+import SuperAdminDashboard from './scenes/superAdminDashboard';
 
 
-function App() {
+function App(props) {
+
+  
+  const [accountType, setAccountType] = useState('');
   const [theme, colorMode] = useMode()
   const location = useLocation()
   const { user } = useAuthContext();
+
+//IMPORTANT: UNCOMMENT THIS CODE AND TRY TO RUN IT. MERE PAS PAGE BAR BAR RELOAD KRTA REHTA HA
+  // useEffect(() => {
+  //   if (!user) {
+  //     setTimeout(() => {
+  //       window.location.href = '/';
+  //     }, 0);
+  //   }
+  // }, [user]);
+
+   // callback function that updates the accountType state variable
+  const handleAccountTypeChange = (value) => {
+    setAccountType(value);
+  }
 
 
   return (
@@ -56,16 +76,21 @@ function App() {
         <CssBaseline />
     {location.pathname === `/` || location.pathname === `/register` ? (
       <div className="app">
+        <AccountTypeContext.Provider value={accountType}>
       <main className="content">
         <Routes>
-          <Route path="/" element = { <Login/>}/>
+          <Route path="/" element = { <Login handleAccountTypeChange={handleAccountTypeChange}/>}/>
           <Route path="/register" element = { <Register/>}/>
         </Routes>
       </main>
+      </AccountTypeContext.Provider>
     </div>
+    
     ) : 
+    <AccountTypeContext.Provider value={accountType}>
+      {console.log("In app.js = "+accountType)}
       <div className="app">
-         {location.pathname === `/donordashboard` || location.pathname === `/viewdonations` || location.pathname === `/viewcampaigns`|| location.pathname === `/useranalytics` || location.pathname === `/areaanalytics` || location.pathname === `/timeanalytics` || location.pathname === `/donorgeographymap` || location.pathname === `/donationreports` || location.pathname === `/expenditurereports`  ? (<UserSidebar/>) : (<SuperSidebar/>)}
+         <Sidebars/>
         <main className="content">
           <Topbar/>
           <Routes>
@@ -99,14 +124,12 @@ function App() {
             <Route path="/superadmindonations" element = { <SuperAdminDonations/> }/>
             <Route path="/categorydonations" element = { <CategoryDonations/> }/>
             <Route path="/registerdonation" element = { <DonationRegistration/> }/>
-
-
-
+            <Route path="/superadmindashboard" element = { <SuperAdminDashboard/> }/>
             <Route path="/donorinfo" element = { <DonorInfo/>}/>
-
           </Routes>
         </main>
       </div>
+      </AccountTypeContext.Provider>
       }
     </ThemeProvider>
     </ColorModeContext.Provider>

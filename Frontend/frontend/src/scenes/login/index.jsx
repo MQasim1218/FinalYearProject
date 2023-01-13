@@ -6,6 +6,7 @@ import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
 import { Navigate, useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
+import { useState } from "react";
 
 
 const initialValues = {
@@ -24,19 +25,22 @@ const userSchema = yup.object().shape({
 
 // ! Frontend
 
-const Login = () => {
+const Login = (props) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
   const { login } = useLogin()
-
   const handleFormSubmit = async (values) => {
-    console.log("Form values: ", values);
-    // console.log("Here trying to login with a user!!")
+    //This setAccountType will help with the correct sidebar display on login.
+    props.handleAccountTypeChange(values.userType);
+    // console.log(props)
+    // console.log("Form values: ", values);
+    // // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
-    await login(email, password, userType)
-    alert(`${userType} login sucessful`)
+    // await login(email, password, userType)
+    // alert(`${userType} login successful`)
     navigate(`/${userType}dashboard`)
+    
   };
 
   // console.log("first")
@@ -116,6 +120,8 @@ const Login = () => {
                   <MenuItem value={"donor"}>Donor</MenuItem>
                   <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
                   <MenuItem value={"admin"}>Admin</MenuItem>
+                  <MenuItem value={"superadmin"}>Super Admin</MenuItem>
+
                 </Select>
               </FormControl>
 
