@@ -15,6 +15,14 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+import { useDispatch, useSelector } from 'react-redux'
+import { clearAuthDetails, setAuthDetails } from '../../app/redux-features/authSlice'
+
+
+// Import Redux Hooks for ...
+import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
+import { useAuthContext } from "../../hooks/useAuthContext";
+
 
 /**
  * NOTE: Data to be fetched 
@@ -35,16 +43,23 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+
+  // console.log('user obtained is: ', user)
+
+
   // ANCHOR: ### Data feilds for the page ###
-  // const [activeCampaigns, setActiveCamps] = useState([])
-  // const [totDonations, setTotDon] = useState(0)
-  // const [activeDonors, setActiveDonors] = useState([])
-  // const [activeBenifs, setActiveBenifs] = useState([])
-  // const [donations, setDonations] = useState([])
+  const [activeCampaigns, setActiveCamps] = useState([]) // Not yet implemented!!
+  const [totDonations, setTotDon] = useState(0) // Not yet implemented in statemanagment
+  const [activeDonors, setActiveDonors] = useState([])
+  const [activeAdmin, setActiveAdmins] = useState([])
+  const [activeBenifs, setActiveBenifs] = useState([])
+  const [donations, setDonations] = useState([])
 
 
   /**
    * Lazy fetch all the dynamic data needed for the dashboard.
+   * Previously, all this was done using Axios Right within the component!
+   * However, due to complexity, the statemanagement logic has been offloaded from componenets into redux
    */
   // useEffect(() => {
 
@@ -55,7 +70,6 @@ const Dashboard = () => {
   //     try {
   //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
   //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-
   //       if (gen_res.status < 300 && gen_res.status < 300) {
   //         let data = gen_res.data.concat(spec_res.data)
   //         if (data !== null) return data
@@ -139,6 +153,32 @@ const Dashboard = () => {
 
 
 
+  let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
+  let AdminsStatBox = null
+  if (adminsIsLoading) {
+    AdminsStatBox = <h3>Loading Content</h3>
+  }
+  else if (adminsIsSuccess)
+    AdminsStatBox = (
+      <StatBox
+        // title={ }
+        title={admins.length}
+        subtitle="Active Admins"
+        progress={false}
+        increase="+14% This Month dyn"
+        icon={
+          <AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    )
+  else if (isAdminsError)
+    AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
+
+  // let {} = useAllDon
+
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -163,6 +203,7 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px">
+
         {/* ROW 1 */}
         <Box
           gridColumn="span 3"
@@ -172,17 +213,8 @@ const Dashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
-            title="10"
-            subtitle="Donations Recieved"
-            progress={false}
-            increase="+14% This Month dyn"
-            icon={
-              <AttachMoneyOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
+          {/* ! Stat Box for Total donations recieced */}
+          {AdminsStatBox}
         </Box>
         <Box
           gridColumn="span 3"
@@ -224,6 +256,27 @@ const Dashboard = () => {
             }
           />
         </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="10px"
+        >
+          <StatBox
+            title="10"
+            subtitle="Active Campaigns"
+            progress={false}
+            increase="+43% This Month dyn"
+            icon={
+              <CampaignOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}

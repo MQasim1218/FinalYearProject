@@ -18,7 +18,7 @@ const useLogin = () => {
             console.log("first")
             console.log("Trying to Login")
             let user = res.data
-            console.log('printing user before login:', user)
+            // console.log('printing user before login:', user)
             // Add the user to the localstorage
             localStorage.setItem("user", JSON.stringify(user))
 

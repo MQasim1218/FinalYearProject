@@ -4,7 +4,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const superadminApi = createApi({
     reducerPath: 'SuperAdmin',
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.BACKEND_BASE_ROUTE}/superAdmin` }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${process.env.BACKEND_BASE_ROUTE}/superAdmin`
+
+    }),
     tagTypes: ['SuperAdmin'],
 
     endpoints: (builder) => ({
@@ -18,7 +21,7 @@ export const superadminApi = createApi({
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getSuperAdmin: builder.query({
             query: (id) => `${id}`,
-            providesTags: [{ type: 'SuperAdmin', id: id }]
+            providesTags: (id) => [{ type: 'SuperAdmin', id: id }]
         }),
 
         // ! Do we allow creation of SuperAdmin ??? ❓ 
@@ -38,7 +41,7 @@ export const superadminApi = createApi({
                 body: superadmin_data,
                 method: 'PUT'
             }),
-            invalidatesTags: [{ type: 'SuperAdmin', id: id }]
+            invalidatesTags: (id) => [{ type: 'SuperAdmin', id: id }]
         }),
 
         // deleteSuperAdmin: builder.mutation({

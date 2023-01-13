@@ -49,10 +49,9 @@ const AddNewAdmin = async (req, res, next) => {
 
 const SignInAdmin = async (req, res, next) => {
     try {
-        console.log("Logged in as admin")
         let { user, token } = await AdminModel.login(req.body.email, req.body.password)
-        if (admin) {
-            console.log("Admin logged in: ", admin)
+        if (user) {
+            console.log("Admin logged in: ", user)
             res.json({ user, token })
         } else {
 
