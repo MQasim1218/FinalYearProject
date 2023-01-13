@@ -112,7 +112,7 @@ const SuperSidebar = () => {
 
                     {/* Menu Items here */}
                     <Box paddingLeft={isCollapsed ? undefined : '10%'}>
-                        <Item title="Dashboard" to="/admindashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Dashboard" to="/superadmindashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
                         <Item title="All Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Users</Typography>

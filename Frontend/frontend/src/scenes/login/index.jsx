@@ -14,6 +14,7 @@ import { clearAuthDetails, setAuthDetails } from '../../app/redux-features/authS
 // Import Redux Hooks for ...
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useEffect } from "react";
+import { useState } from "react";
 
 
 const initialValues = {
@@ -32,7 +33,7 @@ const userSchema = yup.object().shape({
 
 // ! Frontend
 
-const Login = () => {
+const Login = (props) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ const Login = () => {
   const { user } = useAuthContext()
 
   const handleFormSubmit = async (values) => {
+    //This setAccountType will help with the correct sidebar display on login.
+    props.handleAccountTypeChange(values.userType);
+    // console.log(props)
+    // console.log("Form values: ", values);
+    // // console.log("Here trying to login with a user!!")
     // console.log("Form values: ", values);
     // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
@@ -49,6 +55,7 @@ const Login = () => {
     alert(`${userType} login sucessful`)
     alert(`navigating now!`)
     navigate(`/${userType}dashboard`)
+    
   };
 
   useEffect(() => {
@@ -133,6 +140,8 @@ const Login = () => {
                   <MenuItem value={"donor"}>Donor</MenuItem>
                   <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
                   <MenuItem value={"admin"}>Admin</MenuItem>
+                  <MenuItem value={"superadmin"}>Super Admin</MenuItem>
+
                 </Select>
               </FormControl>
 
