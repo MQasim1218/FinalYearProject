@@ -30,9 +30,9 @@ const DonorSignUp = async (req, res, next) => {
         }
 
         // If values are returned from the signup function
-        let { donor, token } = auth_res
-        console.log("Donor: ", donor)
-        res.json({ donor, token: token })
+        let { user, token } = auth_res
+        console.log("Donor: ", user)
+        res.json({ user, token })
     } catch (error) {
         console.log("Error encountered: ", error.message)
         res.send("Donor Creation Failed")

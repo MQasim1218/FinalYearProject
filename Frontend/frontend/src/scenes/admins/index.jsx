@@ -22,6 +22,8 @@ const Admins = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
+
+
   // The columns gets all the data we specify below from the mockdata file and store it
   const columns = [
     { field: "id", headerName: "ID" },
@@ -59,7 +61,7 @@ const Admins = () => {
       flex: 1,
     },
     {
-      
+
       // Okay
       field: 'actions',
       type: 'actions',
@@ -92,7 +94,7 @@ const Admins = () => {
     const fetchUsers = async () => {
       try {
         let res = null
-  //PLEASE USE THE CORRECT LABEL FOR ADMINS IN THE DB IF "ADMINS" IS WRONG
+        //PLEASE USE THE CORRECT LABEL FOR ADMINS IN THE DB IF "ADMINS" IS WRONG
         if (view === "admins") {
           res = await axios.get("http://localhost:5000/donor/allDonors")
           setIsLoading(false)
@@ -141,7 +143,7 @@ const Admins = () => {
           justifyContent="center"
         >
           <StatBox
-            title="4"
+            title={users.length}
             subtitle="Active Admins"
             progress={false}
             icon={
@@ -162,7 +164,7 @@ const Admins = () => {
             title="$10,500"
             subtitle="Donations Made to Admins"
             progress={false}
-            increase={"+25% in "+currentYear} 
+            increase={"+25% in " + currentYear}
             icon={
               <AttachMoneyOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -170,7 +172,7 @@ const Admins = () => {
             }
           />
         </Box>
-        
+
 
         {/* ROW 2 */}
         <Box
@@ -206,7 +208,7 @@ const Admins = () => {
             <CalendarChart isDashboard={true} />
           </Box>
         </Box>
-        
+
       </Box>
       <Box
         m="40px 0 0 0"

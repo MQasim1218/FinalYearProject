@@ -6,6 +6,14 @@ import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
 import { Navigate, useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
+
+import { useDispatch } from 'react-redux'
+import { clearAuthDetails, setAuthDetails } from '../../app/redux-features/authSlice'
+
+
+// Import Redux Hooks for ...
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useEffect } from "react";
 import { useState } from "react";
 
 
@@ -30,18 +38,30 @@ const Login = (props) => {
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
   const { login } = useLogin()
+  const dispatch = useDispatch()
+  const { user } = useAuthContext()
+
   const handleFormSubmit = async (values) => {
     //This setAccountType will help with the correct sidebar display on login.
     props.handleAccountTypeChange(values.userType);
     // console.log(props)
     // console.log("Form values: ", values);
     // // console.log("Here trying to login with a user!!")
+    // console.log("Form values: ", values);
+    // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
-    // await login(email, password, userType)
-    // alert(`${userType} login successful`)
+    await login(email, password, userType)
+
+    alert(`${userType} login sucessful`)
+    alert(`navigating now!`)
     navigate(`/${userType}dashboard`)
     
   };
+
+  useEffect(() => {
+    if (user != null)
+      dispatch(setAuthDetails({ user: user.user, token: user.token }))
+  })
 
   // console.log("first")
   return (

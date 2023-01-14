@@ -51,7 +51,6 @@ const UserSidebar = () => {
     const [selected, setSelected] = useState("Dashboard");
     const { user } = useAuthContext();
 
-    // console.log("Current State is: ", user.user.user.name)
 
     return (
         <Box

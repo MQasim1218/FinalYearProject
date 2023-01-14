@@ -6,7 +6,6 @@ export const authReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN':
             // Set the 'user' to the value contained in the payload 
-            console.log()
             return { user: action.payload }
         case 'LOGOUT':
             // Re-Set the user value back to null 
@@ -21,12 +20,8 @@ export const LoggedUserProvider = ({ children }) => {
     let [state, dispatch] = useReducer(authReducer, { user: null })
 
     useEffect(() => {
-
         let user = JSON.parse(localStorage.getItem('user'))
-        if (user) dispatch({ type: 'LOGIN', payload: user })
-        return () => {
-            // console.log("Some stupid error occuring in this code!")
-        }
+        if (user != null) return dispatch({ type: 'LOGIN', payload: user })
     }, [])
 
 

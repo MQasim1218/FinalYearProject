@@ -2,12 +2,12 @@ import { useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 
 export const useAuthContext = () => {
-    const loggedUser = useContext(UserContext)
+    const user = useContext(UserContext)
 
-    if (!loggedUser) {
+    if (!user) {
         console.log("Cannot invoke the Authenticated User from outside the App Component")
     }
     // console.log('Logged-User: ', loggedUser)
-    return loggedUser
+    return user
 }
 

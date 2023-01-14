@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 // Donation Reducers
-import adminDonReducer from './redux-features/Donations/AdminDonations/AdminDonSlice'
-import superAdminDonReducer from './redux-features/donations/SupAdminDonSlice'
-import donorDonReducer from './redux-features/donations/DonorDonSlice'
-import categoryDonReducer from './redux-features/donations/CategoriesDonSlice'
+// import adminDonReducer from './redux-features/Donations/AdminDonations/AdminDonSlice'
+// import superAdminDonReducer from './redux-features/donations/SupAdminDonSlice'
+// import donorDonReducer from './redux-features/donations/DonorDonSlice'
+// import categoryDonReducer from './redux-features/donations/CategoriesDonSlice'
+
+import authReducer from './redux-features/authSlice'
 
 // User Reducers 🌄
 import { adminApi } from './redux-features/users/AdminSlice'
@@ -15,11 +17,14 @@ import { superadminApi } from './redux-features/users/SuperAdminSlice'
 const store = configureStore({
     reducer: {
 
-        // Donation Reducers
-        adminDonation: adminDonReducer,
-        superAdminDonation: superAdminDonReducer,
-        donorDonation: donorDonReducer,
-        categoryDonation: categoryDonReducer,
+        // ! Authenticated User Info Reducers
+        auth_user: authReducer,
+
+        // * Donation Reducers
+        // adminDonation: adminDonReducer,
+        // superAdminDonation: superAdminDonReducer,
+        // donorDonation: donorDonReducer,
+        // categoryDonation: categoryDonReducer,
 
 
         // User Reducers 🌄

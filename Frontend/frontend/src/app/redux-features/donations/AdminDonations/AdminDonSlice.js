@@ -4,7 +4,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const adminApi = createApi({
     reducerPath: 'AdminDonations',
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.BACKEND_BASE_ROUTE}/adminDonations` }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${process.env.BACKEND_BASE_ROUTE}/adminDonations`
+    }),
     tagTypes: ['AdminDonations', 'AllAdminDonations'],
 
     endpoints: (builder) => ({

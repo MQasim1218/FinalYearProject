@@ -18,7 +18,7 @@ export const donorApi = createApi({
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getDonor: builder.query({
             query: (id) => `${id}`,
-            providesTags: [{ type: 'Donor', id: id }]
+            providesTags: (id) => [{ type: 'Donor', id: id }]
         }),
 
         // 👨‍👨‍👦 Create a new Admin in the database!!📷
@@ -37,7 +37,7 @@ export const donorApi = createApi({
                 body: admin_data,
                 method: 'PUT'
             }),
-            invalidatesTags: ['Donors', { type: 'Donor', id: id }]
+            invalidatesTags: (id) => ['Donors', { type: 'Donor', id: id }]
         }),
 
         deleteAdmin: builder.mutation({
@@ -46,7 +46,7 @@ export const donorApi = createApi({
                 body: id,
                 method: 'DELETE'
             }),
-            invalidatesTags: ['Donors', { type: 'Donor', id: id }]
+            invalidatesTags: (id) => ['Donors', { type: 'Donor', id: id }]
         }),
 
 

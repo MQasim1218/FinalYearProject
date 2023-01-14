@@ -2,23 +2,35 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
+
+
 export const adminApi = createApi({
     reducerPath: 'Admin',
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.BACKEND_BASE_ROUTE}/admin` }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin`,
+        prepareHeaders: (headers, { getState }) => {
+            // console.log(getState()) - No need to print the entire state!!
+            let { token } = getState().auth_user
+            console.log("TOken from the Slice:", token)
+            headers.set('authorization', `Bearer ${token}`)
+            console.log(process.env.REACT_APP_BACKEND_BASE_ROUTE)
+        }
+    }),
     tagTypes: ['Admin', 'Admins'],
+
 
     endpoints: (builder) => ({
 
         // 👨‍👨‍👦 Fetch all Admins 📷
         allAdmins: builder.query({
             query: () => `/`,
-            providesTags: [{ type: 'Admins' }]
+            providesTags: ['Admins']
         }),
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getAdmin: builder.query({
             query: (id) => `${id}`,
-            providesTags: [{ type: 'Admin', id: id }]
+            providesTags: (id) => [{ type: 'Admin', id: id }]
         }),
 
         // 👨‍👨‍👦 Create a new Admin in the database!!📷
@@ -28,7 +40,7 @@ export const adminApi = createApi({
                 body: admin_data,
                 method: 'POST'
             }),
-            invalidatesTags: ['Admins', { type: 'Admin', id: id }]
+            invalidatesTags: (id) => ['Admins', { type: 'Admin', id: id }]
         }),
 
         updateAdmin: builder.mutation({
@@ -37,16 +49,15 @@ export const adminApi = createApi({
                 body: admin_data,
                 method: 'PUT'
             }),
-            invalidatesTags: ['Admins', { type: 'Admin', id: id }]
+            invalidatesTags: (id) => ['Admins', { type: 'Admin', id: id }]
         }),
 
         deleteAdmin: builder.mutation({
             query: id => ({
                 url: `${id}`,
-                body: admin_data,
-                method: 'DELETE'
+                ethod: 'DELETE'
             }),
-            invalidatesTags: ['Admins', { type: 'Admin', id: id }]
+            invalidatesTags: (id) => ['Admins', { type: 'Admin', id: id }]
         }),
 
 
@@ -60,7 +71,7 @@ export const adminApi = createApi({
 export const {
     useCreateAdminMutation,
     useGetAdminQuery,
-    useAllAdminsQuery,
     useUpdateAdminMutation,
-    useDeleteAdminMutation
+    useDeleteAdminMutation,
+    useAllAdminsQuery
 } = adminApi

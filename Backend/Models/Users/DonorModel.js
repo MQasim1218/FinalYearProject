@@ -86,16 +86,16 @@ const createJWT = async (_id) => {
 
 
 donorSchema.statics.login = async function (email, password) {
-    // const emailEncrypted = await bcrypt.hash(email, salt)
-    console.log(email)
+
     let user = await this.findOne({ email: email }).exec()
+    console.log("I am here!!")
     if (!user) {
         console.log("No donor with the provided email")
         return null
     }
-
-    console.log("Queried Donor: ", user)
-    if (bcrypt.compareSync(password, user.password)) return { donor: user, token: await createJWT(user._id) }
+    let token = await createJWT(user._id)
+    console.log(token)
+    if (bcrypt.compareSync(password, user.password)) return { user, token }
     console.log("The password provided is incorrect!")
     return null
 
@@ -121,7 +121,7 @@ donorSchema.statics.signup = async function (donor) {
             contact: contact
         })
 
-        return { donor: user, token: await createJWT(user._id) }
+        return { user, token: await createJWT(user._id) }
     } catch (error) {
         console.log("Error occured During signup! Err: ", error.message)
         return null
