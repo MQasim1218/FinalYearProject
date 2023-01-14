@@ -15,13 +15,11 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-import { useDispatch, useSelector } from 'react-redux'
-import { clearAuthDetails, setAuthDetails } from '../../app/redux-features/authSlice'
 
 
 // Import Redux Hooks for ...
 import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
 
 
 /**
@@ -152,31 +150,66 @@ const Dashboard = () => {
   // }, [])
 
 
-
+  // ! Admins StatBox
   let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
   let AdminsStatBox = null
-  if (adminsIsLoading) {
-    AdminsStatBox = <h3>Loading Content</h3>
-  }
-  else if (adminsIsSuccess)
-    AdminsStatBox = (
-      <StatBox
-        // title={ }
-        title={admins.length}
-        subtitle="Active Admins"
-        progress={false}
-        increase="+14% This Month dyn"
-        icon={
-          <AttachMoneyOutlinedIcon
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />
-        }
-      />
-    )
-  else if (isAdminsError)
-    AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
+  if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
+  else if (adminsIsSuccess) AdminsStatBox = (
+    <StatBox
+      // title={ }
+      title={admins.length}
+      subtitle="Active Admins"
+      progress={false}
+      increase="+14% This Month dyn"
+      icon={
+        <AttachMoneyOutlinedIcon
+          sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+        />
+      }
+    />
+  )
+  else if (isAdminsError) AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
 
-  // let {} = useAllDon
+
+  // ! Donors StatBox
+  let { data: donors, isLoading: isDonorsLoading, error: donorsError, isError: isDonorsError, isSuccess: isDonorsSuccess } = useAllDonorsQuery()
+  let DonorsStatBox = null
+  if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
+  else if (isDonorsSuccess) DonorsStatBox = (
+    <StatBox
+      // title={ }
+      title={donors.length}
+      subtitle="Active Admins"
+      progress={false}
+      increase="+14% This Month dyn"
+      icon={
+        <AttachMoneyOutlinedIcon
+          sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+        />
+      }
+    />
+  )
+  else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
+
+  // ! Benificiaries StatBox
+  let { data: benifs, isLoading: isBenifsLoading, error: benifsError, isError: isBenifError, isSuccess: isBenifsSuccess } = useAllDonorsQuery()
+  let BenifsStatBox = null
+  if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
+  else if (isBenifsSuccess) BenifsStatBox = (
+    <StatBox
+      // title={ }
+      title={benifs.length}
+      subtitle="Active Benificaries"
+      progress={false}
+      increase="+14% This Month dyn"
+      icon={
+        <AttachMoneyOutlinedIcon
+          sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+        />
+      }
+    />
+  )
+  else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
 
 
   return (
@@ -213,7 +246,7 @@ const Dashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          {/* ! Stat Box for Total donations recieced */}
+          {/* NOTE: Stat Box for Total donations recieced */}
           {AdminsStatBox}
         </Box>
         <Box
@@ -224,7 +257,7 @@ const Dashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
+          {/* <StatBox
             title="10"
             subtitle="Active Beneficiaries"
             progress={false}
@@ -234,7 +267,8 @@ const Dashboard = () => {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
+          {BenifsStatBox}
         </Box>
         <Box
           gridColumn="span 3"
@@ -244,17 +278,8 @@ const Dashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
-            title="10"
-            subtitle="Active Donors"
-            progress={false}
-            increase="+15% This Month dyn"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
+          {/* NOTE: Donors StatBox here */}
+          {DonorsStatBox}
         </Box>
         <Box
           gridColumn="span 3"
@@ -287,7 +312,7 @@ const Dashboard = () => {
         >
           <StatBox
             title="10"
-            subtitle="Active Campaigns"
+            subtitle="Total Donations"
             progress={false}
             increase="+43% This Month dyn"
             icon={
@@ -357,6 +382,7 @@ const Dashboard = () => {
               Recent Donations
             </Typography>
           </Box>
+          {/* FIXME: To make Dynamic Just asap */}
           {/* {donations.map((transaction, i) => (
             <Box
 

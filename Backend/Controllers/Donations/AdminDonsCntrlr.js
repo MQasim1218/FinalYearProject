@@ -500,7 +500,7 @@ const AdminCampaignDonations_TimeRange = async (req, res, next) => {
 // NOTE: This Gets One Single Admin Donation record!!
 const SpecificDonation = async (req, res, next) => {
     try {
-        let donationId = req.params.donationId
+        let donationId = req.params.id
         let Don = await AdminDons.find({
             _id: donationId
         }).exec()
@@ -512,7 +512,10 @@ const SpecificDonation = async (req, res, next) => {
     }
 }
 
-const DonateToCampaign = async (req, res, next) => { }
+const DonateToCampaign = async (req, res, next) => {
+    // ! Awesome work.. Half the Backend isnt done
+    let camp_id = req.params.camp_id
+}
 
 module.exports = {
     GetAllDonations,

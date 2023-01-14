@@ -1,22 +1,16 @@
-import { Box, IconButton, Typography, useTheme, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid"
 import { tokens } from "../../theme"
-import { mockDataUsers, mockDataBeneficiary, mockDataDonor } from "../../data/mockData"
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from "axios";
-import { useEffect, useState } from "react";
 import StatBox from "../../components/StatBox";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import LineChart from "../../components/LineChart";
-import PersonOutlineOutlined from "@mui/icons-material/PersonOutlineOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonationsSlice";
+import { activityData as data } from "../data/mockData";
 
 
 const Donors = () => {
@@ -54,9 +48,9 @@ const Donors = () => {
       headerName: "Total Donations",
       flex: 1,
     },
-    
+
     {
-      
+
       // Okay
       field: 'actions',
       type: 'actions',
@@ -77,48 +71,93 @@ const Donors = () => {
   ];
 
   // ! Data
-  let [users, setUsers] = useState([])
-  let [isLoading, setIsLoading] = useState(true)
+  // let [users, setUsers] = useState([])
+  // let [isLoading, setIsLoading] = useState(true)
+  // //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
+  // let [view, setView] = useState("donors")
+  // useEffect(() => {
 
-  //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
-  let [view, setView] = useState("donors")
+  //   console.log("Re run use Effect")
+  //   const fetchUsers = async () => {
+  //     try {
+  //       let res = null
+  //       //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
+  //       if (view === "donors") {
+  //         res = await axios.get("http://localhost:5000/donor/allDonors")
+  //         setIsLoading(false)
+  //       } else {
+  //         res = await axios.get("http://localhost:5000/benificiary")
+  //         setIsLoading(false)
+  //       }
 
-  useEffect(() => {
+  //       if (res.status < 300) {
+  //         let data = res.data
+  //         if (data !== null) return data
+  //         else console.log("No data recieved!")
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   // console.log("kdfiodno")
+  //   fetchUsers().then((data) => {
+  //     console.log(data)
+  //     setIsLoading(false)
+  //     let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
+  //     setUsers(usrz)
+  //   })
+  //   return (() => {
+  //     console.log("Nothing for clean up")
+  //     setIsLoading(false)
+  //   })
+  // }, [view])
 
-    console.log("Re run use Effect")
-    const fetchUsers = async () => {
-      try {
-        let res = null
-  //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
-        if (view === "donors") {
-          res = await axios.get("http://localhost:5000/donor/allDonors")
-          setIsLoading(false)
-        } else {
-          res = await axios.get("http://localhost:5000/benificiary")
-          setIsLoading(false)
+  // ! Admins StatBox && Admins DataGrid
+  let { data: donors, isLoading: isDonorsLoading, error: donorsError, isError: isDonorsError, isSuccess: isDonorsSuccess } = useAllDonorsQuery()
+  let DonorsStatBox, DonorsDataGrid, DonsByDonorsStatBox
+
+  if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
+
+  else if (isDonorsSuccess) {
+    DonorsStatBox = (
+      <StatBox
+        title={donors.length}
+        subtitle="Active Donors"
+        progress={false}
+        increase="+9% This Month dyn"
+        icon={
+          <AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
         }
+      />
+    )
+    DonorsDataGrid = < DataGrid checkboxSelection rows={donors} columns={columns} components={{ Toolbar: GridToolbar }} />
+  }
+  else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
-        if (res.status < 300) {
-          let data = res.data
-          if (data !== null) return data
-          else console.log("No data recieved!")
+  // ! Donations to Admin
+  let { data: donsbyDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
+  if (isDonsLoading) DonsByDonorsStatBox = <h3>Loading Content</h3>
+
+  else if (IsDonsSuccess) {
+    DonsByDonorsStatBox = (
+      <StatBox
+        // title={ }
+        title={donsbyDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
+        subtitle="Donations Made By the Donors"
+        progress={false}
+        increase="+14% This Month dyn"
+        icon={
+          <AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
         }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    // console.log("kdfiodno")
-    fetchUsers().then((data) => {
-      console.log(data)
-      setIsLoading(false)
-      let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
-      setUsers(usrz)
-    })
-    return (() => {
-      console.log("Nothing for clean up")
-      setIsLoading(false)
-    })
-  }, [view])
+      />
+    )
+  }
+  else if (isDonsError) DonsByDonorsStatBox = <h3>{`Error: ${donsError.message}`}</h3>
+
 
   return (
     <Box m="20px">
@@ -137,7 +176,7 @@ const Donors = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+          {/* <StatBox
             title="110"
             subtitle="Total Donors"
             progress={false}
@@ -146,7 +185,8 @@ const Donors = () => {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
+          {DonorsStatBox}
         </Box>
         <Box
           gridColumn="span 6"
@@ -155,19 +195,20 @@ const Donors = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+          {/* <StatBox
             title="$10,500"
             subtitle="Total Donations"
             progress={false}
-            increase={"+25% in "+currentYear} 
+            increase={"+25% in " + currentYear}
             icon={
               <AttachMoneyOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
+          {DonsByDonorsStatBox}
         </Box>
-        
+
 
         {/* ROW 2 */}
         <Box
@@ -200,10 +241,10 @@ const Donors = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <CalendarChart isDashboard={true} />
+            <CalendarChart isDashboard={true} data={data} />
           </Box>
         </Box>
-        
+
       </Box>
       <Box
         m="40px 0 0 0"
@@ -238,12 +279,10 @@ const Donors = () => {
         }}
       >
         {
-
-          isLoading ?
+          isDonorsLoading ?
             <Typography varient="h4" alignItems="center" justifyContent="center">
               Data Grid Loading
-            </Typography> :
-            <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+            </Typography> : { DonorsDataGrid }
         }
       </Box>
     </Box>

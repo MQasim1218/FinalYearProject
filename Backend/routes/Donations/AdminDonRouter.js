@@ -81,18 +81,20 @@ router.get('/camp/:id/range/:start_date/:category?', AdminDonationController.Adm
 router.get('camp/:id/range/:start_date/:end_date/:category?', AdminDonationController.AdminDonations_TimeRange
 )
 
-// Get all the Donations made by superadmin to an Admins sorted by the dates
-router.post('/donate', AdminDonationController.DonateToCampaign)
+// Make Donations by Admin to campaign
+router.post('/donate/:camp_id', AdminDonationController.DonateToCampaign)
 
 /**
  * ! Need to add routes for Campaign Specific Queries
  */
+// Get a Specific Donation by Admin to campaign
+router.get('/donate/:id', AdminDonationController.SpecificDonation)
+
 
 //// ! There is a requirement that the Super Admin registers the Donation Made by Donors against thier names.
-//// ! Our FYP requires the DONOR to Make the Donation. Should I implement both ways or just the Institute requirement for now?
+//// ! Our FYP requires the SUPERADMIN to Make the Donation. Should I implement both ways or just the Institute requirement for now?
 //// ! Shall we incorporate a mechanism to allow donors to make thier own donations...
 
-router.post('/registerDonation', AdminDonationController.SpecificDonation)
 
 
 module.exports = router

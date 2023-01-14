@@ -2,57 +2,57 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-export const donorApi = createApi({
-    reducerPath: 'Donor',
+export const benificiaryApi = createApi({
+    reducerPath: 'Benificiary',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.BACKEND_BASE_ROUTE}/donor`,
+        baseUrl: `${process.env.BACKEND_BASE_ROUTE}/benificiary`,
         prepareHeaders: (headers, { getState }) => {
             let { token } = getState().auth_user
             headers.set('authorization', `Bearer ${token}`)
         }
     }),
-    tagTypes: ['Donor', 'Donors'],
+    tagTypes: ['Benificiary', 'Benificiaries'],
 
     endpoints: (builder) => ({
 
         // 👨‍👨‍👦 Fetch all Admins 📷
-        allDonors: builder.query({
+        allBenifs: builder.query({
             query: () => `/`,
-            providesTags: [{ type: 'Donors' }]
+            providesTags: [{ type: 'Benificiaries' }]
         }),
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
-        getDonor: builder.query({
+        getBenif: builder.query({
             query: (id) => `${id}`,
-            providesTags: (id) => [{ type: 'Donor', id: id }]
+            providesTags: (id) => [{ type: 'Benificiary', id: id }]
         }),
 
         // 👨‍👨‍👦 Create a new Admin in the database!!📷
-        createDonor: builder.mutation({
-            query: donor_data => ({
+        createBenif: builder.mutation({
+            query: benif_data => ({
                 url: '/',
-                body: donor_data,
+                body: benif_data,
                 method: 'POST'
             }),
-            invalidatesTags: ['Donors']
+            invalidatesTags: ['Benificiaries']
         }),
 
-        updateAdmin: builder.mutation({
-            query: (id, admin_data) => ({
+        updateBenif: builder.mutation({
+            query: (id, benif_data) => ({
                 url: `${id}`,
-                body: admin_data,
+                body: benif_data,
                 method: 'PUT'
             }),
-            invalidatesTags: (id) => ['Donors', { type: 'Donor', id: id }]
+            invalidatesTags: (id) => ['Benificiaries', { type: 'Benificiary', id: id }]
         }),
 
-        deleteAdmin: builder.mutation({
+        deleteBenif: builder.mutation({
             query: id => ({
                 url: `${id}`,
                 body: id,
                 method: 'DELETE'
             }),
-            invalidatesTags: (id) => ['Donors', { type: 'Donor', id: id }]
+            invalidatesTags: (id) => ['Benificiaries', { type: 'Benificiary', id: id }]
         }),
 
 
@@ -64,9 +64,9 @@ export const donorApi = createApi({
 
 
 export const {
-    useGetDonorQuery,
-    useAllDonorsQuery,
-    useCreateDonorMutation,
-    useUpdateAdminMutation,
-    useDeleteAdminMutation
-} = donorApi
+    useGetBenifQuery,
+    useAllBenifsQuery,
+    useCreateBenifMutation,
+    useUpdateBenifMutation,
+    useDeleteBenifMutation
+} = benificiaryApi
