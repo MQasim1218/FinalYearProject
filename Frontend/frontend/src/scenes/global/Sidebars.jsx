@@ -15,7 +15,7 @@ function getSidebar (accountType) {
         case 'superadmin':
             return SuperSidebar
         default:
-            return SuperSidebar;
+            return null;
     }
 }
 
