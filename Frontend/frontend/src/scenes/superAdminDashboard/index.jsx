@@ -14,6 +14,8 @@ import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
+import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 
 
 /**
@@ -25,8 +27,6 @@ import { useState, useEffect } from "react";
  * ? Total number of Benificiries (Have a campaign running)
  * ? Total number of Active Campaigns (Completed::false, Approved::true)
  * ? Recent donations made (fetch last 4-5)
- * ? 
- * 
  * @returns Dynamic Dashboard Component
  */
 
@@ -47,7 +47,6 @@ const SuperAdminDashboard = () => {
    * Lazy fetch all the dynamic data needed for the dashboard.
    */
   // useEffect(() => {
-
   //   //   // Get all the campaigns and count them
   //   //   // TODO: Cache these campaigns using context API
   //   const getCampaigns = async () => {
@@ -138,6 +137,79 @@ const SuperAdminDashboard = () => {
   // }, [])
 
 
+  // ! Admins StatBox
+
+
+  let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
+  let AdminsStatBox = null
+  if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
+  else if (adminsIsSuccess) {
+    console.log("Admins Data recieved is: ", admins)
+    AdminsStatBox = (
+
+      <StatBox
+        // title={ }
+        title={admins.length}
+        subtitle="Active Admins"
+        progress={false}
+        increase="+14% This Month dyn"
+        icon={
+          <AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    )
+  }
+  else if (isAdminsError) AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
+
+
+  // ! Donors StatBox
+  let { data: donors, isLoading: isDonorsLoading, error: donorsError, isError: isDonorsError, isSuccess: isDonorsSuccess } = useAllDonorsQuery()
+  let DonorsStatBox = null
+  if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
+  else if (isDonorsSuccess) {
+    donors.forEach((donor => { donor.id = donor._id }))
+    DonorsStatBox = (
+      <StatBox
+        title={donors.length}
+        subtitle="Active Admins"
+        progress={false}
+        increase="+14% This Month dyn"
+        icon={
+          <AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    )
+  }
+  else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
+
+  // ! Benificiaries StatBox
+  let { data: benifs, isLoading: isBenifsLoading, error: benifsError, isError: isBenifError, isSuccess: isBenifsSuccess } = useAllDonorsQuery()
+  let BenifsStatBox = null
+  if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
+  else if (isBenifsSuccess) {
+    benifs.forEach((benif => { benif.id = benifs._id }))
+
+    BenifsStatBox = (
+      <StatBox
+        // title={ }
+        title={benifs.length}
+        subtitle="Active Benificaries"
+        progress={false}
+        increase="+14% This Month dyn"
+        icon={
+          <AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    )
+  }
+  else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
+
 
   return (
     <Box m="20px">
@@ -172,7 +244,7 @@ const SuperAdminDashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
+          {/* <StatBox
             title="10"
             subtitle="Donations Recieved"
             progress={false}
@@ -182,7 +254,8 @@ const SuperAdminDashboard = () => {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
+          {BenifsStatBox}
         </Box>
         <Box
           gridColumn="span 3"
@@ -192,7 +265,7 @@ const SuperAdminDashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
+          {/* <StatBox
             title="10"
             subtitle="Active Beneficiaries"
             progress={false}
@@ -202,7 +275,8 @@ const SuperAdminDashboard = () => {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
+          {AdminsStatBox}
         </Box>
         <Box
           gridColumn="span 3"
@@ -212,7 +286,7 @@ const SuperAdminDashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
+          {/* <StatBox
             title="10"
             subtitle="Active Donors"
             progress={false}
@@ -222,7 +296,8 @@ const SuperAdminDashboard = () => {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
+          {DonorsStatBox}
         </Box>
         <Box
           gridColumn="span 3"

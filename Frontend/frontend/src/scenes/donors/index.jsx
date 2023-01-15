@@ -9,8 +9,8 @@ import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonationsSlice";
-import { activityData as data } from "../data/mockData";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { activityData as data } from "../../data/mockData";
 
 
 const Donors = () => {
@@ -119,6 +119,7 @@ const Donors = () => {
   if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
 
   else if (isDonorsSuccess) {
+    donors.forEach((donor) => { donor.id = donor._id })
     DonorsStatBox = (
       <StatBox
         title={donors.length}
@@ -137,32 +138,32 @@ const Donors = () => {
   else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
   // ! Donations to Admin
-  let { data: donsbyDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
-  if (isDonsLoading) DonsByDonorsStatBox = <h3>Loading Content</h3>
+  // let { data: donsbyDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
+  // if (isDonsLoading) DonsByDonorsStatBox = <h3>Loading Content</h3>
 
-  else if (IsDonsSuccess) {
-    DonsByDonorsStatBox = (
-      <StatBox
-        // title={ }
-        title={donsbyDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
-        subtitle="Donations Made By the Donors"
-        progress={false}
-        increase="+14% This Month dyn"
-        icon={
-          <AttachMoneyOutlinedIcon
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />
-        }
-      />
-    )
-  }
-  else if (isDonsError) DonsByDonorsStatBox = <h3>{`Error: ${donsError.message}`}</h3>
+  // else if (IsDonsSuccess) {
+  //   DonsByDonorsStatBox = (
+  //     <StatBox
+  //       // title={ }
+  //       title={donsbyDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
+  //       subtitle="Donations Made By the Donors"
+  //       progress={false}
+  //       increase="+14% This Month dyn"
+  //       icon={
+  //         <AttachMoneyOutlinedIcon
+  //           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+  //         />
+  //       }
+  //     />
+  //   )
+  // }
+  // else if (isDonsError) DonsByDonorsStatBox = <h3>{`Error: ${donsError.message}`}</h3>
 
 
   return (
     <Box m="20px">
 
-      <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
+      <Header title="Donors" subtitle="Manage Donors" />
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -282,7 +283,7 @@ const Donors = () => {
           isDonorsLoading ?
             <Typography varient="h4" alignItems="center" justifyContent="center">
               Data Grid Loading
-            </Typography> : { DonorsDataGrid }
+            </Typography> : DonorsDataGrid
         }
       </Box>
     </Box>

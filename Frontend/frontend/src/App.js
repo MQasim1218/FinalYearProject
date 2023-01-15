@@ -46,13 +46,13 @@ import SuperAdminDashboard from './scenes/superAdminDashboard';
 
 function App(props) {
 
-  
+
   const [accountType, setAccountType] = useState('');
   const [theme, colorMode] = useMode()
   const location = useLocation()
   const { user } = useAuthContext();
 
-//IMPORTANT: UNCOMMENT THIS CODE AND TRY TO RUN IT. MERE PAS PAGE BAR BAR RELOAD KRTA REHTA HA
+  //IMPORTANT: UNCOMMENT THIS CODE AND TRY TO RUN IT. MERE PAS PAGE BAR BAR RELOAD KRTA REHTA HA
   // useEffect(() => {
   //   if (!user) {
   //     setTimeout(() => {
@@ -61,7 +61,7 @@ function App(props) {
   //   }
   // }, [user]);
 
-   // callback function that updates the accountType state variable
+  // callback function that updates the accountType state variable
   const handleAccountTypeChange = (value) => {
     setAccountType(value);
   }
@@ -74,64 +74,64 @@ function App(props) {
       <ThemeProvider theme={theme}>
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
-    {location.pathname === `/` || location.pathname === `/register` ? (
-      <div className="app">
-        <AccountTypeContext.Provider value={accountType}>
-      <main className="content">
-        <Routes>
-          <Route path="/" element = { <Login handleAccountTypeChange={handleAccountTypeChange}/>}/>
-          <Route path="/register" element = { <Register/>}/>
-        </Routes>
-      </main>
-      </AccountTypeContext.Provider>
-    </div>
-    
-    ) : 
-    <AccountTypeContext.Provider value={accountType}>
-      {console.log("In app.js = "+accountType)}
-      <div className="app">
-         <Sidebars/>
-        <main className="content">
-          <Topbar/>
-          <Routes>
-            <Route path="/donordashboard" element = { <DonorDashboard/>}/>
-            <Route path="/admindashboard" element = { <Dashboard/>}/>
-            <Route path="/donations" element = { <Donations/>}/>
-            <Route path="/users" element = { <Users/>}/>
-            <Route path="/recent" element = { <Recent/>}/>
-            <Route path="/createCampaign" element = { <CreateCampaign/>}/>
-            <Route path="/graphs" element = { <Graphs/>}/>
-            <Route path="/geography" element = { <GeographyMap/>}/>
-            <Route path="/viewcampaign" element = { <AllCampaigns/>}/>
-            <Route path="/donate" element = { <Donate/>}/>
-            <Route path="/viewdonations" element = { <ViewDonations/>}/>
-            <Route path="/viewcampaigns" element = { <AllCampaigns/>}/>
-            <Route path="/useranalytics" element = { <DonorInfo/>}/>
-            <Route path="/areaanalytics" element = { <AreaAnalytics/>}/>
-            <Route path="/timeanalytics" element = { <TimeAnalytics/>}/>
-            <Route path="/donorgeographymap" element = { <GeographyMapDonor/>}/>
-            <Route path="/donationreports" element = { <DonationReports/>}/>
-            <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
-            <Route path="/campaigninfo" element = { <CampaignInfo/>}/>
-            <Route path="/donorinfo" element = { <DonorInfo/>}/>    
-            <Route path="/adminanalytics" element = { <AdminAnalytics/> }/>
-            <Route path="/superreports" element = { <SuperReports/> }/>
-            <Route path="/superdonation" element = { <SuperDonation/> }/>
-            <Route path="/admins" element = { <Admins/> }/>
-            <Route path="/donors" element = { <Donors/> }/>
-            <Route path="/donordonations" element = { <DonorDonations/> }/>
-            <Route path="/admindonations" element = { <AdminDonations/> }/>
-            <Route path="/superadmindonations" element = { <SuperAdminDonations/> }/>
-            <Route path="/categorydonations" element = { <CategoryDonations/> }/>
-            <Route path="/registerdonation" element = { <DonationRegistration/> }/>
-            <Route path="/superadmindashboard" element = { <SuperAdminDashboard/> }/>
-            <Route path="/donorinfo" element = { <DonorInfo/>}/>
-          </Routes>
-        </main>
-      </div>
-      </AccountTypeContext.Provider>
-      }
-    </ThemeProvider>
+        {location.pathname === `/` || location.pathname === `/register` ? (
+          <div className="app">
+            <AccountTypeContext.Provider value={accountType}>
+              <main className="content">
+                <Routes>
+                  <Route path="/" element={<Login handleAccountTypeChange={handleAccountTypeChange} />} />
+                  <Route path="/register" element={<Register />} />
+                </Routes>
+              </main>
+            </AccountTypeContext.Provider>
+          </div>
+
+        ) :
+          <AccountTypeContext.Provider value={accountType}>
+            {console.log("In app.js = " + accountType)}
+            <div className="app">
+              <Sidebars />
+              <main className="content">
+                <Topbar />
+                <Routes>
+                  <Route path="/donordashboard" element={<DonorDashboard />} />
+                  <Route path="/admindashboard" element={<Dashboard />} />
+                  <Route path="/donations" element={<Donations />} />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/recent" element={<Recent />} />
+                  <Route path="/createCampaign" element={<CreateCampaign />} />
+                  <Route path="/graphs" element={<Graphs />} />
+                  <Route path="/geography" element={<GeographyMap />} />
+                  <Route path="/viewcampaign" element={<AllCampaigns />} />
+                  <Route path="/donate" element={<Donate />} />
+                  <Route path="/viewdonations" element={<ViewDonations />} />
+                  <Route path="/viewcampaigns" element={<AllCampaigns />} />
+                  <Route path="/useranalytics" element={<DonorInfo />} />
+                  <Route path="/areaanalytics" element={<AreaAnalytics />} />
+                  <Route path="/timeanalytics" element={<TimeAnalytics />} />
+                  <Route path="/donorgeographymap" element={<GeographyMapDonor />} />
+                  <Route path="/donationreports" element={<DonationReports />} />
+                  <Route path="/expenditurereports" element={<ExpenditureReports />} />
+                  <Route path="/campaigninfo" element={<CampaignInfo />} />
+                  <Route path="/donorinfo" element={<DonorInfo />} />
+                  <Route path="/adminanalytics" element={<AdminAnalytics />} />
+                  <Route path="/superreports" element={<SuperReports />} />
+                  <Route path="/superdonation" element={<SuperDonation />} />
+                  <Route path="/admins" element={<Admins />} />
+                  <Route path="/donors" element={<Donors />} />
+                  <Route path="/donordonations" element={<DonorDonations />} />
+                  <Route path="/admindonations" element={<AdminDonations />} />
+                  <Route path="/superadmindonations" element={<SuperAdminDonations />} />
+                  <Route path="/categorydonations" element={<CategoryDonations />} />
+                  <Route path="/registerdonation" element={<DonationRegistration />} />
+                  <Route path="/superadmindashboard" element={<SuperAdminDashboard />} />
+                  <Route path="/donorinfo" element={<DonorInfo />} />
+                </Routes>
+              </main>
+            </div>
+          </AccountTypeContext.Provider>
+        }
+      </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }

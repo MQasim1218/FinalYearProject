@@ -10,7 +10,7 @@ import PersonOutlineOutlined from "@mui/icons-material/PersonOutlineOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 
 const Admins = () => {
   const theme = useTheme();
@@ -117,7 +117,7 @@ const Admins = () => {
 
   // ! Admins StatBox && Admins DataGrid
   let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
-  let AdminsStatBox, AdminsDataGrid, DonsToAdminsStatBox
+  let AdminsStatBox = <></>, AdminsDataGrid = <></>, DonsToAdminsStatBox = <></>
 
   if (adminsIsLoading) {
     AdminsStatBox = <h3>Loading Content</h3>
@@ -161,28 +161,28 @@ const Admins = () => {
       />
     )
   }
-  else if (isAdminsError) DonsToAdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
+  else if (isDonsError) DonsToAdminsStatBox = <h3>{`Error: ${donsError.message}`}</h3>
 
-}
 
-return (
-  <Box m="20px">
 
-    <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px">
-      {/* ROW 1 */}
+  return (
+    <Box m="20px">
+
+      <Header title="ADMINS" subtitle={"Manage ADMINS"} />
       <Box
-        gridColumn="span 6"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {/* <StatBox
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px">
+        {/* ROW 1 */}
+        <Box
+          gridColumn="span 6"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {/* <StatBox
             title={users.length}
             subtitle="Active Admins"
             progress={false}
@@ -192,102 +192,102 @@ return (
               />
             }
           /> */}
-        {AdminsStatBox}
-      </Box>
-      <Box
-        gridColumn="span 6"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {DonsToAdminsStatBox}
-
-      </Box>
-
-
-      {/* ROW 2 */}
-      <Box
-        gridColumn="span 12"
-        gridRow="span 2"
-        backgroundColor={colors.primary[400]}
-      >
+          {AdminsStatBox}
+        </Box>
         <Box
-          mt="25px"
-          p="0 30px"
-          display="flex "
-          justifyContent="space-between"
+          gridColumn="span 6"
+          backgroundColor={colors.primary[400]}
+          display="flex"
           alignItems="center"
+          justifyContent="center"
         >
-          <Box>
-            <Typography
-              variant="h5"
-              fontWeight="600"
-              color={colors.grey[100]}
-            >
-              Activity Calendar
-            </Typography>
-          </Box>
-          <Box>
-            <IconButton>
-              <DownloadOutlinedIcon
-                sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-              />
-            </IconButton>
-          </Box>
-        </Box>
-        <Box height="250px" m="-20px 0 0 0">
-          <CalendarChart isDashboard={true} />
-        </Box>
-      </Box>
+          {DonsToAdminsStatBox}
 
-    </Box>
-    <Box
-      m="40px 0 0 0"
-      height="75vh"
-      sx={{
-        "& .MuiDataGrid-root": {
-          border: "none",
-        },
-        "& .MuiDataGrid-cell": {
-          borderBottom: "none",
-        },
-        "& .name-column--cell": {
-          color: colors.greenAccent[300],
-        },
-        "& .MuiDataGrid-columnHeaders": {
-          backgroundColor: colors.blueAccent[700],
-          borderBottom: "none",
-        },
-        "& .MuiDataGrid-virtualScroller": {
-          backgroundColor: colors.primary[400],
-        },
-        "& .MuiDataGrid-footerContainer": {
-          borderTop: "none",
-          backgroundColor: colors.blueAccent[700],
-        },
-        "& .MuiCheckbox-root": {
-          color: `${colors.greenAccent[200]} !important`,
-        },
-        "& .MuiDataGrid-toolbarContainer .MuiButton-text ": {
-          color: `${colors.grey[100]} !important`,
-        },
-      }}
-    >
-      {
+        </Box>
 
-        isLoading ?
-          <Typography
-            varient="h4"
+
+        {/* ROW 2 */}
+        <Box
+          gridColumn="span 12"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
             alignItems="center"
-            justifyContent="center"
           >
-            Data Grid Loading
-          </Typography> : { AdminsDataGrid }
-      }
-    </Box>
-  </Box>
-);
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Activity Calendar
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            {/* <CalendarChart isDashboard={true} /> */}
+          </Box>
+        </Box>
 
+      </Box>
+      <Box
+        m="40px 0 0 0"
+        height="75vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.greenAccent[300],
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: colors.blueAccent[700],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: colors.primary[400],
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: colors.blueAccent[700],
+          },
+          "& .MuiCheckbox-root": {
+            color: `${colors.greenAccent[200]} !important`,
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text ": {
+            color: `${colors.grey[100]} !important`,
+          },
+        }}
+      >
+        {
+
+          adminsIsLoading ?
+            <Typography
+              varient="h4"
+              alignItems="center"
+              justifyContent="center"
+            >
+              Data Grid Loading
+            </Typography> : AdminsDataGrid
+        }
+      </Box>
+    </Box>
+  );
+}
 
 export default Admins;

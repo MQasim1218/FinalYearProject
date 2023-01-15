@@ -55,12 +55,14 @@ const Login = (props) => {
     alert(`${userType} login sucessful`)
     alert(`navigating now!`)
     navigate(`/${userType}dashboard`)
-    
+
   };
 
   useEffect(() => {
-    if (user != null)
+    console.log("User from the Login Screen!!: ", user)
+    if (user != null) {
       dispatch(setAuthDetails({ user: user.user, token: user.token }))
+    }
   })
 
   // console.log("first")

@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 // Donation Reducers
 import { adminDonationsApi } from './redux-features/Donations/AdminDonations/AdminDonsSlice'
 import { donorDonationsApi } from './redux-features/Donations/DonorDonations/DonorDonsSlice'
-// import superAdminDonReducer from './redux-features/donations/SupAdminDonSlice'
+import { superadminDonationsApi } from './redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice'
 // import donorDonReducer from './redux-features/donations/DonorDonSlice'
 // import categoryDonReducer from './redux-features/donations/CategoriesDonSlice'
 
@@ -26,7 +26,7 @@ const store = configureStore({
         // * Donation Reducers
         [adminDonationsApi.reducerPath]: adminDonationsApi.reducer,
         [donorDonationsApi.reducerPath]: donorDonationsApi.reducer,
-        // superAdminDonation: superAdminDonReducer,
+        [superadminDonationsApi.reducerPath]: superadminDonationsApi.reducer,
         // categoryDonation: categoryDonReducer,
 
 
@@ -55,6 +55,7 @@ const store = configureStore({
             benificiaryApi.middleware,
             donorDonationsApi.middleware,
             adminDonationsApi.middleware,
+            superadminDonationsApi.middleware
         ])
 })
 

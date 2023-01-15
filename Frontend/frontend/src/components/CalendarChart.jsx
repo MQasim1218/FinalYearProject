@@ -3,7 +3,7 @@ import { ResponsiveCalendar } from "@nivo/calendar"
 import { tokens } from "../theme";
 import { activityData as data } from "../data/mockData";
 
-const CalendarChart = ({ isDashboard = false, data }) => {
+const CalendarChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
