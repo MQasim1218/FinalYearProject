@@ -32,13 +32,14 @@ const GetAllAdmins = async (req, res, next) => {
 const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
-        let { user, token } = await AdminModel.signup(req.body)
-        console.log("I am here")
-        console.log("Admin: ", admin)
-        if (!admin) {
+        let usr = await AdminModel.signup(req.body)
+
+        if (!usr) {
+
             console.log("Cannot create an admin. SOme error occured!")
             return res.send("Admin creation failed!")
         }
+        let { user, token } = usr
         res.json({ user, token })
     } catch (error) {
         console.log("Error encountered: ", error.message)

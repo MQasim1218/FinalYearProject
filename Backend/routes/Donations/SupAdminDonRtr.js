@@ -11,9 +11,14 @@
 
 const router = require('express').Router()
 const SupAdminDonCntr = require('../../Controllers/Donations/SupAdminDonsCntrlr')
+const authorize = require('../../middleware/authorization')
 
 
-// REVIEW - *** All_Donations *** Based on Time!!
+// ! router.use(authorize)
+// ! Authorization left out for now!!
+
+
+// SECTION - *** All_Donations *** Based on Time!!
 
 
 // Get all supadmin donations -- Filter for a particular category!!
@@ -24,6 +29,7 @@ router.get('/:year/:category?', SupAdminDonCntr.GetYearDonations)
 
 // Get donations made by the SuperAdmin in a Month
 router.get('/:year/:month/:category?', SupAdminDonCntr.GetMonthDonations)
+
 
 
 // REVIEW: Donations between a Specified timeperiod

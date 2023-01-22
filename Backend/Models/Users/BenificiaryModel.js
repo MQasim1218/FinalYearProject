@@ -117,7 +117,8 @@ benificairySchema.statics.signup = async function (benificiary) {
         }
 
         const user = await this.create({
-            name: name, email: email,
+            name,
+            email,
             password: passEncrypted,
             // age: age, location: location,
             // contact: contact
@@ -126,7 +127,7 @@ benificairySchema.statics.signup = async function (benificiary) {
         console.log("Benificiary returned: ", user)
 
         return {
-            benif: user,
+            user,
             token: await createJWT(user._id)
         }
     } catch (error) {

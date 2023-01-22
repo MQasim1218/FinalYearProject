@@ -26,7 +26,9 @@ router.post('/login', DonorController.DonorSignIn)
 // Index page for Donors. Nothing here!
 router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 
-router.use(authorize)
+// FIXME: !!
+// ! router.use(authorize)
+// ! This is just commented for the sake of removing authorization from the programme
 
 // Get all donors
 router.get('/allDonors', DonorController.AllDonors);

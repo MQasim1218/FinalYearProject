@@ -61,7 +61,8 @@ router.post("/login", async (req, res, next) => {
     })
 })
 
-router.use(authorize)
+// Needs tobe uncommented after the big meeting.. Doing this to bypass authorization!!
+// ! router.use(authorize)
 
 // #################  CRUD  ##################
 // #################  CRUD  ##################

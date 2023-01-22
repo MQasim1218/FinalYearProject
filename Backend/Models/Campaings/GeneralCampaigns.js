@@ -4,7 +4,7 @@ let generalCampaignSchema = mongoose.Schema({
     // [Widow-support, Student_supp, Monthly-help]
     campaign_title: { type: String, required: true },
     required_amount: { type: String, required: true, trim: true },
-    donated_amount: { type: String, trim: true, default: 0 },
+    donated_amount: { type: Number, trim: true, default: 0 },
     description: { type: String, required: true },
     location: {
         type: {

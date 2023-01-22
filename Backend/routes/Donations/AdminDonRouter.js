@@ -11,6 +11,10 @@
 
 const router = require('express').Router()
 const AdminDonationController = require('../../Controllers/Donations/AdminDonsCntrlr')
+const authorize = require('../../middleware/authorization')
+
+// ! Router.use(authorize)
+// ! Later uncomment for authorization.
 
 
 // REVIEW - *** All_Donations *** Based on Time!!
@@ -82,13 +86,13 @@ router.get('camp/:id/range/:start_date/:end_date/:category?', AdminDonationContr
 )
 
 // Make Donations by Admin to campaign
-router.post('/donate/:camp_id', AdminDonationController.DonateToCampaign)
+router.post('/donate/', AdminDonationController.DonateToCampaign)
 
 /**
  * ! Need to add routes for Campaign Specific Queries
  */
 // Get a Specific Donation by Admin to campaign
-router.get('/donate/:id', AdminDonationController.SpecificDonation)
+router.get('/donation/:id', AdminDonationController.SingleDonation)
 
 
 //// ! There is a requirement that the Super Admin registers the Donation Made by Donors against thier names.

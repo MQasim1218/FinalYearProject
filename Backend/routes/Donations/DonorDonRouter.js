@@ -10,8 +10,14 @@
  */
 
 
+
 const router = require('express').Router()
 const DonorDonationController = require('../../Controllers/Donations/DonorDonsCntr')
+const authorize = require('../../middleware/authorization')
+
+
+// Authorize incoming requests
+// ! router.get(authorize)
 
 /**
  *  ############################# SECTION #############################

@@ -1,3 +1,4 @@
+const GenCamps = require('../../Models/Campaings/GeneralCampaigns')
 const AdminDons = require('../../Models/Donations/DonationAdmin')
 
 
@@ -498,7 +499,7 @@ const AdminCampaignDonations_TimeRange = async (req, res, next) => {
 }
 
 // NOTE: This Gets One Single Admin Donation record!!
-const SpecificDonation = async (req, res, next) => {
+const SingleDonation = async (req, res, next) => {
     try {
         let donationId = req.params.id
         let Don = await AdminDons.find({
@@ -514,7 +515,44 @@ const SpecificDonation = async (req, res, next) => {
 
 const DonateToCampaign = async (req, res, next) => {
     // ! Awesome work.. Half the Backend isnt done
-    let camp_id = req.params.camp_id
+
+    // let camp_id = req.body.camp_id
+    try {
+        let don = await AdminDons.create(req.body)
+        if (don) {
+
+            console.log("Created donation.. Waiting for campaign to update!!")
+            res.json(don)
+            let amount = parseInt(req.body.amount)
+
+            await GenCamps.findByIdAndUpdate(
+                req.body.campaign,
+                { $inc: { donated_amount: amount } },
+                {},
+                function (err, docs) {
+                    if (err) { console.log(err) }
+                    else {
+                        console.log("Updated Campaign : ", docs)
+                    }
+                }
+            ).exec()
+
+            console.log("first here at the end @@ !")
+
+            // if (!camp_ack) {
+            //     res.send('Failed to update the campaign!!')
+            // }
+
+        } else {
+            res.send('Could not register the donation to the campaign!')
+        }
+
+
+    } catch (error) {
+
+    }
+
+
 }
 
 module.exports = {
@@ -542,5 +580,5 @@ module.exports = {
     AdminCampaignDonations_TimeRange,
 
     DonateToCampaign,
-    SpecificDonation,
+    SingleDonation,
 }
