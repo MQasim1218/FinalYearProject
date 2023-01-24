@@ -4,7 +4,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const rootDonorDonationsApi = createApi({
     reducerPath: 'DonorDonations',
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.BACKEND_BASE_ROUTE}/adminDonations` }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/donorDonations`,
+        // NOTE: Prepare headers to be included to enable authorization of backend api access 
+        // ! prepareHeaders 🎟 
+    }),
     tagTypes: ['DonorDonations', 'AllDonorsDonations'],
 
     // Endpoints are defined in seperate files and injected 

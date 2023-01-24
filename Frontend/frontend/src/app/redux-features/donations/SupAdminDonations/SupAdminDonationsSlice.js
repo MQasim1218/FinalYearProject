@@ -2,8 +2,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-
-
 export const superadminDonationsApi = createApi({
     reducerPath: 'SuperAdminDonations',
     baseQuery: fetchBaseQuery({
