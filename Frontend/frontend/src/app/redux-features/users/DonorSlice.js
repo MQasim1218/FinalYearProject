@@ -5,11 +5,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const donorApi = createApi({
     reducerPath: 'Donor',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.BACKEND_BASE_ROUTE}/donor`,
-        prepareHeaders: (headers, { getState }) => {
-            let { token } = getState().auth_user
-            headers.set('authorization', `Bearer ${token}`)
-        }
+        baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/donor`,
+        // prepareHeaders: (headers, { getState }) => {
+        //     let { token } = getState().auth_user
+        //     headers.set('authorization', `Bearer ${token}`)
+        // }
     }),
     tagTypes: ['Donor', 'Donors'],
 
@@ -17,7 +17,10 @@ export const donorApi = createApi({
 
         // 👨‍👨‍👦 Fetch all Admins 📷
         allDonors: builder.query({
-            query: () => `/`,
+            query: () => {
+                console.log(`Donors Route: ${process.env.REACT_APP_BACKEND_BASE_ROUTE}/donor`)
+                return `/`
+            },
             providesTags: [{ type: 'Donors' }]
         }),
 

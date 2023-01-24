@@ -46,17 +46,14 @@ const store = configureStore({
     },
 
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat([
-
-            // User reducer middlewares!! Dont 
-            adminApi.middleware,
-            donorApi.middleware,
-            superadminApi.middleware,
-            benificiaryApi.middleware,
-            donorDonationsApi.middleware,
-            adminDonationsApi.middleware,
-            superadminDonationsApi.middleware
-        ])
+        getDefaultMiddleware()
+            .concat(adminApi.middleware)
+            .concat(donorApi.middleware)
+            .concat(superadminApi.middleware)
+            .concat(benificiaryApi.middleware)
+            .concat(donorDonationsApi.middleware)
+            .concat(adminDonationsApi.middleware)
+            .concat(superadminDonationsApi.middleware)
 })
 
 export default store

@@ -24,14 +24,14 @@ router.post('/signup', DonorController.DonorSignUp)
 router.post('/login', DonorController.DonorSignIn)
 
 // Index page for Donors. Nothing here!
-router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
+// router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 
 // FIXME: !!
 // ! router.use(authorize)
 // ! This is just commented for the sake of removing authorization from the programme
 
 // Get all donors
-router.get('/allDonors', DonorController.AllDonors);
+router.get('/', DonorController.AllDonors);
 
 // ! NOTE: IG This route should be a part of Campaigns Router!!
 // Search Campaigns

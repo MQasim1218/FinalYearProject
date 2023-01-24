@@ -522,27 +522,13 @@ const DonateToCampaign = async (req, res, next) => {
         if (don) {
 
             console.log("Created donation.. Waiting for campaign to update!!")
-            res.json(don)
             let amount = parseInt(req.body.amount)
 
-            await GenCamps.findByIdAndUpdate(
-                req.body.campaign,
-                { $inc: { donated_amount: amount } },
-                {},
-                function (err, docs) {
-                    if (err) { console.log(err) }
-                    else {
-                        console.log("Updated Campaign : ", docs)
-                    }
-                }
-            ).exec()
-
-            console.log("first here at the end @@ !")
-
-            // if (!camp_ack) {
-            //     res.send('Failed to update the campaign!!')
-            // }
-
+            let camp = await GenCamps.findById(req.body.campaign).exec()
+            camp.donated_amount += amount
+            camp.save()
+            // res.json({ don, camp })
+            res.send("The donation was sucessfull")
         } else {
             res.send('Could not register the donation to the campaign!')
         }

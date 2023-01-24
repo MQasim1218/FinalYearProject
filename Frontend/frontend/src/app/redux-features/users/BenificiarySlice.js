@@ -5,20 +5,24 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const benificiaryApi = createApi({
     reducerPath: 'Benificiary',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.BACKEND_BASE_ROUTE}/benificiary`,
-        prepareHeaders: (headers, { getState }) => {
-            let { token } = getState().auth_user
-            headers.set('authorization', `Bearer ${token}`)
-        }
+        baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/benificiary`,
+        // prepareHeaders: (headers, { getState }) => {
+        //     let { token } = getState().auth_user
+        //     headers.set('authorization', `Bearer ${token}`)
+        // }
     }),
     tagTypes: ['Benificiary', 'Benificiaries'],
 
     endpoints: (builder) => ({
 
-        // 👨‍👨‍👦 Fetch all Admins 📷
+        // 👨‍👨‍👦 Fetch all Benificiaries 📷
         allBenifs: builder.query({
-            query: () => `/`,
-            providesTags: [{ type: 'Benificiaries' }]
+            query: () => {
+                console.log(`Ben Route: ${process.env.BACKEND_BASE_ROUTE}/benificiary`)
+                console.log('Fetching all the benificiaries data!')
+                return `/`
+            },
+            providesTags: ['Benificiaries']
         }),
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷

@@ -8,14 +8,14 @@ export const adminApi = createApi({
     reducerPath: 'Admin',
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin`,
-        prepareHeaders: (headers, { getState }) => {
-            // console.log(getState()) - No need to print the entire state!!
-            console.log(getState().auth_user)
-            let { token } = getState().auth_user
-            console.log("TOken from the Slice:", token)
-            headers.set('authorization', `Bearer ${token}`)
-            console.log(process.env.REACT_APP_BACKEND_BASE_ROUTE)
-        }
+        // prepareHeaders: (headers, { getState }) => {
+        //     // console.log(getState()) - No need to print the entire state!!
+        //     console.log(getState().auth_user)
+        //     let { token } = getState().auth_user
+        //     console.log("TOken from the Slice:", token)
+        //     headers.set('authorization', `Bearer ${token}`)
+        //     console.log(process.env.REACT_APP_BACKEND_BASE_ROUTE)
+        // }
     }),
     tagTypes: ['Admin', 'Admins'],
 
@@ -24,7 +24,10 @@ export const adminApi = createApi({
 
         // 👨‍👨‍👦 Fetch all Admins 📷
         allAdmins: builder.query({
-            query: () => `/`,
+            query: () => {
+                console.log(`Admin route: ${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin`)
+                return `/`
+            },
             providesTags: ['Admins']
         }),
 

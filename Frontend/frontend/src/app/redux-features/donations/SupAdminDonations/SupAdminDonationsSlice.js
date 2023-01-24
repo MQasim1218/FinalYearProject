@@ -8,10 +8,10 @@ export const superadminDonationsApi = createApi({
     reducerPath: 'SuperAdminDonations',
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/superAdminDonations`,
-        prepareHeaders: (headers, { getState }) => {
-            let { token } = getState().auth_user
-            headers.set('authorization', `Bearer ${token}`)
-        }
+        // prepareHeaders: (headers, { getState }) => {
+        //     let { token } = getState().auth_user
+        //     headers.set('authorization', `Bearer ${token}`)
+        // }
     }),
     tagTypes: ['SuperAdminDonations'],
 

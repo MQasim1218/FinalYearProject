@@ -85,6 +85,7 @@ router.get('/', function (req, res, next) {
         if (error) {
             return next(error);
         }
+        console.log("All benifis", data)
         res.json(data);
     });
 })

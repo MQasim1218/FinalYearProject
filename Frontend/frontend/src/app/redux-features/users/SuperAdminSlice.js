@@ -6,10 +6,10 @@ export const superadminApi = createApi({
     reducerPath: 'SuperAdmin',
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.BACKEND_BASE_ROUTE}/superAdmin`,
-        prepareHeaders: (headers, { getState }) => {
-            let { token } = getState().auth_user
-            headers.set('authorization', `Bearer ${token}`)
-        }
+        // prepareHeaders: (headers, { getState }) => {
+        //     let { token } = getState().auth_user
+        //     headers.set('authorization', `Bearer ${token}`)
+        // }
     }),
     tagTypes: ['SuperAdmin'],
 

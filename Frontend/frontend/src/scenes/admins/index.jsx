@@ -116,13 +116,23 @@ const Admins = () => {
   // }, [view])
 
   // ! Admins StatBox && Admins DataGrid
-  let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
+  let {
+    data: admins,
+    error: adminsError,
+    isError: isAdminsError,
+    isSuccess: adminsIsSuccess,
+    isLoading: adminsIsLoading,
+  } = useAllAdminsQuery()
   let AdminsStatBox = <></>, AdminsDataGrid = <></>, DonsToAdminsStatBox = <></>
 
   if (adminsIsLoading) {
     AdminsStatBox = <h3>Loading Content</h3>
   }
   else if (adminsIsSuccess) {
+    let x = []
+    // x.map((x) => (x))
+    admins = admins.map(admin => ({ ...admin, id: admin._id }))
+
     AdminsStatBox = (
       <StatBox
         // title={ }
@@ -137,6 +147,8 @@ const Admins = () => {
         }
       />
     )
+
+
     AdminsDataGrid = < DataGrid checkboxSelection rows={admins} columns={columns} components={{ Toolbar: GridToolbar }} />
   }
   else if (isAdminsError) AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>

@@ -113,13 +113,21 @@ const Donors = () => {
   // }, [view])
 
   // ! Admins StatBox && Admins DataGrid
-  let { data: donors, isLoading: isDonorsLoading, error: donorsError, isError: isDonorsError, isSuccess: isDonorsSuccess } = useAllDonorsQuery()
-  let DonorsStatBox, DonorsDataGrid, DonsByDonorsStatBox
+  let {
+    data: donors,
+    isLoading: isDonorsLoading,
+    error: donorsError,
+    isError: isDonorsError,
+    isSuccess: isDonorsSuccess
+  } = useAllDonorsQuery()
+
+  let DonorsStatBox = <></>, DonorsDataGrid = <></>, DonsByDonorsStatBox = <></>
 
   if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
 
   else if (isDonorsSuccess) {
-    donors.forEach((donor) => { donor.id = donor._id })
+    // donors.forEach((donor) => { donor.id = donor._id })
+    donors = donors.map((donor) => ({ ...donor, id: donor._id }))
     DonorsStatBox = (
       <StatBox
         title={donors.length}

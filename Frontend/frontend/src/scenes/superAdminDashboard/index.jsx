@@ -13,9 +13,9 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
+import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 
 
 /**
@@ -54,7 +54,6 @@ const SuperAdminDashboard = () => {
   //     try {
   //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
   //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-
   //       if (gen_res.status < 300 && gen_res.status < 300) {
   //         let data = gen_res.data.concat(spec_res.data)
   //         if (data !== null) return data
@@ -64,7 +63,6 @@ const SuperAdminDashboard = () => {
   //       console.log(error)
   //     }
   //   }
-
   //   const getDonors = async () => {
   //     // const res = await fetch('http://localhost:5000/admin')
   //     try {
@@ -80,7 +78,6 @@ const SuperAdminDashboard = () => {
   //       console.log(error)
   //     }
   //   }
-
   //   const getBenificiries = async () => {
   //     // const res = await fetch('http://localhost:5000/admin')
   //     try {
@@ -95,7 +92,6 @@ const SuperAdminDashboard = () => {
   //       console.log(error)
   //     }
   //   }
-
   //   const getDonations = async () => {
   //     try {
   //       let res = await axios.get("http://localhost:5000/donations/all/")
@@ -104,7 +100,6 @@ const SuperAdminDashboard = () => {
   //         if (data !== null) return data
   //         else console.log("No data recieved!")
   //       }
-
   //     } catch (error) {
   //       console.log(error)
   //     }
@@ -140,7 +135,14 @@ const SuperAdminDashboard = () => {
   // ! Admins StatBox
 
 
-  let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
+  let {
+    data: admins,
+    isLoading: adminsIsLoading,
+    error: adminsError,
+    isError: isAdminsError,
+    isSuccess: adminsIsSuccess
+  } = useAllAdminsQuery()
+
   let AdminsStatBox = null
   if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
   else if (adminsIsSuccess) {
@@ -165,15 +167,25 @@ const SuperAdminDashboard = () => {
 
 
   // ! Donors StatBox
-  let { data: donors, isLoading: isDonorsLoading, error: donorsError, isError: isDonorsError, isSuccess: isDonorsSuccess } = useAllDonorsQuery()
+  let {
+    data: donors,
+    isLoading: isDonorsLoading,
+    error: donorsError,
+    isError: isDonorsError,
+    isSuccess: isDonorsSuccess
+  } = useAllDonorsQuery()
+
   let DonorsStatBox = null
   if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
   else if (isDonorsSuccess) {
-    donors.forEach((donor => { donor.id = donor._id }))
+    console.log("Donors Data: ", donors)
+    // donors.forEach((donor => { donor.id = donor._id }))
+    // ! need to add an ID field !@!@!@!@!@!@!@!@!@!
+
     DonorsStatBox = (
       <StatBox
         title={donors.length}
-        subtitle="Active Admins"
+        subtitle="Active Donors"
         progress={false}
         increase="+14% This Month dyn"
         icon={
@@ -186,12 +198,25 @@ const SuperAdminDashboard = () => {
   }
   else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
+
+
+
   // ! Benificiaries StatBox
-  let { data: benifs, isLoading: isBenifsLoading, error: benifsError, isError: isBenifError, isSuccess: isBenifsSuccess } = useAllDonorsQuery()
+  let {
+    data: benifs,
+    error: benifsError,
+    isError: isBenifError,
+    isSuccess: isBenifsSuccess,
+    isLoading: isBenifsLoading
+  } = useAllBenifsQuery()
+
+  // console.log("Logging benifs data", benifs)
+
   let BenifsStatBox = null
   if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
   else if (isBenifsSuccess) {
-    benifs.forEach((benif => { benif.id = benifs._id }))
+    // console.log("Benifs data: ", benifs)
+    // benifs.forEach((benif => { benif.id = benif._id }))
 
     BenifsStatBox = (
       <StatBox
