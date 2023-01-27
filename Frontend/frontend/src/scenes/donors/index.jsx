@@ -49,16 +49,7 @@ const Donors = () => {
       flex: 1,
     },
 
-    {
 
-      // Okay
-      field: 'actions',
-      type: 'actions',
-      width: 100,
-      getActions: () => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" />,
-      ],
-    },
     {
       // Okay
       field: 'actions',

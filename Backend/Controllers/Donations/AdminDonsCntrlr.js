@@ -1,6 +1,9 @@
 const GenCamps = require('../../Models/Campaings/GeneralCampaigns')
 const AdminDons = require('../../Models/Donations/DonationAdmin')
 
+const adminFeilds = ['id', 'name', 'age', 'email', 'contact']
+const campFeilds = ['id', 'campaign_title', 'category', 'location']
+
 
 // Get all the donations made by all the donors!!
 const GetAllDonations = async (req, res, next) => {
@@ -8,11 +11,17 @@ const GetAllDonations = async (req, res, next) => {
         let cat = req.params.category
         if (cat == null) {
             // Get all the donations made by the Donors
-            let Dons = await AdminDons.find({}).exec()
+            let Dons = await AdminDons
+                .find({})
+                .populate('admin', adminFeilds)
+                .populate('campaign', campFeilds)
+                .exec()
+
+            console.log("Admin donations are: ", Dons)
             res.json(Dons)
         } else {
             // Get all the Donations by all the donors for a particular category.
-            let Dons = await AdminDons.find({ category: cat }).exec()
+            let Dons = await AdminDons.find({ category: cat }).populate('admin').exec()
             res.json(Dons)
         }
     } catch (error) {

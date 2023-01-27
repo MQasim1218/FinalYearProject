@@ -11,6 +11,10 @@ const donorDonationSchema = mongoose.Schema({
         ref: 'donor',
         required: true,
     },
+    amountDonated: {
+        type: Number,
+        default: 0,
+    },
     isLoan: { type: Boolean, default: false },
 
 

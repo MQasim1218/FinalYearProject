@@ -1,5 +1,7 @@
 
 const SuperAdminDons = require('../../Models/Donations/DonationSuperAdmin')
+const DonorDons = require('../../Models/Donations/DonationDonor')
+const Admin = require('../../Models/Users/AdminModel')
 
 
 // ! NOTE: This function returns all the Donations made by the SuperAdmin to all admins.
@@ -361,7 +363,62 @@ const Donations_TimeRange_ToAdmin = async (req, res, next) => {
 }
 
 // Make Donation to an Admin
-const DonateToAdmin = async (req, res, next) => { }
+const DonateToAdmin = async (req, res, next) => {
+
+    /**
+     * When SuperAdmin Donates to Admin, do the following steps..
+     *  1. Create a new SuperAdmin Transfer entry.
+     *  2. Update the amount in the Admins Bank.. Currently available amount.
+     *  3. Deduct the amount from the donation where the money is sent from.
+     */
+
+    try {
+        let { admin, amount: am, donordonationId } = req.body
+        // STUB: Step1: Destructure the req.body to get the adminId, donationId, 
+
+        let don = await SuperAdminDons.create(req.body)
+        if (don) {
+        }
+        console.log('Donation created :', don)
+
+        let adminUpdated = await Admin.findByIdAndUpdate(admin, {
+            $inc: { amount: am }
+        })
+
+        console.log(adminUpdated)
+
+        let donorDonationUpdated = await DonorDons.findByIdAndUpdate(donordonationId, {
+            $inc: { amount: -am, amountDonated: am }
+        })
+
+        console.log("Updated Donor donation entry!!: ", donorDonationUpdated)
+
+        console.log("Donation Successful")
+        res.send("Donation Successful!")
+
+    } catch (error) {
+        res.send(error.message)
+    }
+}
+
+const RegisterDonorDonation = async (req, res, next) => {
+
+    /**
+     * To Register the Donor Donation, we need to do the following steps. 
+     *  1. Update Donor Donations Entry
+     *  2. Update the amount currently available to the organization
+     *  3. 
+     */
+    try {
+        // let { amount, donor } = req.body
+        let donor_donation = await DonorDons.create(req.body)
+
+        res.json(donor_donation)
+
+    } catch (error) {
+
+    }
+}
 
 
 // Get All the donations 
@@ -379,10 +436,11 @@ module.exports = {
     AllDonationsToAdmin,
     YearDonations_ToAdmin,
     MonthDonations_ToAdmin,
-    Donations_Before_ToAdmin,
     Donations_After_ToAdmin,
+    Donations_Before_ToAdmin,
     Donations_TimeRange_ToAdmin,
 
     // Send money to Admin
+    RegisterDonorDonation,
     DonateToAdmin,
 }

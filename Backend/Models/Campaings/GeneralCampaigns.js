@@ -66,3 +66,4 @@ let GeneralCampaign = mongoose.model('general_campaign', generalCampaignSchema)
 
 module.exports = GeneralCampaign
 
+

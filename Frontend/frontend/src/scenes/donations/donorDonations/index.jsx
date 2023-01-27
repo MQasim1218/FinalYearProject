@@ -3,15 +3,12 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
-import { useEffect, useState } from "react";
+import { useAllDonorsDonationsQuery } from "../../../app/redux-features/Donations/DonorDonations/DonorDonsSlice";
 
 
 const DonorDonations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  let [users, setUsers] = useState([])
-  let [isLoading, setIsLoading] = useState(true)
-  let [view, setView] = useState("donor")
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -56,10 +53,31 @@ const DonorDonations = () => {
     },
   ];
 
+
+  // Fetching data for donor donations!!
+  const { isError, error, isLoading, isSuccess, data: Donations } = useAllDonorsDonationsQuery()
+  let DonorsDonsGrid = <></>
+
+  if (isLoading) DonorsDonsGrid = <h3>Content Loading</h3>
+  else if (isSuccess) {
+    console.log("Donors Doations data: ", Donations)
+
+    let DonorDonations = Donations.map((don) => ({ ...don, id: don._id }))
+
+    DonorsDonsGrid = <DataGrid
+      checkboxSelection
+      rows={DonorDonations}
+      columns={columns}
+      components={{ Toolbar: GridToolbar }}
+    />
+  } else if (isError) { DonorsDonsGrid = <h3>Content Loading</h3> }
+
+
+
   return (
     <Box m="20px">
       <Header
-        title={view.toLocaleUpperCase() + " DONATIONS"} subtitle={"Manage " + view + " donations"}
+        title="Donor DONATIONS" subtitle={"Manage Donor donations"}
       />
       <Box
         m="40px 0 0 0"
@@ -93,12 +111,7 @@ const DonorDonations = () => {
           },
         }}
       >
-        <DataGrid
-          checkboxSelection
-          rows={mockDataDonations}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+        {DonorsDonsGrid}
       </Box>
     </Box>
   );

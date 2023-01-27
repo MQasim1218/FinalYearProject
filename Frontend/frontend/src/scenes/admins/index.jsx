@@ -56,7 +56,6 @@ const Admins = () => {
       flex: 1,
     },
     {
-
       // Okay
       field: 'actions',
       type: 'actions',

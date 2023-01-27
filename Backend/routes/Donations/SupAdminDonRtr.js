@@ -76,8 +76,8 @@ router.post('/donate', SupAdminDonCntr.DonateToAdmin)
 // ! Our FYP requires the DONOR to Make the Donation. Should I implement both ways or just the Institute requirement for now?
 // ! Shall we incorporate a mechanism to allow donors to make thier own donations...
 
-// Register a donation made by the Donor
-// router.post('/registerDonation', TODO)
+// NOTE: Register a donation made by the Donor
+router.post('/registerDonation', SupAdminDonCntr.RegisterDonorDonation)
 
 
 module.exports = router

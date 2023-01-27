@@ -7,11 +7,11 @@ const GetAllDonations = async (req, res, next) => {
         let cat = req.params.category
         if (cat == null) {
             // Get all the donations made by the Donors
-            let Dons = await DonorDons.find({}).exec()
+            let Dons = await DonorDons.find({}).populate('donor').exec()
             res.json(Dons)
         } else {
             // Get all the Donations by all the donors for a particular category.
-            let Dons = await DonorDons.find({ category: cat }).exec()
+            let Dons = await DonorDons.find({ category: cat }).populate('donor').exec()
             res.json(Dons)
         }
     } catch (error) {
@@ -271,10 +271,12 @@ const DonorMonthDonations = async (req, res, next) => {
 
 
 module.exports = {
-    DonorDons,
+
     DonorAllDonations,
     DonorMonthDonations,
     DonorYearDonations,
+
+    // ! All donations
     GetAllDonations,
     GetDonations_After,
     GetDonations_Before,

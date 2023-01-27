@@ -3,15 +3,16 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useAllSuperAdminDonationsQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 
 
 const SuperAdminDonations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   let [users, setUsers] = useState([])
-  let [isLoading, setIsLoading] = useState(true)
   let [view, setView] = useState("superadmin")
+
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -56,6 +57,24 @@ const SuperAdminDonations = () => {
     },
   ];
 
+  // Fetching data for donor donations!!
+  const { isError, error, isLoading, isSuccess, data: Donations } = useAllSuperAdminDonationsQuery()
+  let SupAdminDonsGrid = <></>
+
+  if (isLoading) SupAdminDonsGrid = <h3>Content Loading</h3>
+  else if (isSuccess) {
+    console.log("Super Admin Doations data: ", Donations)
+
+    let SupAdminDonations = Donations.map((don) => ({ ...don, id: don._id }))
+
+    SupAdminDonsGrid = <DataGrid
+      checkboxSelection
+      rows={SupAdminDonations}
+      columns={columns}
+      components={{ Toolbar: GridToolbar }}
+    />
+  } else if (isError) { SupAdminDonsGrid = <h3>Content Loading</h3> }
+
   return (
     <Box m="20px">
       <Header
@@ -93,12 +112,7 @@ const SuperAdminDonations = () => {
           },
         }}
       >
-        <DataGrid
-          checkboxSelection
-          rows={mockDataDonations}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+        {SupAdminDonsGrid}
       </Box>
     </Box>
   );

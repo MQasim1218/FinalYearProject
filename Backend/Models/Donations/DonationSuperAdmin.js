@@ -1,23 +1,28 @@
 const { default: mongoose } = require("mongoose");
 
 const donorDonationSchema = mongoose.Schema({
+
     amount: {
         type: Number,
         required: true,
         default: true
     },
+
     admin: {
         type: mongoose.Types.ObjectId,
         ref: 'admin',
         required: true,
     },
+
     donordonationId: {
         type: mongoose.Types.ObjectId,
         required: true
     },
+
+    // Not sure if we need the category here ?????
     category: {
         type: String,
-        required: true,
+        // required: true,
         default: 'General'
     }
 
