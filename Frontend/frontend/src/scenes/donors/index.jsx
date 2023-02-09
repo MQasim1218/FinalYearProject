@@ -17,9 +17,12 @@ import LineChart from "../../components/LineChart";
 import PersonOutlineOutlined from "@mui/icons-material/PersonOutlineOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { Navigation } from "@mui/icons-material";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 const Donors = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
@@ -58,16 +61,16 @@ const Donors = () => {
     {
       
       // Okay
-      field: 'actions',
+      field: 'View',
       type: 'actions',
       width: 100,
-      getActions: () => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" />,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)}  />,
       ],
     },
     {
       // Okay
-      field: 'actions',
+      field: 'Delete',
       type: 'actions',
       width: 100,
       getActions: () => [
@@ -243,7 +246,7 @@ const Donors = () => {
             <Typography varient="h4" alignItems="center" justifyContent="center">
               Data Grid Loading
             </Typography> :
-            <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+            <DataGrid checkboxSelection rows={mockDataDonor} columns={columns} components={{ Toolbar: GridToolbar }} />
         }
       </Box>
     </Box>

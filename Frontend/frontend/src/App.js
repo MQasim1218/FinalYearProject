@@ -1,6 +1,6 @@
 import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { Route, Routes, useLocation, redirect as Redirect } from 'react-router-dom';
+import { Route, Routes, useLocation} from 'react-router-dom';
 import Topbar from "./scenes/global/Topbar"
 import Dashboard from "./scenes/dashboard"
 import Donations from "./scenes/donations"
@@ -41,20 +41,30 @@ import SuperAdminDashboard from './scenes/superAdminDashboard';
 
 function App(props) {
 
-
   const [accountType, setAccountType] = useState('');
   const [theme, colorMode] = useMode()
   const location = useLocation()
   //const { user } = useAuthContext();
-  const user = "donor"
-  //IMPORTANT: UNCOMMENT THIS CODE AND TRY TO RUN IT. MERE PAS PAGE BAR BAR RELOAD KRTA REHTA HA I THINK
+
+  const user = 'donor'
+   //IMPORTANT: UNCOMMENT THIS CODE AND TRY TO RUN IT. MERE PAS PAGE BAR BAR RELOAD KRTA REHTA HA I THINK
   // useEffect(() => {
-  //   if (!user) {
+  //   if (!user && location.pathname !== '/register') {
   //     setTimeout(() => {
   //       window.location.href = '/';
   //     }, 0);
+  //   } else if (user === 'donor' && location.pathname !== '/donordashboard' && location.pathname !== '/viewdonations' && location.pathname !== "/viewcampaigns" && location.pathname !== "/useranalytics" && location.pathname !== "/useranalytics/:id" && location.pathname !== "/areaanalytics" && location.pathname !== "/timeanalytics" && location.pathname !== "/geographymap" && location.pathname !== "/donationreports" && location.pathname !== "/expenditurereports") {
+  //     // list all the routes that the donor can access
+  //     setTimeout(() => {
+  //       window.location.href = '/donordashboard';
+  //     }, 0);
+  //   } else if (user === 'admin' && location.pathname !== '/dashboard') {
+  //     // list all the routes that the admin can access
+  //     setTimeout(() => {
+  //       window.location.href = '/dashboard';
+  //     }, 0);
   //   }
-  // }, [user]);
+  // }, [user, location.pathname]);
 
   // callback function that updates the accountType state variable
   const handleAccountTypeChange = (value) => {
@@ -69,62 +79,6 @@ function App(props) {
       <ThemeProvider theme={theme}>
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
-        {/* {location.pathname === `/` || location.pathname === `/register` ? (
-      <div className="app">
-        <AccountTypeContext.Provider value={accountType}>
-      <main className="content">
-        <Routes>
-          <Route path="/" element = { <Login handleAccountTypeChange={handleAccountTypeChange}/>}/>
-          <Route path="/register" element = { <Register/>}/>
-        </Routes>
-      </main>
-      </AccountTypeContext.Provider>
-    </div>
-    
-    ) : 
-    <AccountTypeContext.Provider value={accountType}>
-      {console.log("In app.js = "+accountType)}
-      <div className="app">
-         <Sidebars/>
-        <main className="content">
-          <Topbar/>
-          <Routes>
-            <Route path="/donordashboard" element = { <DonorDashboard/>}/>
-            <Route path="/admindashboard" element = { <Dashboard/>}/>
-            <Route path="/donations" element = { <Donations/>}/>
-            <Route path="/users" element = { <Users/>}/>
-            <Route path="/recent" element = { <Recent/>}/>
-            <Route path="/createCampaign" element = { <CreateCampaign/>}/>
-            <Route path="/graphs" element = { <Graphs/>}/>
-            <Route path="/geography" element = { <GeographyMap/>}/>
-            <Route path="/viewcampaign" element = { <AllCampaigns/>}/>
-            <Route path="/donate" element = { <Donate/>}/>
-            <Route path="/viewdonations" element = { <ViewDonations/>}/>
-            <Route path="/viewcampaigns" element = { <AllCampaigns/>}/>
-            <Route path="/useranalytics/:id" element = { <DonorInfo/>}/>
-            <Route path="/areaanalytics" element = { <AreaAnalytics/>}/>
-            <Route path="/timeanalytics" element = { <TimeAnalytics/>}/>
-            <Route path="/donorgeographymap" element = { <GeographyMapDonor/>}/>
-            <Route path="/donationreports" element = { <DonationReports/>}/>
-            <Route path="/expenditurereports" element = { <ExpenditureReports/>}/>
-            <Route path="/campaigninfo/:id" element = { <CampaignInfo/>}/>
-            <Route path="/donorinfo/:id" element = { <DonorInfo/>}/>    
-            <Route path="/adminanalytics" element = { <AdminAnalytics/> }/>
-            <Route path="/superreports" element = { <SuperReports/> }/>
-            <Route path="/superdonation" element = { <SuperDonation/> }/>
-            <Route path="/admins" element = { <Admins/> }/>
-            <Route path="/donors" element = { <Donors/> }/>
-            <Route path="/donordonations" element = { <DonorDonations/> }/>
-            <Route path="/admindonations" element = { <AdminDonations/> }/>
-            <Route path="/superadmindonations" element = { <SuperAdminDonations/> }/>
-            <Route path="/categorydonations" element = { <CategoryDonations/> }/>
-            <Route path="/registerdonation" element = { <DonationRegistration/> }/>
-            <Route path="/superadmindashboard" element = { <SuperAdminDashboard/> }/>
-          </Routes>
-        </main>
-      </div>
-      </AccountTypeContext.Provider>
-      } */}
         {user && (
           <AccountTypeContext.Provider value={accountType}>
             <div className="app">
@@ -144,9 +98,8 @@ function App(props) {
                     <Route path="/geographymap" element={<GeographyMap />} />
                     <Route path="/donationreports" element={<DonationReports />} />
                     <Route path="/expenditurereports" element={<ExpenditureReports />} />
-
                     <Route path="*"
-                      render={() => <Redirect to='/donordashboard' />}
+                      
                     />
                   </>
                 ) : accountType === "admin" ? (
@@ -161,7 +114,7 @@ function App(props) {
                     <Route path="/geography" element={<GeographyMap />} />
                     <Route path="/adminanalytics" element={<AdminAnalytics />} />
                     <Route path="*"
-                      render={() => <Redirect to='/admindashboard' />}
+                      
                     />
                   </>
                 ) : accountType === "superadmin" ? (
@@ -179,9 +132,9 @@ function App(props) {
                     <Route path="/graphs" element={<Graphs />} />
                     <Route path="/geography" element={<GeographyMap />} />
                     <Route path="/superreports" element={<SuperReports />} />
-
+                    <Route path="/donorinfo/:id" component={<DonorInfo/>} />
                     <Route path="*"
-                      render={() => <Redirect to='/superadmindashboard' />}
+                      
                     />
                   </>
                 ) : (
@@ -189,7 +142,7 @@ function App(props) {
                     <Route path="/" element={<Login handleAccountTypeChange={handleAccountTypeChange} />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="*"
-                      render={() => <Redirect to='/' />}
+                      
                     />
                   </>
                 )}
@@ -204,7 +157,7 @@ function App(props) {
               <Route path="/" element={<Login handleAccountTypeChange={handleAccountTypeChange} />} />
               <Route path="/register" element={<Register />} />
               <Route path="*"
-                render={() => <Redirect to='/' />}
+                
               />
             </Routes>
           </main>
@@ -218,13 +171,3 @@ function App(props) {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-

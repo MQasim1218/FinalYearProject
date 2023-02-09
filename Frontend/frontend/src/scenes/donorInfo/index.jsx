@@ -22,11 +22,12 @@ import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
 import UserLineChart from '../../components/UserLineChart';
 import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { useParams } from "react-router-dom";
 
 const DonorInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  let { id } = useParams();
   const [donations, setDonations] = useState([])
 
   //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
