@@ -20,6 +20,7 @@ import { useState, useEffect } from "react";
 // Import Redux Hooks for ...
 import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
 import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
+import { useAllDonorsDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice'
 
 
 /**
@@ -51,7 +52,7 @@ const Dashboard = () => {
   const [activeDonors, setActiveDonors] = useState([])
   const [activeAdmin, setActiveAdmins] = useState([])
   const [activeBenifs, setActiveBenifs] = useState([])
-  const [donations, setDonations] = useState([])
+  // const [donations, setDonations] = useState([])
 
 
   /**
@@ -150,6 +151,9 @@ const Dashboard = () => {
   // }, [])
 
 
+
+
+
   // ! Admins StatBox
   let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
   let AdminsStatBox = null
@@ -210,6 +214,51 @@ const Dashboard = () => {
     />
   )
   else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
+
+
+  // ! Recent Donations
+  let { data: donations, isLoading: isDonationsLoading, error: donationsError, isError: isDonationsError, isSuccess: isDonationsSuccess } = useAllDonorsDonationsQuery()
+  let DonationsList = <></>
+  if (isDonationsLoading) DonationsList = <h3>Loading Content</h3>
+  else if (isDonationsSuccess) {
+    console.log("Donations", donations)
+    DonationsList = (
+      donations.map((transaction, i) => (
+        <Box
+          key={`${transaction._id}`}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`4px solid ${colors.primary[500]}`}
+          p="15px"
+        >
+
+          <Box>
+            <Typography
+              color={colors.greenAccent[500]}
+              variant="h5"
+              fontWeight="600"
+            >
+              {transaction._id.slice(0, 8)}
+            </Typography>
+            <Typography color={colors.grey[100]}>
+              {transaction.donor.name}
+            </Typography>
+          </Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          <Box
+            backgroundColor={colors.greenAccent[500]}
+            p="5px 10px"
+            borderRadius="4px"
+            color={colors.grey[900]}
+          >
+            ${transaction.amount}
+          </Box>
+        </Box>
+      ))
+    )
+  }
+  else if (isDonationsError) DonationsList = <h3>{`Error: ${donationsError.message}`}</h3>
 
 
   return (
@@ -383,40 +432,7 @@ const Dashboard = () => {
             </Typography>
           </Box>
           {/* FIXME: To make Dynamic Just asap */}
-          {/* {donations.map((transaction, i) => (
-            <Box
-
-              key={`${transaction._id}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction._id.slice(0, 8)}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.donor.name}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.grey[900]}
-              >
-                ${transaction.amount}
-              </Box>
-            </Box>
-          ))} */}
+          {DonationsList}
         </Box>
 
         {/* ROW 3 */}

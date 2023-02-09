@@ -79,7 +79,7 @@ const AllDonors = async (req, res, next) => {
         if (error) {
             return next(error);
         }
-        console.log(data)
+        // console.log(data)
         res.json(data);
     });
 }

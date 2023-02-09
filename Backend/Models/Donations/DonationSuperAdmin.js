@@ -1,12 +1,21 @@
 const { default: mongoose } = require("mongoose");
 
-const donorDonationSchema = mongoose.Schema({
+const supAdminDonationSchema = mongoose.Schema({
 
     amount: {
         type: Number,
         required: true,
         default: true
     },
+
+
+    donation_title: {
+        type: String,
+        required: true,
+    },
+
+
+    description: String,
 
     admin: {
         type: mongoose.Types.ObjectId,
@@ -20,7 +29,7 @@ const donorDonationSchema = mongoose.Schema({
     },
 
     // Not sure if we need the category here ?????
-    category: {
+    catagory: {
         type: String,
         // required: true,
         default: 'General'
@@ -35,6 +44,6 @@ const donorDonationSchema = mongoose.Schema({
     }
 )
 
-const DonationModel = mongoose.model('SuperAdminDonation', donorDonationSchema)
+const DonationModel = mongoose.model('SuperAdminDonation', supAdminDonationSchema)
 
 module.exports = DonationModel

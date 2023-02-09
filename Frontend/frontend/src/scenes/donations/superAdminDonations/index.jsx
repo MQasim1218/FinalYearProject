@@ -5,7 +5,7 @@ import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
 import { useState } from "react";
 import { useAllSuperAdminDonationsQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
-
+import { flattenObj } from '../../../misc/ArrayFlatten'
 
 const SuperAdminDonations = () => {
   const theme = useTheme();
@@ -16,7 +16,7 @@ const SuperAdminDonations = () => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "date", headerName: "Date" },
+    { field: "createdAt", headerName: "Donation Date" },
     {
       field: "name",
       headerName: "Name",
@@ -51,7 +51,7 @@ const SuperAdminDonations = () => {
       flex: 1,
     },
     {
-      field: "donationamount",
+      field: "amount",
       headerName: "Donation Amount",
       flex: 1,
     },
@@ -65,7 +65,9 @@ const SuperAdminDonations = () => {
   else if (isSuccess) {
     console.log("Super Admin Doations data: ", Donations)
 
-    let SupAdminDonations = Donations.map((don) => ({ ...don, id: don._id }))
+    let SupAdminDonations = Donations
+      .map((don, ind) => ({ ...don, id: ind + 1 }))
+      .map((don) => flattenObj(don))
 
     SupAdminDonsGrid = <DataGrid
       checkboxSelection

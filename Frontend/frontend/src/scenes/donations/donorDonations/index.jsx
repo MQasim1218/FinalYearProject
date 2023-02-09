@@ -4,6 +4,7 @@ import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
 import { useAllDonorsDonationsQuery } from "../../../app/redux-features/Donations/DonorDonations/DonorDonsSlice";
+import { flattenObj } from "../../../misc/ArrayFlatten";
 
 
 const DonorDonations = () => {
@@ -12,7 +13,7 @@ const DonorDonations = () => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "date", headerName: "Date" },
+    { field: "createdAt", headerName: "Date" },
     {
       field: "name",
       headerName: "Name",
@@ -27,7 +28,7 @@ const DonorDonations = () => {
       align: "left",
     },
     {
-      field: "phone",
+      field: "contact",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -47,7 +48,7 @@ const DonorDonations = () => {
       flex: 1,
     },
     {
-      field: "donationamount",
+      field: "amount",
       headerName: "Donation Amount",
       flex: 1,
     },
@@ -62,7 +63,9 @@ const DonorDonations = () => {
   else if (isSuccess) {
     console.log("Donors Doations data: ", Donations)
 
-    let DonorDonations = Donations.map((don) => ({ ...don, id: don._id }))
+    let DonorDonations = Donations
+      .map((don, index) => ({ ...don, id: index + 1 }))
+      .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid
       checkboxSelection

@@ -28,15 +28,7 @@ export const superadminDonationsApi = createApi({
             providesTags: (id) => [{ type: 'SuperAdminDonationsToAdmin' }]
         }),
 
-        // 👨‍👨‍👦 Create a new Admin in the database!!📷
-        createSuperDonation: builder.mutation({
-            query: (don_data) => ({
-                url: '/donate',
-                body: don_data,
-                method: 'POST'
-            }),
-            invalidatesTags: (id) => ['SuperAdminDonations', 'SuperAdminDonationsToAdmin']
-        }),
+
 
         // ! Not sure if this functionality is supported! However, this can be helpful to correct bad entries!!
         // * Ideally, the SuperAdmin shouldnt be able to update Donation values once the donation has been made!!
@@ -63,12 +55,50 @@ export const superadminDonationsApi = createApi({
         // FIXME: Complete functionality for all backend routes.. Didnt make em to waste em!!
         // TODO: Map major backend routes to thier respective handler endpoints
 
+        // 👨‍👨‍👦 Create a new Admin in the database!!📷
+        donateToAdmin: builder.mutation({
+            query: (don_data) => ({
+                url: '/donate',
+                body: don_data,
+                method: 'POST'
+            }),
+
+            // Pick out data and prevent nested properties in a hook or selector
+            transformResponse: response => response.data,
+
+            // Pick out errors and prevent nested properties in a hook or selector
+            transformErrorResponse: response => response.status,
+
+            // ! Trigger Refetching
+            invalidatesTags: (id) => ['SuperAdminDonations', 'SuperAdminDonationsToAdmin']
+        }),
+
+
+        registerDonorDonation: builder.mutation({
+            query: (don_donation) => ({
+                url: `/registerDonation`,
+                body: don_donation,
+                method: 'POST'
+            }),
+
+            // Pick out data and prevent nested properties in a hook or selector
+            transformResponse: response => response.data,
+
+            // Pick out errors and prevent nested properties in a hook or selector
+            transformErrorResponse: response => response.status,
+
+            // ! Need to make sure if these are the tags to renewww!!
+            invalidatesTags: (id) => ['SuperAdminDonations', 'SuperAdminDonationsToAdmin']
+        })
     })
 })
 
 
 export const {
-    useCreateSuperDonationMutation,
     useGetSuperAdminDonationsToAdminQuery,
-    useAllSuperAdminDonationsQuery
+    useAllSuperAdminDonationsQuery,
+
+    // STUB: All mutations down here!!
+    useDonateToAdminMutation,
+    useRegisterDonorDonationMutation,
 } = superadminDonationsApi

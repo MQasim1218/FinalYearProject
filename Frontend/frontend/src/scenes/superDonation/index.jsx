@@ -9,50 +9,72 @@ import axois from "axios"
 
 import { useEffect } from "react";
 import axios from "axios";
+import { useDonateToAdminMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
+import { useAllDonorsDonationsQuery } from "../../app/redux-features/Donations/DonorDonations/DonorDonsSlice";
 // import axios from "axios"
 
 //initializing all inputs with their keys
 const initialValues = {
   donation_title: "",
-  total_amount: "",
+  amount: 0,
   description: "",
-  admin: "Admin1",
-  catagory: "Education",
-  donor: "Donor1",
+  admin: "",
+  catagory: "",
+  donordonationId: "",
 
 };
 
 //schema for validation
 const userSchema = yup.object().shape({
   donation_title: yup.string().required("Required"),
-  total_amount: yup.string().required("Required"),
+  amount: yup.string().required("Required"),
   catagory: yup.string().required("Required"),
   admin: yup.string().required("Required"),
-  donor: yup.string().required("Required"),
-
+  donordonationId: yup.string().required("Required"),
 });
 
 
 const SuperDonation = () => {
-  //Options for admin entry
-  const admins = [
-    {
-      value: 'Admin1',
-      label: 'Admin 1',
-    },
-    {
-      value: 'Admin2',
-      label: 'Admin 2',
-    },
-    {
-      value: 'Admin3',
-      label: 'Admin 3',
-    },
-    {
-      value: 'Admin4',
-      label: 'Admin 4',
-    },
-  ];
+
+
+  // NOTE: Getting all Admins for the admin entry
+  let { isError: adminsIsError, isSuccess: adminsIsSuccess, isLoading: adminsIsLoading, error: adminsError, data: admins } = useAllAdminsQuery()
+
+  if (!adminsIsLoading) {
+    if (adminsIsSuccess)
+      admins = admins
+        .map((admin, index) => ({ value: admin._id, label: admin.name, id: index }))
+        .map((option) => (
+          <MenuItem key={option.id} value={option.value} id={option.id}>
+            {option.label}
+          </MenuItem>
+        ))
+
+    else if (adminsIsError)
+      console.log(adminsError)
+  }
+
+
+  // NOTE: Options for donor Donations
+
+  let { isError: donsIsError, isSuccess: donsIsSuccess, error: donsError, data: dons, isLoading: donsIsLoading } = useAllDonorsDonationsQuery()
+
+  if (!donsIsLoading) {
+    if (donsIsSuccess)
+      dons = dons
+        .map((don, index) => ({ value: don._id, label: don.amount, id: index }))
+        .map((opt) => (
+          <MenuItem key={opt.id} value={opt.value} id={opt.id}>
+            {opt.label}
+          </MenuItem>
+        ))
+    else if (donsIsError) console.log(donsError.message)
+  }
+
+
+
+
 
   //Options for category entry
   const catagorys = [
@@ -74,58 +96,47 @@ const SuperDonation = () => {
     },
   ];
 
-  //options for donors
-  const donors = [
-    {
-      value: 'Donor1',
-      label: 'Donor 1',
-    },
-    {
-      value: 'Donor2',
-      label: 'Donor 2',
-    },
-    {
-      value: 'Donor3',
-      label: 'Donor 3',
-    },
-    {
-      value: 'Donor4',
-      label: 'Donor 4',
-    },
-  ];
 
-  useEffect(() => {
 
-    const getData = async () => {
-      const res = await fetch('http://localhost:5000/admin')
-      console.log("Got some data!")
+  // REVIEW: Old code!! Not a good idea to delete!
+  // useEffect(() => {
 
-      if (res.ok) {
-        let data = await res.json()
-        console.log(data)
-        if (data !== null) console.log(data)
-        else console.log("No data recieved!")
-      }
-    }
+  //   const getData = async () => {
+  //     const res = await fetch('http://localhost:5000/admin')
+  //     console.log("Got some data!")
 
-    getData()
-    return (() => console.log("No clean up"))
+  //     if (res.ok) {
+  //       let data = await res.json()
+  //       console.log(data)
+  //       if (data !== null) console.log(data)
+  //       else console.log("No data recieved!")
+  //     }
+  //   }
 
-  }
-    , [])
+  //   getData()
+  //   return (() => console.log("No clean up"))
+
+  // }
+  //   , [])
 
 
   //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  let [set_donation, { data, isLoading, error, isError }] = useDonateToAdminMutation()
+
 
   //on submit, all inputs are stored in values
   const handleFormSubmit = async (values) => {
     console.log(values);
+    console.log('About to send the backend request@@!')
 
-    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    // JSON.parse(data)
+    await set_donation(values)
+    if (isError && !isLoading) {
+      console.log(error)
+    }
   };
+
 
 
   const theme = useTheme()
@@ -174,6 +185,7 @@ const SuperDonation = () => {
                 helperText={touched.donation_title && errors.donation_title}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -184,50 +196,54 @@ const SuperDonation = () => {
                 }}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.total_amount}
-                name="total_amount"
-                error={!!touched.total_amount && !!errors.total_amount}
-                helperText={touched.total_amount && errors.total_amount}
+                value={values.amount}
+                name="amount"
+                error={!!touched.amount && !!errors.amount}
+                helperText={touched.amount && errors.amount}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                select
-                variant="filled"
-                type="text"
-                label="To *"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.admin}
-                name="admin"
-                error={!!touched.admin && !!errors.admin}
-                helperText={touched.admin && errors.admin}
-                sx={{ gridColumn: "span 2" }}
-              >{admins.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-              </TextField>
-              <TextField
-                fullWidth
-                select
-                variant="filled"
-                type="text"
-                label="From *"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.donor}
-                name="donor"
-                error={!!touched.donor && !!errors.donor}
-                helperText={touched.donor && errors.donor}
-                sx={{ gridColumn: "span 2" }}
-              >{donors.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-              </TextField>
+
+
+              {
+                !adminsIsLoading &&
+                <TextField
+                  fullWidth
+                  select
+                  variant="filled"
+                  type="text"
+                  label="To *"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.admin}
+                  name="admin"
+                  error={!!touched.admin && !!errors.admin}
+                  helperText={touched.admin && errors.admin}
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  {admins}
+                </TextField>
+              }
+
+              {
+                !donsIsLoading &&
+                <TextField
+                  fullWidth
+                  select
+                  variant="filled"
+                  type="text"
+                  label="From *"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.donordonationId}
+                  name="donordonationId"
+                  error={!!touched.donordonationId && !!errors.donordonationId}
+                  helperText={touched.donordonationId && errors.donordonationId}
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  {dons}
+                </TextField>
+              }
+
               <TextField
                 fullWidth
                 select
@@ -237,16 +253,20 @@ const SuperDonation = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.catagory}
-                name=""
+                name="catagory"
                 error={!!touched.catagory && !!errors.catagory}
                 helperText={touched.catagory && errors.catagory}
                 sx={{ gridColumn: "span 2" }}
-              >{catagorys.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
+              >
+                {
+                  catagorys.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))
+                }
               </TextField>
+
               <TextField
                 fullWidth
                 variant="filled"

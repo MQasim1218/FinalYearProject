@@ -4,6 +4,8 @@ const DonorDons = require('../../Models/Donations/DonationDonor')
 const Admin = require('../../Models/Users/AdminModel')
 
 
+const adminFeilds = ['name', 'age', 'contact', 'email']
+
 // ! NOTE: This function returns all the Donations made by the SuperAdmin to all admins.
 // Get all supadmin donations -- Filter for a particular category!!
 
@@ -12,7 +14,10 @@ const GetAllDonations = async (req, res, next) => {
     try {
         let cat = req.params.category
         if (cat == null) {
-            let Dons = await SuperAdminDons.find({}).exec()
+            let Dons = await SuperAdminDons
+                .find({})
+                .populate("admin", adminFeilds)
+                .exec()
             res.json(Dons)
         } else {
             let Dons = await SuperAdminDons.find({ category: cat }).exec()
@@ -373,22 +378,32 @@ const DonateToAdmin = async (req, res, next) => {
      */
 
     try {
-        let { admin, amount: am, donordonationId } = req.body
-        // STUB: Step1: Destructure the req.body to get the adminId, donationId, 
+        console.log("A request for donation to admin recieved!!")
+        // let { admin, amount: am, donordonationId } = req.body
+
+        // STUB: Step1: Destructure the req.body to get the adminId, donationId,
+
+        console.log("Req body: ", req.body)
 
         let don = await SuperAdminDons.create(req.body)
         if (don) {
+            console.log("The daontion was successfull")
+        } else {
+            console.log("the donation failed")
         }
+
         console.log('Donation created :', don)
 
+        let { admin, donordonationId, amount } = req.body
+
         let adminUpdated = await Admin.findByIdAndUpdate(admin, {
-            $inc: { amount: am }
+            $inc: { amount }
         })
 
         console.log(adminUpdated)
 
         let donorDonationUpdated = await DonorDons.findByIdAndUpdate(donordonationId, {
-            $inc: { amount: -am, amountDonated: am }
+            $inc: { amount: -amount, amountDonated: amount }
         })
 
         console.log("Updated Donor donation entry!!: ", donorDonationUpdated)
@@ -397,11 +412,12 @@ const DonateToAdmin = async (req, res, next) => {
         res.send("Donation Successful!")
 
     } catch (error) {
-        res.send(error.message)
+        res.status(500).send(error.message)
     }
 }
 
 const RegisterDonorDonation = async (req, res, next) => {
+    console.log("Here to register donations!!")
 
     /**
      * To Register the Donor Donation, we need to do the following steps. 
@@ -410,13 +426,16 @@ const RegisterDonorDonation = async (req, res, next) => {
      *  3. 
      */
     try {
+
         // let { amount, donor } = req.body
+        console.log("Request body: ", req.body)
+
         let donor_donation = await DonorDons.create(req.body)
 
         res.json(donor_donation)
 
     } catch (error) {
-
+        res.send(error)
     }
 }
 

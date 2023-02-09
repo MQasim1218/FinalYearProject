@@ -4,16 +4,14 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
-import { useState } from "react";
-import axois from "axios"
-import { useEffect } from "react";
-import axios from "axios";
+import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
+import { useRegisterDonorDonationMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 // import axios from "axios"
 
 //initializing all inputs with their keys
 const initialValues = {
   donation_title: "",
-  total_amount: "",
+  amount: "",
   description: "",
   catagory: "Education",
   donor: "",
@@ -22,7 +20,8 @@ const initialValues = {
 //schema for validation
 const userSchema = yup.object().shape({
   donation_title: yup.string().required("Required"),
-  total_amount: yup.string().required("Required"),
+  amount: yup.string().required("Required"),
+  description: yup.string().required("Required"),
   catagory: yup.string().required("Required"),
   donor: yup.string().required("Required"),
 });
@@ -49,35 +48,56 @@ const DonationRegistration = () => {
     },
   ];
 
-  
-//   useEffect(() => {
 
-//     const getData = async () => {
-//       const res = await fetch('http://localhost:5000/admin')
-//       console.log("Got some data!")
+  //   useEffect(() => {
 
-//       if (res.ok) {
-//         let data = await res.json()
-//         console.log(data)
-//         if (data !== null) console.log(data)
-//         else console.log("No data recieved!")
-//       }
-//     }
+  //     const getData = async () => {
+  //       const res = await fetch('http://localhost:5000/admin')
+  //       console.log("Got some data!")
 
-//     getData()
-//     return (() => console.log("No clean up"))
+  //       if (res.ok) {
+  //         let data = await res.json()
+  //         console.log(data)
+  //         if (data !== null) console.log(data)
+  //         else console.log("No data recieved!")
+  //       }
+  //     }
 
-//   }, [])
+  //     getData()
+  //     return (() => console.log("No clean up"))
+
+  //   }, [])
 
 
   //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  // NOTE: Options for donor Donations
 
+  let { isError: donorsIsError, isSuccess: donorsIsSuccess, error: donorsError, data: donors, isLoading: donorsIsLoading } = useAllDonorsQuery()
+
+  if (!donorsIsLoading) {
+    if (donorsIsSuccess)
+      donors = donors
+        .map((don, index) => ({ value: don._id, label: don.name, id: index }))
+        .map((opt) => (
+          <MenuItem key={opt.id} value={opt.value} id={opt.id}>
+            {opt.label}
+          </MenuItem>
+        ))
+    else if (donorsIsError) console.log(donorsError.message)
+  }
+
+
+  let [setDonorDonation, { data, isError, isLoading, isSuccess, error }] = useRegisterDonorDonationMutation()
   //on submit, all inputs are stored in values
   const handleFormSubmit = async (values) => {
     console.log(values);
+    await setDonorDonation(values)
 
+    if (isError && !isLoading) {
+      console.log(error)
+    }
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
   };
@@ -129,6 +149,7 @@ const DonationRegistration = () => {
                 helperText={touched.donation_title && errors.donation_title}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -139,25 +160,32 @@ const DonationRegistration = () => {
                 }}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.total_amount}
-                name="total_amount"
-                error={!!touched.total_amount && !!errors.total_amount}
-                helperText={touched.total_amount && errors.total_amount}
+                value={values.amount}
+                name="amount"
+                error={!!touched.amount && !!errors.amount}
+                helperText={touched.amount && errors.amount}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Donor Name *"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.donor}
-                name="donor"
-                error={!!touched.donor && !!errors.donor}
-                helperText={touched.donor && errors.donor}
-                sx={{ gridColumn: "span 2" }}
-              />
+
+              {
+                !donorsIsLoading && <TextField
+                  fullWidth
+                  select
+                  variant="filled"
+                  type="text"
+                  label="Donor *"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.donor}
+                  name="donor"
+                  error={!!touched.donor && !!errors.donor}
+                  helperText={touched.donor && errors.donor}
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  {donors}
+                </TextField>
+              }
+
               <TextField
                 fullWidth
                 select
@@ -171,12 +199,16 @@ const DonationRegistration = () => {
                 error={!!touched.catagory && !!errors.catagory}
                 helperText={touched.catagory && errors.catagory}
                 sx={{ gridColumn: "span 2" }}
-              >{catagorys.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
+              >
+                {
+                  catagorys.map((option, index) => (
+                    <MenuItem key={index} value={option.value} id={index}>
+                      {option.label}
+                    </MenuItem>
+                  ))
+                }
               </TextField>
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -192,6 +224,7 @@ const DonationRegistration = () => {
                 multiline
                 rows={4}
               />
+
             </Box>
 
             <Box display="flex" justifyContent="center" mt="20px">

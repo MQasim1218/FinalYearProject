@@ -1,5 +1,6 @@
 const DonorDons = require('../../Models/Donations/DonationDonor')
 
+const donorFeilds = ['id', 'name', 'age', 'email', 'contact', 'createdAt']
 
 // Get all the donations made by all the donors!!
 const GetAllDonations = async (req, res, next) => {
@@ -7,7 +8,12 @@ const GetAllDonations = async (req, res, next) => {
         let cat = req.params.category
         if (cat == null) {
             // Get all the donations made by the Donors
-            let Dons = await DonorDons.find({}).populate('donor').exec()
+            let Dons = await DonorDons
+                .find({})
+                .populate('donor', {
+
+                })
+                .exec()
             res.json(Dons)
         } else {
             // Get all the Donations by all the donors for a particular category.

@@ -21,7 +21,11 @@ const GetAllDonations = async (req, res, next) => {
             res.json(Dons)
         } else {
             // Get all the Donations by all the donors for a particular category.
-            let Dons = await AdminDons.find({ category: cat }).populate('admin').exec()
+            let Dons = await AdminDons
+                .find({ category: cat })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
             res.json(Dons)
         }
     } catch (error) {
@@ -38,21 +42,31 @@ const GetYearDonations = async (req, res, next) => {
 
         if (cat == null) {
             // Get all the donations by the super Admin in a year.
-            let Dons = await AdminDons.find({
-                createdAt: {
-                    $gte: ISODate(`${year}-01-01`),
-                    $lt: ISODate(`${year + 1}-01-01`)
-                }
-            }).exec()
+            let Dons = await AdminDons
+                .find({
+                    createdAt: {
+                        $gte: ISODate(`${year}-01-01`),
+                        $lt: ISODate(`${year + 1}-01-01`)
+                    }
+                })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         } else {
-            let Dons = await AdminDons.find({
-                createdAt: {
-                    $gte: ISODate(`${year}-01-01`),
-                    $lt: ISODate(`${year + 1}-01-01`)
-                },
-                category: cat
-            }).exec()
+            let Dons = await AdminDons
+                .find({
+                    createdAt: {
+                        $gte: ISODate(`${year}-01-01`),
+                        $lt: ISODate(`${year + 1}-01-01`)
+                    },
+                    category: cat
+                })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         }
     } catch (error) {
@@ -69,21 +83,30 @@ const GetMonthDonations = async (req, res, next) => {
         let month = req.params.month
         if (cat == null) {
             // Get all the donations by the super Admin in a month.
-            let Dons = await SuperAdminDons.find({
-                createdAt: {
-                    $gte: ISODate(`${year}-${month}-01`),
-                    $lt: ISODate(`${year}-${month + 1}-01`)
-                }
-            }).exec()
+            let Dons = await SuperAdminDons
+                .find({
+                    createdAt: {
+                        $gte: ISODate(`${year}-${month}-01`),
+                        $lt: ISODate(`${year}-${month + 1}-01`)
+                    }
+                })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
             res.json(Dons)
         } else {
-            let Dons = await SuperAdminDons.find({
-                createdAt: {
-                    $gte: ISODate(`${year}-${month}-01`),
-                    $lt: ISODate(`${year}-${month + 1}-01`)
-                },
-                category: cat
-            }).exec()
+            let Dons = await SuperAdminDons
+                .find({
+                    createdAt: {
+                        $gte: ISODate(`${year}-${month}-01`),
+                        $lt: ISODate(`${year}-${month + 1}-01`)
+                    },
+                    category: cat
+                })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         }
     } catch (error) {
@@ -99,19 +122,28 @@ const GetDonations_After = async (req, res, next) => {
         let start_date = req.params.start_date
         if (cat == null) {
             // Get all the donations by the super Admin in a month.
-            let Dons = await AdminDons.find({
-                createdAt: {
-                    $gte: ISODate(`${start_date}`),
-                }
-            }).exec()
+            let Dons = await AdminDons
+                .find({
+                    createdAt: {
+                        $gte: ISODate(`${start_date}`),
+                    }
+                })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         } else {
-            let Dons = await AdminDons.find({
+            let Dons = await AdminDons
+                .find({
                 createdAt: {
                     $gte: ISODate(`${start_date}`),
                 },
                 category: cat
-            }).exec()
+                })
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
             res.json(Dons)
         }
     } catch (error) {
