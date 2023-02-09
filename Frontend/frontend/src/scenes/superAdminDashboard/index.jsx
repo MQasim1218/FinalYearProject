@@ -236,6 +236,42 @@ const SuperAdminDashboard = () => {
   else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
 
 
+
+
+  // ! Campaigns StatBox
+  let {
+    data: camps,
+    error: campsError,
+    isError: isCampsError,
+    isSuccess: isCampsSuccess,
+    isLoading: isCampsLoading
+  } = useAllCamQuery()
+
+  // console.log("Logging benifs data", benifs)
+
+  let CampsStatBox = <></>
+  if (isCampsLoading) CampsStatBox = <h3>Loading Content</h3>
+  else if (isCampsSuccess) {
+    // console.log("Benifs data: ", benifs)
+    // benifs.forEach((benif => { benif.id = benif._id }))
+
+    CampsStatBox = (
+      <StatBox
+        title={camps.length}
+        subtitle="Active Campaigns"
+        progress={false}
+        increase="+43% This Month dyn"
+        icon={
+          <CampaignOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    )
+  }
+  else if (isCampsError) CampsStatBox = <h3>{`Error: ${campsError.message}`}</h3>
+
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -311,17 +347,19 @@ const SuperAdminDashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          {/* <StatBox
-            title="10"
-            subtitle="Active Donors"
-            progress={false}
-            increase="+15% This Month dyn"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
+          {
+            /* <StatBox
+              title="10"
+              subtitle="Active Donors"
+              progress={false}
+              increase="+15% This Month dyn"
+              icon={
+                <PersonAddIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            /> */
+          }
           {DonorsStatBox}
         </Box>
         <Box
@@ -332,7 +370,8 @@ const SuperAdminDashboard = () => {
           justifyContent="center"
           borderRadius="10px"
         >
-          <StatBox
+
+          {/* <StatBox
             title="10"
             subtitle="Active Campaigns"
             progress={false}
@@ -342,7 +381,7 @@ const SuperAdminDashboard = () => {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
         </Box>
 
         {/* ROW 2 */}

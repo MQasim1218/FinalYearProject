@@ -39,6 +39,7 @@ const store = configureStore({
 
         // Campaign Reducers 📸
         // TODO: Will look into these after the above reducers are finalized!!
+        [campaignsApi.reducerPath]: campaignsApi.reducer,
         // cowCamp: adminDonReducer,
         // disasterCamp: disasterCampReducer,
 
