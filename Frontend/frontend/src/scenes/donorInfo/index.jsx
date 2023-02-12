@@ -1,29 +1,20 @@
-import React from 'react'
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import React, { useContext, useEffect } from 'react'
+import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import Geography from "../../components/Geography";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
-import AllCampaigns from "../allCampaigns";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import LineChart from "../../components/LineChart";
-import CampaignLineChart from "../../components/CampaignLineChart";
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import { useState } from "react";
 import UserBox from '../../components/UserBox';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
 import UserLineChart from '../../components/UserLineChart';
 import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
 import { useParams } from "react-router-dom";
+import AccountTypeContext from '../../accountTypeContext';
+import { useSingleAdminDonationsQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
+import { useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
 
 const DonorInfo = () => {
   const theme = useTheme();
@@ -31,106 +22,126 @@ const DonorInfo = () => {
   let { id } = useParams();
   const [donations, setDonations] = useState([])
 
-  //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
-  //const { user } = useAuthContext('aown')
+  // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
+  const { user } = useAuthContext()
+  let accountType = useContext(AccountTypeContext)
 
-  /**
-   * Lazy fetch all the dynamic data needed for the dashboard.
-   */
+  const { data: adminDons, isError: isAdminErr, isLoading: isAdminLoading, isSuccess: isAdminSuccess, error: AdminErr } = useSingleAdminDonationsQuery(id)
+  const { data: donorDons, isError: isDonorErr, isLoading: isDonorLoading, isSuccess: isDonorSuccess, error: donorErr } = useSingleDonorDonationsQuery(id)
 
-  //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
 
-  // useEffect(() => {
-  //   //   // Get all the campaigns and count them
-  //   //   // TODO: Cache these campaigns using context API
-  //   const getCampaigns = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-  //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
 
-  //       if (gen_res.status < 300 && gen_res.status < 300) {
-  //         let data = gen_res.data.concat(spec_res.data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  accountType = "Admin"
+  let RecDonations = <></>
 
-  //   const getDonors = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         setActiveDonors(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  switch (accountType) {
+    case "Admin":
+      console.log("Donations by this user: ", adminDons)
 
-  //   const getBenificiries = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/benificiary/")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+      if (isAdminLoading) console.log("Donations content loading")
+      if (isAdminSuccess) {
+        // setDonations(adminDons)
+        RecDonations = (
+          adminDons.map((transaction, i) => (
+            <Box
 
-  //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
-  // const getDonations = async () => {
-  //   try {
-  //     let donor_id = user.user.user._id
-  //     let res = await axios.get(
-  //       `http://localhost:5000/donor/${donor_id}/donations`,
-  //       {
-  //         headers: {
-  //           'Authorization': `Bearer ${user.user.token}`
-  //         }
-  //       }
-  //     )
-  //     if (res.status < 400) {
-  //       if (res.data !== null) return res.data
-  //       else console.log("No data recieved!")
-  //     }
+              key={`${i}`}
+              display="flex"
 
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              p="15px"
+            >
+              {/* {console.log(transaction)} */}
+              <Box>
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {transaction._id.slice(0, 8)}
+                </Typography>
+                <Typography color={colors.grey[100]}>
+                  {transaction.admin.name}
+                </Typography>
+              </Box>
+              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+              <Box
+                backgroundColor={colors.greenAccent[500]}
+                p="5px 10px"
+                borderRadius="4px"
+                color={colors.grey[900]}
+              >
+                ${transaction.amount}
+              </Box>
+            </Box>
+          ))
+        )
+      }
+      if (isAdminErr) console.log("Error: ", AdminErr.message)
 
-  // getDonations().then((dons) => {
-  //   console.log(dons)
-  //   setDonations(dons)
-  // })
 
-  // //   getCampaigns().then((camps) => {
-  // //     setActiveCamps(camps)
-  // //   })
-  // //   getDonors().then((dons) => {
-  // //     setActiveDonors(dons)
-  // //   })
-  // //   getBenificiries().then((benifs) => {
-  // //     setActiveBenifs(benifs)
-  // //   })
+    case "Donor":
+      console.log("Donations by this user: ", donorDons)
 
-  // return (() => console.log("No clean up"))
-  // }, [])
+      if (isDonorLoading) console.log("Donations content loading")
+      if (isDonorSuccess) {
+        // setDonations(donorDons)
+        RecDonations = (
+          donorDons.map((transaction, i) => (
+            <Box
 
-  // let { } = useGetDonorQuery(id)
+              key={`${i}`}
+              display="flex"
+
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              p="15px"
+            >
+              {/* {console.log(transaction)} */}
+              <Box>
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {transaction._id.slice(0, 8)}
+                </Typography>
+                <Typography color={colors.grey[100]}>
+                  {transaction.donor.name}
+                </Typography>
+              </Box>
+              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+              <Box
+                backgroundColor={colors.greenAccent[500]}
+                p="5px 10px"
+                borderRadius="4px"
+                color={colors.grey[900]}
+              >
+                ${transaction.amount}
+              </Box>
+            </Box>
+          ))
+        )
+      }
+      if (isDonorErr) console.log("Error: ", donorErr.message)
+
+    default:
+      console.log("The user scenario is not a part of the system!!")
+      break;
+  }
+
+  useEffect(() => {
+    if (isAdminSuccess) {
+      setDonations(adminDons)
+    }
+    if (isDonorSuccess) {
+      setDonations(donorDons)
+    }
+  }, [isAdminSuccess, isDonorSuccess, adminDons, donorDons])
+
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -138,7 +149,7 @@ const DonorInfo = () => {
     </Box>
 
     <Box>
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>User Information</Typography>
     </Box>
 
     {/* Grids and Charts */}
@@ -157,14 +168,14 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <UserBox
-          name={"donor.name"}
-          accounttype="Donor"
+          name={user?.user?.name || "loading"}
+          accounttype={accountType || ""}
           picture={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
-          participated="5"
-          joindate="{user.user.user.createdAt.slice(0, 10)}"
-          latestdonation="10-Dec-22"
+          // participated="5"
+          joindate={user?.user?.createdAt.slice(0, 10) || ""}
+          latestdonation={donations && donations[donations.length - 1]?.createdAt}
         />
       </Box>
       <Box
@@ -232,40 +243,9 @@ const DonorInfo = () => {
             Recent Donations
           </Typography>
         </Box>
-        {donations.map((transaction, i) => (
-          <Box
 
-            key={`${transaction._id}`}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            p="15px"
-          >
-            {/* {console.log(transaction)} */}
-            <Box>
-              <Typography
-                color={colors.greenAccent[500]}
-                variant="h5"
-                fontWeight="600"
-              >
-                {transaction._id.slice(0, 8)}
-              </Typography>
-              <Typography color={colors.grey[100]}>
-                {transaction.donor.name}
-              </Typography>
-            </Box>
-            <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
-            <Box
-              backgroundColor={colors.greenAccent[500]}
-              p="5px 10px"
-              borderRadius="4px"
-              color={colors.grey[900]}
-            >
-              ${transaction.amount}
-            </Box>
-          </Box>
-        ))}
+        {RecDonations}
+
       </Box>
       <Box
         gridColumn="span 8"

@@ -5,7 +5,7 @@ import SuperSidebar from './SuperSidebar';
 import UserSidebar from './UserSidebar';
 import AccountTypeContext from '../../accountTypeContext';
 
-function getSidebar (accountType) {
+function getSidebar(accountType) {
     console.log(accountType)
     switch (accountType) {
         case 'donor':
@@ -19,7 +19,7 @@ function getSidebar (accountType) {
     }
 }
 
-const Sidebars = ( ) => {
+const Sidebars = () => {
 
     const accountType = useContext(AccountTypeContext)
 
