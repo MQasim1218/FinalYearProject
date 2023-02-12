@@ -11,9 +11,12 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 import { activityData as data } from "../../data/mockData";
+import { Navigation } from "@mui/icons-material";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 const Donors = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
@@ -48,11 +51,20 @@ const Donors = () => {
       headerName: "Total Donations",
       flex: 1,
     },
-
-
+    
+    {
+      
+      // Okay
+      field: 'View',
+      type: 'actions',
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)}  />,
+      ],
+    },
     {
       // Okay
-      field: 'actions',
+      field: 'Delete',
       type: 'actions',
       width: 100,
       getActions: () => [

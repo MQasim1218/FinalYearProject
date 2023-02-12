@@ -23,11 +23,12 @@ import UserLineChart from '../../components/UserLineChart';
 import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
+import { useParams } from "react-router-dom";
 
 const DonorInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  let { id } = useParams();
   const [donations, setDonations] = useState([])
 
   //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
