@@ -1,13 +1,16 @@
 import { Box, Typography, useTheme, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
 import { useState } from "react";
 import { useAllSuperAdminDonationsQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
-import { flattenObj } from '../../../misc/ArrayFlatten'
+import { flattenObj } from '../../../misc/ArrayFlatten'import { Navigate, useNavigate } from "react-router-dom";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+
 
 const SuperAdminDonations = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   let [users, setUsers] = useState([])
@@ -54,6 +57,17 @@ const SuperAdminDonations = () => {
       field: "amount",
       headerName: "Donation Amount",
       flex: 1,
+    },
+    {
+      
+      // Okay
+      field: 'View',
+      type: 'actions',
+      headerName: "View",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)}  />,
+      ],
     },
   ];
 

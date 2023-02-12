@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useRegisterDonorDonationMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import AlertModal from "../../components/AlertModal";
 // import axios from "axios"
 
 //initializing all inputs with their keys
@@ -28,8 +29,17 @@ const userSchema = yup.object().shape({
 
 const DonationRegistration = () => {
 
-  // Options for category entry
-  // TODO: To make dynamic, coming from the available donation types
+  //Code for the OnCLick POPUP
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  //Options for category entry
   const catagorys = [
     {
       value: 'Education',
@@ -101,6 +111,12 @@ const DonationRegistration = () => {
     }
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
+
+    //To show the popup component.
+    openModal()
+
+    //To reset the forms values after submit.
+    resetForm()
   };
 
 
@@ -109,6 +125,8 @@ const DonationRegistration = () => {
 
   return (
     <Box m="20px">
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!"/>
+
       <Header title="REGISTER DONATIONS" subtitle="Register Donations from Donors" />
 
       <Formik

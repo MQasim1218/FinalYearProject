@@ -1,10 +1,13 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataRecent } from "../../data/mockData";
 import Header from "../../components/Header";
+import { Navigate, useNavigate } from "react-router-dom";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 const Recent = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -39,6 +42,17 @@ const Recent = () => {
       field: "date",
       headerName: "Date",
       flex: 1,
+    },
+    {
+      
+      // Okay
+      field: 'View',
+      type: 'actions',
+      headerName: "View",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)}  />,
+      ],
     },
   ];
 

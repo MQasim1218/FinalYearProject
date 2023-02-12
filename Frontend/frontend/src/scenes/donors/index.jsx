@@ -20,6 +20,8 @@ const Donors = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
+
+
   // The columns gets all the data we specify below from the mockdata file and store it
   const columns = [
     { field: "id", headerName: "ID" },
@@ -57,6 +59,7 @@ const Donors = () => {
       // Okay
       field: 'View',
       type: 'actions',
+      headerName: "View",
       width: 100,
       getActions: (row) => [
         <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)}  />,
@@ -66,6 +69,7 @@ const Donors = () => {
       // Okay
       field: 'Delete',
       type: 'actions',
+      headerName: "Delete",
       width: 100,
       getActions: () => [
         <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
@@ -174,7 +178,7 @@ const Donors = () => {
   return (
     <Box m="20px">
 
-      <Header title="Donors" subtitle="Manage Donors" />
+      <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"

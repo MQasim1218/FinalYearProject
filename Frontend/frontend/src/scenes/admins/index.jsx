@@ -11,11 +11,13 @@ import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Admins = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
 
   // The columns gets all the data we specify below from the mockdata file and store it
@@ -57,17 +59,19 @@ const Admins = () => {
     },
     {
       // Okay
-      field: 'actions',
+      field: 'View',
       type: 'actions',
+      headerName: "View",
       width: 100,
-      getActions: () => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" />,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/adminanalytics/${row.id}`)}  />,
       ],
     },
     {
       // Okay
-      field: 'actions',
+      field: 'Delete',
       type: 'actions',
+      headerName: "Delete",
       width: 100,
       getActions: () => [
         <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
