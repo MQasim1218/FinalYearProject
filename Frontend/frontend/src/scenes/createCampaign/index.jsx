@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useState } from "react";
 import axois from "axios"
+import AlertModal from "../../components/AlertModal";
 
 import { useEffect } from "react";
 import axios from "axios";
@@ -33,6 +34,16 @@ const campaignSchema = yup.object().shape({
 
 
 const CreateCampaign = () => {
+
+//Code for the OnCLick POPUP
+const [modalIsOpen, setModalIsOpen] = useState(false);
+const openModal = () => {
+  setModalIsOpen(true);
+};
+
+const closeModal = () => {
+  setModalIsOpen(false);
+};
 
   //Options for location entry
   const locations = [
@@ -92,13 +103,18 @@ const CreateCampaign = () => {
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values, {resetForm}) => {
     console.log(values);
 
     let camp = await axios.post(`http://localhost:5000/admin/637e3efa875994b2bc99e2b9/addGeneralCampaign`, values)
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
     console.log("camp created: ", camp)
+     //To show the popup component.
+     openModal()
+
+     //To reset the forms values after submit.
+     resetForm()
   };
 
 
@@ -107,6 +123,7 @@ const CreateCampaign = () => {
 
   return (
     <Box m="20px">
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Given To Admin!"/>
       <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign" />
 
       <Formik

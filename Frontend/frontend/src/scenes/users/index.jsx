@@ -8,8 +8,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+
 
 const Users = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   // The columns gets all the data we specify below from the mockdata file and store it
@@ -63,6 +67,19 @@ const Users = () => {
         );
       },
     },
+
+    {
+      
+      // Okay
+      field: 'View',
+      type: 'actions',
+      headerName: "View",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)}  />,
+      ],
+    },
+
     {
       // Okay
       field: 'actions',

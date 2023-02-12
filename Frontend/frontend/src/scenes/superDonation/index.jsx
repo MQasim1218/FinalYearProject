@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useState } from "react";
 import axois from "axios"
+import AlertModal from "../../components/AlertModal";
 
 import { useEffect } from "react";
 import axios from "axios";
@@ -34,6 +35,17 @@ const userSchema = yup.object().shape({
 
 
 const SuperDonation = () => {
+
+  //Code for the OnCLick POPUP
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   //Options for admin entry
   const admins = [
     {
@@ -120,11 +132,17 @@ const SuperDonation = () => {
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values, {resetForm}) => {
     console.log(values);
 
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
+
+    //To show the popup component.
+    openModal()
+
+    //To reset the forms values after submit.
+    resetForm()
   };
 
 
@@ -133,6 +151,8 @@ const SuperDonation = () => {
 
   return (
     <Box m="20px">
+
+
       <Header title="ALLOCATE DONATIONS" subtitle="Give Donations to an Admin" />
 
       <Formik
@@ -274,6 +294,7 @@ const SuperDonation = () => {
           </form>
         )}
       </Formik>
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Given To Admin!"/>
     </Box>
   );
 }

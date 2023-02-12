@@ -17,11 +17,13 @@ import LineChart from "../../components/LineChart";
 import PersonOutlineOutlined from "@mui/icons-material/PersonOutlineOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Admins = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
 
   // The columns gets all the data we specify below from the mockdata file and store it
@@ -63,17 +65,19 @@ const Admins = () => {
     {
 
       // Okay
-      field: 'actions',
+      field: 'View',
       type: 'actions',
+      headerName: "View",
       width: 100,
-      getActions: () => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" />,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/adminanalytics/${row.id}`)}  />,
       ],
     },
     {
       // Okay
-      field: 'actions',
+      field: 'Delete',
       type: 'actions',
+      headerName: "Delete",
       width: 100,
       getActions: () => [
         <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
@@ -248,7 +252,7 @@ const Admins = () => {
             <Typography varient="h4" alignItems="center" justifyContent="center">
               Data Grid Loading
             </Typography> :
-            <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+            <DataGrid checkboxSelection rows={mockDataUsers} columns={columns} components={{ Toolbar: GridToolbar }} />
         }
       </Box>
     </Box>

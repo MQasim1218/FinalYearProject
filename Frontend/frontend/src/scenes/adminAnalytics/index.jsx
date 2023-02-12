@@ -20,8 +20,10 @@ import UserBox from '../../components/UserBox';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
 import UserLineChart from '../../components/UserLineChart';
+import { useParams } from "react-router-dom";
 
 const AdminAnalytics = () => {
+  let { id } = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [activeCampaigns, setActiveCamps] = useState([])

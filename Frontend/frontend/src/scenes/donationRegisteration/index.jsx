@@ -8,6 +8,7 @@ import { useState } from "react";
 import axois from "axios"
 import { useEffect } from "react";
 import axios from "axios";
+import AlertModal from "../../components/AlertModal";
 // import axios from "axios"
 
 //initializing all inputs with their keys
@@ -28,6 +29,16 @@ const userSchema = yup.object().shape({
 });
 
 const DonationRegistration = () => {
+
+  //Code for the OnCLick POPUP
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   //Options for category entry
   const catagorys = [
@@ -75,11 +86,17 @@ const DonationRegistration = () => {
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values, {resetForm}) => {
     console.log(values);
 
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
+
+    //To show the popup component.
+    openModal()
+
+    //To reset the forms values after submit.
+    resetForm()
   };
 
 
@@ -88,6 +105,8 @@ const DonationRegistration = () => {
 
   return (
     <Box m="20px">
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!"/>
+
       <Header title="REGISTER DONATIONS" subtitle="Register Donations from Donors" />
 
       <Formik
