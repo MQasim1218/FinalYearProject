@@ -245,7 +245,7 @@ const SuperAdminDashboard = () => {
     isError: isCampsError,
     isSuccess: isCampsSuccess,
     isLoading: isCampsLoading
-  } = useAllCamQuery()
+  } = useAllCampaignsQuery()
 
   // console.log("Logging benifs data", benifs)
 

@@ -15,7 +15,7 @@ import { adminApi } from './redux-features/users/AdminSlice'
 import { donorApi } from './redux-features/users/DonorSlice'
 import { superadminApi } from './redux-features/users/SuperAdminSlice'
 import { benificiaryApi } from './redux-features/users/BenificiarySlice'
-
+import { campaignsApi } from './redux-features/CampaignCategories/exporterSlice'
 
 const store = configureStore({
     reducer: {
