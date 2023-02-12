@@ -76,7 +76,7 @@ const Users = () => {
       headerName: "View",
       width: 100,
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)}  />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)}  />,
       ],
     },
 
@@ -183,7 +183,7 @@ const Users = () => {
             <Typography varient="h4" alignItems="center" justifyContent="center">
               Data Grid Loading
             </Typography> :
-            <DataGrid checkboxSelection rows={users} columns={columns} components={{ Toolbar: GridToolbar }} />
+            <DataGrid checkboxSelection rows={mockDataUsers} columns={columns} components={{ Toolbar: GridToolbar }} />
         }
       </Box>
     </Box>

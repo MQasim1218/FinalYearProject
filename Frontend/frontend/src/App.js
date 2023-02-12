@@ -106,6 +106,7 @@ function App(props) {
                   <>
                     <Route path="/admindashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/donorinfo/:id" element={<DonorInfo/>} />
                     <Route path="/donations" element={<Donations />} />
                     <Route path="/recent" element={<Recent />} />
                     <Route path="/createCampaign" element={<CreateCampaign />} />
