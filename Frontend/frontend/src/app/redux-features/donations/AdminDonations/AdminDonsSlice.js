@@ -12,7 +12,7 @@ export const adminDonationsApi = allAdminsDonationsApi.injectEndpoints({
         // 👨‍👨‍👦 Fetch all Admins' Donations 📷
         singleAdminDonations: builder.query({
             query: (adminId, category) => ({
-                url: category == null ? `${adminId}` : `${adminId}/${category}`,
+                url: category == null ? `admin/${adminId}` : `admin/${adminId}/${category}`,
                 method: 'GET',
             }),
             providesTags: [{ type: 'AdminDonations' }]
@@ -48,7 +48,7 @@ export const {
     useAllAdminYearDonationsQuery,
     useAllAdminMonthDonationsQuery,
 
-    
+
 
     // Single Admin Queries
     useSingleAdminDonationsQuery,

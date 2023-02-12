@@ -21,6 +21,11 @@ const authorize = require('../../middleware/authorization')
 // Get all Admin donations to campaigns -- Filter for a particular category!!
 router.get('/:category?', AdminDonationController.GetAllDonations)
 
+router.get('/admin/:admin_id/', (req, res) => {
+    console.log("The admin id recieved is: ", req.params.admin_id)
+    res.send(`Admin id recieved: ${req.params.admin_id}`)
+})
+
 // Get donations made by Admins to Campaings in a year -- Filterable by catogory
 router.get('/:year/:category?', AdminDonationController.GetYearDonations)
 
@@ -39,24 +44,26 @@ router.get('/range/:start_date/:category?', AdminDonationController.GetDonations
 router.get('/range/:start_date/:end_date/:category?', AdminDonationController.GetDonations_TimeRange)
 
 
+
+
 // Get one Admin donations to his/her campaigns -- Filter for a particular category!!
-router.get('/:admin_id/:category?', AdminDonationController.AdminAllDonations)
+// router.get('/admin/:admin_id/:category?', AdminDonationController.AdminAllDonations)
 
 // Get donations made by Admins to Campaings in a year -- Filterable by catogory
-router.get('/:admin_id/:year/:category?', AdminDonationController.AdminYearDonations)
+router.get('/admin/:admin_id/time/:year/:category?', AdminDonationController.AdminYearDonations)
 
 // Get donations made by the SuperAdmin in a Month
-router.get('/:admin_id/:year/:month/:category?', AdminDonationController.AdminCampaignDonationsMonth)
+router.get('/admin/:admin_id/time/:year/:month/:category?', AdminDonationController.AdminCampaignDonationsMonth)
 
 // REVIEW: Donations between a Specified timeperiod
 // Get donations made by an Admin before a date
-router.get('/:admin_id/range/:end_date/:category?', AdminDonationController.AdminCampaignDonations_Before)
+router.get('/admin/:admin_id/range/:end_date/:category?', AdminDonationController.AdminCampaignDonations_Before)
 
 // Get donations made by an Admin after a date
-router.get('/:admin_id/range/:start_date/:category?', AdminDonationController.AdminCampaignDonations_After)
+router.get('/admin/:admin_id/range/:start_date/:category?', AdminDonationController.AdminCampaignDonations_After)
 
 // Get donations made by an Admin between a timeperiod
-router.get('/:admin_id/range/:start_date/:end_date/:category?', AdminDonationController.AdminCampaignDonations_TimeRange)
+router.get('/admin/:admin_id/range/:start_date/:end_date/:category?', AdminDonationController.AdminCampaignDonations_TimeRange)
 
 
 

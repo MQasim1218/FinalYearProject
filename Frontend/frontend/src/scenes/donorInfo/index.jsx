@@ -36,13 +36,13 @@ const DonorInfo = () => {
 
   switch (accountType) {
     case "Admin":
-      console.log("Donations by this user: ", adminDons)
+      console.log("Donations by this Admin: ", adminDons)
 
       if (isAdminLoading) console.log("Donations content loading")
       if (isAdminSuccess) {
         // setDonations(adminDons)
         RecDonations = (
-          adminDons.map((transaction, i) => (
+          adminDons?.map((transaction, i) => (
             <Box
 
               key={`${i}`}
@@ -83,13 +83,13 @@ const DonorInfo = () => {
 
 
     case "Donor":
-      console.log("Donations by this user: ", donorDons)
+      console.log("Donations by this donor: ", donorDons)
 
       if (isDonorLoading) console.log("Donations content loading")
       if (isDonorSuccess) {
         // setDonations(donorDons)
         RecDonations = (
-          donorDons.map((transaction, i) => (
+          donorDons?.map((transaction, i) => (
             <Box
 
               key={`${i}`}

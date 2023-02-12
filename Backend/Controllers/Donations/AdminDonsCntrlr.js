@@ -136,10 +136,10 @@ const GetDonations_After = async (req, res, next) => {
         } else {
             let Dons = await AdminDons
                 .find({
-                createdAt: {
-                    $gte: ISODate(`${start_date}`),
-                },
-                category: cat
+                    createdAt: {
+                        $gte: ISODate(`${start_date}`),
+                    },
+                    category: cat
                 })
                 .populate('admin')
                 .populate('campaign', campFeilds)
@@ -217,6 +217,8 @@ const GetDonations_TimeRange = async (req, res, next) => {
 // All donations made by an admin
 const AdminAllDonations = async (req, res, next) => {
     try {
+
+        console.log("In here")
         let cat = req.params.category
         let adminId = req.params.adminId
 
@@ -243,6 +245,8 @@ const AdminAllDonations = async (req, res, next) => {
 // All donations made in a year by one specific Admin
 const AdminYearDonations = async (req, res, next) => {
     try {
+
+        console.log("hitting this route")
         let cat = req.params.category
         let adminId = req.params.adminId
         let year = req.params.year
@@ -250,8 +254,8 @@ const AdminYearDonations = async (req, res, next) => {
             // Get all the donations by the super Admin in a year.
             let Dons = await AdminDons.find({
                 createdAt: {
-                    $gte: ISODate(`${year}-01-01`),
-                    $lt: ISODate(`${year + 1}-01-01`)
+                    $gte: new Date(`${year}-01-01`).toISOString(),
+                    $lt: new Date(`${year + 1}-01-01`).toISOString()
                 },
                 admin: adminId
             }).exec()
