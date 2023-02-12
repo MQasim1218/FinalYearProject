@@ -122,7 +122,9 @@ function App(props) {
                     <Route path="/superadmindashboard" element={<SuperAdminDashboard />} />
                     <Route path="/viewcampaign" element={<AllCampaigns />} />
                     <Route path="/admins" element={<Admins />} />
+                    <Route path="/adminanalytics/:id" element={<AdminAnalytics/>} />
                     <Route path="/donors" element={<Donors />} />
+                    <Route path="/donorinfo/:id" element={<DonorInfo/>} />
                     <Route path="/donordonations" element={<DonorDonations />} />
                     <Route path="/admindonations" element={<AdminDonations />} />
                     <Route path="/superadmindonations" element={<SuperAdminDonations />} />
@@ -132,7 +134,6 @@ function App(props) {
                     <Route path="/graphs" element={<Graphs />} />
                     <Route path="/geography" element={<GeographyMap />} />
                     <Route path="/superreports" element={<SuperReports />} />
-                    <Route path="/donorinfo/:id" component={<DonorInfo/>} />
                     <Route path="*"
                       
                     />
