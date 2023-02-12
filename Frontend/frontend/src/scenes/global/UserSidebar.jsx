@@ -132,7 +132,8 @@ const UserSidebar = () => {
                                         fontWeight="bold"
                                         sx={{ m: "10px 0 0 0" }}
                                     >
-                                        {user ? user.user.user.name : "No User"}
+                                        {/* {user ? user.user.name : "No User"} */}
+                                        ALice
                                     </Typography>
                                 </Box>
                             </Box>

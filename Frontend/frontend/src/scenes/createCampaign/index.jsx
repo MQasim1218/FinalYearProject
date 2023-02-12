@@ -9,6 +9,7 @@ import axois from "axios"
 
 import { useEffect } from "react";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
 // import axios from "axios"
 
 //initializing all inputs with their keys
@@ -35,6 +36,7 @@ const campaignSchema = yup.object().shape({
 const CreateCampaign = () => {
 
   //Options for location entry
+  // TODO: This needs tobe made dynamic and linked to Google Maps
   const locations = [
     {
       value: 'Islamabad',
@@ -54,7 +56,8 @@ const CreateCampaign = () => {
     },
   ];
 
-  //Options for category entry
+  // STUB: Options for category entry
+  // TODO: MAke Dynamic based on Registered Campaign tpyes..
   const catagorys = [
     {
       value: 'Education',
@@ -74,17 +77,7 @@ const CreateCampaign = () => {
     },
   ];
 
-  useEffect(() => {
 
-    const getData = async () => {
-
-    }
-
-    getData()
-    return (() => console.log("No clean up"))
-
-  }
-    , [])
 
 
   //force width to not go below 600px
@@ -95,9 +88,14 @@ const CreateCampaign = () => {
   const handleFormSubmit = async (values) => {
     console.log(values);
 
+    // ! We are using a hard coded value for the LoggedIn Admin.
+
+    let { user } = UserContext()
+
     let camp = await axios.post(`http://localhost:5000/admin/637e3efa875994b2bc99e2b9/addGeneralCampaign`, values)
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
+
     console.log("camp created: ", camp)
   };
 

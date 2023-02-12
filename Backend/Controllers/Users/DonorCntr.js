@@ -41,7 +41,7 @@ const DonorSignUp = async (req, res, next) => {
 }
 
 const DonorSignIn = async (req, res, next) => {
-    console.log("In donor signin")
+
     console.log("Request Recieved: ", req.body)
 
     let { email, password } = req.body
@@ -51,10 +51,11 @@ const DonorSignIn = async (req, res, next) => {
         console.log("Some error occured while Donor Authentication")
         return res.status(500).send("Can not sign you in due to some error")
     }
-    let { donor, token } = login_res
+    let { user, token } = login_res
+    console.log("Logged in Donor: ", user)
     return res.json({
-        user: donor,
-        token: token
+        user,
+        token
     })
     // let donor = await DonorModel.findOne({ email: req.body.email }).exec()
     // console.log(donor)

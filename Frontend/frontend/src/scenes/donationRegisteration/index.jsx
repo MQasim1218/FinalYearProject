@@ -28,7 +28,8 @@ const userSchema = yup.object().shape({
 
 const DonationRegistration = () => {
 
-  //Options for category entry
+  // Options for category entry
+  // TODO: To make dynamic, coming from the available donation types
   const catagorys = [
     {
       value: 'Education',
@@ -73,7 +74,7 @@ const DonationRegistration = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   // NOTE: Options for donor Donations
-
+  // Get LL THE available donors
   let { isError: donorsIsError, isSuccess: donorsIsSuccess, error: donorsError, data: donors, isLoading: donorsIsLoading } = useAllDonorsQuery()
 
   if (!donorsIsLoading) {
@@ -88,9 +89,9 @@ const DonationRegistration = () => {
     else if (donorsIsError) console.log(donorsError.message)
   }
 
-
+  // NOTE: Get the Mutator for Donor Donation
   let [setDonorDonation, { data, isError, isLoading, isSuccess, error }] = useRegisterDonorDonationMutation()
-  //on submit, all inputs are stored in values
+  // On submit, all inputs are stored in values
   const handleFormSubmit = async (values) => {
     console.log(values);
     await setDonorDonation(values)

@@ -15,7 +15,7 @@ import { adminApi } from './redux-features/users/AdminSlice'
 import { donorApi } from './redux-features/users/DonorSlice'
 import { superadminApi } from './redux-features/users/SuperAdminSlice'
 import { benificiaryApi } from './redux-features/users/BenificiarySlice'
-import { campaignsApi } from './redux-features/CampaignCategories/exporterSlice'
+import { campaignsApi } from './redux-features/Campaigns/exporterSlice'
 
 const store = configureStore({
     reducer: {
@@ -55,6 +55,7 @@ const store = configureStore({
             .concat(donorDonationsApi.middleware)
             .concat(adminDonationsApi.middleware)
             .concat(superadminDonationsApi.middleware)
+            .concat(campaignsApi.middleware)
 })
 
 export default store

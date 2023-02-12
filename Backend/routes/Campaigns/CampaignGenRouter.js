@@ -15,22 +15,24 @@ const Camps = require('../../Controllers/Campaigns/GenCampaignCntrlr')
 
 
 router.get("/", Camps.GetAllCampaigns)
+router.get("/:id", Camps.GetSingleCampaign)
+router.get("/admin/:admin_id", Camps.GetAdminCampaigns)
+router.get("/admin/:admin_id/:id", Camps.GetSingleAdminCampaign)
 
-router.get("/admin/:admin_id", GetAdminsCampaigns)
-router.get("/admin/:admin_id/:cat", GetAdminCategoryCampaigns)
-router.get("/admin/:admin_id/:year", GetAdminCategoryCampaigns)
+// router.get("/admin/:admin_id", Camps.GetAdminsCampaigns)
+// router.get("/admin/:admin_id/:cat", Camps.GetAdminCategoryCampaigns)
+// router.get("/admin/:admin_id/:year", Camps.GetAdminCategoryCampaigns)
 
-router.get("/category/:cat", GetAllCampaigns)
-router.get("/category/:cat/:year", GetAllCampaigns)
+// router.get("/category/:cat", GetAllCampaigns)
+// router.get("/category/:cat/:year", GetAllCampaigns)
 
 
-router.get("/", GetAllCampaigns)
-router.get("/", GetAllCampaigns)
-router.get("/", GetAllCampaigns)
-router.get("/", GetAllCampaigns)
-router.get("/", GetAllCampaigns)
-router.get("/", GetAllCampaigns)
-router.get("/", GetAllCampaigns)
-router.get("/:id", GetOneCampaign)
+// router.get("/", GetAllCampaigns)
+// router.get("/", GetAllCampaigns)
+// router.get("/", GetAllCampaigns)
+// router.get("/", GetAllCampaigns)
+// router.get("/", GetAllCampaigns)
+// router.get("/", GetAllCampaigns)
+// router.get("/", GetAllCampaigns)
 
 module.exports = router

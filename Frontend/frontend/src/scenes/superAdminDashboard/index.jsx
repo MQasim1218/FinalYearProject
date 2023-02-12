@@ -16,6 +16,8 @@ import axios from "axios";
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
+import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 
 
 /**
@@ -41,8 +43,6 @@ const SuperAdminDashboard = () => {
   // const [activeDonors, setActiveDonors] = useState([])
   // const [activeBenifs, setActiveBenifs] = useState([])
   // const [donations, setDonations] = useState([])
-
-
   /**
    * Lazy fetch all the dynamic data needed for the dashboard.
    */
@@ -142,7 +142,6 @@ const SuperAdminDashboard = () => {
     isError: isAdminsError,
     isSuccess: adminsIsSuccess
   } = useAllAdminsQuery()
-
   let AdminsStatBox = null
   if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
   else if (adminsIsSuccess) {
@@ -181,7 +180,6 @@ const SuperAdminDashboard = () => {
     console.log("Donors Data: ", donors)
     // donors.forEach((donor => { donor.id = donor._id }))
     // ! need to add an ID field !@!@!@!@!@!@!@!@!@!
-
     DonorsStatBox = (
       <StatBox
         title={donors.length}
@@ -209,9 +207,6 @@ const SuperAdminDashboard = () => {
     isSuccess: isBenifsSuccess,
     isLoading: isBenifsLoading
   } = useAllBenifsQuery()
-
-  // console.log("Logging benifs data", benifs)
-
   let BenifsStatBox = null
   if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
   else if (isBenifsSuccess) {
@@ -248,13 +243,11 @@ const SuperAdminDashboard = () => {
   } = useAllCampaignsQuery()
 
   // console.log("Logging benifs data", benifs)
-
   let CampsStatBox = <></>
   if (isCampsLoading) CampsStatBox = <h3>Loading Content</h3>
   else if (isCampsSuccess) {
     // console.log("Benifs data: ", benifs)
     // benifs.forEach((benif => { benif.id = benif._id }))
-
     CampsStatBox = (
       <StatBox
         title={camps.length}
@@ -271,6 +264,19 @@ const SuperAdminDashboard = () => {
   }
   else if (isCampsError) CampsStatBox = <h3>{`Error: ${campsError.message}`}</h3>
 
+
+  // ! Recent Donations by the SuperAdmin
+  let {
+    data: donations,
+    error: donsError,
+    isError: isDonsError,
+    isSuccess: isDonsSuccess,
+    isLoading: isDonsLoading
+  } = useAllSuperAdminDonationsQuery()
+
+  if (isDonorsSuccess) {
+    console.log("Donations by the SuperAdmin", donations)
+  }
 
   return (
     <Box m="20px">
@@ -371,17 +377,22 @@ const SuperAdminDashboard = () => {
           borderRadius="10px"
         >
 
-          {/* <StatBox
-            title="10"
-            subtitle="Active Campaigns"
-            progress={false}
-            increase="+43% This Month dyn"
-            icon={
-              <CampaignOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
+          {
+            /* 
+              <StatBox
+                title="10"
+                subtitle="Active Campaigns"
+                progress={false}
+                increase="+43% This Month dyn"
+                icon={
+                  <CampaignOutlinedIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              /> 
+            */
+          }
+          {CampsStatBox}
         </Box>
 
         {/* ROW 2 */}
@@ -443,40 +454,42 @@ const SuperAdminDashboard = () => {
               Recent Donations
             </Typography>
           </Box>
-          {/* {donations.map((transaction, i) => (
-            <Box
-
-              key={`${transaction._id}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction._id.slice(0, 8)}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.donor.name}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          {
+            donations && donations.map((transaction, i) => (
               <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.grey[900]}
+
+                key={`${transaction._id}`}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                borderBottom={`4px solid ${colors.primary[500]}`}
+                p="15px"
               >
-                ${transaction.amount}
+
+                <Box>
+                  <Typography
+                    color={colors.greenAccent[500]}
+                    variant="h5"
+                    fontWeight="600"
+                  >
+                    {transaction._id.slice(0, 8)}
+                  </Typography>
+                  <Typography color={colors.grey[100]}>
+                    {transaction.admin.name}
+                  </Typography>
+                </Box>
+                <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
+                <Box
+                  backgroundColor={colors.greenAccent[500]}
+                  p="5px 10px"
+                  borderRadius="4px"
+                  color={colors.grey[900]}
+                >
+                  ${transaction.amount}
+                </Box>
               </Box>
-            </Box>
-          ))} */}
+            ))
+          }
         </Box>
 
         {/* ROW 3 */}

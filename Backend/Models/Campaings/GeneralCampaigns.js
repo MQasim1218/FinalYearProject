@@ -7,6 +7,12 @@ let generalCampaignSchema = mongoose.Schema({
         required: true
     },
 
+    admin: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "admins"
+    },
+
     required_amount: {
         type: Number,
         required: true,

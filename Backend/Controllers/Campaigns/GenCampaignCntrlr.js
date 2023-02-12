@@ -30,7 +30,8 @@ const GetSingleCampaign = async (req, res, next) => {
 const GetAdminCampaigns = async (req, res, next) => {
     // console.log(req.body)
     try {
-        let gnrl = await GeneralCampaigns.findById(req.params.id).exec()
+        let { admin_id } = req.params
+        let gnrl = await GeneralCampaigns.find({ admin: admin_id }).exec()
         res.json(gnrl)
     } catch (error) {
         console.log(error)
@@ -40,10 +41,15 @@ const GetAdminCampaigns = async (req, res, next) => {
 }
 
 
+const GetSingleAdminCampaign = async (req, res, next) => {
+
+}
+
 module.exports = {
 
     GetSingleCampaign,
     GetAllCampaigns,
-
+    GetAdminCampaigns,
+    GetSingleAdminCampaign
 
 }

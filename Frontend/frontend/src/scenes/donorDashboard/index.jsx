@@ -21,44 +21,46 @@ const DonorDashboard = () => {
 
   const [donorDonations, setDonorDonations] = useState([]);
   const [totDonations, setTotalDonations] = useState(0);
+
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    const DonorDonations = async () => {
-      // FIXME !!
-      let donor_id = user.user.user._id; // Hardconded value for the sake of testing purpose!!
-      console.log("Id:", donor_id);
-      console.log("token:", user.user.token);
+  console.log("Donor logged in is: ", user?.user)
 
-      let res = await axios.get(
-        `http://localhost:5000/donor/${donor_id}/donations`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.user.token}`,
-          },
-        }
-      );
-      if (res.status < 400) return res.data;
-      else return null;
-    };
-    // let donations_data = useAxiosGet("http://localhost:5000/donor/donations").then((data) => {
+  // useEffect(() => {
+  //   const DonorDonations = async () => {
+  //     // FIXME !!
+  //     let donor_id = user.user.user._id; // Hardconded value for the sake of testing purpose!!
+  //     console.log("Id:", donor_id);
+  //     console.log("token:", user.user.token);
 
-    DonorDonations()
-      .then((donations) => {
-        if (donations === null) throw Error("No data recieved");
+  //     let res = await axios.get(
+  //       `http://localhost:5000/donor/${donor_id}/donations`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${user.user.token}`,
+  //         },
+  //       }
+  //     );
+  //     if (res.status < 400) return res.data;
+  //     else return null;
+  //   };
+  // let donations_data = useAxiosGet("http://localhost:5000/donor/donations").then((data) => {
+  //   DonorDonations()
+  //     .then((donations) => {
+  //       if (donations === null) throw Error("No data recieved");
 
-        let tot = 0;
-        donations.forEach((don) => (tot += don.amount));
-        setTotalDonations(tot);
-        setDonorDonations(donations);
-        console.log(donorDonations);
-      })
-      .catch((error) => console.log("Error: ", error.message));
+  //       let tot = 0;
+  //       donations.forEach((don) => (tot += don.amount));
+  //       setTotalDonations(tot);
+  //       setDonorDonations(donations);
+  //       console.log(donorDonations);
+  //     })
+  //     .catch((error) => console.log("Error: ", error.message));
 
-    return () => {
-      console.log("Cleaning up the mess.. not quite actually.");
-    };
-  }, []);
+  //   return () => {
+  //     console.log("Cleaning up the mess.. not quite actually.");
+  //   };
+  // }, []);
 
   return (
     <Box m="20px">

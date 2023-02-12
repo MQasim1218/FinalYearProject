@@ -6,7 +6,7 @@ import { borderRadius, color } from '@mui/system';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
 
-//template for each campaign
+// ! Template for Single campaign
 const Campaign = ({
     id,
     campaign_title,
@@ -16,7 +16,6 @@ const Campaign = ({
     description,
     progress,
     isDashboard = false,
-
 }) => {
 
     const theme = useTheme()
@@ -29,9 +28,9 @@ const Campaign = ({
         <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem" }}>
             <CardContent>
                 <Button onClick={() => navigate('/campaigninfo')}>
-                <Typography variant='h4' color={colors.grey[100]} gutterBottom>
-                    {campaign_title}
-                </Typography>
+                    <Typography variant='h4' color={colors.grey[100]} gutterBottom>
+                        {campaign_title}
+                    </Typography>
                 </Button>
                 <Typography variant='h4' color={colors.blueAccent[400]}>
                     {category}
@@ -68,6 +67,7 @@ const Campaign = ({
     )
 }
 
+// ! Bar showing the progress
 function LinearProgressWithLabel(props) {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
@@ -86,17 +86,24 @@ function LinearProgressWithLabel(props) {
 }
 
 
-const HomeScreenCampaigns = ({ isDashboard = false, title, subtitle }) => {
+const HomeScreenCampaigns = ({ isDashboard = false, title, subtitle, data }) => {
 
-    //dummy data
-    const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 },{ id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
+    // dummy data
+    // REVIEW: Replace this Dummy data with data for an Admins Campaigns
+    data = [
+        { id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate", progress: 30 },
+        { id: 1, campaign_title: "Test 2", required_amount: "5000", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 },
+        { id: 2, campaign_title: "Test 3", required_amount: "10000", location: "Lahore", category: "Education", description: "Test 123", progress: 0 },
+        { id: 3, campaign_title: "Test 4", required_amount: "1200", location: "Faislabad", category: "Meal", description: "Test 123", progress: 0 }
+    ]
     //restrict for smaller screens
+
     const isNonMobile = useMediaQuery("(min-width: 1000px)")
 
 
     return (
         <Box m="1.5rem 2.5rem" >
-            <Header title={title} subtitle={subtitle} />
+            {/* <Header title={title} subtitle={subtitle} /> */}
             {/* <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))"
                 justifyContent="space-between" rowGap="20px" columnGap="1.33%"
                 sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
@@ -123,8 +130,6 @@ const HomeScreenCampaigns = ({ isDashboard = false, title, subtitle }) => {
                         progress={progress} />
                 ))}
             </Box> */}
-
-
 
             <Box>
                 {!isDashboard ? (
