@@ -64,7 +64,7 @@ const AdminDonations = () => {
       headerName: "View",
       width: 100,
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)}  />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/admindonationinfo/${row.id}`)}  />,
       ],
     },
   ];

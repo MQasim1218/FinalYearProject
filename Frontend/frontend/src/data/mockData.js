@@ -1,6 +1,38 @@
 import { tokens } from "../theme";
 
 /*Dummy Data for Users and Map Countries*/
+export const mockDataDonationInfo = [
+  {
+    id: 1,
+    date: "22-Feb-2023",
+    madeby: "Aown Raza",
+    givenby: "Admin 1",
+    amountused: "$60",
+    givento: "Beneficiary 1",
+    category: "Food",
+  },
+  {
+    id: 2,
+    date: "22-Feb-2023",
+    madeby: "Aown Raza",
+    givenby: "Admin 2",
+    amountused: "$40",
+    givento: "Beneficiary 2",
+    category: "Education",
+  },
+];
+
+export const mockDataDonationInfo2 = [
+  {
+    id: 1,
+    date: "22-Feb-2023",
+    madeby: "Aown Raza",
+    givenby: "Admin 1",
+    amountused: "$60",
+    givento: "Beneficiary 1",
+    category: "Food",
+  },
+];
 
 export const mockDataUsers = [
   {

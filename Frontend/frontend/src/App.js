@@ -37,7 +37,9 @@ import DonationRegistration from './scenes/donationRegisteration';
 import Sidebars from './scenes/global/Sidebars';
 import { useState, useEffect } from 'react';
 import SuperAdminDashboard from './scenes/superAdminDashboard';
-
+import DonorDonationInfo from './scenes/donorDonationInfo';
+import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
+import AdminDonationInfo from './scenes/adminDonationInfo';
 
 function App(props) {
 
@@ -135,6 +137,11 @@ function App(props) {
                     <Route path="/graphs" element={<Graphs />} />
                     <Route path="/geography" element={<GeographyMap />} />
                     <Route path="/superreports" element={<SuperReports />} />
+                    <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
+                    <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
+                    <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+
+
                     <Route path="*"
                       
                     />
