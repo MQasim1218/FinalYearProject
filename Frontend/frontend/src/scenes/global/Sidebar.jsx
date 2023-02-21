@@ -18,7 +18,7 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
-
+import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined';
 
 const Item = ({title, to, icon, selected, setSelected}) => {
     const theme = useTheme()
@@ -114,6 +114,7 @@ const Sidebar = () => {
                         <Item title="Users" to="/users" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Donation Info" to="/donations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Recent Donations" to="/recent" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Donation Requests" to="/donationrequests" icon={<CompareArrowsOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Forms</Typography>
                         <Item title="Create Campaign" to="/createCampaign" icon={<BorderColorOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         {/* <Item title="Manage Loans" to="/loans" icon={<CurrencyExchangeOutlinedIcon/>} selected={selected} setSelected={setSelected} /> */}

@@ -40,6 +40,8 @@ import SuperAdminDashboard from './scenes/superAdminDashboard';
 import DonorDonationInfo from './scenes/donorDonationInfo';
 import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
 import AdminDonationInfo from './scenes/adminDonationInfo';
+import DonationRequests from './scenes/donationRequests';
+
 
 function App(props) {
 
@@ -116,6 +118,8 @@ function App(props) {
                     <Route path="/graphs" element={<Graphs />} />
                     <Route path="/geography" element={<GeographyMap />} />
                     <Route path="/adminanalytics" element={<AdminAnalytics />} />
+                    <Route path="/donationrequests" element={<DonationRequests />} />
+                    <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
                     <Route path="*"
                       
                     />

@@ -34,6 +34,33 @@ export const mockDataDonationInfo2 = [
   },
 ];
 
+export const mockDonationRequests = [
+  {
+    id: 1,
+    date: "22-Feb-2023",
+    donor: "Aown Raza",
+    amount: "$100",
+    category: "Food",
+    allocated: "Admin 1"
+  },
+  {
+    id: 2,
+    date: "24-Feb-2023",
+    donor: "M. Qasim",
+    amount: "$200",
+    category: "Education",
+    allocated: "Admin 2"
+  },{
+    id: 3,
+    date: "25-Feb-2023",
+    donor: "Aown Raza",
+    amount: "$90",
+    category: "Housing",
+    allocated: "Admin 1"
+  },
+];
+
+
 export const mockDataUsers = [
   {
     id: 1,
