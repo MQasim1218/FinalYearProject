@@ -20,7 +20,9 @@ import axios from 'axios';
 import { useAuthContext } from "../../hooks/useAuthContext"
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import SearchIcon from '@mui/icons-material/SearchOutlined';
-
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const locationsData = [
     'Islamabad',
@@ -40,7 +42,14 @@ const categoriesData = [
     'Housing',
 ];
 
-const servicesData = ['A', 'B', 'C', 'D', 'E'];
+const adminsData = [
+    'Admin1',
+    'Admin2',
+    'Admin3',
+    'Admin4',
+];
+
+const servicesData = ['Completed'];
 
 //template for each campaign
 const Campaign = ({
@@ -61,7 +70,7 @@ const Campaign = ({
     //defining the see more button for each campaign
     const [isExpanded, setIsExpanded] = useState(false)
     return (
-        <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem" }}>
+        <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem", }}>
             <CardContent>
                 <Typography variant='h3' color={colors.grey[100]} gutterBottom>
                     {campaign_title}
@@ -137,17 +146,30 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [budget, setBudget] = useState(0);
     const [categories, setCategories] = useState([]);
+    const [admins, setAdmins] = useState([]);
     const [locations, setLocations] = useState([]);
     const [search, setSearch] = useState('');
-    const [isFeatured, setIsFeatured] = useState(false);
     const [services, setServices] = useState([]);
     const [startingBudget, setStartingBudget] = useState(0);
     const [endingBudget, setEndingBudget] = useState(10000);
-    const [searchText, setSearchText] = useState('')
+    const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+    const handleStartDateChange = (date) => {
+        setSelectedStartDate(date);
+    };
+
+    const handleEndDateChange = (date) => {
+        setSelectedEndDate(date);
+    };
 
 
     const handleCategoryChange = (event) => {
         setCategories(event.target.value);
+    };
+
+    const handleAdminChange = (event) => {
+        setAdmins(event.target.value);
     };
 
     const handleLocationChange = (event) => {
@@ -169,9 +191,11 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
         console.log(`Searched For: ${search}`);
         console.log(`Locations: ${locations}`);
         console.log(`Categories: ${categories}`);
-        console.log(`Services: ${services}`);
+        console.log(`Status: ${services}`);
         console.log(`Selected Budget: ${budget}`);
-
+        console.log(`Selected Start Date: ${selectedStartDate}`);
+        console.log(`Selected End Date: ${selectedEndDate}`);
+        console.log(`Selected Admins: ${admins}`);
 
     };
 
@@ -251,52 +275,54 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                 {!isDashboard ? (
                     <Box m="1.5rem 2.5rem">
                         <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
-                        <Box style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <IconButton onClick={() => setIsExpanded(!isExpanded)} >
-                            <TuneOutlinedIcon />
-                        </IconButton>
+
+                        <Box style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                            <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
+                                <InputLabel id='category-input-label'>Category</InputLabel>
+                                <Select
+                                    id='category-input'
+                                    label='Category'
+                                    multiple
+                                    value={categories}
+                                    onChange={handleCategoryChange}
+                                    renderValue={(selected) => selected.join(', ')}
+                                    labelId='category-input-label'
+                                >
+                                    {categoriesData.map((category) => (
+                                        <MenuItem key={category} value={category}>
+                                            <Checkbox checked={categories.indexOf(category) > -1} />
+                                            <ListItemText primary={category} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
+                                <InputLabel id='search-input-label'>Search</InputLabel>
+                                <OutlinedInput
+                                    id='search-input'
+                                    label='Search'
+                                    value={search}
+                                    onChange={handleSearchChange}
+                                    endAdornment={
+                                        <InputAdornment position='end'>
+                                            <IconButton edge='end' onClick={handleSearched}>
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    labelId='search-input-label'
+                                />
+                            </FormControl>
+
+                            <IconButton onClick={() => setIsExpanded(!isExpanded)} >
+                                <TuneOutlinedIcon />
+                            </IconButton>
                         </Box>
                         <Collapse in={isExpanded}>
-                            <Box m={2} p={2} sx={{ border: '1px solid gray', borderRadius: '4px', backgroundColor: colors.primary[400] }}>
+                            <Box m={2} p={5} sx={{ border: '1px solid gray', borderRadius: '4px', backgroundColor: colors.primary[400] }}>
                                 <Typography variant='h6' mb={2} color={colors.greenAccent[400]}>
                                     Filter Campaigns
                                 </Typography>
-                                <FormControl fullWidth variant='outlined' sx={{ mb: 2 }}>
-                                    <InputLabel id='search-input-label'>Search</InputLabel>
-                                    <OutlinedInput
-                                        id='search-input'
-                                        label='Search'
-                                        value={search}
-                                        onChange={handleSearchChange}
-                                        endAdornment={
-                                            <InputAdornment position='end'>
-                                                <IconButton edge='end' onClick={handleSearched}>
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                        labelId='search-input-label'
-                                    />
-                                </FormControl>
-                                <FormControl fullWidth variant='outlined' sx={{ mb: 2 }}>
-                                    <InputLabel id='category-input-label'>Category</InputLabel>
-                                    <Select
-                                        id='category-input'
-                                        label='Category'
-                                        multiple
-                                        value={categories}
-                                        onChange={handleCategoryChange}
-                                        renderValue={(selected) => selected.join(', ')}
-                                        labelId='category-input-label'
-                                    >
-                                        {categoriesData.map((category) => (
-                                            <MenuItem key={category} value={category}>
-                                                <Checkbox checked={categories.indexOf(category) > -1} />
-                                                <ListItemText primary={category} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
                                 <FormControl fullWidth variant='outlined' sx={{ mb: 2 }}>
                                     <InputLabel id='location-input-label'>Location</InputLabel>
                                     <Select
@@ -316,9 +342,21 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                         ))}
                                     </Select>
                                 </FormControl>
+                                <Typography variant='h6' mb={2} color={colors.greenAccent[400]}>
+                                    Start Date
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker value={selectedStartDate} onChange={handleStartDateChange} />
+                                </LocalizationProvider>
+                                <Typography variant='h6' mb={2} mt={2} color={colors.greenAccent[400]}>
+                                    End Date
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker value={selectedEndDate} onChange={handleEndDateChange} />
+                                </LocalizationProvider>
                                 <FormControl fullWidth>
-                                    <Typography variant='h6' mb='2' width='100%' color={colors.greenAccent[400]}>
-                                     Donation Goal
+                                    <Typography variant='h6' mb='2' mt={2} width='100%' color={colors.greenAccent[400]}>
+                                        Donation Goal
                                     </Typography>
 
                                     <Slider
@@ -336,8 +374,30 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                             { value: 10000, label: '$10,000' },
                                         ]}
                                     />
+                                    <Typography variant='h6' mb={2} mt={2} width='100%' color={colors.greenAccent[400]}>
+                                        Admin
+                                    </Typography>
+                                    <FormControl fullWidth variant='outlined'>
+                                <InputLabel id='admin-input-label'>Admin</InputLabel>
+                                <Select
+                                    id='admin-input'
+                                    label='Admin'
+                                    multiple
+                                    value={admins}
+                                    onChange={handleAdminChange}
+                                    renderValue={(selected) => selected.join(', ')}
+                                    labelId='admin-input-label'
+                                >
+                                    {adminsData.map((admin) => (
+                                        <MenuItem key={admin} value={admin}>
+                                            <Checkbox checked={admins.indexOf(admin) > -1} />
+                                            <ListItemText primary={admin} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                                 </FormControl>
-                                <Typography variant='h6' mt={2} color={colors.greenAccent[400]}>Services</Typography>
+                                <Typography variant='h6' mt={2} color={colors.greenAccent[400]}>Status</Typography>
                                 <FormGroup>
                                     {servicesData.map((service) => (
                                         <FormControlLabel
@@ -353,9 +413,11 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                         />
                                     ))}
                                 </FormGroup>
+                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
                                 <Button variant='contained' color='secondary' onClick={handleSubmit}>
-                                    Search
+                                    Apply Filters
                                 </Button>
+                                </Box>
                             </Box>
                         </Collapse>
                         <Box mt="20px" display="grid"
