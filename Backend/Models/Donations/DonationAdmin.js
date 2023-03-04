@@ -18,6 +18,7 @@ const adminDonationSchema = mongoose.Schema({
     },
     donorId: {
         type: mongoose.Types.ObjectId,
+        ref: 'donor',
         required: true,
     }
 

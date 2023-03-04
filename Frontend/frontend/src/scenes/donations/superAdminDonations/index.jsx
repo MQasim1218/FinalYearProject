@@ -5,7 +5,8 @@ import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
 import { useState } from "react";
 import { useAllSuperAdminDonationsQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
-import { flattenObj } from '../../../misc/ArrayFlatten'import { Navigate, useNavigate } from "react-router-dom";
+import { flattenObj } from '../../../misc/ArrayFlatten'
+import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 
@@ -59,14 +60,14 @@ const SuperAdminDonations = () => {
       flex: 1,
     },
     {
-      
+
       // Okay
       field: 'View',
       type: 'actions',
       headerName: "View",
       width: 100,
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)}  />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
       ],
     },
   ];

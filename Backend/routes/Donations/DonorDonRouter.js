@@ -24,6 +24,16 @@ const authorize = require('../../middleware/authorization')
  *  Beneath here.. we are dealing with Donations of all the Donors.
  */
 
+// All the donation made by a donor.
+router.get('/donor/:donor_id/:category?', DonorDonationController.DonorAllDonations)
+
+// All donations in a year
+router.get('/donor/:donor_id/:year/:category?', DonorDonationController.DonorYearDonations)
+
+// All donations in a year
+router.get('/donor/:donor_id/:year/:month/:category?', DonorDonationController.DonorMonthDonations)
+
+
 // All the donation made by all the donors.
 router.get('/:category?', DonorDonationController.GetAllDonations)
 
@@ -53,14 +63,6 @@ router.get('/range/:start_date/:end_date/:category?', DonorDonationController.Ge
 
 
 
-// All the donation made by a donor.
-router.get('/:donor_id/:category?', DonorDonationController.DonorAllDonations)
-
-// All donations in a year
-router.get('/:donor_id/:year/:category?', DonorDonationController.DonorYearDonations)
-
-// All donations in a year
-router.get('/:donor_id/:year/:month/:category?', DonorDonationController.DonorMonthDonations)
 
 // REVIEW: Donations between a Specified timeperiod
 // ! Below here.. most things need to be implemented!!

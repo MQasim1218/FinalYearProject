@@ -2,6 +2,7 @@ import { allAdminsDonationsApi } from './AdminsDonsSlice'
 
 export const adminDonationsApi = allAdminsDonationsApi.injectEndpoints({
 
+
     endpoints: (builder) => ({
 
         /**
@@ -16,6 +17,15 @@ export const adminDonationsApi = allAdminsDonationsApi.injectEndpoints({
                 method: 'GET',
             }),
             providesTags: [{ type: 'AdminDonations' }]
+        }),
+
+        // 👨‍👨‍👦 Fetch all Admins' Donations 📷
+        singleCampaignDonations: builder.query({
+            query: (campId) => ({
+                url: `camp/${campId}`,
+                method: 'GET',
+            }),
+            providesTags: [{ type: 'CampaingDonations' }]
         }),
 
         singleAdminYearDonations: builder.query({
@@ -54,6 +64,7 @@ export const {
     useSingleAdminDonationsQuery,
     useSingleAdminYearDonationsQuery,
     useSingleAdminMonthDonationsQuery,
+    useSingleCampaignDonationsQuery,
 
 
     // Top Level Actions

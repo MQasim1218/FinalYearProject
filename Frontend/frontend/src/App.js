@@ -96,7 +96,7 @@ function App(props) {
                 {/* WHY are there 2 UserAnalytics routes.. Both Leading to the same page? */}
                 {/* WHY should the donor be able to see user analytics other than themselves */}
                 <Route path="/useranalytics" element={<DonorInfo />} />
-                {/* <Route path="/useranalytics/:id" element={<CampaignInfo />} /> */}
+                <Route path="/useranalytics/:id" element={<DonorInfo />} />
                 <Route path="/areaanalytics" element={<AreaAnalytics />} />
                 <Route path="/timeanalytics" element={<TimeAnalytics />} />
                 <Route path="/geographymap" element={<GeographyMap />} />
@@ -115,6 +115,8 @@ function App(props) {
                 <Route path="/graphs" element={<Graphs />} />
                 <Route path="/geography" element={<GeographyMap />} />
                 <Route path="/adminanalytics" element={<AdminAnalytics />} />
+                <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
+
                 {/* <Route path="*" /> */}
                 {/* </>
                   ) : accountType === "superadmin" ? (
@@ -132,8 +134,9 @@ function App(props) {
                 <Route path="/graphs" element={<Graphs />} />
                 <Route path="/geography" element={<GeographyMap />} />
                 <Route path="/superreports" element={<SuperReports />} />
-                <Route path="/donor_info/:id" element={<DonorInfo />} />
-                <Route path="/campaign_info/:id" element={<CampaignInfo />} />
+                <Route path="/adminanalytics/:id" element={<AdminAnalytics />} />
+                <Route path="/donorinfo/:id" element={<DonorInfo />} />
+                <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
 
                 {/* <Route path="*" /> */}
                 {/* </>

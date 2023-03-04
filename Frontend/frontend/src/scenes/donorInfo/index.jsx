@@ -15,132 +15,81 @@ import { useParams } from "react-router-dom";
 import AccountTypeContext from '../../accountTypeContext';
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
 import { useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
+import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
 
 const DonorInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   let { id } = useParams();
   const [donations, setDonations] = useState([])
+  const [max_don, setMaxDon] = useState(-1)
 
   // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   const { user } = useAuthContext()
   let accountType = useContext(AccountTypeContext)
 
-  const { data: adminDons, isError: isAdminErr, isLoading: isAdminLoading, isSuccess: isAdminSuccess, error: AdminErr } = useSingleAdminDonationsQuery(id)
-  const { data: donorDons, isError: isDonorErr, isLoading: isDonorLoading, isSuccess: isDonorSuccess, error: donorErr } = useSingleDonorDonationsQuery(id)
+  const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useSingleDonorDonationsQuery(id)
+  const { data: donor } = useGetDonorQuery(id)
 
 
 
-  accountType = "Admin"
+  accountType = "donor"
   let RecDonations = <></>
 
-  switch (accountType) {
-    case "Admin":
-      console.log("Donations by this Admin: ", adminDons)
 
-      if (isAdminLoading) console.log("Donations content loading")
-      if (isAdminSuccess) {
-        // setDonations(adminDons)
-        RecDonations = (
-          adminDons?.map((transaction, i) => (
-            <Box
+  console.log("Donations by this donor: ", donorDons)
 
-              key={`${i}`}
-              display="flex"
+  if (isDonorDonsLoading) console.log("Donations content loading")
+  if (isDonorDonsSuccess) {
+    // setDonations(donorDons)
+    RecDonations = (
+      donorDons?.map((transaction, i) => (
+        <Box
 
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
+          key={`${i}`}
+          display="flex"
+
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`4px solid ${colors.primary[500]}`}
+          p="15px"
+        >
+          {/* {console.log(transaction)} */}
+          <Box>
+            <Typography
+              color={colors.greenAccent[500]}
+              variant="h5"
+              fontWeight="600"
             >
-              {/* {console.log(transaction)} */}
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction._id.slice(0, 8)}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.admin.name}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.grey[900]}
-              >
-                ${transaction.amount}
-              </Box>
-            </Box>
-          ))
-        )
-      }
-      if (isAdminErr) console.log("Error: ", AdminErr.message)
-
-
-    case "Donor":
-      console.log("Donations by this donor: ", donorDons)
-
-      if (isDonorLoading) console.log("Donations content loading")
-      if (isDonorSuccess) {
-        // setDonations(donorDons)
-        RecDonations = (
-          donorDons?.map((transaction, i) => (
-            <Box
-
-              key={`${i}`}
-              display="flex"
-
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              {/* {console.log(transaction)} */}
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction._id.slice(0, 8)}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.donor.name}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.grey[900]}
-              >
-                ${transaction.amount}
-              </Box>
-            </Box>
-          ))
-        )
-      }
-      if (isDonorErr) console.log("Error: ", donorErr.message)
-
-    default:
-      console.log("The user scenario is not a part of the system!!")
-      break;
+              {transaction._id.slice(0, 8)}
+            </Typography>
+            <Typography color={colors.grey[100]}>
+              {transaction.donor.name}
+            </Typography>
+          </Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          <Box
+            backgroundColor={colors.greenAccent[500]}
+            p="5px 10px"
+            borderRadius="4px"
+            color={colors.grey[900]}
+          >
+            ${transaction.amount}
+          </Box>
+        </Box>
+      ))
+    )
   }
+  if (isDonorDonsErr) console.log("Error: ", donorDonsErr.message)
+
+
 
   useEffect(() => {
-    if (isAdminSuccess) {
-      setDonations(adminDons)
-    }
-    if (isDonorSuccess) {
+    if (isDonorDonsSuccess) {
       setDonations(donorDons)
+      setMaxDon(donorDons?.reduce((max, don) => don.amount > max ? don.amount : max, 0));
     }
-  }, [isAdminSuccess, isDonorSuccess, adminDons, donorDons])
+  }, [isDonorDonsSuccess, donorDons])
 
 
   return (<Box m="20px">
@@ -168,11 +117,13 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <UserBox
-          name={user?.user?.name || "loading"}
+          name={donor?.name || "loading"}
           accounttype={accountType || ""}
-          picture={<PersonOutlineOutlinedIcon
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />}
+          picture={
+            <PersonOutlineOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
           // participated="5"
           joindate={user?.user?.createdAt.slice(0, 10) || ""}
           latestdonation={donations && donations[donations.length - 1]?.createdAt}
@@ -186,7 +137,7 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="$500"
+          title={max_don || "loading"}
           subtitle="Highest One Time Donation"
           increase="This Month: $190"
           icon={
@@ -256,61 +207,13 @@ const DonorInfo = () => {
         <UserLineChart isDashboard={true} />
       </Box>
 
-      {/* <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
-          >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.grey[900]}
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-        </Box> */}
+
     </Box>
 
     <Box mt="2rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Campaigns Info</Typography>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>
+        Campaigns Info - Change this with Campaigns Donated by the Donor
+      </Typography>
     </Box>
 
     <Box

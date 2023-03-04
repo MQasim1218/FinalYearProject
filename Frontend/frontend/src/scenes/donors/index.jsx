@@ -53,16 +53,16 @@ const Donors = () => {
       headerName: "Total Donations",
       flex: 1,
     },
-    
+
     {
-      
+
       // Okay
       field: 'View',
       type: 'actions',
       headerName: "View",
       width: 100,
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)}  />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
       ],
     },
     {
@@ -178,7 +178,7 @@ const Donors = () => {
   return (
     <Box m="20px">
 
-      <Header title={view.toLocaleUpperCase()} subtitle={"Manage " + view} />
+      <Header title="Donors" subtitle={"Manage Donors"} />
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"

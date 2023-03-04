@@ -26,6 +26,10 @@ router.get('/admin/:admin_id/', (req, res) => {
     res.send(`Admin id recieved: ${req.params.admin_id}`)
 })
 
+
+// ANCHOR - Get all camoaings for a aprticular campaign 
+router.get('/camp/:camp_id', AdminDonationController.GetCampaignDonations)
+
 // Get donations made by Admins to Campaings in a year -- Filterable by catogory
 router.get('/:year/:category?', AdminDonationController.GetYearDonations)
 

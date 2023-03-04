@@ -34,6 +34,26 @@ const GetAllDonations = async (req, res, next) => {
     }
 }
 
+
+// Get all the donations made by all the donors!!
+const GetCampaignDonations = async (req, res, next) => {
+    try {
+        let camp_id = req.params.camp_id
+
+        let Dons = await AdminDons
+            .find({ campaign: camp_id })
+            .populate('donorId')
+            .exec()
+
+        console.log("Admin donations are: ", Dons)
+        res.json(Dons)
+
+    } catch (error) {
+        console.log('error encountered while retrieving Admin donations!\nError: ', error)
+        res.send(error)
+    }
+}
+
 // Get all the Donations by all admins in a Year!
 const GetYearDonations = async (req, res, next) => {
     try {
@@ -609,6 +629,8 @@ module.exports = {
     AdminCampaignDonations_After,
     AdminCampaignDonations_Before,
     AdminCampaignDonations_TimeRange,
+
+    GetCampaignDonations,
 
     DonateToCampaign,
     SingleDonation,

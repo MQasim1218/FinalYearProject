@@ -17,115 +17,44 @@ import CampaignLineChart from "../../components/CampaignLineChart";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
+import { useSingleCampaignDonationsQuery } from "../../app/redux-features/Donations/AdminDonations/AdminDonsSlice";
+import { useParams } from "react-router-dom";
+import { useSingleCampaignQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 
 
 const CampaignInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [activeCampaigns, setActiveCamps] = useState([])
+  let { id } = useParams();
+
+
+  const [donors, setDonors] = useState([])
   const [totDonations, setTotDon] = useState(0)
-  const [activeDonors, setActiveDonors] = useState([])
-  const [activeBenifs, setActiveBenifs] = useState([])
-  const [donations, setDonations] = useState([])
+
+  // ! Get total donations donations for the campaingn
+
+  let { data: campDonations, isError: isCampDonsError, isLoading: isCampDonsLoading, error: campDonsError, isSuccess: isCampDonsSuccess } = useSingleCampaignDonationsQuery(id)
+  let { data: camp, isError: isCampError, error, isCampLoading, isSuccess: isCampSuccess } = useSingleCampaignQuery(id)
 
 
-  /**
-   * Lazy fetch all the dynamic data needed for the dashboard.
-   */
 
-  //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
+  useEffect(() => {
+    setTotDon(campDonations?.reduce((acc, curr) => acc + curr.amount, 0))
+    setDonors(new Set(campDonations?.map(don => don.donorId._id)).size)
 
-  // useEffect(() => {
+    console.log("The donations are: ", campDonations)
+    console.log("Creation date: ", camp)
+    let a = 'asdasd'
 
-  //   //   // Get all the campaigns and count them
-  //   //   // TODO: Cache these campaigns using context API
-  //   const getCampaigns = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-  //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
 
-  //       if (gen_res.status < 300 && gen_res.status < 300) {
-  //         let data = gen_res.data.concat(spec_res.data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  }, [campDonations, camp])
 
-  //   const getDonors = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         setActiveDonors(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  useEffect(() => {
+    console.log(totDonations)
+  }, [campDonations, camp])
 
-  //   const getBenificiries = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/benificiary/")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
 
-  //   const getDonations = async () => {
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donations/all/")
-  //       if (res.status < 400) {
-  //         let data = res.data
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-
-  //   getDonations().then((dons) => {
-  //     console.log(dons)
-  //     setDonations(dons)
-
-  //     let tot = 0
-  //     dons.forEach(don => {
-  //       tot += don.amount
-  //     });
-  //     console.log(tot)
-  //     // alert(tot)
-  //     setTotDon(tot)
-  //   })
-
-  //   getCampaigns().then((camps) => {
-  //     setActiveCamps(camps)
-  //   })
-  //   getDonors().then((dons) => {
-  //     setActiveDonors(dons)
-  //   })
-  //   getBenificiries().then((benifs) => {
-  //     setActiveBenifs(benifs)
-  //   })
-
-  //   return (() => console.log("No clean up"))
-  // }, [])
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -151,18 +80,61 @@ const CampaignInfo = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <StatBox
-          title="$587"
-          subtitle="Donations Recieved"
-          progress="0.65"
-          increase="This Month: $110"
-          icon={
-            <AttachMoneyOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
+        {
+          isCampDonsLoading &&
+          <h3>Content Loading</h3>
+        }
+        {
+          isCampDonsSuccess &&
+          <StatBox
+            title={totDonations}
+            subtitle="Donations Recieved"
+            progress="0.65"
+            increase="This Month: $110"
+            icon={
+              <AttachMoneyOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        }
+        {
+          isCampDonsError &&
+          <h3>{campDonsError.message}</h3>
+        }
       </Box>
+
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {
+          isCampDonsLoading &&
+          <h3>Content Loading</h3>
+        }
+        {
+          isCampDonsSuccess &&
+          <StatBox
+            title={donors}
+            subtitle="Donors Participated"
+            progress="0.50"
+            increase="This Month: 4"
+            icon={
+              <PeopleOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        }
+        {
+          isCampDonsError &&
+          <h3>{campDonsError.message}</h3>
+        }
+      </Box>
+
       <Box
         gridColumn="span 3"
         backgroundColor={colors.primary[400]}
@@ -171,28 +143,8 @@ const CampaignInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="36"
-          subtitle="Donors Participated"
-          progress="0.50"
-          increase="This Month: 4"
-          icon={
-            <PeopleOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title="22/Dec/2021"
-          subtitle="Creation Time"
-          increase="Initiated by: ADMIN"
+          title={camp?.createdAt.slice(0, 10)}
+          subtitle="Creation Date"
           icon={
             <CalendarMonthOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -215,9 +167,9 @@ const CampaignInfo = () => {
             <VerifiedOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
-            
+
           }
-          
+
         />
       </Box>
     </Box>
@@ -246,10 +198,10 @@ const CampaignInfo = () => {
           p="15px"
         >
           <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-            All Donations
+            Donations to Campaign
           </Typography>
         </Box>
-        {donations.map((transaction, i) => (
+        {campDonations?.map((transaction, i) => (
           <Box
 
             key={`${transaction._id}`}
@@ -269,10 +221,10 @@ const CampaignInfo = () => {
                 {transaction._id.slice(0, 8)}
               </Typography>
               <Typography color={colors.grey[100]}>
-                {transaction.donor.name}
+                {transaction.donorId?.name}
               </Typography>
             </Box>
-            <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+            <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
             <Box
               backgroundColor={colors.greenAccent[500]}
               p="5px 10px"
@@ -347,7 +299,9 @@ const CampaignInfo = () => {
     </Box>
 
     <Box mt="2rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Browse Similar Campaigns</Typography>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>
+        Browse Similar Campaigns - To make dynamic later on!!
+      </Typography>
     </Box>
 
     <Box
@@ -361,7 +315,7 @@ const CampaignInfo = () => {
         gridColumn="span 12"
         gridRow="span 2"
       >
-          <HomeScreenCampaigns isDashboard= {true} title = "" subtitle=""/>
+        <HomeScreenCampaigns isDashboard={true} title="" subtitle="" />
       </Box>
     </Box>
   </Box>)

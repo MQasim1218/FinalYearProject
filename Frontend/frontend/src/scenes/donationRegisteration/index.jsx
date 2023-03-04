@@ -7,6 +7,8 @@ import { tokens } from "../../theme";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useRegisterDonorDonationMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 import AlertModal from "../../components/AlertModal";
+import { useState } from "react";
+
 // import axios from "axios"
 
 //initializing all inputs with their keys
@@ -28,6 +30,8 @@ const userSchema = yup.object().shape({
 });
 
 const DonationRegistration = () => {
+
+
 
   //Code for the OnCLick POPUP
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -102,7 +106,7 @@ const DonationRegistration = () => {
   // NOTE: Get the Mutator for Donor Donation
   let [setDonorDonation, { data, isError, isLoading, isSuccess, error }] = useRegisterDonorDonationMutation()
   // On submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
     await setDonorDonation(values)
 
@@ -125,7 +129,7 @@ const DonationRegistration = () => {
 
   return (
     <Box m="20px">
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!"/>
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!" />
 
       <Header title="REGISTER DONATIONS" subtitle="Register Donations from Donors" />
 

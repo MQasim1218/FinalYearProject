@@ -1,3 +1,4 @@
+import { PersonalVideoSharp } from '@mui/icons-material';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
@@ -17,7 +18,7 @@ const Campaigns = createApi({
         allCampaigns: builder.query(
             {
                 query: () => `/`,
-                providesTags: ['AllCampaigns']
+                providesTags: ['AllCampaigns', "Campaign"]
             }
         ),
 
@@ -27,7 +28,8 @@ const Campaigns = createApi({
         }),
 
         singleCampaign: builder.query({
-            query: (camp_id) => `/`
+            query: (camp_id) => `/${camp_id}`,
+            providesTags: (camp_id) => [{ type: "Campaign", id: camp_id }]
         }),
 
         createCampaign: builder.mutation({
@@ -36,6 +38,7 @@ const Campaigns = createApi({
                 method: 'POST'
             }),
             invalidatesTags: ['AllCampaigns', 'AdminCampaigns']
+
         })
     })
 })

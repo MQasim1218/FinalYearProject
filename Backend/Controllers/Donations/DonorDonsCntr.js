@@ -50,7 +50,7 @@ const GetYearDonations = async (req, res, next) => {
             res.json(Dons)
         }
     } catch (error) {
-        console.log('error encountered while retrieving Siepr Admin donations!\nError: ', error)
+        console.log('error encountered while retrieving Super Admin donations!\nError: ', error)
         res.send(error)
     }
 }
@@ -185,6 +185,7 @@ const GetDonations_TimeRange = async (req, res, next) => {
 //
 
 const DonorAllDonations = async (req, res, next) => {
+    console.log("Got a requwst to fetch all donations!!")
     try {
         let cat = req.params.category
         let donor_id = req.params.donor_id

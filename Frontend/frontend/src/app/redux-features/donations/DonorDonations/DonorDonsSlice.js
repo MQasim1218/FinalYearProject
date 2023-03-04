@@ -12,7 +12,7 @@ export const donorDonationsApi = allDonorDonationsApi.injectEndpoints({
         // 👨‍👨‍👦 Fetch all Admins' Donations 📷
         singleDonorDonations: builder.query({
             query: (donorId, category) => ({
-                url: category == null ? `${donorId}` : `${donorId}/${category}`,
+                url: category == null ? `donor/${donorId}` : `${donorId}/${category}`,
                 method: 'GET',
             }),
             providesTags: [{ type: 'DonorDonations' }]
@@ -20,7 +20,7 @@ export const donorDonationsApi = allDonorDonationsApi.injectEndpoints({
 
         singleDonorYearDonations: builder.query({
             query: (donorId, year, category) => ({
-                url: category == null ? `${donorId}/${year}` : `${donorId}/${year}/${category}`,
+                url: category == null ? `${donorId}/${year}` : `donor/${donorId}/${year}/${category}`,
                 method: 'GET',
             }),
             providesTags: [{ type: 'DonorDonations' }]
