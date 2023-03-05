@@ -3,7 +3,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Topbar from "./scenes/global/Topbar"
 import Dashboard from "./scenes/dashboard"
-import Donations from "./scenes/donations"
+// import Donations from "./scenes/donations"
 import Recent from "./scenes/recentDonations"
 import Users from "./scenes/users"
 import CreateCampaign from "./scenes/createCampaign"
@@ -107,11 +107,52 @@ function App(props) {
                   ) : accountType === "admin" ? (
                     <> */}
                 <Route path="/admindashboard" element={<Dashboard />} />
+
+                {
+                  /*
+                    Not sure isme konse users honge?? 
+                    Im adding all the donors who added to the campaigns created by this particulat admin 
+                  */
+                }
                 <Route path="/users" element={<Users />} />
-                <Route path="/donations" element={<Donations />} />
-                <Route path="/recent" element={<Recent />} />
+
+                {
+                  /* 
+                    Only get the donations made to campaigns 
+                    initiated by the Admin.. 
+                    Dont need all the campaign dinations 
+                  */
+                }
+                <Route path="/incoming-donations" element={<SuperAdminDonations single_don={true} />} />
+
+                {
+                  /* 
+                    Only get the donations made to campaigns 
+                    initiated by the Admin.. 
+                    Dont need all the campaign dinations 
+                  */
+                }
+                <Route path="/outgoing-donations" element={<AdminDonations single_admin={true} />} />
+
+
+                {/* Dont need this route.. Its already handled */}
+                {/* <Route path="/recent" element={<Recent />} /> */}
+
+
+                {
+                  /*
+                    This needs serious makeovers!!
+                      1. Need to make it so that it is campaign specific..
+                      2. In-corporate multi-page form for collecting different information.
+                      3. Custom forms for many different doation catagories.
+                  */
+                }
                 <Route path="/createCampaign" element={<CreateCampaign />} />
+
+                {/* Will look into this later-onn!! */}
                 <Route path="/viewcampaign" element={<AllCampaigns />} />
+
+
                 <Route path="/graphs" element={<Graphs />} />
                 <Route path="/geography" element={<GeographyMap />} />
                 <Route path="/adminanalytics" element={<AdminAnalytics />} />

@@ -20,6 +20,11 @@ const adminDonationSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'donor',
         required: true,
+    },
+    supAdminDonation: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'SuperAdminDonations'
     }
 
     // isLoan: { type: Boolean, default: false },

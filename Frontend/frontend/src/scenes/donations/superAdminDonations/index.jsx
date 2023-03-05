@@ -4,93 +4,207 @@ import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
 import { useState } from "react";
-import { useAllSuperAdminDonationsQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery, useGetSuperAdminDonationsToAdminQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 import { flattenObj } from '../../../misc/ArrayFlatten'
 import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { UserContext } from "../../../context/UserContext";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 
-const SuperAdminDonations = () => {
+const SuperAdminDonations = ({ single_don }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  let [users, setUsers] = useState([])
   let [view, setView] = useState("superadmin")
 
 
-  const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "createdAt", headerName: "Donation Date" },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-    },
-    {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
-    {
-      field: "amount",
-      headerName: "Donation Amount",
-      flex: 1,
-    },
-    {
-
-      // Okay
-      field: 'View',
-      type: 'actions',
-      headerName: "View",
-      width: 100,
-      getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
-      ],
-    },
-  ];
-
-  // Fetching data for donor donations!!
-  const { isError, error, isLoading, isSuccess, data: Donations } = useAllSuperAdminDonationsQuery()
+  const { user } = useAuthContext()
   let SupAdminDonsGrid = <></>
 
-  if (isLoading) SupAdminDonsGrid = <h3>Content Loading</h3>
-  else if (isSuccess) {
-    console.log("Super Admin Doations data: ", Donations)
+  // console.log("User logged in is: ", user?.user?._id)
 
-    let SupAdminDonations = Donations
-      .map((don, ind) => ({ ...don, id: ind + 1 }))
-      .map((don) => flattenObj(don))
+  const {
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+    data: Donations
+  } = useAllSuperAdminDonationsQuery()
+  const {
+    isError: adminIsErr,
+    error: adminErr,
+    isLoading: adminIsLoadn,
+    isSuccess: adminIsSuccess,
+    data: DonsToAdmin
+  } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
 
-    SupAdminDonsGrid = <DataGrid
-      checkboxSelection
-      rows={SupAdminDonations}
-      columns={columns}
-      components={{ Toolbar: GridToolbar }}
-    />
-  } else if (isError) { SupAdminDonsGrid = <h3>Content Loading</h3> }
+
+  if (single_don) {
+
+    const columns = [
+      { field: "id", headerName: "ID", flex: 0.5 },
+
+      {
+        field: "donation_title", // Need to get the donor name somehoww...
+        headerName: "Title",
+        flex: 1,
+        cellClassName: "name-column--cell",
+      },
+
+
+      { field: "createdAt", headerName: "Transferred On" },
+
+      {
+        field: "donor_name", // Need to get the donor name somehoww...
+        headerName: "Donor Name",
+        flex: 1,
+        cellClassName: "name-column--cell",
+      },
+
+
+      {
+        field: "donor_phone",
+        headerName: "Phone Number",
+        flex: 1,
+      },
+      { field: "donatedAt", headerName: "Donated On" },
+
+      {
+        field: "num_campaigns",
+        headerName: "Campaigns Donated",
+        flex: 1,
+      },
+
+      // Lets only have a map marker.. jis ko click krke location pr bnda chala jai
+      {
+        field: "category",
+        headerName: "Category",
+        flex: 1,
+      },
+      {
+        field: "amount",
+        headerName: "Total",
+        flex: 1,
+      },
+      {
+        field: "donated",
+        headerName: "Amount Donated",
+        flex: 1,
+      },
+      {
+        field: "remaining",
+        headerName: "Amount remaining",
+        flex: 1,
+      },
+
+      {
+
+        // Okay
+        field: 'View',
+        type: 'actions',
+        headerName: "View",
+        width: 100,
+        getActions: (row) => [
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row._id}`)} />,
+        ],
+      },
+    ];
+
+    // Fetching data for all donations made by the superadmins to the donors!!
+    if (adminIsLoadn) SupAdminDonsGrid = <h3>Content Loading 🏃🏼‍♂️🕺🏼</h3>
+
+    else if (adminIsSuccess) {
+      console.log("Super Admin Doations to Admin data: ", DonsToAdmin)
+
+      let SupAdminDonations = DonsToAdmin?.map((don, ind) => ({ ...don, id: ind + 1 }))
+
+      // lets see if we need to flatten the objects 
+      // .map((don) => flattenObj(don))
+
+      SupAdminDonsGrid = <DataGrid
+        checkboxSelection
+        rows={SupAdminDonations}
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
+      />
+    } else if (adminIsErr) { SupAdminDonsGrid = <h3>Error: {adminErr?.message}</h3> }
+
+  } else {
+
+    const columns = [
+      { field: "id", headerName: "ID", flex: 0.5 },
+      { field: "createdAt", headerName: "Donation Date" },
+      {
+        field: "name",
+        headerName: "Name",
+        flex: 1,
+        cellClassName: "name-column--cell",
+      },
+      {
+        field: "age",
+        headerName: "Age",
+        type: "number",
+        headerAlign: "left",
+        align: "left",
+      },
+      {
+        field: "phone",
+        headerName: "Phone Number",
+        flex: 1,
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        flex: 1,
+      },
+      {
+        field: "address",
+        headerName: "Address",
+        flex: 1,
+      },
+      {
+        field: "city",
+        headerName: "City",
+        flex: 1,
+      },
+      {
+        field: "amount",
+        headerName: "Donation Amount",
+        flex: 1,
+      },
+      {
+
+        // Okay
+        field: 'View',
+        type: 'actions',
+        headerName: "View",
+        width: 100,
+        getActions: (row) => [
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
+        ],
+      },
+    ];
+
+    // Fetching data for all donations made by the superadmins to the donors!!
+    let SupAdminDonsGrid = <></>
+
+    if (isLoading) SupAdminDonsGrid = <h3>Content Loading 🏃🏼‍♂️🕺🏼</h3>
+    else if (isSuccess) {
+      console.log("Super Admin Doations data: ", Donations)
+
+      let SupAdminDonations = Donations
+        .map((don, ind) => ({ ...don, id: ind + 1 }))
+        .map((don) => flattenObj(don))
+
+      SupAdminDonsGrid = <DataGrid
+        checkboxSelection
+        rows={SupAdminDonations}
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
+      />
+    } else if (isError) { SupAdminDonsGrid = <h3>Error: {error.message}</h3> }
+  }
 
   return (
     <Box m="20px">

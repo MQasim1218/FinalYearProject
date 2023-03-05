@@ -5,6 +5,8 @@ const Admin = require('../../Models/Users/AdminModel')
 
 
 const adminFeilds = ['name', 'age', 'contact', 'email']
+const don_donation_fields = ['donor', 'catagory', 'createdAt']
+const donorFields = ["name", "email", "contact"]
 
 // ! NOTE: This function returns all the Donations made by the SuperAdmin to all admins.
 // Get all supadmin donations -- Filter for a particular category!!
@@ -29,7 +31,7 @@ const GetAllDonations = async (req, res, next) => {
     }
 }
 
-// Get all the Donations 
+// Get all the Donations  for a particular year!!
 const GetYearDonations = async (req, res, next) => {
     try {
         let cat = req.params.category
@@ -182,18 +184,32 @@ const GetDonations_TimeRange = async (req, res, next) => {
 
 // All the doantions made to a particular admin since day 1
 const AllDonationsToAdmin = async (req, res, next) => {
+
+    console.log("Getting the donations made to one Admin by the SuperAdmin!")
     try {
         let cat = req.params.category
         let adminId = req.params.admin_id
-        if (cat == null) {
-            let Dons = await SuperAdminDons.find({ admin: adminId }).exec()
-            res.json(Dons)
-        } else {
-            let Dons = await SuperAdminDons.find({
-                admin: id,
-                category: cat
-            }).exec()
-            res.json(Dons)
+
+        if (adminId != undefined) {
+            console.log("The Admin id is: ", adminId)
+
+            if (cat == null) {
+                let Dons = await SuperAdminDons.find({ admin: adminId })
+                    .populate("donordonationId", don_donation_fields)
+                    .exec()
+
+                console.log(Dons)
+
+                let donId = Dons?.donordonationId?.donor
+                console.log("the donor id is: ", donId)
+                res.json(Dons)
+            } else {
+                let Dons = await SuperAdminDons.find({
+                    admin: adminId,
+                    category: cat
+                }).exec()
+                res.json(Dons)
+            }
         }
     } catch (error) {
         console.log('error encountered while retreiving Super Admin donations!\nError: ', error)

@@ -18,6 +18,30 @@ const authorize = require('../../middleware/authorization')
 // ! Authorization left out for now!!
 
 
+// SECTION - Doantions to a Particular Admin
+// Get all supadmin donations -- Filter for a particular category!!
+router.get('/admin/:admin_id/:category?', SupAdminDonCntr.AllDonationsToAdmin)
+
+// Get donations made by the SuperAdmin in a year -- Filterable by catogory
+router.get('/admin/:admin_id/:year/:category?', SupAdminDonCntr.YearDonations_ToAdmin)
+
+// Get donations made by the SuperAdmin in a timeRange
+router.get('/admin/:admin_id/:year/:month/:category?', SupAdminDonCntr.MonthDonations_ToAdmin)
+
+// REVIEW: Donations to an Admin between a Specified timeperiod
+// Get all supAdmin donations -- Filter for a particular category!!
+router.get('/admin/:admin_id/range/:end_date/:category?', SupAdminDonCntr.Donations_Before_ToAdmin)
+
+// Get donations made by the SuperAdmin in a year -- Filterable by catogory
+router.get('/admin/:admin_id/range/:start_date/:category?', SupAdminDonCntr.Donations_After_ToAdmin)
+
+// Get donations made by the SuperAdmin in a timeRange
+router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SupAdminDonCntr.Donations_TimeRange_ToAdmin)
+
+
+
+
+
 // SECTION - *** All_Donations *** Based on Time!!
 
 
@@ -45,26 +69,6 @@ router.get('/range/:start_date/:end_date/:category?', SupAdminDonCntr.GetDonatio
 // ! All the donations given a time
 
 // ! SuperAdmin ==> Admin1
-
-// REVIEW - Doantions to a Particular Admin
-// Get all supadmin donations -- Filter for a particular category!!
-router.get('/admin/:admin_id/:category?', SupAdminDonCntr.AllDonationsToAdmin)
-
-// Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/:admin_id/:year/:category?', SupAdminDonCntr.YearDonations_ToAdmin)
-
-// Get donations made by the SuperAdmin in a timeRange
-router.get('/admin/:admin_id/:year/:month/:category?', SupAdminDonCntr.MonthDonations_ToAdmin)
-
-// REVIEW: Donations to an Admin between a Specified timeperiod
-// Get all supAdmin donations -- Filter for a particular category!!
-router.get('/admin/:admin_id/range/:end_date/:category?', SupAdminDonCntr.Donations_Before_ToAdmin)
-
-// Get donations made by the SuperAdmin in a year -- Filterable by catogory
-router.get('/admin/:admin_id/range/:start_date/:category?', SupAdminDonCntr.Donations_After_ToAdmin)
-
-// Get donations made by the SuperAdmin in a timeRange
-router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SupAdminDonCntr.Donations_TimeRange_ToAdmin)
 
 
 

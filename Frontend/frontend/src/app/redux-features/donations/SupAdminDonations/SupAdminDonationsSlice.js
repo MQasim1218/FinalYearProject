@@ -11,7 +11,7 @@ export const superadminDonationsApi = createApi({
         //     headers.set('authorization', `Bearer ${token}`)
         // }
     }),
-    tagTypes: ['SuperAdminDonations'],
+    tagTypes: ['SuperAdminDonations', "SuperAdminDonationsToAdmin"],
 
 
     endpoints: (builder) => ({
@@ -19,13 +19,13 @@ export const superadminDonationsApi = createApi({
         // 👨‍👨‍👦 Fetch all Admins 📷
         allSuperAdminDonations: builder.query({
             query: (category) => category == null ? `/` : `/${category}`,
-            providesTags: ['SuperAdminDonations', 'SuperAdminDonationsToAdmin']
+            providesTags: ['SuperAdminDonationsToAdmin']
         }),
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getSuperAdminDonationsToAdmin: builder.query({
             query: (admin_id, category) => category == null ? `/admin/${admin_id}` : `/admin/${admin_id}/${category}`,
-            providesTags: (id) => [{ type: 'SuperAdminDonationsToAdmin' }]
+            providesTags: (admin_id) => [{ type: 'SuperAdminDonationsToAdmin', id: admin_id }]
         }),
 
 

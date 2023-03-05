@@ -8,6 +8,16 @@ const supAdminDonationSchema = mongoose.Schema({
         default: true
     },
 
+    donated: {
+        type: Number,
+        default: 0
+    },
+
+    remaining: {
+        type: Number,
+        required: true,
+        default: -1
+    },
 
     donation_title: {
         type: String,
@@ -25,18 +35,16 @@ const supAdminDonationSchema = mongoose.Schema({
 
     donordonationId: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "DonorDonation"
     },
 
     // Not sure if we need the category here ?????
-    catagory: {
+    category: {
         type: String,
         // required: true,
         default: 'General'
     }
-
-
-
     // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
 },
     {

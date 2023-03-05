@@ -6,18 +6,18 @@ const donorDonationSchema = mongoose.Schema({
         required: true,
         default: true
     },
-    
+
     donor: {
         type: mongoose.Types.ObjectId,
         ref: 'donor',
         required: true,
     },
-    
+
     amountDonated: {
         type: Number,
         default: 0,
     },
-    
+
     donation_title: {
         type: String,
         required: true,
