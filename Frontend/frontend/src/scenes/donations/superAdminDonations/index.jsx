@@ -12,7 +12,7 @@ import { UserContext } from "../../../context/UserContext";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
 
-const SuperAdminDonations = ({ single_don }) => {
+const SuperAdminDonations = ({ single_admin }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -40,11 +40,10 @@ const SuperAdminDonations = ({ single_don }) => {
   } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
 
 
-  if (single_don) {
+  if (single_admin) {
 
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
-
       {
         field: "donation_title", // Need to get the donor name somehoww...
         headerName: "Title",
@@ -52,29 +51,19 @@ const SuperAdminDonations = ({ single_don }) => {
         cellClassName: "name-column--cell",
       },
 
-
-      { field: "createdAt", headerName: "Transferred On" },
-
       {
         field: "donor_name", // Need to get the donor name somehoww...
         headerName: "Donor Name",
         flex: 1,
         cellClassName: "name-column--cell",
       },
-
-
       {
         field: "donor_phone",
         headerName: "Phone Number",
         flex: 1,
       },
-      { field: "donatedAt", headerName: "Donated On" },
-
-      {
-        field: "num_campaigns",
-        headerName: "Campaigns Donated",
-        flex: 1,
-      },
+      { field: "donated_on", headerName: "Donated On" },
+      { field: "createdAt", headerName: "Transferred On" },
 
       // Lets only have a map marker.. jis ko click krke location pr bnda chala jai
       {
@@ -117,7 +106,16 @@ const SuperAdminDonations = ({ single_don }) => {
     else if (adminIsSuccess) {
       console.log("Super Admin Doations to Admin data: ", DonsToAdmin)
 
-      let SupAdminDonations = DonsToAdmin?.map((don, ind) => ({ ...don, id: ind + 1 }))
+
+
+      let SupAdminDonations = DonsToAdmin?.map((don, ind) => ({
+        ...don,
+        createdAt: don.createdAt.slice(0, 10),
+        id: ind + 1,
+        donor_name: don.donor.name,
+        donor_phone: don.donor.contact,
+        donated_on: don.donordonationId?.createdAt.slice(0, 10)
+      }))
 
       // lets see if we need to flatten the objects 
       // .map((don) => flattenObj(don))
@@ -187,7 +185,6 @@ const SuperAdminDonations = ({ single_don }) => {
     ];
 
     // Fetching data for all donations made by the superadmins to the donors!!
-    let SupAdminDonsGrid = <></>
 
     if (isLoading) SupAdminDonsGrid = <h3>Content Loading 🏃🏼‍♂️🕺🏼</h3>
     else if (isSuccess) {

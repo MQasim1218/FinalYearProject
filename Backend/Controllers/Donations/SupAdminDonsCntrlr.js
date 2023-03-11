@@ -2,6 +2,8 @@
 const SuperAdminDons = require('../../Models/Donations/DonationSuperAdmin')
 const DonorDons = require('../../Models/Donations/DonationDonor')
 const Admin = require('../../Models/Users/AdminModel')
+const Donor = require('../../Models/Users/DonorModel')
+const getResolvedObjs = require('../../utils/resolve_objs')
 
 
 const adminFeilds = ['name', 'age', 'contact', 'email']
@@ -198,10 +200,19 @@ const AllDonationsToAdmin = async (req, res, next) => {
                     .populate("donordonationId", don_donation_fields)
                     .exec()
 
-                console.log(Dons)
 
-                let donId = Dons?.donordonationId?.donor
-                console.log("the donor id is: ", donId)
+                Dons = Dons.map(async (don) => {
+                    let donor = await Donor.findById(don.donordonationId?.donor).exec()
+                    don = { ...don, donor }
+                    return don
+                })
+
+                Dons = await getResolvedObjs(Dons)
+                Dons = Dons.map((don) => ({ ...don._doc, donor: don.donor }))
+
+
+                console.log("Donations Returned are: ", Dons)
+
                 res.json(Dons)
             } else {
                 let Dons = await SuperAdminDons.find({

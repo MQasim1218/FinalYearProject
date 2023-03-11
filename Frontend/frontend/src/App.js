@@ -96,7 +96,7 @@ function App(props) {
                 {/* WHY are there 2 UserAnalytics routes.. Both Leading to the same page? */}
                 {/* WHY should the donor be able to see user analytics other than themselves */}
                 <Route path="/useranalytics" element={<DonorInfo />} />
-                <Route path="/useranalytics/:id" element={<DonorInfo />} />
+                {/* <Route path="/useranalytics/:id" element={<DonorInfo />} /> */}
                 <Route path="/areaanalytics" element={<AreaAnalytics />} />
                 <Route path="/timeanalytics" element={<TimeAnalytics />} />
                 <Route path="/geographymap" element={<GeographyMap />} />
@@ -108,13 +108,6 @@ function App(props) {
                     <> */}
                 <Route path="/admindashboard" element={<Dashboard />} />
 
-                {
-                  /*
-                    Not sure isme konse users honge?? 
-                    Im adding all the donors who added to the campaigns created by this particulat admin 
-                  */
-                }
-                <Route path="/users" element={<Users />} />
 
                 {
                   /* 
@@ -123,7 +116,7 @@ function App(props) {
                     Dont need all the campaign dinations 
                   */
                 }
-                <Route path="/incoming-donations" element={<SuperAdminDonations single_don={true} />} />
+                <Route path="/incoming-donations" element={<SuperAdminDonations single_admin={true} />} />
 
                 {
                   /* 
