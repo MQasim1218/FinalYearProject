@@ -17,7 +17,7 @@ const GetAllDonations = async (req, res, next) => {
                 .populate('campaign', campFeilds)
                 .exec()
 
-            console.log("Admin donations are: ", Dons)
+            // console.log("Admin donations are: ", Dons)
             res.json(Dons)
         } else {
             // Get all the Donations by all the donors for a particular category.

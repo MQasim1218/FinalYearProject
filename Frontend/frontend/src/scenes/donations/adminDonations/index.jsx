@@ -29,13 +29,16 @@ const AdminDonations = ({ single_admin }) => {
     isLoading: sngleIsLoading,
     isSuccess: singleIsSuccess,
     data: singleDonations
-  } = useSingleAdminDonationsQuery(user?.user?.id)
+  } = useSingleAdminDonationsQuery(user?.user?._id)
+
+  console.log("Single Admin donations are: ", singleDonations)
 
 
   if (!single_admin) {
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
       { field: "createdAt", headerName: "Date" },
+      { field: "_id", headerName: "DonationID" },
       {
         field: "name",
         headerName: "Name",
@@ -75,12 +78,12 @@ const AdminDonations = ({ single_admin }) => {
         headerName: "View",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row._id}`)} />,
         ],
       },
     ];
 
-    console.log(singleDonations)
+    console.log("Donations by the Admin are: ", singleDonations)
 
     if (isLoading) AdminsDonsGrid = <h3>Content Loading</h3>
     else if (isSuccess) {
@@ -103,6 +106,7 @@ const AdminDonations = ({ single_admin }) => {
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
       { field: "createdAt", headerName: "Date" },
+      { field: "_id", headerName: "Donation ID" },
       {
         field: "name",
         headerName: "Name",
@@ -142,7 +146,7 @@ const AdminDonations = ({ single_admin }) => {
         headerName: "View",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row._id}`)} />,
         ],
       },
     ];
@@ -154,11 +158,16 @@ const AdminDonations = ({ single_admin }) => {
       // console.log("Admins Doations data: ", adminDonations)
       let adminDonations = []
       adminDonations = singleDonations
-        .map((don, index) => ({ ...don, id: index }))
+        .map((don, index) => ({ ...don, id: index + 1 }))
         .map((don) => flattenObj(don))
       console.log("Admin donations are: ", adminDonations)
 
       AdminsDonsGrid = <DataGrid
+        columnVisibilityModel={{
+          // Hide columns status and traderName, the other columns will remain visible
+          _id: false,
+          // traderName: false,
+        }}
         checkboxSelection
         rows={adminDonations}
         columns={columns}

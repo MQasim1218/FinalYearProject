@@ -11,6 +11,7 @@
 
 const router = require('express').Router()
 const AdminDonationController = require('../../Controllers/Donations/AdminDonsCntrlr')
+const AdminDonations = require('../../Models/Donations/DonationAdmin')
 const authorize = require('../../middleware/authorization')
 
 // ! Router.use(authorize)
@@ -21,9 +22,21 @@ const authorize = require('../../middleware/authorization')
 // Get all Admin donations to campaigns -- Filter for a particular category!!
 router.get('/:category?', AdminDonationController.GetAllDonations)
 
-router.get('/admin/:admin_id/', (req, res) => {
+router.get('/admin/:admin_id/', async (req, res) => {
     console.log("The admin id recieved is: ", req.params.admin_id)
-    res.send(`Admin id recieved: ${req.params.admin_id}`)
+    // res.send(`Admin id recieved: ${req.params.admin_id}`)
+    try {
+        let AdminDons = await AdminDonations.find({ admin: req.params?.admin_id })
+            .populate('admin')
+            .populate('campaign')
+            .exec()
+        console.log(AdminDons)
+        res.json(AdminDons)
+    } catch (error) {
+
+    }
+
+
 })
 
 
