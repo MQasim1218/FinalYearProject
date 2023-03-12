@@ -15,111 +15,13 @@ import { Navigation } from "@mui/icons-material";
 import { Navigate, useNavigate } from "react-router-dom";
 
 
-const Donors = () => {
+const Donors = ({ single_admin }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
 
-
-  // The columns gets all the data we specify below from the mockdata file and store it
-  const columns = [
-    { field: "id", headerName: "ID" },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "contact",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "totaldonations",
-      headerName: "Total Donations",
-      flex: 1,
-    },
-
-    {
-
-      // Okay
-      field: 'View',
-      type: 'actions',
-      headerName: "View",
-      width: 100,
-      getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
-      ],
-    },
-    {
-      // Okay
-      field: 'Delete',
-      type: 'actions',
-      headerName: "Delete",
-      width: 100,
-      getActions: () => [
-        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
-      ],
-    },
-  ];
-
-  // ! Data
-  // let [users, setUsers] = useState([])
-  // let [isLoading, setIsLoading] = useState(true)
-  // //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
-  // let [view, setView] = useState("donors")
-  // useEffect(() => {
-
-  //   console.log("Re run use Effect")
-  //   const fetchUsers = async () => {
-  //     try {
-  //       let res = null
-  //       //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
-  //       if (view === "donors") {
-  //         res = await axios.get("http://localhost:5000/donor/allDonors")
-  //         setIsLoading(false)
-  //       } else {
-  //         res = await axios.get("http://localhost:5000/benificiary")
-  //         setIsLoading(false)
-  //       }
-
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   // console.log("kdfiodno")
-  //   fetchUsers().then((data) => {
-  //     console.log(data)
-  //     setIsLoading(false)
-  //     let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
-  //     setUsers(usrz)
-  //   })
-  //   return (() => {
-  //     console.log("Nothing for clean up")
-  //     setIsLoading(false)
-  //   })
-  // }, [view])
-
-  // ! Admins StatBox && Admins DataGrid
+  let DonorsStatBox = <></>, DonorsDataGrid = <></>, DonsByDonorsStatBox = <></>
   let {
     data: donors,
     isLoading: isDonorsLoading,
@@ -128,51 +30,186 @@ const Donors = () => {
     isSuccess: isDonorsSuccess
   } = useAllDonorsQuery()
 
-  let DonorsStatBox = <></>, DonorsDataGrid = <></>, DonsByDonorsStatBox = <></>
 
-  if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
+  if (!single_admin) {
+    // The columns gets all the data we specify below from the mockdata file and store it
+    const columns = [
+      { field: "id", headerName: "ID" },
+      {
+        field: "name",
+        headerName: "Name",
+        flex: 1,
+        cellClassName: "name-column--cell",
+      },
+      {
+        field: "age",
+        headerName: "Age",
+        type: "number",
+        headerAlign: "left",
+        align: "left",
+      },
+      {
+        field: "contact",
+        headerName: "Phone Number",
+        flex: 1,
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        flex: 1,
+      },
+      {
+        field: "totaldonations",
+        headerName: "Total Donations",
+        flex: 1,
+      },
 
-  else if (isDonorsSuccess) {
-    // donors.forEach((donor) => { donor.id = donor._id })
-    donors = donors.map((donor) => ({ ...donor, id: donor._id }))
-    DonorsStatBox = (
-      <StatBox
-        title={donors.length}
-        subtitle="Active Donors"
-        progress={false}
-        increase="+9% This Month dyn"
-        icon={
-          <AttachMoneyOutlinedIcon
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />
-        }
-      />
-    )
-    DonorsDataGrid = < DataGrid checkboxSelection rows={donors} columns={columns} components={{ Toolbar: GridToolbar }} />
+      {
+
+        // Okay
+        field: 'View',
+        type: 'actions',
+        headerName: "View",
+        width: 100,
+        getActions: (row) => [
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
+        ],
+      },
+      {
+        // Okay
+        field: 'Delete',
+        type: 'actions',
+        headerName: "Delete",
+        width: 100,
+        getActions: () => [
+          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
+        ],
+      },
+    ];
+
+    // ! Data
+    // let [users, setUsers] = useState([])
+    // let [isLoading, setIsLoading] = useState(true)
+    // //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
+    // let [view, setView] = useState("donors")
+    // useEffect(() => {
+
+    //   console.log("Re run use Effect")
+    //   const fetchUsers = async () => {
+    //     try {
+    //       let res = null
+    //       //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
+    //       if (view === "donors") {
+    //         res = await axios.get("http://localhost:5000/donor/allDonors")
+    //         setIsLoading(false)
+    //       } else {
+    //         res = await axios.get("http://localhost:5000/benificiary")
+    //         setIsLoading(false)
+    //       }
+
+    //       if (res.status < 300) {
+    //         let data = res.data
+    //         if (data !== null) return data
+    //         else console.log("No data recieved!")
+    //       }
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
+    //   // console.log("kdfiodno")
+    //   fetchUsers().then((data) => {
+    //     console.log(data)
+    //     setIsLoading(false)
+    //     let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
+    //     setUsers(usrz)
+    //   })
+    //   return (() => {
+    //     console.log("Nothing for clean up")
+    //     setIsLoading(false)
+    //   })
+    // }, [view])
+
+    // ! Admins StatBox && Admins DataGrid
+
+
+
+    if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
+
+    else if (isDonorsSuccess) {
+      // donors.forEach((donor) => { donor.id = donor._id })
+      donors = donors.map((donor) => ({ ...donor, id: donor._id }))
+      DonorsStatBox = (
+        <StatBox
+          title={donors.length}
+          subtitle="Active Donors"
+          progress={false}
+          increase="+9% This Month dyn"
+          icon={
+            <AttachMoneyOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      )
+      DonorsDataGrid = < DataGrid checkboxSelection rows={donors} columns={columns} components={{ Toolbar: GridToolbar }} />
+    }
+    else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
+  } else {
+    const columns = [
+      { field: "id", headerName: "ID" },
+      {
+        field: "name",
+        headerName: "Name",
+        flex: 1,
+        cellClassName: "name-column--cell",
+      },
+      {
+        field: "age",
+        headerName: "Age",
+        type: "number",
+        headerAlign: "left",
+        align: "left",
+      },
+      {
+        field: "contact",
+        headerName: "Phone Number",
+        flex: 1,
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        flex: 1,
+      },
+      {
+        field: "totaldonations",
+        headerName: "Total Donations",
+        flex: 1,
+      },
+
+      {
+
+        // Okay
+        field: 'View',
+        type: 'actions',
+        headerName: "View",
+        width: 100,
+        getActions: (row) => [
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
+        ],
+      },
+      {
+        // Okay
+        field: 'Delete',
+        type: 'actions',
+        headerName: "Delete",
+        width: 100,
+        getActions: () => [
+          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
+        ],
+      },
+    ];
   }
-  else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
-  // ! Donations to Admin
-  // let { data: donsbyDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
-  // if (isDonsLoading) DonsByDonorsStatBox = <h3>Loading Content</h3>
-
-  // else if (IsDonsSuccess) {
-  //   DonsByDonorsStatBox = (
-  //     <StatBox
-  //       // title={ }
-  //       title={donsbyDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
-  //       subtitle="Donations Made By the Donors"
-  //       progress={false}
-  //       increase="+14% This Month dyn"
-  //       icon={
-  //         <AttachMoneyOutlinedIcon
-  //           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-  //         />
-  //       }
-  //     />
-  //   )
-  // }
-  // else if (isDonsError) DonsByDonorsStatBox = <h3>{`Error: ${donsError.message}`}</h3>
 
 
   return (

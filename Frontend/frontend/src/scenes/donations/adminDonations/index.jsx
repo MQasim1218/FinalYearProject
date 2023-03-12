@@ -105,8 +105,8 @@ const AdminDonations = ({ single_admin }) => {
   } else {
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
+      { field: "count", headerName: "Num" },
       { field: "createdAt", headerName: "Date" },
-      { field: "_id", headerName: "Donation ID" },
       {
         field: "name",
         headerName: "Name",
@@ -146,7 +146,7 @@ const AdminDonations = ({ single_admin }) => {
         headerName: "View",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row._id}`)} />,
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
         ],
       },
     ];
@@ -158,14 +158,14 @@ const AdminDonations = ({ single_admin }) => {
       // console.log("Admins Doations data: ", adminDonations)
       let adminDonations = []
       adminDonations = singleDonations
-        .map((don, index) => ({ ...don, id: index + 1 }))
+        .map((don, index) => ({ ...don, id: don._id, count: index + 1 }))
         .map((don) => flattenObj(don))
       console.log("Admin donations are: ", adminDonations)
 
       AdminsDonsGrid = <DataGrid
         columnVisibilityModel={{
           // Hide columns status and traderName, the other columns will remain visible
-          _id: false,
+          id: false,
           // traderName: false,
         }}
         checkboxSelection

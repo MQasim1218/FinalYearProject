@@ -111,7 +111,7 @@ const Sidebar = () => {
                         <Box paddingLeft={isCollapsed ? undefined : '10%'}>
                             <Item title="Dashboard" to="/admindashboard" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Account Data</Typography>
-                            {/* <Item title="Users" to="/users" icon={<PeopleOutlinedIcon />} selected={selected} setSelected={setSelected} /> */}
+                            <Item title="Donors" to="/donors" icon={<PeopleOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             {/* <Item title="Donation Info" to="/donations" icon={<AttachMoneyOutlinedIcon />} selected={selected} setSelected={setSelected} /> */}
                             <Item title="Incoming Donations" to="/incoming-donations" icon={<ReceiptOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Outgoing Donations" to="/outgoing-donations" icon={<ReceiptOutlinedIcon />} selected={selected} setSelected={setSelected} />

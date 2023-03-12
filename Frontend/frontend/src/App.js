@@ -140,6 +140,7 @@ function App(props) {
                       3. Custom forms for many different doation catagories.
                   */
                 }
+                <Route path="/donors" element={<Donors />} />
                 <Route path="/createCampaign" element={<CreateCampaign />} />
 
                 {/* Will look into this later-onn!! */}
