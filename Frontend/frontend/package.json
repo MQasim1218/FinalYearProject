@@ -26,7 +26,7 @@
 
     "@mui/x-data-grid": "^5.17.12",
 
-    "@mui/x-date-pickers": "^6.0.0",
+    "@mui/x-date-pickers": "^6.0.1",
 
     "@nivo/bar": "^0.80.0",
 
