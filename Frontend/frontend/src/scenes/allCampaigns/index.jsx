@@ -1,11 +1,56 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Card, CardActions, CardContent, Collapse, Button, Typography, Rating, useTheme, useMediaQuery } from "@mui/material";
+import {
+    Box, Card, IconButton, CardActions, CardContent, Collapse, Button, Typography, ListItemText, FormGroup, Rating, useTheme, useMediaQuery, Slider,
+    Checkbox,
+    FormControlLabel,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    OutlinedInput,
+    InputAdornment,
+    RadioGroup,
+    Radio,
+} from "@mui/material";
 import Header from '../../components/Header';
 import { tokens } from '../../theme';
 import { borderRadius, color } from '@mui/system';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import axios from 'axios';
 import { useAuthContext } from "../../hooks/useAuthContext"
+import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
+import SearchIcon from '@mui/icons-material/SearchOutlined';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+const locationsData = [
+    'Islamabad',
+    'Lahore',
+    'Karachi',
+    'Faisalabad',
+    'Rawalpindi',
+    'Multan',
+    'Quetta',
+];
+
+const categoriesData = [
+    'Food',
+    'Education',
+    'Natural Disaster',
+    'Widow Support',
+    'Housing',
+];
+
+const adminsData = [
+    'Admin1',
+    'Admin2',
+    'Admin3',
+    'Admin4',
+];
+
+const servicesData = ['Completed'];
+
 //template for each campaign
 const Campaign = ({
     id,
@@ -25,7 +70,7 @@ const Campaign = ({
     //defining the see more button for each campaign
     const [isExpanded, setIsExpanded] = useState(false)
     return (
-        <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem" }}>
+        <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem", }}>
             <CardContent>
                 <Typography variant='h3' color={colors.grey[100]} gutterBottom>
                     {campaign_title}
@@ -85,6 +130,9 @@ function LinearProgressWithLabel(props) {
 
 const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
 
+
+    const theme = useTheme()
+    const colors = tokens(theme.palette.mode)
     //dummy data
     // const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
     //restrict for smaller screens
@@ -94,6 +142,70 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
     const [isLoadn, setIsLoadn] = useState(true)
     const [campaigns, setCampaigns] = useState([])
     const { user } = useAuthContext()
+
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [budget, setBudget] = useState(0);
+    const [categories, setCategories] = useState([]);
+    const [admins, setAdmins] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [search, setSearch] = useState('');
+    const [services, setServices] = useState([]);
+    const [startingBudget, setStartingBudget] = useState(0);
+    const [endingBudget, setEndingBudget] = useState(10000);
+    const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+    const handleStartDateChange = (date) => {
+        setSelectedStartDate(date);
+    };
+
+    const handleEndDateChange = (date) => {
+        setSelectedEndDate(date);
+    };
+
+
+    const handleCategoryChange = (event) => {
+        setCategories(event.target.value);
+    };
+
+    const handleAdminChange = (event) => {
+        setAdmins(event.target.value);
+    };
+
+    const handleLocationChange = (event) => {
+        setLocations(event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearch(event.target.value);
+    };
+
+    const handleBudgetChange = (event, newValue) => {
+        setBudget(newValue);
+        setStartingBudget(newValue[0]);
+        setEndingBudget(newValue[1]);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(`Searched For: ${search}`);
+        console.log(`Locations: ${locations}`);
+        console.log(`Categories: ${categories}`);
+        console.log(`Status: ${services}`);
+        console.log(`Selected Budget: ${budget}`);
+        console.log(`Selected Start Date: ${selectedStartDate}`);
+        console.log(`Selected End Date: ${selectedEndDate}`);
+        console.log(`Selected Admins: ${admins}`);
+
+    };
+
+    const handleServiceChange = (event) => {
+        setServices(event.target.value);
+    };
+
+    const handleSearched = (event) => {
+        alert(`Searched: ${search}`)
+    };
 
     // ############### USE Effect Hook #################
     useEffect(() => {
@@ -159,39 +271,155 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
     return (
         <Box m="1.5rem 2.5rem" >
             <Header title={title} subtitle={subtitle} />
-            {/* <Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))"
-                justifyContent="space-between" rowGap="20px" columnGap="1.33%"
-                sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
-            >
-                {campaigns.map((
-                    {
-                        id,
-                        campaign_title,
-                        required_amount,
-                        location,
-                        category,
-                        description,
-                        progress
-                    }
-                ) => (
-                    <Campaign
-                        key={id}
-                        id={id}
-                        campaign_title={campaign_title}
-                        required_amount={required_amount}
-                        location={location}
-                        category={category}
-                        description={description}
-                        progress={progress} />
-                ))}
-            </Box> */}
-
-
-
             <Box>
                 {!isDashboard ? (
                     <Box m="1.5rem 2.5rem">
                         <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
+
+                        <Box style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                            <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
+                                <InputLabel id='category-input-label'>Category</InputLabel>
+                                <Select
+                                    id='category-input'
+                                    label='Category'
+                                    multiple
+                                    value={categories}
+                                    onChange={handleCategoryChange}
+                                    renderValue={(selected) => selected.join(', ')}
+                                    labelId='category-input-label'
+                                >
+                                    {categoriesData.map((category) => (
+                                        <MenuItem key={category} value={category}>
+                                            <Checkbox checked={categories.indexOf(category) > -1} />
+                                            <ListItemText primary={category} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
+                                <InputLabel id='search-input-label'>Search</InputLabel>
+                                <OutlinedInput
+                                    id='search-input'
+                                    label='Search'
+                                    value={search}
+                                    onChange={handleSearchChange}
+                                    endAdornment={
+                                        <InputAdornment position='end'>
+                                            <IconButton edge='end' onClick={handleSearched}>
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    labelId='search-input-label'
+                                />
+                            </FormControl>
+
+                            <IconButton onClick={() => setIsExpanded(!isExpanded)} >
+                                <TuneOutlinedIcon />
+                            </IconButton>
+                        </Box>
+                        <Collapse in={isExpanded}>
+                            <Box m={2} p={5} sx={{ border: '1px solid gray', borderRadius: '4px', backgroundColor: colors.primary[400] }}>
+                                <Typography variant='h6' mb={2} color={colors.greenAccent[400]}>
+                                    Filter Campaigns
+                                </Typography>
+                                <FormControl fullWidth variant='outlined' sx={{ mb: 2 }}>
+                                    <InputLabel id='location-input-label'>Location</InputLabel>
+                                    <Select
+                                        id='location-input'
+                                        label='Location'
+                                        multiple
+                                        value={locations}
+                                        onChange={handleLocationChange}
+                                        renderValue={(selected) => selected.join(', ')}
+                                        labelId='location-input-label'
+                                    >
+                                        {locationsData.map((location) => (
+                                            <MenuItem key={location} value={location}>
+                                                <Checkbox checked={locations.indexOf(location) > -1} />
+                                                <ListItemText primary={location} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <Typography variant='h6' mb={2} color={colors.greenAccent[400]}>
+                                    Start Date
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker value={selectedStartDate} onChange={handleStartDateChange} />
+                                </LocalizationProvider>
+                                <Typography variant='h6' mb={2} mt={2} color={colors.greenAccent[400]}>
+                                    End Date
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker value={selectedEndDate} onChange={handleEndDateChange} />
+                                </LocalizationProvider>
+                                <FormControl fullWidth>
+                                    <Typography variant='h6' mb='2' mt={2} width='100%' color={colors.greenAccent[400]}>
+                                        Donation Goal
+                                    </Typography>
+
+                                    <Slider
+                                        value={budget}
+                                        onChange={handleBudgetChange}
+                                        valueLabelDisplay='auto'
+                                        min={0}
+                                        max={10000}
+                                        step={100}
+                                        aria-labelledby='range-slider'
+                                        style={{ width: 'auto' }}
+                                        marks={[
+                                            { value: 0, label: '$0' },
+                                            { value: 5000, label: '$5000' },
+                                            { value: 10000, label: '$10,000' },
+                                        ]}
+                                    />
+                                    <Typography variant='h6' mb={2} mt={2} width='100%' color={colors.greenAccent[400]}>
+                                        Admin
+                                    </Typography>
+                                    <FormControl fullWidth variant='outlined'>
+                                <InputLabel id='admin-input-label'>Admin</InputLabel>
+                                <Select
+                                    id='admin-input'
+                                    label='Admin'
+                                    multiple
+                                    value={admins}
+                                    onChange={handleAdminChange}
+                                    renderValue={(selected) => selected.join(', ')}
+                                    labelId='admin-input-label'
+                                >
+                                    {adminsData.map((admin) => (
+                                        <MenuItem key={admin} value={admin}>
+                                            <Checkbox checked={admins.indexOf(admin) > -1} />
+                                            <ListItemText primary={admin} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                                </FormControl>
+                                <Typography variant='h6' mt={2} color={colors.greenAccent[400]}>Status</Typography>
+                                <FormGroup>
+                                    {servicesData.map((service) => (
+                                        <FormControlLabel
+                                            key={service}
+                                            control={
+                                                <Checkbox
+                                                    checked={services.indexOf(service) > -1}
+                                                    onChange={handleServiceChange}
+                                                    value={service}
+                                                />
+                                            }
+                                            label={service}
+                                        />
+                                    ))}
+                                </FormGroup>
+                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                                <Button variant='contained' color='secondary' onClick={handleSubmit}>
+                                    Apply Filters
+                                </Button>
+                                </Box>
+                            </Box>
+                        </Collapse>
                         <Box mt="20px" display="grid"
                             gridTemplateColumns="repeat(4,minmax(0,1fr))"
                             justifyContent="space-between"

@@ -37,6 +37,10 @@ import DonationRegistration from './scenes/donationRegisteration';
 import Sidebars from './scenes/global/Sidebars';
 import { useState, useEffect } from 'react';
 import SuperAdminDashboard from './scenes/superAdminDashboard';
+import DonorDonationInfo from './scenes/donorDonationInfo';
+import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
+import AdminDonationInfo from './scenes/adminDonationInfo';
+import DonationRequests from './scenes/donationRequests';
 
 
 function App(props) {

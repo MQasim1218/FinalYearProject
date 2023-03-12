@@ -18,9 +18,11 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined'
 
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+
+const Item = ({title, to, icon, selected, setSelected}) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
     // Creating a template using react-pro-side for menu items, so we dont have to do it again and again

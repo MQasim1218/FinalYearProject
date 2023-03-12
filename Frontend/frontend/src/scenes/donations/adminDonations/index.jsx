@@ -176,7 +176,6 @@ const AdminDonations = ({ single_admin }) => {
     } else if (singleIsError) { AdminsDonsGrid = <h3>Error: {singleError.message}</h3> }
   }
 
-
   return (
     <Box m="20px">
       <Header
