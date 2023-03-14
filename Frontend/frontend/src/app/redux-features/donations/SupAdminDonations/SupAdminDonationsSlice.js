@@ -28,6 +28,11 @@ export const superadminDonationsApi = createApi({
             providesTags: (admin_id) => [{ type: 'SuperAdminDonationsToAdmin', id: admin_id }]
         }),
 
+        // 🎅🏼🥓Fetch a single donation. Need to check the backend API now!
+        getSingleDonation: builder.query({
+            query: (don_id) => `single/${don_id}`,
+            providesTags: (don_id) => [{ type: 'SuperAdminSingleDonation', id: don_id }]
+        }),
 
 
         // ! Not sure if this functionality is supported! However, this can be helpful to correct bad entries!!
@@ -97,6 +102,7 @@ export const superadminDonationsApi = createApi({
 export const {
     useGetSuperAdminDonationsToAdminQuery,
     useAllSuperAdminDonationsQuery,
+    useGetSingleDonationQuery,
 
     // STUB: All mutations down here!!
     useDonateToAdminMutation,

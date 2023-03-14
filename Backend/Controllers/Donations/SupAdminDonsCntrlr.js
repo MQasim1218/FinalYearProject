@@ -33,6 +33,27 @@ const GetAllDonations = async (req, res, next) => {
     }
 }
 
+
+const GetSingleDonation = async (req, res, next) => {
+    console.log("Here to fetch single Admin Dons")
+    try {
+        let id = req.params?.id
+        if (id != null) {
+            let Don = await SuperAdminDons
+                .findById(id)
+                .populate("admin", adminFeilds)
+                .exec()
+            res.json(Don)
+        } else {
+
+            res.status(500).send("Cant fetch without ID!!")
+        }
+    } catch (error) {
+        console.log('error encountered while retreiving Single Super Admin donation!\nError: ', error)
+        res.send(error)
+    }
+}
+
 // Get all the Donations  for a particular year!!
 const GetYearDonations = async (req, res, next) => {
     try {
@@ -489,4 +510,5 @@ module.exports = {
     // Send money to Admin
     RegisterDonorDonation,
     DonateToAdmin,
+    GetSingleDonation
 }

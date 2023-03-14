@@ -37,10 +37,14 @@ import DonationRegistration from './scenes/donationRegisteration';
 import Sidebars from './scenes/global/Sidebars';
 import { useState, useEffect } from 'react';
 import SuperAdminDashboard from './scenes/superAdminDashboard';
+
 import DonorDonationInfo from './scenes/donorDonationInfo';
 import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
 import AdminDonationInfo from './scenes/adminDonationInfo';
+
+// What is this boss!!
 import DonationRequests from './scenes/donationRequests';
+
 
 
 function App(props) {
@@ -100,12 +104,13 @@ function App(props) {
                 {/* WHY are there 2 UserAnalytics routes.. Both Leading to the same page? */}
                 {/* WHY should the donor be able to see user analytics other than themselves */}
                 <Route path="/useranalytics" element={<DonorInfo />} />
-                {/* <Route path="/useranalytics/:id" element={<DonorInfo />} /> */}
                 <Route path="/areaanalytics" element={<AreaAnalytics />} />
                 <Route path="/timeanalytics" element={<TimeAnalytics />} />
                 <Route path="/geographymap" element={<GeographyMap />} />
                 <Route path="/donationreports" element={<DonationReports />} />
                 <Route path="/expenditurereports" element={<ExpenditureReports />} />
+                <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
+
                 {/* <Route path="*" /> */}
                 {/* </>
                   ) : accountType === "admin" ? (
@@ -155,6 +160,8 @@ function App(props) {
                 <Route path="/geography" element={<GeographyMap />} />
                 <Route path="/adminanalytics" element={<AdminAnalytics />} />
                 <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
+                <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
+                <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
 
                 {/* <Route path="*" /> */}
                 {/* </>
@@ -176,6 +183,9 @@ function App(props) {
                 <Route path="/adminanalytics/:id" element={<AdminAnalytics />} />
                 <Route path="/donorinfo/:id" element={<DonorInfo />} />
                 <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
+                <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
+                <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+                <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
 
                 {/* <Route path="*" /> */}
                 {/* </>

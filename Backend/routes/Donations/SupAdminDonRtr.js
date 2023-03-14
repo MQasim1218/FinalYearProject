@@ -39,10 +39,13 @@ router.get('/admin/:admin_id/range/:start_date/:category?', SupAdminDonCntr.Dona
 router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SupAdminDonCntr.Donations_TimeRange_ToAdmin)
 
 
-
+// Get single supadmin donation
+router.get('/single/:id?', SupAdminDonCntr.GetSingleDonation)
 
 
 // SECTION - *** All_Donations *** Based on Time!!
+
+
 
 
 // Get all supadmin donations -- Filter for a particular category!!

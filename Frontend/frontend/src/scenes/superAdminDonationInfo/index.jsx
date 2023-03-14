@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -25,112 +25,31 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import { useParams } from "react-router-dom";
 import { mockDataDonationInfo } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
+import { useGetSingleDonationQuery } from '../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice';
+
 
 const SuperAdminDonationInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  let  {id}  = useParams();
-  const [donations, setDonations] = useState([])
+  const [sa_donation, setSA_Donation] = useState([])
 
-  //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
-  //const { user } = useAuthContext('aown')
+  let { id } = useParams();
 
-  /**
-   * Lazy fetch all the dynamic data needed for the dashboard.
-   */
+  const {
+    data: singleDonation,
+    error: donError,
+    isError: donIsError,
+    isSuccess: donIsSuccess,
+    isLoading: donIsLoading
+  } = useGetSingleDonationQuery(id)
 
-  //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
+  console.log("Single Donation retrieved is: ", singleDonation)
 
-  useEffect(() => {
 
-    //   //   // Get all the campaigns and count them
-    //   //   // TODO: Cache these campaigns using context API
-    //   const getCampaigns = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-    //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
+  // Time to get all the Admin Donations where the Admin spent money using this donation
+  // The hook takes the `id` of the SuperAdmin Donation
+  const { } = useGetDonationsFromSingle_SADonationQuery(id)
 
-    //       if (gen_res.status < 300 && gen_res.status < 300) {
-    //         let data = gen_res.data.concat(spec_res.data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    //   const getDonors = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         console.log(data)
-    //         setActiveDonors(data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    //   const getBenificiries = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/benificiary/")
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         console.log(data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
-    // const getDonations = async () => {
-    //   try {
-    //     let donor_id = user.user.user._id
-    //     let res = await axios.get(
-    //       `http://localhost:5000/donor/${donor_id}/donations`,
-    //       {
-    //         headers: {
-    //           'Authorization': `Bearer ${user.user.token}`
-    //         }
-    //       }
-    //     )
-    //     if (res.status < 400) {
-    //       if (res.data !== null) return res.data
-    //       else console.log("No data recieved!")
-    //     }
-
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
-
-    // getDonations().then((dons) => {
-    //   console.log(dons)
-    //   setDonations(dons)
-    // })
-
-    // //   getCampaigns().then((camps) => {
-    // //     setActiveCamps(camps)
-    // //   })
-    // //   getDonors().then((dons) => {
-    // //     setActiveDonors(dons)
-    // //   })
-    // //   getBenificiries().then((benifs) => {
-    // //     setActiveBenifs(benifs)
-    // //   })
-
-    // return (() => console.log("No clean up"))
-  }, [])
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -180,7 +99,7 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="Admin 1"
+          title={singleDonation?.admin.name}
           subtitle="Person Donation Allocated"
           icon={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -195,9 +114,8 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="$100"
+          title={singleDonation?.amount}
           subtitle="Donation amount"
-          increase={"Donation ID: "+id}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -213,9 +131,8 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="20-Feb-2023"
-          subtitle="Donation Date"
-          increase="Made through: Donor"
+          title={singleDonation?.donated}
+          subtitle="Campaigns Supported"
           icon={
             <CalendarMonthOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -231,8 +148,8 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="22-Feb-2023"
-          subtitle="Date Donation Given To Admin"
+          title={singleDonation?.remaining}
+          subtitle="Remaining Amount"
           icon={
             <CalendarMonthOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -240,49 +157,70 @@ const SuperAdminDonationInfo = () => {
           }
         />
       </Box>
+
+      {/* 
+        This was the Donation Date! I am adding it to the top
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="22-Feb-2023"
+            subtitle="Date Donation Given To Admin"
+            icon={
+              <CalendarMonthOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box> 
+      */}
     </Box>
     <Box mt="5rem">
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donation Flow</Typography>
     </Box>
-      <Box
-        m="40px 0 0 0"
-        height="40vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
-        }}
-      >
-        <DataGrid
-          checkboxSelection
-          rows={mockDataDonationInfo}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
-      </Box>
+    <Box
+      m="40px 0 0 0"
+      height="40vh"
+      sx={{
+        "& .MuiDataGrid-root": {
+          border: "none",
+        },
+        "& .MuiDataGrid-cell": {
+          borderBottom: "none",
+        },
+        "& .name-column--cell": {
+          color: colors.greenAccent[300],
+        },
+        "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: colors.blueAccent[700],
+          borderBottom: "none",
+        },
+        "& .MuiDataGrid-virtualScroller": {
+          backgroundColor: colors.primary[400],
+        },
+        "& .MuiDataGrid-footerContainer": {
+          borderTop: "none",
+          backgroundColor: colors.blueAccent[700],
+        },
+        "& .MuiCheckbox-root": {
+          color: `${colors.greenAccent[200]} !important`,
+        },
+        "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+          color: `${colors.grey[100]} !important`,
+        },
+      }}
+    >
+      <DataGrid
+        checkboxSelection
+        rows={mockDataDonationInfo}
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
+      />
+    </Box>
   </Box>)
 }
 
