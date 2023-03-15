@@ -20,8 +20,8 @@ export const adminDonationsApi = allAdminsDonationsApi.injectEndpoints({
         }),
 
         getDonationsFromSingle_SADonation: builder.query({
-            query: (supAdmin_don) => `${supAdmin_don}`,
-            providesTags: []
+            query: (supAdmin_don) => `superdonation/${supAdmin_don}`,
+            providesTags: (supAdmin_don) => [{ type: "SingleSuperDonation", id: supAdmin_don }]
         }),
 
         // 👨‍👨‍👦 Fetch all Admins' Donations 📷
@@ -75,5 +75,6 @@ export const {
     // Top Level Actions
     useGetDonationQuery,
     useDonateToCampaignMutation,
+    useGetDonationsFromSingle_SADonationQuery
 
 } = adminDonationsApi

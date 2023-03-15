@@ -95,6 +95,25 @@ const GetYearDonations = async (req, res, next) => {
     }
 }
 
+const Superdonation = async (req, res, next) => {
+    try {
+        console.log("Getting Donations for SuperAdmin!!")
+        let id = req.params.id
+
+        let Dons = await AdminDons
+            .find({ supAdminDonation: id }).exec()
+        // .populate('donorId')
+
+
+        console.log("Admin donations are: ", Dons)
+        res.json(Dons)
+
+    } catch (error) {
+        console.log('error encountered while retrieving Admin donations!\nError: ', error)
+        res.send(error)
+    }
+}
+
 // Get Donations made by all the Admins in a month...
 const GetMonthDonations = async (req, res, next) => {
     try {
@@ -631,6 +650,7 @@ module.exports = {
     AdminCampaignDonations_TimeRange,
 
     GetCampaignDonations,
+    Superdonation,
 
     DonateToCampaign,
     SingleDonation,

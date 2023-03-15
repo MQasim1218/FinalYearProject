@@ -26,6 +26,7 @@ import { useParams } from "react-router-dom";
 import { mockDataDonationInfo } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { useGetSingleDonationQuery } from '../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice';
+import { useGetDonationsFromSingle_SADonationQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
 
 
 const SuperAdminDonationInfo = () => {
@@ -33,23 +34,8 @@ const SuperAdminDonationInfo = () => {
   const colors = tokens(theme.palette.mode);
   const [sa_donation, setSA_Donation] = useState([])
 
+  // This is the id of the SuperAdmin donation
   let { id } = useParams();
-
-  const {
-    data: singleDonation,
-    error: donError,
-    isError: donIsError,
-    isSuccess: donIsSuccess,
-    isLoading: donIsLoading
-  } = useGetSingleDonationQuery(id)
-
-  console.log("Single Donation retrieved is: ", singleDonation)
-
-
-  // Time to get all the Admin Donations where the Admin spent money using this donation
-  // The hook takes the `id` of the SuperAdmin Donation
-  const { } = useGetDonationsFromSingle_SADonationQuery(id)
-
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -73,6 +59,24 @@ const SuperAdminDonationInfo = () => {
       flex: 0.5,
     },
   ];
+
+  const {
+    data: singleDonation,
+    error: donError,
+    isError: donIsError,
+    isSuccess: donIsSuccess,
+    isLoading: donIsLoading
+  } = useGetSingleDonationQuery(id)
+
+  console.log("Single Donation retrieved is: ", singleDonation)
+
+
+  // Time to get all the Admin Donations where the Admin spent money using this donation
+  // The hook takes the `id` of the SuperAdmin Donation
+  const { } = useGetDonationsFromSingle_SADonationQuery(id)
+
+
+
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -99,7 +103,7 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={singleDonation?.admin.name}
+          title={singleDonation?.admin?.name}
           subtitle="Person Donation Allocated"
           icon={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

@@ -12,6 +12,7 @@
 const router = require('express').Router()
 const AdminDonationController = require('../../Controllers/Donations/AdminDonsCntrlr')
 const AdminDonations = require('../../Models/Donations/DonationAdmin')
+
 const authorize = require('../../middleware/authorization')
 
 // ! Router.use(authorize)
@@ -33,12 +34,10 @@ router.get('/admin/:admin_id/', async (req, res) => {
         console.log(AdminDons)
         res.json(AdminDons)
     } catch (error) {
-
     }
-
-
 })
 
+router.get('/superdonation/:id', AdminDonationController.Superdonation)
 
 // ANCHOR - Get all camoaings for a aprticular campaign 
 router.get('/camp/:camp_id', AdminDonationController.GetCampaignDonations)
