@@ -101,7 +101,7 @@ const Superdonation = async (req, res, next) => {
         let id = req.params.id
 
         let Dons = await AdminDons
-            .find({ supAdminDonation: id }).exec()
+            .find({ supAdminDonation: id }).populate("campaign").exec()
         // .populate('donorId')
 
 

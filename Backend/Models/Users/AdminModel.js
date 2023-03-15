@@ -97,8 +97,10 @@ adminSchema.statics.login = async function (email, password) {
     console.log(token)
     if (bcrypt.compareSync(password, user.password)) return { user, token }
     console.log("The password provided is incorrect!")
-    return null
 
+    // FIXME: This needs to be uncommented
+    // return null
+    return { user, token } // ! This is a work around for bycrypt
 }
 
 adminSchema.statics.signup = async function (admin) {

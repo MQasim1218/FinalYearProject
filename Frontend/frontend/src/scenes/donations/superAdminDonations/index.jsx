@@ -44,6 +44,7 @@ const SuperAdminDonations = ({ single_admin }) => {
 
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
+      { field: "index", headerName: "Count", flex: 0.5 },
       {
         field: "donation_title", // Need to get the donor name somehoww...
         headerName: "Title",
@@ -95,7 +96,7 @@ const SuperAdminDonations = ({ single_admin }) => {
         headerName: "View",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/superadmindonationinfo/${row._id}`)} />,
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/superadmindonationinfo/${row.id}`)} />,
         ],
       },
     ];
@@ -111,7 +112,8 @@ const SuperAdminDonations = ({ single_admin }) => {
       let SupAdminDonations = DonsToAdmin?.map((don, ind) => ({
         ...don,
         createdAt: don.createdAt.slice(0, 10),
-        id: ind + 1,
+        id: don._id,
+        index: ind + 1,
         donor_name: don.donor.name,
         donor_phone: don.donor.contact,
         donated_on: don.donordonationId?.createdAt.slice(0, 10)
@@ -121,6 +123,11 @@ const SuperAdminDonations = ({ single_admin }) => {
       // .map((don) => flattenObj(don))
 
       SupAdminDonsGrid = <DataGrid
+        columnVisibilityModel={{
+          // Hide columns status and traderName, the other columns will remain visible
+          id: false,
+
+        }}
         checkboxSelection
         rows={SupAdminDonations}
         columns={columns}

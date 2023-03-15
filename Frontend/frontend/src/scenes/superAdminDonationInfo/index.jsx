@@ -32,23 +32,39 @@ import { useGetDonationsFromSingle_SADonationQuery } from '../../app/redux-featu
 const SuperAdminDonationInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [sa_donation, setSA_Donation] = useState([])
+  // const [adminDonations, setAdminDonations] = useState([])
 
   // This is the id of the SuperAdmin donation
   let { id } = useParams();
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "madeby", headerName: "Made By", flex: 0.5 },
+    { field: "index", headerName: "Num" },
+
+    { field: "amount", headerName: "Amount", flex: 0.5 },
+
+
     {
-      field: "givenby",
-      headerName: "Given To",
+      field: "campaign_name",
+      headerName: "Campaign Name",
       flex: 0.5,
       cellClassName: "name-column--cell",
     },
     {
-      field: "amountused",
-      headerName: "Amount Allocated",
+      field: "campaign_loc",
+      headerName: "Campaign Location",
+      flex: 0.5,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "campaign_required",
+      headerName: "Required Total",
+      flex: 0.5,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "createdAt",
+      headerName: "Donated On",
       headerAlign: "left",
       align: "left",
       flex: 0.5
@@ -71,11 +87,50 @@ const SuperAdminDonationInfo = () => {
   console.log("Single Donation retrieved is: ", singleDonation)
 
 
+
   // Time to get all the Admin Donations where the Admin spent money using this donation
   // The hook takes the `id` of the SuperAdmin Donation
-  const { } = useGetDonationsFromSingle_SADonationQuery(id)
+  let {
+    data: adminDons,
+    error: admindons_Error,
+    isError: admindon_IsError,
+    isSuccess: admindons_IsSuccess,
+    isLoading: admindons_IsLoading
+  } = useGetDonationsFromSingle_SADonationQuery(id)
+
+  let AdminDonsDataGrid = <></>
 
 
+  // useEffect(() => {
+
+  if (admindons_IsLoading) {
+    AdminDonsDataGrid = <>Loading Data 🥗🥡</>
+  }
+
+  else if (admindons_IsSuccess) {
+    adminDons = adminDons.map((don, ind) => ({ ...don, id: don._id, index: ind + 1 }))
+
+
+    console.log("Admin donations made from this SuperAdmin Donation are: ", adminDons)
+
+
+
+    AdminDonsDataGrid = <DataGrid
+      columnVisibilityModel={{
+        id: false,
+      }}
+      checkboxSelection
+      rows={adminDons}
+      columns={columns}
+      components={{ Toolbar: GridToolbar }}
+    />
+  }
+
+  else if (admindon_IsError) {
+    console.log("Error getting Admin donations data: ", admindons_Error.message)
+    AdminDonsDataGrid = <>Error🥗🥡: {admindons_Error.message} </>
+  }
+  // }, [adminDons])
 
 
   return (<Box m="20px">
@@ -184,11 +239,11 @@ const SuperAdminDonationInfo = () => {
       */}
     </Box>
     <Box mt="5rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donation Flow</Typography>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Admin Donations from this Super Donations</Typography>
     </Box>
     <Box
       m="40px 0 0 0"
-      height="40vh"
+      height="75vh"
       sx={{
         "& .MuiDataGrid-root": {
           border: "none",
@@ -218,12 +273,8 @@ const SuperAdminDonationInfo = () => {
         },
       }}
     >
-      <DataGrid
-        checkboxSelection
-        rows={mockDataDonationInfo}
-        columns={columns}
-        components={{ Toolbar: GridToolbar }}
-      />
+      {AdminDonsDataGrid}
+
     </Box>
   </Box>)
 }
