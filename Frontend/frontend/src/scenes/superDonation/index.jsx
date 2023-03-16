@@ -1,4 +1,4 @@
-import { Box, Button, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
+import { Box, Button, TextField, useTheme, Alert, Checkbox, FormControlLabel, InputAdornment, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -38,6 +38,9 @@ const SuperDonation = () => {
 
   //Code for the OnCLick POPUP
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [open, setOpen] = useState(false)
+
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -132,17 +135,25 @@ const SuperDonation = () => {
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values, {resetForm}) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
 
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
 
     //To show the popup component.
-    openModal()
+    setOpen(true);
 
     //To reset the forms values after submit.
     resetForm()
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
 
@@ -294,7 +305,11 @@ const SuperDonation = () => {
           </form>
         )}
       </Formik>
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Given To Admin!"/>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Donation Given To Admin Successfully!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

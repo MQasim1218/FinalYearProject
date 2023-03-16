@@ -34,6 +34,30 @@ export const mockDataDonationInfo2 = [
   },
 ];
 
+export const mockDataDonationInfo3 = [
+  {
+    id: 1,
+    date: "22-Feb-2023",
+    recievedfrom: "Aown Raza",
+    madeby: "Admin 1",
+    amountused: "$60",
+  },
+  {
+    id: 2,
+    date: "24-Feb-2023",
+    recievedfrom: "Qasim",
+    madeby: "Admin 2",
+    amountused: "$600",
+  },
+  {
+    id: 3,
+    date: "26-Feb-2023",
+    recievedfrom: "ABC",
+    madeby: "Admin 3",
+    amountused: "$600",
+  },
+];
+
 export const mockDonationRequests = [
   {
     id: 1,

@@ -23,6 +23,7 @@ import SearchIcon from '@mui/icons-material/SearchOutlined';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useNavigate } from 'react-router-dom';
 
 const locationsData = [
     'Islamabad',
@@ -66,15 +67,18 @@ const Campaign = ({
 
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
+    const navigate = useNavigate()
 
     //defining the see more button for each campaign
     const [isExpanded, setIsExpanded] = useState(false)
     return (
         <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem", }}>
             <CardContent>
+            <Button onClick={() => navigate(`/campaigninfo/${id}`)}>
                 <Typography variant='h3' color={colors.grey[100]} gutterBottom>
                     {campaign_title}
                 </Typography>
+                </Button>
                 <Typography variant='h4' color={colors.blueAccent[400]}>
                     {category}
                 </Typography>
@@ -134,7 +138,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
     //dummy data
-    // const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
+    const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
     //restrict for smaller screens
     const isNonMobile = useMediaQuery("(min-width: 1000px)")
 

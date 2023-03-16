@@ -133,7 +133,6 @@ const SuperSidebar = () => {
                         <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Analytics</Typography>
                         <Item title="Graphs" to="/graphs" icon={<BarChartOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                         <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon/>} selected={selected} setSelected={setSelected} />
-                        <Item title="Reports" to="/superreports" icon={<SummarizeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
                     </Box>
 
 

@@ -102,7 +102,7 @@ function App(props) {
                     <Route path="/geographymap" element={<GeographyMap />} />
                     <Route path="/donationreports" element={<DonationReports />} />
                     <Route path="/expenditurereports" element={<ExpenditureReports />} />
-                    <Route path="*"
+                    <Route path="*" element={<DonorDashboard/>}
                       
                     />
                   </>
@@ -114,6 +114,8 @@ function App(props) {
                     <Route path="/donations" element={<Donations />} />
                     <Route path="/recent" element={<Recent />} />
                     <Route path="/createCampaign" element={<CreateCampaign />} />
+                    <Route path="/campaignInfo" element={<CampaignInfo />} />
+                    <Route path="/campaignInfo/:id" element={<CampaignInfo />} />
                     <Route path="/viewcampaign" element={<AllCampaigns />} />
                     <Route path="/graphs" element={<Graphs />} />
                     <Route path="/geography" element={<GeographyMap />} />
@@ -144,9 +146,10 @@ function App(props) {
                     <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
                     <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
                     <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+                    <Route path="/campaignInfo" element={<CampaignInfo />} />
+                    <Route path="/campaignInfo/:id" element={<CampaignInfo />} />
 
-
-                    <Route path="*"
+                    <Route path="*" 
                       
                     />
                   </>
