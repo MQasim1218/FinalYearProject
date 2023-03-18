@@ -54,7 +54,7 @@ function App(props) {
   const location = useLocation()
   let loggedUserType = useContext(AccountTypeContext)
 
-  useEffect(() => { setAccountType(loggedUserType) }, [accountType])
+  useEffect(() => { setAccountType(loggedUserType) }, [accountType, loggedUserType])
   //const { user } = useAuthContext();
 
   const user = 'donor'
@@ -91,119 +91,117 @@ function App(props) {
         {/*CssBaseline resets the css to default on colorchange*/}
         <CssBaseline />
         {/* {user && ( */}
-        <AccountTypeContext.Provider value={accountType}>
-          <div className="app">
-            {accountType && <Sidebars />}
-            <main className="content">
-              <Topbar />
-              <Routes>
-                {/* {accountType === "donor" ? (
+        <div className="app">
+          {accountType && <Sidebars />}
+          <main className="content">
+            <Topbar />
+            <Routes>
+              {/* {accountType === "donor" ? (
                     <> */}
-                <Route path="/donordashboard" element={<DonorDashboard />} />
-                <Route path="/viewdonations" element={<ViewDonations />} />
-                <Route path="/viewcampaigns" element={<AllCampaigns />} />
+              <Route path="/donordashboard" element={<DonorDashboard />} />
+              <Route path="/viewdonations" element={<ViewDonations />} />
+              <Route path="/viewcampaigns" element={<AllCampaigns />} />
 
-                {/* FIXME: */}
-                {/* WHY are there 2 UserAnalytics routes.. Both Leading to the same page? */}
-                {/* WHY should the donor be able to see user analytics other than themselves */}
-                <Route path="/useranalytics" element={<DonorInfo />} />
-                <Route path="/areaanalytics" element={<AreaAnalytics />} />
-                <Route path="/timeanalytics" element={<TimeAnalytics />} />
-                <Route path="/geographymap" element={<GeographyMap />} />
-                <Route path="/donationreports" element={<DonationReports />} />
-                <Route path="/expenditurereports" element={<ExpenditureReports />} />
-                <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
+              {/* FIXME: */}
+              {/* WHY are there 2 UserAnalytics routes.. Both Leading to the same page? */}
+              {/* WHY should the donor be able to see user analytics other than themselves */}
+              <Route path="/useranalytics" element={<DonorInfo />} />
+              <Route path="/areaanalytics" element={<AreaAnalytics />} />
+              <Route path="/timeanalytics" element={<TimeAnalytics />} />
+              <Route path="/geographymap" element={<GeographyMap />} />
+              <Route path="/donationreports" element={<DonationReports />} />
+              <Route path="/expenditurereports" element={<ExpenditureReports />} />
+              <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
 
-                {/* <Route path="*" /> */}
-                {/* </>
+              {/* <Route path="*" /> */}
+              {/* </>
                   ) : accountType === "admin" ? (
                     <> */}
-                <Route path="/admindashboard" element={<Dashboard />} />
+              <Route path="/admindashboard" element={<Dashboard />} />
 
 
-                {
-                  /* 
-                    Only get the donations made to campaigns 
-                    initiated by the Admin.. 
-                    Dont need all the campaign dinations 
-                  */
-                }
-                <Route path="/incoming-donations" element={<SuperAdminDonations single_admin={true} />} />
+              {
+                /* 
+                  Only get the donations made to campaigns 
+                  initiated by the Admin.. 
+                  Dont need all the campaign dinations 
+                */
+              }
+              <Route path="/incoming-donations" element={<SuperAdminDonations single_admin={true} />} />
 
-                {
-                  /* 
-                    Only get the donations made to campaigns 
-                    initiated by the Admin.. 
-                    Dont need all the campaign dinations 
-                  */
-                }
-                <Route path="/outgoing-donations" element={<AdminDonations single_admin={true} />} />
-
-
-                {/* Dont need this route.. Its already handled */}
-                {/* <Route path="/recent" element={<Recent />} /> */}
+              {
+                /* 
+                  Only get the donations made to campaigns 
+                  initiated by the Admin.. 
+                  Dont need all the campaign dinations 
+                */
+              }
+              <Route path="/outgoing-donations" element={<AdminDonations single_admin={true} />} />
 
 
-                {
-                  /*
-                    This needs serious makeovers!!
-                      1. Need to make it so that it is campaign specific..
-                      2. In-corporate multi-page form for collecting different information.
-                      3. Custom forms for many different doation catagories.
-                  */
-                }
-                <Route path="/donors" element={<Donors />} />
-                <Route path="/createCampaign" element={<CreateCampaign />} />
-
-                {/* Will look into this later-onn!! */}
-                <Route path="/viewcampaign" element={<AllCampaigns />} />
+              {/* Dont need this route.. Its already handled */}
+              {/* <Route path="/recent" element={<Recent />} /> */}
 
 
-                <Route path="/graphs" element={<Graphs />} />
-                <Route path="/geography" element={<GeographyMap />} />
-                <Route path="/adminanalytics" element={<AdminAnalytics />} />
-                <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
-                <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
-                <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+              {
+                /*
+                  This needs serious makeovers!!
+                    1. Need to make it so that it is campaign specific..
+                    2. In-corporate multi-page form for collecting different information.
+                    3. Custom forms for many different doation catagories.
+                */
+              }
+              <Route path="/donors" element={<Donors />} />
+              <Route path="/createCampaign" element={<CreateCampaign />} />
 
-                {/* <Route path="*" /> */}
-                {/* </>
+              {/* Will look into this later-onn!! */}
+              <Route path="/viewcampaign" element={<AllCampaigns />} />
+
+
+              <Route path="/graphs" element={<Graphs />} />
+              <Route path="/geography" element={<GeographyMap />} />
+              <Route path="/adminanalytics" element={<AdminAnalytics />} />
+              <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
+              <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
+              <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+
+              {/* <Route path="*" /> */}
+              {/* </>
                   ) : accountType === "superadmin" ? (
                     <> */}
-                <Route path="/superadmindashboard" element={<SuperAdminDashboard />} />
-                <Route path="/viewcampaign" element={<AllCampaigns />} />
-                <Route path="/admins" element={<Admins />} />
-                <Route path="/donors" element={<Donors />} />
-                <Route path="/donordonations" element={<DonorDonations />} />
-                <Route path="/admindonations" element={<AdminDonations />} />
-                <Route path="/superadmindonations" element={<SuperAdminDonations />} />
-                <Route path="/categorydonations" element={<CategoryDonations />} />
-                <Route path="/registerdonation" element={<DonationRegistration />} />
-                <Route path="/superdonation" element={<SuperDonation />} />
-                <Route path="/graphs" element={<Graphs />} />
-                <Route path="/geography" element={<GeographyMap />} />
-                <Route path="/superreports" element={<SuperReports />} />
-                <Route path="/adminanalytics/:id" element={<AdminAnalytics />} />
-                <Route path="/donorinfo/:id" element={<DonorInfo />} />
-                <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
-                <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
-                <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
-                <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
+              <Route path="/superadmindashboard" element={<SuperAdminDashboard />} />
+              <Route path="/viewcampaign" element={<AllCampaigns />} />
+              <Route path="/admins" element={<Admins />} />
+              <Route path="/donors" element={<Donors />} />
+              <Route path="/donordonations" element={<DonorDonations />} />
+              <Route path="/admindonations" element={<AdminDonations />} />
+              <Route path="/superadmindonations" element={<SuperAdminDonations />} />
+              <Route path="/categorydonations" element={<CategoryDonations />} />
+              <Route path="/registerdonation" element={<DonationRegistration />} />
+              <Route path="/superdonation" element={<SuperDonation />} />
+              <Route path="/graphs" element={<Graphs />} />
+              <Route path="/geography" element={<GeographyMap />} />
+              <Route path="/superreports" element={<SuperReports />} />
+              <Route path="/adminanalytics/:id" element={<AdminAnalytics />} />
+              <Route path="/donorinfo/:id" element={<DonorInfo />} />
+              <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
+              <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
+              <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+              <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
 
-                {/* <Route path="*" /> */}
-                {/* </>
+              {/* <Route path="*" /> */}
+              {/* </>
                   ) : (
                     <> */}
-                <Route path="/" element={<Login handleAccountTypeChange={handleAccountTypeChange} />} />
-                <Route path="/register" element={<Register />} />
-                {/* <Route path="*" /> */}
-                {/* </> */}
-                {/* ) */}
-                {/* } */}
-              </Routes>
-            </main>
-          </div>
-        </AccountTypeContext.Provider>
+              <Route path="/" element={<Login handleAccountTypeChange={handleAccountTypeChange} />} />
+              <Route path="/register" element={<Register />} />
+              {/* <Route path="*" /> */}
+              {/* </> */}
+              {/* ) */}
+              {/* } */}
+            </Routes>
+          </main>
+        </div>
         {/* // )} */}
         {/* {!user && (
           <main className="content">

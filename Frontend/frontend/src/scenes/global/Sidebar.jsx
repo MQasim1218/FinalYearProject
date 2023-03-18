@@ -19,10 +19,11 @@ import ViewCozyOutlinedIcon from '@mui/icons-material/ViewCozyOutlined';
 import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined'
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 
 
-const Item = ({title, to, icon, selected, setSelected}) => {
+const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
     // Creating a template using react-pro-side for menu items, so we dont have to do it again and again
@@ -39,6 +40,8 @@ const Sidebar = () => {
     const colors = tokens(theme.palette.mode)
     const [isCollapsed, setIsCollapsed] = useState(false)
     const [selected, setSelected] = useState("Dashboard")
+
+    let { user } = useAuthContext()
     return (
 
         <Box
@@ -68,7 +71,7 @@ const Sidebar = () => {
                             {!isCollapsed && (
                                 <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
                                     <Typography variant="h3" color={colors.grey[100]} >
-                                        ADMIN
+                                        {user?.user?.name}
                                     </Typography>
                                     <IconButton onClick={() => setIsCollapsed(!isCollapsed)} >
                                         <MenuOutlinedIcon />

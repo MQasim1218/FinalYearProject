@@ -23,6 +23,7 @@ import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
 import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
+import { useAdminCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 
 
 /**
@@ -301,6 +302,59 @@ const Dashboard = () => {
   }
   else if (isDonationsError) DonationsList = <h3>{`Error: ${donationsError.message}`}</h3>
 
+  let a = []
+
+
+  // ! Recent Donations
+  let {
+    data: campaigns,
+    isLoading: isCampaignsLoading,
+    error: campaignsError,
+    isError: isCampaignsError,
+    isSuccess: isCampaignsSuccess
+  } = useAdminCampaignsQuery(user?.user?._id)
+
+  let AdminCampaigns = <></>
+  if (isCampaignsLoading) AdminCampaigns = <h3>Loading Content... 🍜🍷</h3>
+  else if (isCampaignsSuccess) {
+    console.log("Admin Campaigns", campaigns)
+    AdminCampaigns = (
+      campaigns.map((transaction, i) => (
+        <Box
+          key={`${transaction._id}`}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`4px solid ${colors.primary[500]}`}
+          p="15px"
+        >
+
+          <Box>
+            <Typography
+              color={colors.greenAccent[500]}
+              variant="h5"
+              fontWeight="600"
+            >
+              {transaction._id.slice(0, 8)}
+            </Typography>
+            <Typography color={colors.grey[100]}>
+              {transaction.donor.name}
+            </Typography>
+          </Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          <Box
+            backgroundColor={colors.greenAccent[500]}
+            p="5px 10px"
+            borderRadius="4px"
+            color={colors.grey[900]}
+          >
+            ${transaction.amount}
+          </Box>
+        </Box>
+      ))
+    )
+  }
+  else if (isCampaignsError) AdminCampaigns = <h3>{`Error: ${campaignsError.message}`}</h3>
 
   return (
     <Box m="20px">
@@ -380,10 +434,10 @@ const Dashboard = () => {
           borderRadius="10px"
         >
           <StatBox
-            title="10"
-            subtitle="Active Campaigns"
+            title={campaigns?.filter((camp) => (!camp.completed))?.length}
+            subtitle="Active Admin Campaigns"
             progress={false}
-            increase="+43% This Month dyn"
+            // increase="+43% This Month dyn"
             icon={
               <CampaignOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -469,7 +523,7 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Donations
+              Recent Donations Reveived from Super Admin
             </Typography>
           </Box>
           {DonationsList}

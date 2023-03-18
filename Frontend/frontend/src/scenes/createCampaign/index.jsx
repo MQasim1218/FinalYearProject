@@ -11,6 +11,7 @@ import AlertModal from "../../components/AlertModal";
 import { useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
 // import axios from "axios"
 
 //initializing all inputs with their keys
@@ -36,15 +37,15 @@ const campaignSchema = yup.object().shape({
 
 const CreateCampaign = () => {
 
-//Code for the OnCLick POPUP
-const [modalIsOpen, setModalIsOpen] = useState(false);
-const openModal = () => {
-  setModalIsOpen(true);
-};
+  //Code for the OnCLick POPUP
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
 
-const closeModal = () => {
-  setModalIsOpen(false);
-};
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   //Options for location entry
   // TODO: This needs tobe made dynamic and linked to Google Maps
@@ -89,30 +90,30 @@ const closeModal = () => {
   ];
 
 
-
+  let { user } = useAuthContext()
 
   //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values, {resetForm}) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
 
     // ! We are using a hard coded value for the LoggedIn Admin.
 
-    let { user } = UserContext()
 
-    let camp = await axios.post(`http://localhost:5000/admin/637e3efa875994b2bc99e2b9/addGeneralCampaign`, values)
+
+    let camp = await axios.post(`http://localhost:5000/admin/${user?.user?._id}/addGeneralCampaign`, values)
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
 
     console.log("camp created: ", camp)
-     //To show the popup component.
-     openModal()
+    //To show the popup component.
+    openModal()
 
-     //To reset the forms values after submit.
-     resetForm()
+    //To reset the forms values after submit.
+    resetForm()
   };
 
 
@@ -121,7 +122,7 @@ const closeModal = () => {
 
   return (
     <Box m="20px">
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Given To Admin!"/>
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Given To Admin!" />
       <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign" />
 
       <Formik
