@@ -12,7 +12,11 @@ const useLogin = () => {
         setLoadn(false)
         setError(null)
         console.log("Email: ", email)
-        const res = await axios.post(`http://localhost:5000/${userType}/login`, { email, password })
+        const res = await axios.post(
+            `http://localhost:5000/${userType}/login`,
+            { email, password }
+        )
+
         if (res.status < 400) {
 
             console.log("first")
@@ -21,7 +25,7 @@ const useLogin = () => {
             // console.log('printing user before login:', user)
             // Add the user to the localstorage
             localStorage.setItem("user", JSON.stringify(user))
-
+            localStorage.setItem("userType", JSON.stringify(userType))
             dispatch(
                 {
                     type: 'LOGIN',

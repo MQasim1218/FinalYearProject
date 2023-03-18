@@ -44,6 +44,7 @@ const adminSchema = mongoose.Schema({
         // required: true,
         trim: true,
     }, // required
+    
     location: {
         type: {
             type: String,

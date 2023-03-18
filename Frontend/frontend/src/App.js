@@ -31,11 +31,11 @@ import DonorDonations from "./scenes/donations/donorDonations"
 import AdminDonations from "./scenes/donations/adminDonations"
 import SuperAdminDonations from "./scenes/donations/superAdminDonations"
 import CategoryDonations from "./scenes/donations/categoryDonations"
-import AccountTypeContext from './accountTypeContext';
+import { AccountTypeContext, LoggedUserTypeProvider } from './accountTypeContext';
 import { useAuthContext } from './hooks/useAuthContext';
 import DonationRegistration from './scenes/donationRegisteration';
 import Sidebars from './scenes/global/Sidebars';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import SuperAdminDashboard from './scenes/superAdminDashboard';
 
 import DonorDonationInfo from './scenes/donorDonationInfo';
@@ -52,6 +52,9 @@ function App(props) {
   const [accountType, setAccountType] = useState('');
   const [theme, colorMode] = useMode()
   const location = useLocation()
+  let loggedUserType = useContext(AccountTypeContext)
+
+  useEffect(() => { setAccountType(loggedUserType) }, [accountType])
   //const { user } = useAuthContext();
 
   const user = 'donor'
@@ -90,7 +93,7 @@ function App(props) {
         {/* {user && ( */}
         <AccountTypeContext.Provider value={accountType}>
           <div className="app">
-            <Sidebars />
+            {accountType && <Sidebars />}
             <main className="content">
               <Topbar />
               <Routes>

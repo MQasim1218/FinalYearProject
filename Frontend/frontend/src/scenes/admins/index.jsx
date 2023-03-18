@@ -63,8 +63,12 @@ const Admins = () => {
       type: 'actions',
       headerName: "View",
       width: 100,
+
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/adminanalytics/${row.id}`)}  />,
+        <GridActionsCellItem
+          icon={<VisibilityOutlinedIcon />}
+          label="View"
+          onClick={() => navigate(`/adminanalytics/${row.id}`)} />,
       ],
     },
     {
@@ -126,10 +130,12 @@ const Admins = () => {
     isSuccess: adminsIsSuccess,
     isLoading: adminsIsLoading,
   } = useAllAdminsQuery()
+
+
   let AdminsStatBox = <></>, AdminsDataGrid = <></>, DonsToAdminsStatBox = <></>
 
   if (adminsIsLoading) {
-    AdminsStatBox = <h3>Loading Content</h3>
+    AdminsStatBox = <h3>Loading Content 🧇🧇🍖</h3>
   }
   else if (adminsIsSuccess) {
     let x = []

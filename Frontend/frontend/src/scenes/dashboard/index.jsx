@@ -20,7 +20,9 @@ import { useState, useEffect } from "react";
 // Import Redux Hooks for ...
 import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
 import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
-import { useAllDonorsDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice'
+import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 
 
 /**
@@ -155,8 +157,23 @@ const Dashboard = () => {
 
 
   // ! Admins StatBox
-  let { data: admins, isLoading: adminsIsLoading, error: adminsError, isError: isAdminsError, isSuccess: adminsIsSuccess } = useAllAdminsQuery()
+
+  /**
+   * We are getting the All Admins Data
+   */
+
+  const { user } = useAuthContext()
+
+  let {
+    data: admins,
+    isLoading: adminsIsLoading,
+    error: adminsError,
+    isError: isAdminsError,
+    isSuccess: adminsIsSuccess
+  } = useAllAdminsQuery()
+
   let AdminsStatBox = null
+
   if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
   else if (adminsIsSuccess) AdminsStatBox = (
     <StatBox
@@ -164,7 +181,7 @@ const Dashboard = () => {
       title={admins.length}
       subtitle="Active Admins"
       progress={false}
-      increase="+14% This Month dyn"
+      // increase="+14% This Month dyn"
       icon={
         <AttachMoneyOutlinedIcon
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -176,16 +193,24 @@ const Dashboard = () => {
 
 
   // ! Donors StatBox
-  let { data: donors, isLoading: isDonorsLoading, error: donorsError, isError: isDonorsError, isSuccess: isDonorsSuccess } = useAllDonorsQuery()
+  let {
+    data: donors,
+    isLoading: isDonorsLoading,
+    error: donorsError,
+    isError: isDonorsError,
+    isSuccess: isDonorsSuccess
+  } = useAllDonorsQuery()
+
+
   let DonorsStatBox = null
   if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
   else if (isDonorsSuccess) DonorsStatBox = (
     <StatBox
       // title={ }
       title={donors.length}
-      subtitle="Active Admins"
+      subtitle="Active Donors"
       progress={false}
-      increase="+14% This Month dyn"
+      // increase="+14% This Month dyn"
       icon={
         <AttachMoneyOutlinedIcon
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -196,8 +221,16 @@ const Dashboard = () => {
   else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
   // ! Benificiaries StatBox
-  let { data: benifs, isLoading: isBenifsLoading, error: benifsError, isError: isBenifError, isSuccess: isBenifsSuccess } = useAllDonorsQuery()
-  let BenifsStatBox = null
+  let {
+    data: benifs,
+    isLoading: isBenifsLoading,
+    error: benifsError,
+    isError: isBenifError,
+    isSuccess: isBenifsSuccess
+  } = useAllBenifsQuery()
+
+
+  let BenifsStatBox = <></>
   if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
   else if (isBenifsSuccess) BenifsStatBox = (
     <StatBox
@@ -205,7 +238,7 @@ const Dashboard = () => {
       title={benifs.length}
       subtitle="Active Benificaries"
       progress={false}
-      increase="+14% This Month dyn"
+      // increase="+14% This Month dyn"
       icon={
         <AttachMoneyOutlinedIcon
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -217,13 +250,21 @@ const Dashboard = () => {
 
 
   // ! Recent Donations
-  let { data: donations, isLoading: isDonationsLoading, error: donationsError, isError: isDonationsError, isSuccess: isDonationsSuccess } = useAllDonorsDonationsQuery()
+  let {
+    data: sa_donations,
+    isLoading: isDonationsLoading,
+    error: donationsError,
+    isError: isDonationsError,
+    isSuccess: isDonationsSuccess
+  } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
+
+
   let DonationsList = <></>
   if (isDonationsLoading) DonationsList = <h3>Loading Content</h3>
   else if (isDonationsSuccess) {
-    console.log("Donations", donations)
+    console.log("Donations", sa_donations)
     DonationsList = (
-      donations.map((transaction, i) => (
+      sa_donations.map((transaction, i) => (
         <Box
           key={`${transaction._id}`}
           display="flex"
@@ -431,7 +472,6 @@ const Dashboard = () => {
               Recent Donations
             </Typography>
           </Box>
-          {/* FIXME: To make Dynamic Just asap */}
           {DonationsList}
         </Box>
 

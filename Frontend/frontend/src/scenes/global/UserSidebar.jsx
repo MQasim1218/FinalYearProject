@@ -92,8 +92,7 @@ const UserSidebar = () => {
                                     ml="15px"
                                 >
                                     <Typography variant="h3" color={colors.grey[100]}>
-                                        {/* {user.user.user.user.name} */}
-                                        DONOR
+                                        {user?.user?.name}
                                     </Typography>
                                     <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                                         <MenuOutlinedIcon />

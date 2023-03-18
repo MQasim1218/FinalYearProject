@@ -6,6 +6,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const adminApi = createApi({
     reducerPath: 'Admin',
+
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin`,
         // prepareHeaders: (headers, { getState }) => {
@@ -17,6 +18,8 @@ export const adminApi = createApi({
         //     console.log(process.env.REACT_APP_BACKEND_BASE_ROUTE)
         // }
     }),
+
+
     tagTypes: ['Admin', 'Admins'],
 
 
@@ -24,10 +27,8 @@ export const adminApi = createApi({
 
         // 👨‍👨‍👦 Fetch all Admins 📷
         allAdmins: builder.query({
-            query: () => {
-                console.log(`Admin route: ${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin`)
-                return `/`
-            },
+            query: () => `/`,
+
             providesTags: ['Admins']
         }),
 

@@ -67,7 +67,7 @@ const donorSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'general_campaign'
     }],
-
+    tota_don_amount: {},
 
     account_details: { type: accDetailsSchema },
 

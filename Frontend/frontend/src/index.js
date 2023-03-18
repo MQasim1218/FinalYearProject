@@ -8,16 +8,19 @@ import { BrowserRouter } from "react-router-dom"
 import { LoggedUserProvider } from './context/UserContext';
 import { Provider } from 'react-redux';
 import store from './app/store'
+import { LoggedUserTypeProvider } from './accountTypeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <LoggedUserProvider>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+      <LoggedUserTypeProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Provider>
+      </LoggedUserTypeProvider>
     </LoggedUserProvider>
   </React.StrictMode>
 );

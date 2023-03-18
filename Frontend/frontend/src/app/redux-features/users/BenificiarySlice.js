@@ -18,8 +18,8 @@ export const benificiaryApi = createApi({
         // 👨‍👨‍👦 Fetch all Benificiaries 📷
         allBenifs: builder.query({
             query: () => {
-                console.log(`Ben Route: ${process.env.BACKEND_BASE_ROUTE}/benificiary`)
-                console.log('Fetching all the benificiaries data!')
+                // console.log(`Ben Route: ${process.env.REACT_APP_BACKEND_BASE_ROUTE}/benificiary`)
+                // console.log('Fetching all the benificiaries data!')
                 return `/`
             },
             providesTags: ['Benificiaries']

@@ -12,7 +12,7 @@ import UserLineChart from '../../components/UserLineChart';
 import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useParams } from "react-router-dom";
-import AccountTypeContext from '../../accountTypeContext';
+import { AccountTypeContext } from '../../accountTypeContext';
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
 import { useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';

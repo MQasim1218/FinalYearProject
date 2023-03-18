@@ -3,10 +3,12 @@ import React from 'react'
 import Sidebar from './Sidebar';
 import SuperSidebar from './SuperSidebar';
 import UserSidebar from './UserSidebar';
-import AccountTypeContext from '../../accountTypeContext';
+import { AccountTypeContext } from '../../accountTypeContext';
 
 function getSidebar(accountType) {
-    console.log(accountType)
+    console.log("Account type is: ", accountType?.userType)
+
+
     switch (accountType) {
         case 'donor':
             return UserSidebar
