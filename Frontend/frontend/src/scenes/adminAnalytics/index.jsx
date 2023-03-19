@@ -28,24 +28,31 @@ const AdminAnalytics = () => {
   let { id } = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [activeCampaigns, setActiveCamps] = useState([])
-  const [totDonations, setTotDon] = useState(0)
-  const [activeDonors, setActiveDonors] = useState([])
-  const [activeBenifs, setActiveBenifs] = useState([])
-  const [donations, setDonations] = useState([])
 
 
-  const { data: adminDons, isError: isAdminErr, isLoading: isAdminLoading, isSuccess: isAdminSuccess, error: AdminErr } = useSingleAdminDonationsQuery(id)
+
+  const {
+    data: adminDons,
+    isError: isAdminErr,
+    isLoading: isAdminLoading,
+    isSuccess: isAdminSuccess,
+    error: AdminErr
+  } = useSingleAdminDonationsQuery(id)
+
+
   const { data: admin } = useGetAdminQuery(id)
   let RecDonations = <></>
 
+  console.log("We are in this page!!!")
 
-  console.log("Donations by this Admin: ", adminDons)
-  console.log("Admin recieved is: ", admin)
 
   if (isAdminLoading) console.log("Donations content loading")
   if (isAdminSuccess) {
     // setDonations(adminDons)
+
+    console.log("Donations by this Admin: ", adminDons)
+    console.log("Admin recieved is: ", admin)
+
     RecDonations = (
       adminDons?.map((transaction, i) => (
         <Box
@@ -60,6 +67,7 @@ const AdminAnalytics = () => {
         >
           {/* {console.log(transaction)} */}
           <Box>
+
             <Typography
               color={colors.greenAccent[500]}
               variant="h5"
@@ -67,11 +75,13 @@ const AdminAnalytics = () => {
             >
               {transaction._id.slice(0, 8)}
             </Typography>
+
             <Typography color={colors.grey[100]}>
               {transaction.admin.name}
             </Typography>
+
           </Box>
-          <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
           <Box
             backgroundColor={colors.greenAccent[500]}
             p="5px 10px"
@@ -115,13 +125,12 @@ const AdminAnalytics = () => {
         >
           <UserBox
             name={admin?.name}
-            accounttype="Donor"
+            accounttype="Admin"
             picture={<PersonOutlineOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />}
             participated="5"
-            joindate="16-Oct-2019"
-            latestdonation="10-Dec-22"
+            joindate={admin?.createdAt.slice(0, 10)}
           />
         </Box>
         <Box
@@ -134,7 +143,7 @@ const AdminAnalytics = () => {
           <StatBox
             title="$500"
             subtitle="Highest One Time Donation"
-            increase="This Month: $190"
+            // increase="This Month: $190"
             icon={
               <AttachMoneyOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -142,6 +151,7 @@ const AdminAnalytics = () => {
             }
           />
         </Box>
+
         <Box
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
@@ -152,7 +162,7 @@ const AdminAnalytics = () => {
           <StatBox
             title="Account Tier"
             subtitle="Gold"
-            increase="Awarded by: ADMIN"
+            // increase="Awarded by: ADMIN"
             icon={
               <LocalPoliceOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -160,6 +170,7 @@ const AdminAnalytics = () => {
             }
           />
         </Box>
+
       </Box>
       <Box mt="2rem">
         <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>User Analyitcs</Typography>
@@ -186,7 +197,7 @@ const AdminAnalytics = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              All Donations
+              All Donations by the Admin
             </Typography>
           </Box>
           {RecDonations}

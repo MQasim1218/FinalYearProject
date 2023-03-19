@@ -5,7 +5,7 @@ const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
     try {
-        AdminModel.find({ _id: req.params.id })
+        AdminModel.findById(req.params.id)
             .exec(function (error, data) {
                 if (error) {
                     return next(error)
@@ -51,7 +51,7 @@ const AddNewAdmin = async (req, res, next) => {
 const SignInAdmin = async (req, res, next) => {
     try {
         let { user, token } = await AdminModel.login(req.body.email, req.body.password)
-        
+
         if (user) {
             console.log("Admin logged in: ", user)
             res.json({ user, token })

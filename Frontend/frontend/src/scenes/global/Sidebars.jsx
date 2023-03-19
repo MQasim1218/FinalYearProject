@@ -9,7 +9,7 @@ function getSidebar(accountType) {
     console.log("Account type is: ", accountType?.userType)
 
 
-    switch (accountType) {
+    switch (accountType?.userType) {
         case 'donor':
             return UserSidebar
         case 'admin':

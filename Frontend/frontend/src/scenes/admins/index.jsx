@@ -123,6 +123,8 @@ const Admins = () => {
   // }, [view])
 
   // ! Admins StatBox && Admins DataGrid
+
+
   let {
     data: admins,
     error: adminsError,
@@ -148,7 +150,7 @@ const Admins = () => {
         title={admins.length}
         subtitle="Active Admins"
         progress={false}
-        increase="+14% This Month dyn"
+        // increase="+14% This Month dyn"
         icon={
           <AttachMoneyOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
