@@ -6,6 +6,13 @@ import Header from "../../../components/Header";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import StatBox from "../../../components/StatBox";
+import { AttachMoneyOutlined } from "@mui/icons-material";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import { PersonOutline } from "@mui/icons-material";
+import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
+import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
+
 
 const AdminDonations = () => {
   const navigate = useNavigate();
@@ -74,6 +81,96 @@ const AdminDonations = () => {
       <Header
         title={view.toLocaleUpperCase() + " DONATIONS"} subtitle={"Manage " + view + " donations"}
       />
+
+      {/* Grids and Charts */}
+    <Box
+    display="grid"
+    gridTemplateColumns="repeat(12, 1fr)"
+    gridAutoRows="140px"
+    gap="20px">
+
+    {/* ROW 1 */}
+   
+    <Box
+      gridColumn="span 3"
+      backgroundColor={colors.primary[400]}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="10px"
+    >
+      <StatBox
+        title="55"
+        subtitle="Total Donations Made"
+        progress={false}
+        icon={
+          <AttachMoneyOutlined
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    </Box>
+    <Box
+      gridColumn="span 3"
+      backgroundColor={colors.primary[400]}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="10px"
+    >
+      <StatBox
+        title="18-Mar-23"
+        subtitle="Latest Donation"
+        progress={false}
+        icon={
+          <CalendarMonthOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    </Box>
+    <Box
+      gridColumn="span 3"
+      backgroundColor={colors.primary[400]}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="10px"
+    >
+      <StatBox
+        title="$8000"
+        subtitle="Highest Campaign Goal"
+        progress={false}
+        icon={
+          <CampaignOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    </Box>
+
+    <Box
+      gridColumn="span 3"
+      backgroundColor={colors.primary[400]}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="10px"
+    >
+      <StatBox
+        title="$5000"
+        subtitle="Highest Donation To Beneficiary"
+        progress={false}
+        icon={
+          <EmojiEventsOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+          />
+        }
+      />
+    </Box>
+    </Box>
+
+
       <Box
         m="40px 0 0 0"
         height="75vh"
