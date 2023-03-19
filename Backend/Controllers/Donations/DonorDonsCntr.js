@@ -209,6 +209,23 @@ const DonorAllDonations = async (req, res, next) => {
     }
 }
 
+const SingleDonation = async (req, res, next) => {
+    console.log("Got a requwst to fetch a single donation!!")
+    try {
+        // Get all the donations made by the Donors
+        let Donation = await DonorDons.findById(
+            req.params.id
+        ).populate('donor').exec()
+
+        console.log("Donor Donation is: ", Donation)
+
+        res.json(Donation)
+    } catch (error) {
+        console.log('error encountered while retrieving Single Donation by the Donor !\nError: ', error)
+        res.send(error)
+    }
+}
+
 // Get donations of a donor in a year!
 const DonorYearDonations = async (req, res, next) => {
     try {
@@ -289,5 +306,6 @@ module.exports = {
     GetDonations_Before,
     GetDonations_TimeRange,
     GetYearDonations,
-    GetMonthDonations
+    GetMonthDonations,
+    SingleDonation
 }

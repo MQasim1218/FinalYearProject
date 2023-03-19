@@ -7,11 +7,13 @@ import { useAllDonorsDonationsQuery } from "../../../app/redux-features/Donation
 import { flattenObj } from "../../../misc/ArrayFlatten";
 import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useRef } from "react";
 
 const DonorDonations = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  let ref = useRef(null)
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -66,7 +68,11 @@ const DonorDonations = () => {
         <GridActionsCellItem
           icon={<VisibilityOutlinedIcon />}
           label="View"
-          onClick={() => navigate(`/donordonationinfo/${row.id}`)}
+          onClick={() => {
+            navigate(
+              `/donordonationinfo/${row.id}`
+            )
+          }}
         />,
       ],
     },
@@ -86,6 +92,7 @@ const DonorDonations = () => {
       .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid
+      ref={ref}
       checkboxSelection
       rows={DonorDonations}
       columns={columns}

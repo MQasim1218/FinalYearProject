@@ -34,6 +34,11 @@ export const superadminDonationsApi = createApi({
             providesTags: (don_id) => [{ type: 'SuperAdminSingleDonation', id: don_id }]
         }),
 
+        allSA_DonsFromDonorDonation: builder.query({
+            query: (don_id) => `singleDonorDonation/${don_id}`,
+            providesTags: (don_id) => [{ type: 'SuperAdminSingleDonation', id: don_id }]
+        }),
+
 
         // ! Not sure if this functionality is supported! However, this can be helpful to correct bad entries!!
         // * Ideally, the SuperAdmin shouldnt be able to update Donation values once the donation has been made!!
@@ -107,4 +112,5 @@ export const {
     // STUB: All mutations down here!!
     useDonateToAdminMutation,
     useRegisterDonorDonationMutation,
+    useAllSA_DonsFromDonorDonationQuery
 } = superadminDonationsApi

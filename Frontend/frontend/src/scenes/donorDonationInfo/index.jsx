@@ -25,6 +25,9 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import { useParams } from "react-router-dom";
 import { mockDataDonationInfo } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
+import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
+import { useDonorSingleDonationsQuery, useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
+import { useAllSA_DonsFromDonorDonationQuery, useAllSuperAdminDonationsQuery } from '../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice';
 
 const DonorDonationInfo = () => {
   const theme = useTheme();
@@ -32,13 +35,14 @@ const DonorDonationInfo = () => {
   let { id } = useParams();
   const [donations, setDonations] = useState([])
 
+  let { user } = useAuthContext()
+
   //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   //const { user } = useAuthContext('aown')
 
   /**
    * Lazy fetch all the dynamic data needed for the dashboard.
    */
-
   //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
 
   // useEffect(() => {
@@ -131,6 +135,30 @@ const DonorDonationInfo = () => {
 
   //   // return (() => console.log("No clean up"))
   // }, [])
+  // const { isError, error, isLoading, isSuccess, data: Donations } = useSingleDonorsDonationQuery(id)
+
+  let { data: donor_donation, isSuccess: donationIsSuccess } = useDonorSingleDonationsQuery(id)
+  if (donationIsSuccess) {
+    console.log("Retrieved donor donation is: ", donor_donation)
+  }
+
+
+  // Get the SuperAdmin Donations where this donor donation went.
+  let { data: sa_dons, isSuccess: sa_donsIsSuccess } = useAllSA_DonsFromDonorDonationQuery(id)
+  if (sa_donsIsSuccess) {
+    console.log("Retrieved SuperAdmin donations are: ", sa_dons)
+    sa_dons = sa_dons?.map((don, ind) => ({ ...don, ind: ind, id: don._id }))
+  }
+
+  // let { data: donor, isSuccess: donIsSuccess } = useGetDonorQuery(donor_donation?.donor.id)
+  // if (donIsSuccess) {
+  //   console.log("Retrieved donor is: ", donor)
+  // }
+
+
+
+  // Get the single donor donation using the donationId provided!
+
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -187,14 +215,14 @@ const DonorDonationInfo = () => {
         justifyContent="center"
       >
         <UserBox
-          name="{user.user.user.name}"
+          name={`${donor_donation?.donor.name}`}
           accounttype="Donor"
           picture={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
           participated="5"
-          joindate="{user.user.user.createdAt.slice(0, 10)}"
-          latestdonation="10-Dec-22"
+          joindate={`${user?.user?.createdAt.slice(0, 10)}`}
+        // latestdonation="10-Dec-22"
         />
       </Box>
       <Box
@@ -205,9 +233,9 @@ const DonorDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="$100"
+          title={`${donor_donation?.amount}`}
           subtitle="Donation amount"
-          increase={"Donation ID: " + id}
+          // increase={"Donation ID: " + id}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -223,9 +251,9 @@ const DonorDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="20-Feb-2023"
+          title={donor_donation?.createdAt.slice(0, 10)}
           subtitle="Donation Date"
-          increase="Made through: SuperAdmin"
+          // increase="Made through: SuperAdmin"
           icon={
             <CalendarMonthOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -241,9 +269,9 @@ const DonorDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="22-Feb-2023"
-          subtitle="Date Donation Given To Admin"
-          increase="To: Admin1"
+          title={donor_donation?.catagory}
+          subtitle="Donation Category"
+          // increase="To: Admin1"
           icon={
             <CalendarMonthOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -287,12 +315,15 @@ const DonorDonationInfo = () => {
         },
       }}
     >
-      <DataGrid
-        checkboxSelection
-        rows={mockDataDonationInfo}
-        columns={columns}
-        components={{ Toolbar: GridToolbar }}
-      />
+      {
+        sa_donsIsSuccess &&
+        <DataGrid
+          checkboxSelection
+          rows={sa_dons}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+        />
+      }
     </Box>
   </Box>)
 }

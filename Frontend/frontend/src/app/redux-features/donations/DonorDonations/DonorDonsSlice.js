@@ -18,6 +18,14 @@ export const donorDonationsApi = allDonorDonationsApi.injectEndpoints({
             providesTags: [{ type: 'DonorDonations' }]
         }),
 
+        donorSingleDonations: builder.query({
+            query: (donationId, category) => ({
+                url: category == null ? `single/${donationId}` : `${donationId}/${category}`,
+                method: 'GET',
+            }),
+            providesTags: [{ type: 'DonorDonations' }]
+        }),
+
         singleDonorYearDonations: builder.query({
             query: (donorId, year, category) => ({
                 url: category == null ? `${donorId}/${year}` : `donor/${donorId}/${year}/${category}`,
@@ -43,15 +51,18 @@ export const donorDonationsApi = allDonorDonationsApi.injectEndpoints({
 
 export const {
 
-    // All Admins Queries
+    // All Donors Queries
     useAllDonorsDonationsQuery,
     useAllDonorsYearDonationsQuery,
     useAllDonorsMonthDonationsQuery,
 
-    // Single Admin Queries
+    // Single Donor Queries
     useSingleDonorDonationsQuery,
     useSingleDonorYearDonationsQuery,
     useSingleDonorMonthDonationsQuery,
+
+    // Single Donation
+    useDonorSingleDonationsQuery,
 
     // Top Level Actions
     useGetDonationQuery,

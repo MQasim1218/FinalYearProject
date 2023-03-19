@@ -25,6 +25,10 @@ const authorize = require('../../middleware/authorization')
  */
 
 // All the donation made by a donor.
+router.get('/single/:id', DonorDonationController.SingleDonation)
+
+
+// All the donation made by a donor.
 router.get('/donor/:donor_id/:category?', DonorDonationController.DonorAllDonations)
 
 // All donations in a year

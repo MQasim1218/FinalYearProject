@@ -35,13 +35,13 @@ const UserBox = ({ name, accounttype, picture, participated, latestdonation, joi
         >
           Date Joined: {joindate}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="h6"
           fontStyle="italic"
           sx={{ color: colors.grey[400] }}
         >
           Last Donation: {latestdonation}
-        </Typography>
+        </Typography> */}
       </Box>
 
 

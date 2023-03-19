@@ -54,6 +54,29 @@ const GetSingleDonation = async (req, res, next) => {
     }
 }
 
+const GetDonsForSingleDonorDonation = async (req, res, next) => {
+    console.log("Here to fetch SA Donations from a single Donor Dons")
+    try {
+        let don_id = req.params?.id
+
+        console.log("The donor donation Id recieved is: ", don_id)
+
+        if (don_id != null) {
+            let Don = await SuperAdminDons
+                .find({ donordonationId: don_id })
+                .populate("admin", adminFeilds)
+                .exec()
+            res.json(Don)
+        } else {
+
+            res.status(500).send("Cant fetch without ID!!")
+        }
+    } catch (error) {
+        console.log('error encountered while retreiving Single Super Admin donation!\nError: ', error)
+        res.send(error)
+    }
+}
+
 // Get all the Donations  for a particular year!!
 const GetYearDonations = async (req, res, next) => {
     try {
@@ -506,6 +529,9 @@ module.exports = {
     Donations_After_ToAdmin,
     Donations_Before_ToAdmin,
     Donations_TimeRange_ToAdmin,
+
+    // All donations from a single donor donation!!
+    GetDonsForSingleDonorDonation,
 
     // Send money to Admin
     RegisterDonorDonation,
