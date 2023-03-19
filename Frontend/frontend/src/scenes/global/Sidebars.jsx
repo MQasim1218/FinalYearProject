@@ -25,6 +25,8 @@ const Sidebars = () => {
 
     const accountType = useContext(AccountTypeContext)
 
+    console.log("")
+
     const SidebarComponent = getSidebar(accountType);
 
     return SidebarComponent ? <SidebarComponent /> : null;

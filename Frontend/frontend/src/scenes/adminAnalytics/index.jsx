@@ -141,7 +141,7 @@ const AdminAnalytics = () => {
           justifyContent="center"
         >
           <StatBox
-            title="$500"
+            title={"${}"}
             subtitle="Highest One Time Donation"
             // increase="This Month: $190"
             icon={
