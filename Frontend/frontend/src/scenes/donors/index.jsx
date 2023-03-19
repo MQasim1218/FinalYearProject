@@ -13,6 +13,9 @@ import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donatio
 import { activityData as data } from "../../data/mockData";
 import { Navigation } from "@mui/icons-material";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useSingleAdminDonationsQuery } from "../../app/redux-features/Donations/AdminDonations/AdminDonsSlice";
+import { useGetDonorsForSingleAdminQuery } from "../../app/redux-features/users/AdminSlice";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 
 const Donors = ({ single_admin }) => {
@@ -20,6 +23,8 @@ const Donors = ({ single_admin }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
+
+  let { user } = useAuthContext()
 
   let DonorsStatBox = <></>, DonorsDataGrid = <></>, DonsByDonorsStatBox = <></>
   let {
@@ -30,9 +35,34 @@ const Donors = ({ single_admin }) => {
     isSuccess: isDonorsSuccess
   } = useAllDonorsQuery()
 
+  let {
+    data: singleAdmin_donors,
+    isLoading: isSA_DonorsLoading,
+    error: saDonorsError,
+    isError: isSA_DonorsError,
+    isSuccess: isSA_DonorsSuccess
+  } = useGetDonorsForSingleAdminQuery(user?.user?._id)
+
 
   if (!single_admin) {
-    // The columns gets all the data we specify below from the mockdata file and store it
+
+
+    // Get all the donors that have donated to a perticular campaign.
+
+    /**
+     * Step 1: Get all the admin donations of this admin
+     * Step 2: Filter AdminDonations to get all the donorIds
+     * Step 3: Get all the donors from the donorIds
+     * Step 4: Send all the Donors..
+     * 
+     * This is all suited for the backend.. Only one query is enough.
+     */
+
+    // Get all Admin Donations
+
+
+
+
     const columns = [
       { field: "id", headerName: "ID" },
       {
@@ -87,63 +117,19 @@ const Donors = ({ single_admin }) => {
       },
     ];
 
-    // ! Data
-    // let [users, setUsers] = useState([])
-    // let [isLoading, setIsLoading] = useState(true)
-    // //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
-    // let [view, setView] = useState("donors")
-    // useEffect(() => {
-
-    //   console.log("Re run use Effect")
-    //   const fetchUsers = async () => {
-    //     try {
-    //       let res = null
-    //       //PLEASE USE THE CORRECT LABEL FOR DONORS IN THE DB IF "DONORS" IS WRONG
-    //       if (view === "donors") {
-    //         res = await axios.get("http://localhost:5000/donor/allDonors")
-    //         setIsLoading(false)
-    //       } else {
-    //         res = await axios.get("http://localhost:5000/benificiary")
-    //         setIsLoading(false)
-    //       }
-
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-    //   // console.log("kdfiodno")
-    //   fetchUsers().then((data) => {
-    //     console.log(data)
-    //     setIsLoading(false)
-    //     let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
-    //     setUsers(usrz)
-    //   })
-    //   return (() => {
-    //     console.log("Nothing for clean up")
-    //     setIsLoading(false)
-    //   })
-    // }, [view])
-
-    // ! Admins StatBox && Admins DataGrid
-
-
 
     if (isDonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
 
     else if (isDonorsSuccess) {
       // donors.forEach((donor) => { donor.id = donor._id })
+      console.log("donors recieved are: ", donors)
       donors = donors.map((donor) => ({ ...donor, id: donor._id }))
       DonorsStatBox = (
         <StatBox
           title={donors.length}
-          subtitle="Active Donors"
+          subtitle="Donors Donated"
           progress={false}
-          increase="+9% This Month dyn"
+          // increase="+9% This Month dyn"
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -151,10 +137,28 @@ const Donors = ({ single_admin }) => {
           }
         />
       )
+
+
+
+      DonsByDonorsStatBox = < StatBox
+        // ! title={donors?.reduce((prev, val) => prev + val.amount, 0)}
+        title={"10500"}
+        subtitle="Total Donations"
+        progress={false}
+        // increase={"+25% in " + currentYear}
+        icon={
+          < AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }
+            }
+          />
+        }
+      />
+
       DonorsDataGrid = < DataGrid checkboxSelection rows={donors} columns={columns} components={{ Toolbar: GridToolbar }} />
     }
     else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
   } else {
+
     const columns = [
       { field: "id", headerName: "ID" },
       {
@@ -208,6 +212,46 @@ const Donors = ({ single_admin }) => {
         ],
       },
     ];
+
+    if (isSA_DonorsLoading) DonorsStatBox = <h3>Loading Content</h3>
+
+    else if (isSA_DonorsSuccess) {
+
+      console.log(singleAdmin_donors)
+      singleAdmin_donors = singleAdmin_donors.map((donor, ind) => ({ ...donor, id: donor._id, ind: ind }))
+      DonorsStatBox = (
+        <StatBox
+          title={singleAdmin_donors?.length}
+          subtitle="Donors Donated"
+          progress={false}
+          // increase="+9% This Month dyn"
+          icon={
+            <AttachMoneyOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      )
+      DonorsDataGrid = <DataGrid
+        checkboxSelection
+        rows={singleAdmin_donors}
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
+      />
+      DonsByDonorsStatBox = < StatBox
+        // ! title={donors?.reduce((prev, val) => prev + val.amount, 0)}
+        title={"0"}
+        subtitle="Total Donations"
+        progress={false}
+        // increase={"+25% in " + currentYear}
+        icon={
+          < AttachMoneyOutlinedIcon
+            sx={{ color: colors.greenAccent[600], fontSize: "26px" }
+            }
+          />
+        }
+      />
+    } else if (isSA_DonorsError) DonorsStatBox = <h3>{`Error: ${saDonorsError.message}`}</h3>
   }
 
 
@@ -248,17 +292,7 @@ const Donors = ({ single_admin }) => {
           alignItems="center"
           justifyContent="center"
         >
-          {/* <StatBox
-            title="$10,500"
-            subtitle="Total Donations"
-            progress={false}
-            increase={"+25% in " + currentYear}
-            icon={
-              <AttachMoneyOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
+
           {DonsByDonorsStatBox}
         </Box>
 

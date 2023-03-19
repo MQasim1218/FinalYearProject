@@ -116,7 +116,12 @@ function LinearProgressWithLabel(props) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
-                <LinearProgress color="success" sx={{ backgroundColor: colors.primary[900], color }} variant="determinate" {...props} />
+                <LinearProgress
+                    color="success"
+                    sx={{ backgroundColor: colors.primary[900], color }}
+                    variant="determinate"
+                    {...props} /
+                >
             </Box>
             <Box sx={{ minWidth: 35 }}>
                 <Typography variant="body2" color="text.secondary">{`${Math.round(
@@ -378,24 +383,24 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                         Admin
                                     </Typography>
                                     <FormControl fullWidth variant='outlined'>
-                                <InputLabel id='admin-input-label'>Admin</InputLabel>
-                                <Select
-                                    id='admin-input'
-                                    label='Admin'
-                                    multiple
-                                    value={admins}
-                                    onChange={handleAdminChange}
-                                    renderValue={(selected) => selected.join(', ')}
-                                    labelId='admin-input-label'
-                                >
-                                    {adminsData.map((admin) => (
-                                        <MenuItem key={admin} value={admin}>
-                                            <Checkbox checked={admins.indexOf(admin) > -1} />
-                                            <ListItemText primary={admin} />
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                                        <InputLabel id='admin-input-label'>Admin</InputLabel>
+                                        <Select
+                                            id='admin-input'
+                                            label='Admin'
+                                            multiple
+                                            value={admins}
+                                            onChange={handleAdminChange}
+                                            renderValue={(selected) => selected.join(', ')}
+                                            labelId='admin-input-label'
+                                        >
+                                            {adminsData.map((admin) => (
+                                                <MenuItem key={admin} value={admin}>
+                                                    <Checkbox checked={admins.indexOf(admin) > -1} />
+                                                    <ListItemText primary={admin} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
                                 </FormControl>
                                 <Typography variant='h6' mt={2} color={colors.greenAccent[400]}>Status</Typography>
                                 <FormGroup>
@@ -414,9 +419,9 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                     ))}
                                 </FormGroup>
                                 <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                                <Button variant='contained' color='secondary' onClick={handleSubmit}>
-                                    Apply Filters
-                                </Button>
+                                    <Button variant='contained' color='secondary' onClick={handleSubmit}>
+                                        Apply Filters
+                                    </Button>
                                 </Box>
                             </Box>
                         </Collapse>

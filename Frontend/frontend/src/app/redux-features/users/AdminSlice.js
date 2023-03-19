@@ -48,6 +48,12 @@ export const adminApi = createApi({
             invalidatesTags: (id) => ['Admins', { type: 'Admin', id: id }]
         }),
 
+
+        getDonorsForSingleAdmin: builder.query({
+            query: (id) => `${id}/donors`,
+            providesTags: (id) => [{ type: 'Admin_Donors', id: id }]
+        }),
+
         updateAdmin: builder.mutation({
             query: (id, admin_data) => ({
                 url: `${id}`,
@@ -78,5 +84,6 @@ export const {
     useGetAdminQuery,
     useUpdateAdminMutation,
     useDeleteAdminMutation,
-    useAllAdminsQuery
+    useAllAdminsQuery,
+    useGetDonorsForSingleAdminQuery
 } = adminApi

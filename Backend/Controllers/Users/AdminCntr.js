@@ -1,6 +1,8 @@
 const AdminModel = require("../../Models/Users/AdminModel")
 const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
 const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
+const AdminDonations = require("../../Models/Donations/DonationAdmin")
+const DonorModel = require("../../Models/Users/DonorModel")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
@@ -10,6 +12,39 @@ const GetAdmin = async (req, res, next) => {
                 if (error) {
                     return next(error)
                 }
+                res.json(data)
+            })
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+
+}
+
+const GetDonorsForAdminCampaigns = async (req, res, next) => {
+    try {
+
+        /**
+         * Step 1: Get all the Admin donations of the Admin
+         * Step 2: Get the donorIds from the Admin Donations
+         * Step 3: Fetch all the donors from the DonorIds.
+         */
+
+        let adminDons = await AdminDonations.find({ admin: req.params.id }).exec()
+        if (!adminDons)
+            return res.send("no donations by the Admin")
+
+        let donorIds = adminDons.map((don) => don.donorId)
+        console.log("Donor Ids are: ", donorIds)
+
+        DonorModel.find({
+            _id: { $in: donorIds }
+        })
+            .exec(function (error, data) {
+                if (error) {
+                    return next(error)
+                }
+                // console.log()
                 res.json(data)
             })
     } catch (error) {
@@ -123,6 +158,9 @@ const ChangeDetails = async (req, res, next) => {
 const AddGeneralCampaign = async (req, res, next) => {
 
     try {
+
+        console.log("The data recieved from the frontend is: ", req.body)
+
         let newCampaign = await GeneralCampaignModel.create(req.body)
         console.log("New campaign created")
 
@@ -224,5 +262,6 @@ module.exports = {
     ViewGeneralCampaigns,
     RejectCampiagnRequest,
     ViewSpecificCampaigns,
-    ViewAppealedCampaigns
+    ViewAppealedCampaigns,
+    GetDonorsForAdminCampaigns
 }

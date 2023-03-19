@@ -5,23 +5,18 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useState } from "react";
-import axois from "axios"
 import AlertModal from "../../components/AlertModal";
-
-import { useEffect } from "react";
 import axios from "axios";
-import { UserContext } from "../../context/UserContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
-// import axios from "axios"
 
 //initializing all inputs with their keys
 const initialValues = {
   campaign_title: "",
   required_amount: "",
   description: "",
-  location: "Islamabad",
+  location: "ISL",
   archived: false,
-  catagory: "Education",
+  category: "Education",
   completed: false,
 };
 
@@ -29,13 +24,15 @@ const initialValues = {
 const campaignSchema = yup.object().shape({
   campaign_title: yup.string().required("Required"),
   required_amount: yup.string().required("Required"),
-  catagory: yup.string().required("Required"),
+  category: yup.string().required("Required"),
   description: yup.string().required("Required"),
   location: yup.string().required("Required"),
 });
 
 
 const CreateCampaign = () => {
+
+  let { user } = useAuthContext()
 
   //Code for the OnCLick POPUP
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -90,7 +87,6 @@ const CreateCampaign = () => {
   ];
 
 
-  let { user } = useAuthContext()
 
   //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -104,7 +100,10 @@ const CreateCampaign = () => {
 
 
 
-    let camp = await axios.post(`http://localhost:5000/admin/${user?.user?._id}/addGeneralCampaign`, values)
+    let camp = await axios.post(
+      `http://localhost:5000/admin/${user?.user?._id}/addGeneralCampaign`,
+      { ...values, admin: user?.user?._id }
+    )
     // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
     // JSON.parse(data)
 
@@ -122,7 +121,7 @@ const CreateCampaign = () => {
 
   return (
     <Box m="20px">
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Given To Admin!" />
+      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Campaign Created Sucessfully!" />
       <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign" />
 
       <Formik
@@ -207,10 +206,10 @@ const CreateCampaign = () => {
                 label="Category *"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.catagory}
-                name=""
-                error={!!touched.catagory && !!errors.catagory}
-                helperText={touched.catagory && errors.catagory}
+                value={values.category}
+                name="category"
+                error={!!touched.category && !!errors.category}
+                helperText={touched.category && errors.category}
                 sx={{ gridColumn: "span 2" }}
               >{catagorys.map((option) => (
                 <MenuItem key={option.value} value={option.value}>

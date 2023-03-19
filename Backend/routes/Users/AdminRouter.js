@@ -111,6 +111,7 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 
 // Add Campaign
 router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
+router.get('/:id/donors', AdminController.GetDonorsForAdminCampaigns)
 // Get Admin
 router.get('/:id', AdminController.GetAdmin)
 

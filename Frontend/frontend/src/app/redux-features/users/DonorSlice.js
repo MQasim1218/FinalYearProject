@@ -40,6 +40,8 @@ export const donorApi = createApi({
             invalidatesTags: ['Donors']
         }),
 
+      
+
         updateAdmin: builder.mutation({
             query: (id, admin_data) => ({
                 url: `${id}`,
