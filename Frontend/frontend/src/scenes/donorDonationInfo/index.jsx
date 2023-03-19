@@ -142,46 +142,40 @@ const DonorDonationInfo = () => {
     console.log("Retrieved donor donation is: ", donor_donation)
   }
 
-
-  // Get the SuperAdmin Donations where this donor donation went.
-  let { data: sa_dons, isSuccess: sa_donsIsSuccess } = useAllSA_DonsFromDonorDonationQuery(id)
-  if (sa_donsIsSuccess) {
-    console.log("Retrieved SuperAdmin donations are: ", sa_dons)
-    sa_dons = sa_dons?.map((don, ind) => ({ ...don, ind: ind, id: don._id }))
-  }
-
-  // let { data: donor, isSuccess: donIsSuccess } = useGetDonorQuery(donor_donation?.donor.id)
-  // if (donIsSuccess) {
-  //   console.log("Retrieved donor is: ", donor)
-  // }
-
-
-
-  // Get the single donor donation using the donationId provided!
-
-
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "madeby", headerName: "Made By", flex: 0.5 },
+    { field: "id", headerName: "ID" },
+    { field: "ind", headerName: "Num" },
     {
-      field: "givenby",
-      headerName: "Given By",
+      field: "admin_name",
+      headerName: "Admin Name",
       flex: 0.5,
       cellClassName: "name-column--cell",
     },
     {
-      field: "amountused",
-      headerName: "Amount Used",
+      field: "admin_email",
+      headerName: "Admin Email",
+      flex: 0.5,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "createdAt",
+      headerName: "Transferred On",
+      flex: 0.5,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "amount",
+      headerName: "Total Amount",
       headerAlign: "left",
       align: "left",
       flex: 0.5
     },
     {
-      field: "givento",
-      headerName: "Given To",
-      flex: 0.5,
-      cellClassName: "name-column--cell",
-
+      field: "remaining",
+      headerName: "Remaining Amount",
+      headerAlign: "left",
+      align: "left",
+      flex: 0.5
     },
     {
       field: "category",
@@ -189,6 +183,21 @@ const DonorDonationInfo = () => {
       flex: 0.5,
     },
   ];
+
+  // Get the SuperAdmin Donations where this donor donation went.
+  let { data: sa_dons, isSuccess: sa_donsIsSuccess } = useAllSA_DonsFromDonorDonationQuery(id)
+  if (sa_donsIsSuccess) {
+    console.log("Retrieved SuperAdmin donations are: ", sa_dons)
+    sa_dons = sa_dons?.map((don, ind) => ({
+      ...don,
+      ind: ind,
+      id: don._id,
+      createdAt: don.createdAt.slice(0, 10),
+      admin_name: don.admin.name,
+      admin_email: don.admin.email
+    }))
+  }
+
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -281,11 +290,11 @@ const DonorDonationInfo = () => {
       </Box>
     </Box>
     <Box mt="5rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donation Flow</Typography>
+      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>SuperAdmin Donations from this donation</Typography>
     </Box>
     <Box
       m="40px 0 0 0"
-      height="40vh"
+      height="60vh"
       sx={{
         "& .MuiDataGrid-root": {
           border: "none",
@@ -322,6 +331,9 @@ const DonorDonationInfo = () => {
           rows={sa_dons}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          columnVisibilityModel={{
+            id: false
+          }}
         />
       }
     </Box>

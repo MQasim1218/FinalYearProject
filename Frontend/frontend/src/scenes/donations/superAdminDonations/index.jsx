@@ -43,8 +43,9 @@ const SuperAdminDonations = ({ single_admin }) => {
   if (single_admin) {
 
     const columns = [
-      { field: "id", headerName: "ID", flex: 0.5 },
-      { field: "index", headerName: "Count", flex: 0.5 },
+      { field: "id", headerName: "ID" },
+      { field: "ind", headerName: "Num" },
+      { field: "index", headerName: "Count" },
       {
         field: "donation_title", // Need to get the donor name somehoww...
         headerName: "Title",
@@ -114,9 +115,9 @@ const SuperAdminDonations = ({ single_admin }) => {
         createdAt: don.createdAt.slice(0, 10),
         id: don._id,
         index: ind + 1,
-        donor_name: don.donor.name,
-        donor_phone: don.donor.contact,
-        donated_on: don.donordonationId?.createdAt.slice(0, 10)
+        donor_name: don?.donor.name,
+        donor_phone: don?.donor.contact,
+        donated_on: don?.donordonationId?.createdAt.slice(0, 10)
       }))
 
       // lets see if we need to flatten the objects 
@@ -198,7 +199,15 @@ const SuperAdminDonations = ({ single_admin }) => {
       console.log("Super Admin Doations data: ", Donations)
 
       let SupAdminDonations = Donations
-        .map((don, ind) => ({ ...don, id: ind + 1 }))
+        .map((don, ind) => ({
+          ...don,
+          createdAt: don?.createdAt.slice(0, 10),
+          id: don._id,
+          ind: ind + 1,
+          // donor_name: don.donor.name,
+          // donor_phone: don.donor.contact,
+          // donated_on: don?.donordonationId?.createdAt.slice(0, 10)
+        }))
         .map((don) => flattenObj(don))
 
       SupAdminDonsGrid = <DataGrid

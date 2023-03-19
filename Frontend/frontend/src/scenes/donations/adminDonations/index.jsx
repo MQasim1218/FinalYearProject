@@ -37,8 +37,8 @@ const AdminDonations = ({ single_admin }) => {
   if (!single_admin) {
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
+      { field: "ind", headerName: "Num" },
       { field: "createdAt", headerName: "Date" },
-      { field: "_id", headerName: "DonationID" },
       {
         field: "name",
         headerName: "Name",
@@ -78,7 +78,7 @@ const AdminDonations = ({ single_admin }) => {
         headerName: "View",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row._id}`)} />,
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/admindonationinfo/${row.id}`)} />,
         ],
       },
     ];
@@ -90,7 +90,7 @@ const AdminDonations = ({ single_admin }) => {
       // console.log("Admins Doations data: ", adminDonations)
       let adminDonations = []
       adminDonations = Donations
-        .map((don, index) => ({ ...don, id: index }))
+        .map((don, ind) => ({ ...don, id: don._id, ind }))
         .map((don) => flattenObj(don))
       console.log("Admin donations are: ", adminDonations)
 
@@ -99,13 +99,16 @@ const AdminDonations = ({ single_admin }) => {
         rows={adminDonations}
         columns={columns}
         components={{ Toolbar: GridToolbar }}
+        columnVisibilityModel={{
+          id: false
+        }}
       />
     } else if (isError) { AdminsDonsGrid = <h3>Error: {error.message}</h3> }
 
   } else {
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
-      { field: "count", headerName: "Num" },
+      { field: "ind", headerName: "Num", flex: 0.5 },
       { field: "createdAt", headerName: "Date" },
       {
         field: "name",
@@ -146,7 +149,7 @@ const AdminDonations = ({ single_admin }) => {
         headerName: "View",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donationinfo/${row.id}`)} />,
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/admindonationinfo/${row.id}`)} />,
         ],
       },
     ];
@@ -166,12 +169,12 @@ const AdminDonations = ({ single_admin }) => {
         columnVisibilityModel={{
           // Hide columns status and traderName, the other columns will remain visible
           id: false,
-          // traderName: false,
         }}
         checkboxSelection
         rows={adminDonations}
         columns={columns}
         components={{ Toolbar: GridToolbar }}
+
       />
     } else if (singleIsError) { AdminsDonsGrid = <h3>Error: {singleError.message}</h3> }
   }
