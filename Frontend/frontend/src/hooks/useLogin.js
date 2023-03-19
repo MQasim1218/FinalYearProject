@@ -1,9 +1,11 @@
 import axios from "axios"
 import { useState } from "react"
+import { useAccTypeContext } from "./useAccTypeContext"
 import { useAuthContext } from "./useAuthContext"
 
 const useLogin = () => {
     const { dispatch } = useAuthContext()
+    const { dispatch: acc_dispatch } = useAccTypeContext()
     const [err, setError] = useState(null)
     const [loadn, setLoadn] = useState(true)
 
@@ -30,6 +32,13 @@ const useLogin = () => {
                 {
                     type: 'LOGIN',
                     payload: user
+                }
+            )
+
+            acc_dispatch(
+                {
+                    type: 'LOGIN',
+                    payload: userType
                 }
             )
             setLoadn(false)

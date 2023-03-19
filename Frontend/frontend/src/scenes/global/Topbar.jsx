@@ -29,7 +29,7 @@ const Topbar = () => {
     return (
         //Box is basically div component from mui, but you can put CSS props in it
         <Box display="flex" justifyContent="space-between" p={2}>
-            
+
 
             {/*Header Tags if needed*/}
             <Box>
@@ -60,7 +60,7 @@ const Topbar = () => {
 
                 <IconButton
                     onClick={async () => {
-                        await logout()
+                        logout()
                         navigate('/')
                     }}
                 >
