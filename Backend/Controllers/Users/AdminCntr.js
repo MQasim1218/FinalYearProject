@@ -34,6 +34,8 @@ const GetDonorsForAdminCampaigns = async (req, res, next) => {
         if (!adminDons)
             return res.send("no donations by the Admin")
 
+        console.log("Admin dons are: ", adminDons)
+
         let donorIds = adminDons.map((don) => don.donorId)
         console.log("Donor Ids are: ", donorIds)
 

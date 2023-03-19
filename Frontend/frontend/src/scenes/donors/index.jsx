@@ -217,7 +217,7 @@ const Donors = ({ single_admin }) => {
 
     else if (isSA_DonorsSuccess) {
 
-      console.log(singleAdmin_donors)
+      console.log("Donors who donated to this single admin: ", singleAdmin_donors)
       singleAdmin_donors = singleAdmin_donors.map((donor, ind) => ({ ...donor, id: donor._id, ind: ind }))
       DonorsStatBox = (
         <StatBox

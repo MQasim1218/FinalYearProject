@@ -15,6 +15,7 @@ const DonorDonations = () => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "ind", headerName: "Num", flex: 0.5 },
     { field: "createdAt", headerName: "Date" },
     {
       field: "name",
@@ -55,14 +56,18 @@ const DonorDonations = () => {
       flex: 1,
     },
     {
-      
+
       // Okay
       field: 'View',
       type: 'actions',
       headerName: "View",
       width: 100,
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donordonationinfo/${row.id}`)}  />,
+        <GridActionsCellItem
+          icon={<VisibilityOutlinedIcon />}
+          label="View"
+          onClick={() => navigate(`/donordonationinfo/${row.id}`)}
+        />,
       ],
     },
   ];
@@ -77,7 +82,7 @@ const DonorDonations = () => {
     console.log("Donors Doations data: ", Donations)
 
     let DonorDonations = Donations
-      .map((don, index) => ({ ...don, id: index + 1 }))
+      .map((don, ind) => ({ ...don, id: don._id, ind }))
       .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid
@@ -85,6 +90,9 @@ const DonorDonations = () => {
       rows={DonorDonations}
       columns={columns}
       components={{ Toolbar: GridToolbar }}
+      columnVisibilityModel={{
+        id: false
+      }}
     />
   } else if (isError) { DonorsDonsGrid = <h3>Content Loading</h3> }
 

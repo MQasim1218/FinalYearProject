@@ -101,7 +101,7 @@ const AdminAnalytics = () => {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="User Info" subtitle="View user information" />
+        <Header title="Admin Info" subtitle="View Admin information" />
       </Box>
 
       <Box>
@@ -111,7 +111,7 @@ const AdminAnalytics = () => {
       {/* Grids and Charts */}
       <Box
         display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
+        gridTemplateColumns="repeat(8, 1fr)"
         gridAutoRows="140px"
         gap="20px"
       >
@@ -125,30 +125,12 @@ const AdminAnalytics = () => {
         >
           <UserBox
             name={admin?.name}
-            accounttype="Admin"
+            accounttype={admin?.email}
             picture={<PersonOutlineOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />}
             participated="5"
             joindate={admin?.createdAt.slice(0, 10)}
-          />
-        </Box>
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={"${}"}
-            subtitle="Highest One Time Donation"
-            // increase="This Month: $190"
-            icon={
-              <AttachMoneyOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
           />
         </Box>
 
@@ -170,6 +152,47 @@ const AdminAnalytics = () => {
             }
           />
         </Box>
+
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={`${admin?.total_donation}` | -1}
+            subtitle="Total Donation Received"
+            // increase="This Month: $190"
+            icon={
+              <AttachMoneyOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={`${admin?.amount_available}` | -1}
+            subtitle="Available Amount"
+            // increase="This Month: $190"
+            icon={
+              <AttachMoneyOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+
 
       </Box>
       <Box mt="2rem">
