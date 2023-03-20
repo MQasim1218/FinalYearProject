@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Navigate, useNavigate } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
 const Topbar = () => {
     const navigate = useNavigate();
@@ -38,16 +39,12 @@ const Topbar = () => {
 
             {/*Icons*/}
             <Box display="flex">
-                <IconButton>
-                    <NotificationsOutlinedIcon />
-                </IconButton>
+                
 
-                <IconButton>
-                    <SettingsOutlinedIcon />
-                </IconButton>
-
-                <IconButton>
-                    <PersonOutlinedIcon />
+                <IconButton onClick={async () => {
+                        window.open('http://127.0.0.1:5173/');
+                    }}>
+                    <MessageOutlinedIcon />
                 </IconButton>
 
                 <IconButton onClick={colorMode.toggleColorMode}>

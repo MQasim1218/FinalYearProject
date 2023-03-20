@@ -27,10 +27,10 @@ const Campaign = ({
     return (
         <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem" }}>
             <CardContent>
-                <Button onClick={() => navigate('/campaigninfo')}>
-                    <Typography variant='h4' color={colors.grey[100]} gutterBottom>
-                        {campaign_title}
-                    </Typography>
+                <Button onClick={() => navigate(`/campaigninfo/${id}`)}>
+                <Typography variant='h4' color={colors.grey[100]} gutterBottom>
+                    {campaign_title}
+                </Typography>
                 </Button>
                 <Typography variant='h4' color={colors.blueAccent[400]}>
                     {category}

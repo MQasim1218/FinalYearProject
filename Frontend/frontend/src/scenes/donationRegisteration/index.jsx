@@ -1,4 +1,4 @@
-import { Box, Button, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
+import { Box, Button, Snackbar, Alert , TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -42,6 +42,8 @@ const DonationRegistration = () => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  const [open, setOpen] = useState(false)
 
   //Options for category entry
   const catagorys = [
@@ -117,10 +119,18 @@ const DonationRegistration = () => {
     // JSON.parse(data)
 
     //To show the popup component.
-    openModal()
+    setOpen(true);
 
     //To reset the forms values after submit.
     resetForm()
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
 
@@ -130,6 +140,12 @@ const DonationRegistration = () => {
   return (
     <Box m="20px">
       <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!" />
+      
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+    Donation From Donor Registered Successfully!
+    </Alert>
+</Snackbar>
 
       <Header title="REGISTER DONATIONS" subtitle="Register Donations from Donors" />
 
@@ -258,6 +274,7 @@ const DonationRegistration = () => {
           </form>
         )}
       </Formik>
+      
     </Box>
   );
 }

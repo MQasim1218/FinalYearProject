@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme, Modal } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Geography from "../../components/Geography";
@@ -28,15 +28,25 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
 import { useDonorSingleDonationsQuery, useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
 import { useAllSA_DonsFromDonorDonationQuery, useAllSuperAdminDonationsQuery } from '../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 const DonorDonationInfo = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   let { id } = useParams();
   const [donations, setDonations] = useState([])
+  const [open, setOpen] = useState(false)
+
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   let { user } = useAuthContext()
 
+  const handleOpen = () => {
+    setOpen(true)
+  }
   //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   //const { user } = useAuthContext('aown')
 
@@ -182,6 +192,17 @@ const DonorDonationInfo = () => {
       headerName: "Category",
       flex: 0.5,
     },
+    {
+
+      // Okay
+      field: 'View',
+      type: 'actions',
+      headerName: "View",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={handleOpen} />,
+      ],
+    },
   ];
 
   // Get the SuperAdmin Donations where this donor donation went.
@@ -207,6 +228,73 @@ const DonorDonationInfo = () => {
     <Box>
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
     </Box>
+
+    <>
+      <Box style={{ marginTop: '2%' }}>
+
+        <Modal open={open} onClose={handleClose}>
+          
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: "80%",
+              height: "60%",
+              bgcolor: colors.primary[500],
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Box>
+        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donation Breakdown</Typography>
+        </Box>
+            <Box
+              m="40px 0 0 0"
+              height="40vh"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .name-column--cell": {
+                  color: colors.greenAccent[300],
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: colors.blueAccent[700],
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: colors.primary[400],
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  borderTop: "none",
+                  backgroundColor: colors.blueAccent[700],
+                },
+                "& .MuiCheckbox-root": {
+                  color: `${colors.greenAccent[200]} !important`,
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `${colors.grey[100]} !important`,
+                },
+              }}
+            >
+              <DataGrid
+                checkboxSelection
+                rows={mockDataDonationInfo}
+                columns={columns}
+                components={{ Toolbar: GridToolbar }}
+              />
+            </Box>
+          </Box>
+        </Modal>
+      </Box>
+    </>
+
 
     {/* Grids and Charts */}
     <Box

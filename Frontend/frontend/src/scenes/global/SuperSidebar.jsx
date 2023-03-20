@@ -20,6 +20,7 @@ import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import PriceCheckOutlinedIcon from '@mui/icons-material/PriceCheckOutlined';
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import { useAuthContext } from "../../hooks/useAuthContext";
 
 
@@ -134,6 +135,24 @@ const SuperSidebar = () => {
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Allocate Donations</Typography>
                             <Item title="Register Donations" to="/registerdonation" icon={<PriceCheckOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Give Donations" to="/superdonation" icon={<PriceCheckOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                    {/* Menu Items here */}
+                    <Box paddingLeft={isCollapsed ? undefined : '10%'}>
+                        <Item title="Dashboard" to="/superadmindashboard" icon={<HomeOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>View</Typography>
+                        <Item title="All Campaigns" to="/viewcampaign" icon={<ViewCozyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Users</Typography>
+                        <Item title="Admins" to="/admins" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Donors" to="/donors" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Donations</Typography>
+                        <Item title="Donor Donations" to="/donordonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Super Admin Donations" to="/superadmindonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Admin Donations" to="/admindonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Category Donations" to="/categorydonations" icon={<AttachMoneyOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        
+                        <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Allocate Donations</Typography>
+                        <Item title="Register Donations" to="/registerdonation" icon={<PriceCheckOutlinedIcon/>} selected={selected} setSelected={setSelected} />
+                        <Item title="Give Donations" to="/superdonation" icon={<PriceCheckOutlinedIcon/>} selected={selected} setSelected={setSelected} />
 
 
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Analytics</Typography>
