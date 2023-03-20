@@ -229,7 +229,7 @@ const SuperAdminDonations = ({ single_admin }) => {
     <Box m="20px">
      
       <Header
-        title={view.toLocaleUpperCase() + " DONATIONS"} subtitle={"Manage " + view + " donations"}
+        title={"SUPERADMIN DONATIONS"} subtitle={"Manage SuperAdmin donations"}
       />
 
        {/* Grids and Charts */}
