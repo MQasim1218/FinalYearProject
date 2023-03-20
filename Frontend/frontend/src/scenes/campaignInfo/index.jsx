@@ -98,7 +98,7 @@ const CampaignInfo = () => {
   let { data: camp, isError: isCampError, error, isCampLoading, isSuccess: isCampSuccess } = useSingleCampaignQuery(id)
 
   //options for donors
-  const donors = [
+  const donor_opts = [
     {
       value: 'Donor1',
       label: 'Donor 1',
@@ -333,7 +333,7 @@ const CampaignInfo = () => {
                       error={!!touched.donor && !!errors.donor}
                       helperText={touched.donor && errors.donor}
                       sx={{ gridColumn: "span 2" }}
-                    >{donors.map((option) => (
+                    >{donor_opts.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
