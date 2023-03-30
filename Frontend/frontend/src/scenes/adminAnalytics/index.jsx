@@ -21,7 +21,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
 import UserLineChart from '../../components/UserLineChart';
 import { useParams } from "react-router-dom";
-import { useSingleAdminDonationsQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
+import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useGetAdminQuery } from '../../app/redux-features/users/AdminSlice';
 
 const AdminAnalytics = () => {

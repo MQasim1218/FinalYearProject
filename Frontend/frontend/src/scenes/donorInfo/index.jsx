@@ -13,8 +13,8 @@ import HomeScreenCampaigns from '../../components/HomeScreenCampaigns';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useParams } from "react-router-dom";
 import { AccountTypeContext } from '../../accountTypeContext';
-import { useSingleAdminDonationsQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
-import { useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
+import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
+import { useSingleDonorDonationsQuery } from '../../app/redux-features/donations/DonorDonations/DonorDonsSlice';
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
 
 const DonorInfo = () => {

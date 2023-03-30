@@ -9,11 +9,11 @@ import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { activityData as data } from "../../data/mockData";
 import { Navigation } from "@mui/icons-material";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useSingleAdminDonationsQuery } from "../../app/redux-features/Donations/AdminDonations/AdminDonsSlice";
+import { useSingleAdminDonationsQuery } from "../../app/redux-features/donations/AdminDonations/AdminDonsSlice";
 import { useGetDonorsForSingleAdminQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
 

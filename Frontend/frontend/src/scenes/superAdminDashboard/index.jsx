@@ -17,7 +17,7 @@ import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 
 
 /**

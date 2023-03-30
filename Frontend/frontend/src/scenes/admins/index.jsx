@@ -10,7 +10,7 @@ import PersonOutlineOutlined from "@mui/icons-material/PersonOutlineOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const Admins = () => {

@@ -5,7 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
-import { useRegisterDonorDonationMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useRegisterDonorDonationMutation } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import AlertModal from "../../components/AlertModal";
 import { useState } from "react";
 

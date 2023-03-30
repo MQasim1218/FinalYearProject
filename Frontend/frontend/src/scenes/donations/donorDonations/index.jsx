@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
-import { useAllDonorsDonationsQuery } from "../../../app/redux-features/Donations/DonorDonations/DonorDonsSlice";
+import { useAllDonorsDonationsQuery } from "../../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 import { flattenObj } from "../../../misc/ArrayFlatten";
 import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
