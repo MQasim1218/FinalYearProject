@@ -138,9 +138,7 @@ const DonationRegistration = () => {
   const colors = tokens(theme.palette.mode)
 
   return (
-    <Box m="20px">
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!" />
-      
+    <Box m="20px">      
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
     Donation From Donor Registered Successfully!

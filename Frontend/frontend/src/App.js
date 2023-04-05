@@ -37,11 +37,11 @@ import DonationRegistration from './scenes/donationRegisteration';
 import Sidebars from './scenes/global/Sidebars';
 import { useState, useEffect, useContext } from 'react';
 import SuperAdminDashboard from './scenes/superAdminDashboard';
-
+import Chat from './scenes/chat';
 import DonorDonationInfo from './scenes/donorDonationInfo';
 import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
 import AdminDonationInfo from './scenes/adminDonationInfo';
-
+import Settings from './scenes/settings';
 // What is this boss!!
 import DonationRequests from './scenes/donationRequests';
 
@@ -57,7 +57,7 @@ function App(props) {
   useEffect(() => { setAccountType(loggedUserType) }, [accountType, loggedUserType])
   //const { user } = useAuthContext();
 
-  const user = 'donor'
+  const user = useAuthContext()
   //IMPORTANT: UNCOMMENT THIS CODE AND TRY TO RUN IT. MERE PAS PAGE BAR BAR RELOAD KRTA REHTA HA I THINK
   // useEffect(() => {
   //   if (!user && location.pathname !== '/register') {
@@ -94,7 +94,7 @@ function App(props) {
         <div className="app">
           {accountType && <Sidebars />}
           <main className="content">
-            <Topbar />
+          {accountType.userType && <Topbar />}
             <Routes>
               {/* {accountType === "donor" ? (
                     <> */}
@@ -188,6 +188,8 @@ function App(props) {
               <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
               <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
               <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
+              <Route path="/chat" element={<Chat/>} />
+              <Route path="/settings" element={<Settings/>} />
 
               {/* <Route path="*" /> */}
               {/* </>

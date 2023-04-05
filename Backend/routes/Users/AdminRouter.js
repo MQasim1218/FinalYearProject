@@ -23,6 +23,8 @@ let router = express.Router()
 
 router.post('/signup', AdminController.AddNewAdmin)
 router.post('/login', AdminController.SignInAdmin)
+console.log("Going to Update Admin")
+router.patch('/update/:id', AdminController.UpdateAdmin)
 
 // router.use(authorize)
 

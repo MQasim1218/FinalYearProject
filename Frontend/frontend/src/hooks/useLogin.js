@@ -8,8 +8,10 @@ const useLogin = () => {
     const { dispatch: acc_dispatch } = useAccTypeContext()
     const [err, setError] = useState(null)
     const [loadn, setLoadn] = useState(true)
+   
 
     const login = async (email, password, userType) => {
+       
 
         setLoadn(false)
         setError(null)
@@ -18,6 +20,15 @@ const useLogin = () => {
             `http://localhost:5000/${userType}/login`,
             { email, password }
         )
+
+        const chatLogin = await axios.post(`http://localhost:5000/chat/login`,{email, password},{
+                    headers: {
+                        "Project-ID": process.env.REACT_APP_PROJECT_ID,
+                    }
+        }
+                )
+                console.log('chat login response',chatLogin)
+                console.log("CHAT ID RESPONSE: ",chatLogin.data.response.id)
 
         if (res.status < 400) {
 
@@ -28,6 +39,7 @@ const useLogin = () => {
             // Add the user to the localstorage
             localStorage.setItem("user", JSON.stringify(user))
             localStorage.setItem("userType", JSON.stringify(userType))
+            localStorage.setItem("chatId", (chatLogin.data.response.id))
             dispatch(
                 {
                     type: 'LOGIN',

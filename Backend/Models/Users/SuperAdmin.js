@@ -39,7 +39,10 @@ const SuperAdminSchema = mongoose.Schema({
             }
         },
     }, // required
-
+    chatId: {
+        type: String,
+        trim: true,
+    }, // required
     contact: {
         type: String,
         // required: true,

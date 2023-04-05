@@ -40,6 +40,10 @@ const donorSchema = mongoose.Schema({
             }
         },
     },
+    chatId: {
+        type: String,
+        trim: true,
+    }, // required
 
     contact: {
         type: String,
