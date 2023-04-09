@@ -93,9 +93,6 @@ const Sidebar = () => {
                                             style={{ cursor: "pointer", borderRadius: "50%", objectFit: "cover" }}
                                         />
 
-
-
-
                                 </Box>
 
                                 <Box textAlign="center">

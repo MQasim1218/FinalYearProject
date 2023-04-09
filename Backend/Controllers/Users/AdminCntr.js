@@ -104,7 +104,6 @@ const SignInAdmin = async (req, res, next) => {
 }
 
 const UpdateAdmin = async (req, res, next) => {
-    console.log("The data recieved from the frontend is, I AM AT UPDATE: ", req.body)
     await AdminModel.findByIdAndUpdate(req.params.id,
         {
             name: req.body.name,

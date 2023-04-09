@@ -25,6 +25,14 @@ const Chat = () => {
 
 
     useEffect(() => {
+      let socket = new WebSocket(
+        `wss://api.chatengine.io/person/?publicKey=${process.env.REACT_APP_PROJECT_ID}&username=${user.user.email}&secret=${user.user.chatId}`
+    );
+    socket.onopen = (event) => console.log(event);
+    socket.onclose = (event) => console.log(event);
+    socket.onmessage = (event) => console.log(event);
+    socket.onerror = (error) => console.log(error);
+
       if (chatProps) {
         setLoading(false);
       }
@@ -50,7 +58,17 @@ const Chat = () => {
     <div style={{flexBasis: "100%"}}>
         <MultiChatSocket {...chatProps}/>
       
-        <MultiChatWindow {...chatProps} style={{height: "100vh"}} renderChatHeader={(chat) => <Header chat={chat}/>} 
+        <MultiChatWindow projectId={chatProps.projectId}
+      username={chatProps.username}
+      secret={chatProps.secret}
+      onAuthFail={chatProps.onAuthFail}
+      onNewChat={chatProps.onNewChat}
+      onEditChat={chatProps.onEditChat}
+      onDeleteChat={chatProps.onDeleteChat}
+      onNewMessage={chatProps.onNewMessage}
+      onEditMessage={chatProps.onEditMessage}
+      onDeleteMessage={chatProps.onDeleteMessage}
+      onIsTyping={chatProps.onIsTyping} style={{height: "100vh"}} renderChatHeader={(chat) => <Header chat={chat}/>} 
         renderMessageForm={(props) => {
           if (chatProps.chat?.title.startsWith("AiChat_")){
             return <Ai props={props} activeChat={chatProps.chat}/>

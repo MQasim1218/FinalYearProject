@@ -20,7 +20,7 @@ const useLogin = () => {
             `http://localhost:5000/${userType}/login`,
             { email, password }
         )
-
+            
         const chatLogin = await axios.post(`http://localhost:5000/chat/login`,{email, password},{
                     headers: {
                         "Project-ID": process.env.REACT_APP_PROJECT_ID,

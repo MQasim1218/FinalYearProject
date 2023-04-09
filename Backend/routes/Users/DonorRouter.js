@@ -23,6 +23,9 @@ router.post('/signup', DonorController.DonorSignUp)
 // Donor Login
 router.post('/login', DonorController.DonorSignIn)
 
+//Donor Update
+router.patch('/update/:id', DonorController.UpdateDonor)
+
 // Index page for Donors. Nothing here!
 // router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 

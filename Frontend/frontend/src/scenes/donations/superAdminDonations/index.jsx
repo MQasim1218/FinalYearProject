@@ -36,6 +36,9 @@ const SuperAdminDonations = ({ single_admin }) => {
     isSuccess,
     data: Donations
   } = useAllSuperAdminDonationsQuery()
+
+
+
   const {
     isError: adminIsErr,
     error: adminErr,
@@ -250,9 +253,10 @@ const SuperAdminDonations = ({ single_admin }) => {
       borderRadius="10px"
     >
       <StatBox
-        title="55"
+        title={single_admin ? DonsToAdmin?.length : Donations?.length}
         subtitle="Total Donations Made"
         progress={false}
+        // increase={}
         icon={
           <AttachMoneyOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -269,7 +273,7 @@ const SuperAdminDonations = ({ single_admin }) => {
       borderRadius="10px"
     >
       <StatBox
-        title="18-Mar-23"
+        title={single_admin ? DonsToAdmin[0]?.createdAt.slice(0,10) : Donations[0]?.createdAt.slice(0,10)}
         subtitle="Latest Donation"
         progress={false}
         icon={

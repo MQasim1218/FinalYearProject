@@ -1,5 +1,5 @@
 const DonorModel = require("../../Models/Users/DonorModel")
-
+const bcrypt = require("bcrypt")
 
 // ! This file needs serious updates to routes and the controller functions
 const DonorDonations = require("../../Models/Donations/DonationDonor")
@@ -145,6 +145,7 @@ const Donate = async (req, res, next) => {
 }
 
 const UpdateDonor = async (req, res, next) => {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)   
     try {
         await DonorModel.findByIdAndUpdate(
             req.params.id,
@@ -152,8 +153,9 @@ const UpdateDonor = async (req, res, next) => {
                 name: req.body.name,
                 age: req.body.age,
                 email: req.body.email,
-                password: req.body.password,
+                password: hashedPassword,
                 contact: req.body.contact,
+                picture: req.body.picture,
                 location: req.body.location
             }
         )

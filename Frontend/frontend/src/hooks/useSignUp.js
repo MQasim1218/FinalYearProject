@@ -15,6 +15,7 @@ const useSignUp = () => {
         setError(null)
         console.log('signup values at use signup',user)
         const {email, chatId} = user
+        
         const chatSignup = await axios.post('http://localhost:5000/chat/signup',user)
         console.log('chat signup response',chatSignup)
 

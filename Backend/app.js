@@ -47,7 +47,6 @@ app.use('/', indexRouter);
 
 // User Routers
 app.use('/benificiary', beneficiaryRouter);
-console.log("Going to admin router")
 app.use('/admin', adminRouter);
 app.use('/superAdmin', superAdminRouter);
 app.use('/donor', donorRouter);

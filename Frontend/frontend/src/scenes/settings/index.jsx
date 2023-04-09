@@ -24,11 +24,7 @@ const Settings = () => {
   const [openTrue, setOpenTrue] = useState(false)
   const [profileImage, setProfileImage] = useState(user?.user?.picture);
   const [fileUrl, setFileUrl] = useState(user?.user?.picture);
-
-
-  // UseSignUp hook to authenticate and store user to the database!
-  const { signup, loadn, err } = useSignUp()
-
+  
   const initialValues = {
     name: user?.user?.name || "",
     email: user?.user?.email || "",
