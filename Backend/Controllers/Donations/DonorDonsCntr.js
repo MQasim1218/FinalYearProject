@@ -186,14 +186,18 @@ const GetDonations_TimeRange = async (req, res, next) => {
 
 const DonorAllDonations = async (req, res, next) => {
     console.log("Got a requwst to fetch all donations!!")
+    console.log("CHECKING: ", req.params.donor_id)
     try {
         let cat = req.params.category
         let donor_id = req.params.donor_id
+        console.log("Donor ID coming from frontend: ",donor_id)
         if (cat == null) {
             // Get all the donations made by the Donors
             let Dons = await DonorDons.find({
                 donor: donor_id
             }).exec()
+
+            console.log("Donor Donations are IN BACKEND: ", Dons)
             res.json(Dons)
         } else {
             // Get all the Donations by specific donor for a particular category.
@@ -204,7 +208,7 @@ const DonorAllDonations = async (req, res, next) => {
             res.json(Dons)
         }
     } catch (error) {
-        console.log('error encountered while retrieving Siepr Admin donations!\nError: ', error)
+        console.log('error encountered while retrieving Donor donations!\nError: ', error)
         res.send(error)
     }
 }
@@ -212,7 +216,7 @@ const DonorAllDonations = async (req, res, next) => {
 const SingleDonation = async (req, res, next) => {
     console.log("Got a requwst to fetch a single donation!!")
     try {
-        // Get all the donations made by the Donors
+        // Get donation made by the Donors
         let Donation = await DonorDons.findById(
             req.params.id
         ).populate('donor').exec()

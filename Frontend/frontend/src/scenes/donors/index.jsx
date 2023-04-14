@@ -18,7 +18,7 @@ import { useGetDonorsForSingleAdminQuery } from "../../app/redux-features/users/
 import { useAuthContext } from "../../hooks/useAuthContext";
 
 
-const Donors = ({ single_admin }) => {
+const Donors = ({ single_donor }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -44,7 +44,7 @@ const Donors = ({ single_admin }) => {
   } = useGetDonorsForSingleAdminQuery(user?.user?._id)
 
 
-  if (!single_admin) {
+  if (!single_donor) {
 
 
     // Get all the donors that have donated to a perticular campaign.

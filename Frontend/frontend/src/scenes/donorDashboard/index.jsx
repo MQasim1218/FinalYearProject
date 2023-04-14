@@ -14,6 +14,7 @@ import useAxiosGet from "../../hooks/useAxiosGet";
 import axios from "axios";
 import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useSingleDonorDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 
 const DonorDashboard = () => {
   const theme = useTheme();
@@ -23,6 +24,20 @@ const DonorDashboard = () => {
   const [totDonations, setTotalDonations] = useState(0);
 
   const { user } = useAuthContext();
+
+  console.log("FRONTEND", user?.user?._id)
+
+  let {data, isSuccess} =  useSingleDonorDonationsQuery(user?.user?._id)
+  let totalDonations
+
+
+  if(isSuccess){
+    totalDonations = data.reduce((total, don) => {
+      return total + don.amount
+    },0)
+  }
+
+
 
   console.log("Donor logged in is: ", user?.user)
 
@@ -106,7 +121,7 @@ const DonorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={totDonations}
+            title={totalDonations}
             subtitle="Total Donated"
             progress="0.65"
             increase="This Month: $110"

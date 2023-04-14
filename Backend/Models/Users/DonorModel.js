@@ -22,6 +22,7 @@ const donorSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
+        // unique: true,
         trim: true,
         validate(value) {
             if (!validator.isEmail(value)) {
