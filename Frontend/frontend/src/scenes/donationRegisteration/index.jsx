@@ -24,7 +24,6 @@ const initialValues = {
 const userSchema = yup.object().shape({
   donation_title: yup.string().required("Required"),
   amount: yup.string().required("Required"),
-  description: yup.string().required("Required"),
   catagory: yup.string().required("Required"),
   donor: yup.string().required("Required"),
 });
@@ -228,11 +227,11 @@ const DonationRegistration = () => {
                 select
                 variant="filled"
                 type="text"
-                label="Category *"
+                label="Catagory *"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.catagory}
-                name=""
+                name="catagory"
                 error={!!touched.catagory && !!errors.catagory}
                 helperText={touched.catagory && errors.catagory}
                 sx={{ gridColumn: "span 2" }}

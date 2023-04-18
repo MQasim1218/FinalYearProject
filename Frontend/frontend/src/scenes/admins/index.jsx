@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, Alert, Snackbar } from "@mui/material";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid"
 import { tokens } from "../../theme"
 import Header from "../../components/Header";
@@ -12,12 +12,53 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { VolunteerActivismOutlined } from "@mui/icons-material";
 
 const Admins = () => {
+  let { data: donsToAdmins, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false)
+
+  const userType = JSON.parse(localStorage.getItem('userType'));
+
+  const handleDelete = async (id) => {
+
+    const getRespose = await axios.get(`http://localhost:5000/admin/get/${id}`);
+    let chatEmail = getRespose.data.email
+    let chatPassword = getRespose.data.chatId
+    console.log(chatEmail, chatPassword)
+
+
+    const chatGet = await axios.delete(`https://api.chatengine.io/users/`,{chatEmail, chatPassword},{
+      headers: {
+          "Project-ID": process.env.REACT_APP_PROJECT_ID,
+      }
+}
+  )
+
+  console.log("Chat Get:",chatGet)
+
+
+    const response = await axios.delete( `http://localhost:5000/admin/delete/${id}`);
+    
+    
+setOpen(true);
+
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
 
 
   // The columns gets all the data we specify below from the mockdata file and store it
@@ -77,52 +118,13 @@ const Admins = () => {
       type: 'actions',
       headerName: "Delete",
       width: 100,
-      getActions: () => [
-        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
+      
+      getActions: (row) => [
+        <GridActionsCellItem  icon={<DeleteIcon />} onClick={() => handleDelete(row.id)} label="Delete" />,
       ],
+      
     },
   ];
-
-  // ! Data
-  //PLEASE USE THE CORRECT LABEL FOR ADMINS IN THE DB IF "ADMINS" IS WRONG
-
-  // useEffect(() => {
-  //   console.log("Re run use Effect")
-  //   const fetchUsers = async () => {
-  //     try {
-  //       let res = null
-  //       //PLEASE USE THE CORRECT LABEL FOR ADMINS IN THE DB IF "ADMINS" IS WRONG
-  //       if (view === "admins") {
-  //         res = await axios.get("http://localhost:5000/donor/allDonors")
-  //         setIsLoading(false)
-  //       } else {
-  //         res = await axios.get("http://localhost:5000/benificiary")
-  //         setIsLoading(false)
-  //       }
-
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   // console.log("kdfiodno")
-  //   fetchUsers().then((data) => {
-  //     console.log(data)
-  //     setIsLoading(false)
-  //     let usrz = data.map((usr, indx) => ({ ...usr, id: indx + 1 }))
-  //     setUsers(usrz)
-  //   })
-  //   return (() => {
-  //     console.log("Nothing for clean up")
-  //     setIsLoading(false)
-  //   })
-  // }, [view])
-
-  // ! Admins StatBox && Admins DataGrid
 
 
   let {
@@ -152,7 +154,7 @@ const Admins = () => {
         progress={false}
         // increase="+14% This Month dyn"
         icon={
-          <AttachMoneyOutlinedIcon
+          <PersonOutlineOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }
@@ -165,19 +167,17 @@ const Admins = () => {
   else if (isAdminsError) AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
 
   // ! Donations to Admin
-  let { data: donsToAdmins, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
   if (isDonsLoading) DonsToAdminsStatBox = <h3>Loading Content</h3>
 
   else if (IsDonsSuccess) {
     DonsToAdminsStatBox = (
       <StatBox
         // title={ }
-        title={donsToAdmins.reduce((partialTot, don) => partialTot + don.amount, 0)}
-        subtitle="Donations Made to Admins"
+        title={donsToAdmins.length}
+        subtitle="Number of Donations Made to Admins"
         progress={false}
-        increase="+14% This Month dyn"
         icon={
-          <AttachMoneyOutlinedIcon
+          <VolunteerActivismOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }
@@ -205,16 +205,6 @@ const Admins = () => {
           alignItems="center"
           justifyContent="center"
         >
-          {/* <StatBox
-            title={users.length}
-            subtitle="Active Admins"
-            progress={false}
-            icon={
-              <PersonOutlineOutlined
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
           {AdminsStatBox}
         </Box>
         <Box
@@ -309,6 +299,11 @@ const Admins = () => {
             </Typography> : AdminsDataGrid
         }
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          User Deleted! Please Refresh
+        </Alert>
+        </Snackbar>
     </Box>
   );
 }

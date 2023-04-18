@@ -16,9 +16,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useSingleAdminDonationsQuery } from "../../app/redux-features/donations/AdminDonations/AdminDonsSlice";
 import { useGetDonorsForSingleAdminQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
+import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+import { PersonOutlineOutlined } from "@mui/icons-material";
 
 const Donors = ({ single_donor }) => {
+  let { data: donsFromDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllDonorsDonationsQuery()
+
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -42,6 +46,8 @@ const Donors = ({ single_donor }) => {
     isError: isSA_DonorsError,
     isSuccess: isSA_DonorsSuccess
   } = useGetDonorsForSingleAdminQuery(user?.user?._id)
+
+
 
 
   if (!single_donor) {
@@ -126,12 +132,12 @@ const Donors = ({ single_donor }) => {
       donors = donors.map((donor) => ({ ...donor, id: donor._id }))
       DonorsStatBox = (
         <StatBox
-          title={donors.length}
-          subtitle="Donors Donated"
+          title={donors?.length}
+          subtitle="Total Donors"
           progress={false}
           // increase="+9% This Month dyn"
           icon={
-            <AttachMoneyOutlinedIcon
+            <PersonOutlineOutlined
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
@@ -142,12 +148,12 @@ const Donors = ({ single_donor }) => {
 
       DonsByDonorsStatBox = < StatBox
         // ! title={donors?.reduce((prev, val) => prev + val.amount, 0)}
-        title={"10500"}
-        subtitle="Total Donations"
+        title={donsFromDonors?.length}
+        subtitle="Total Donations Made By Donors"
         progress={false}
         // increase={"+25% in " + currentYear}
         icon={
-          < AttachMoneyOutlinedIcon
+          < VolunteerActivismOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }
             }
           />
@@ -222,7 +228,7 @@ const Donors = ({ single_donor }) => {
       DonorsStatBox = (
         <StatBox
           title={singleAdmin_donors?.length}
-          subtitle="Donors Donated"
+          subtitle="Total Donors"
           progress={false}
           // increase="+9% This Month dyn"
           icon={

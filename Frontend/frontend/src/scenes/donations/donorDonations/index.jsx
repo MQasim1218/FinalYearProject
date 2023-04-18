@@ -14,7 +14,7 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import { PersonOutline } from "@mui/icons-material";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
-
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
 
 const DonorDonations = () => {
   const navigate = useNavigate();
@@ -25,43 +25,27 @@ const DonorDonations = () => {
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "ind", headerName: "Num", flex: 0.5 },
-    { field: "createdAt", headerName: "Date" },
+    { field: "createdAt", headerName: "Date", flex: 1 },
     {
       field: "name",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "contact",
-      headerName: "Phone Number",
-      flex: 1,
-    },
+
     {
       field: "email",
       headerName: "Email",
       flex: 1,
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-    },
-    {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
+    }, 
     {
       field: "amount",
-      headerName: "Donation Amount",
+      headerName: "Remaining Donation Amount ($)",
+      flex: 1,
+    },
+    {
+      field: "amountDonated",
+      headerName: "Donated Amount ($)",
       flex: 1,
     },
     {
@@ -90,12 +74,17 @@ const DonorDonations = () => {
   const { isError, error, isLoading, isSuccess, data: Donations } = useAllDonorsDonationsQuery()
   let DonorsDonsGrid = <></>
 
+  let { data: donsFromDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllDonorsDonationsQuery()
+
+  console.log("Donor Data",donsFromDonors)
+
+  if(donsFromDonors === undefined) donsFromDonors = []
+
   if (isLoading) DonorsDonsGrid = <h3>Content Loading</h3>
   else if (isSuccess) {
-    console.log("Donors Doations data: ", Donations)
 
     let DonorDonations = Donations
-      .map((don, ind) => ({ ...don, id: don._id, ind }))
+      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind }))
       .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid
@@ -110,6 +99,45 @@ const DonorDonations = () => {
     />
   } else if (isError) { DonorsDonsGrid = <h3>Content Loading</h3> }
 
+
+  const donationCount = {};
+  const maxDonation = {};
+  for (const donation of donsFromDonors) {
+    
+    const donorname = donation.donor.name;
+    const donationAmount = donation.amountDonated + donation.amount;
+  
+    // Update donation count for each donor
+    if (!donationCount[donorname]) {
+      donationCount[donorname] = 0;
+    }
+    donationCount[donorname]++;
+  
+    // Update maximum donation amount for each donor
+    if (!maxDonation[donorname] || donationAmount > maxDonation[donorname]) {
+      maxDonation[donorname] = donationAmount;
+    }
+  }
+  
+  // Find the donor with the maximum donations
+  let maxDonorname = null;
+  let maxDonations = -1;
+  for (const [name, count] of Object.entries(donationCount)) {
+    if (count > maxDonations) {
+      maxDonorname = name;
+      maxDonations = count;
+    }
+  }
+  
+  // Find the donor with the highest one-time donation
+  let maxOneTimeDonorname = null;
+  let maxOneTimeDonation = -1;
+  for (const [name, amountDonate] of Object.entries(maxDonation)) {
+    if (amountDonate > maxOneTimeDonation) {
+      maxOneTimeDonorname = name;
+      maxOneTimeDonation = amountDonate;
+    }
+  }
 
 
   return (
@@ -128,6 +156,7 @@ const DonorDonations = () => {
 
         {/* ROW 1 */}
 
+       
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
@@ -137,8 +166,27 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title="55"
-            subtitle="Total Donations Made"
+            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)}
+            subtitle="Total Funds Recieved"
+            progress={false}
+            icon={
+              <VolunteerActivismOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="10px"
+        >
+          <StatBox
+            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
+            subtitle="Total Unallocated Funds"
             progress={false}
             icon={
               <AttachMoneyOutlined
@@ -156,27 +204,9 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title="18-Mar-23"
-            subtitle="Latest Donation"
-            progress={false}
-            icon={
-              <CalendarMonthOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius="10px"
-        >
-          <StatBox
-            title="Donor 1"
+            title={maxDonorname}
             subtitle="Most Donations Made By"
+            increase={"Donations: "+maxDonations}
             progress={false}
             icon={
               <PersonOutline
@@ -195,7 +225,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title="$10,000"
+            title={"$"+maxOneTimeDonation}
             subtitle="Highest One Time Donation"
             progress={false}
             icon={
