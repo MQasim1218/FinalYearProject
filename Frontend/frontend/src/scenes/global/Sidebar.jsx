@@ -102,7 +102,7 @@ const Sidebar = () => {
                                         fontWeight="bold"
                                         sx={{ m: "10px 0 0 0" }}
                                     >
-                                        {user?.user?.name | "admion" }
+                                        {user?.user?.name || "admion" }
                                     </Typography>
                                 </Box>
                             </Box>

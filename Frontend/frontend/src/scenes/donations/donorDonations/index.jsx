@@ -39,13 +39,23 @@ const DonorDonations = () => {
       flex: 1,
     }, 
     {
+      field: "total",
+      headerName: "Initial Donation ($)",
+      flex: 1,
+    },
+    {
       field: "amount",
       headerName: "Remaining Donation Amount ($)",
       flex: 1,
     },
     {
       field: "amountDonated",
-      headerName: "Donated Amount ($)",
+      headerName: "Allocated Amount ($)",
+      flex: 1,
+    },
+    {
+      field: "catagory",
+      headerName: "Category",
       flex: 1,
     },
     {
@@ -84,7 +94,7 @@ const DonorDonations = () => {
   else if (isSuccess) {
 
     let DonorDonations = Donations
-      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind }))
+      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind, total: don.amount + don.amountDonated }))
       .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid

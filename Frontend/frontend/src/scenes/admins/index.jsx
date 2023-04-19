@@ -13,7 +13,7 @@ import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { VolunteerActivismOutlined } from "@mui/icons-material";
 
 const Admins = () => {
@@ -23,6 +23,7 @@ const Admins = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false)
+  const [refresh, setRefresh] = useState(false)
 
   const userType = JSON.parse(localStorage.getItem('userType'));
 
@@ -34,12 +35,16 @@ const Admins = () => {
     console.log(chatEmail, chatPassword)
 
 
-    const chatGet = await axios.delete(`https://api.chatengine.io/users/`,{chatEmail, chatPassword},{
+    const chatGet = await axios.delete(`https://api.chatengine.io/users/me/`,{
       headers: {
           "Project-ID": process.env.REACT_APP_PROJECT_ID,
+          "User-Name": chatEmail,
+          "User-Secret": chatPassword
       }
 }
   )
+
+
 
   console.log("Chat Get:",chatGet)
 
@@ -49,7 +54,11 @@ const Admins = () => {
     
 setOpen(true);
 
+  setRefresh (!refresh)
+
   }
+
+
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -127,6 +136,7 @@ setOpen(true);
   ];
 
 
+
   let {
     data: admins,
     error: adminsError,
@@ -135,17 +145,15 @@ setOpen(true);
     isLoading: adminsIsLoading,
   } = useAllAdminsQuery()
 
-
   let AdminsStatBox = <></>, AdminsDataGrid = <></>, DonsToAdminsStatBox = <></>
 
   if (adminsIsLoading) {
     AdminsStatBox = <h3>Loading Content 🧇🧇🍖</h3>
   }
-  else if (adminsIsSuccess) {
-    let x = []
-    // x.map((x) => (x))
-    admins = admins.map(admin => ({ ...admin, id: admin._id }))
 
+  else if (adminsIsSuccess) {
+    admins = admins.map(admin => ({ ...admin, id: admin._id }))
+   
     AdminsStatBox = (
       <StatBox
         // title={ }

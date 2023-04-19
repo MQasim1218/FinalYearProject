@@ -220,7 +220,7 @@ const SuperAdminDonations = ({ single_admin }) => {
   console.log("Donations: ", Donations)
 // iterate through each donation object in DonsToAdmin
 Donations.forEach(donation => {
-  const adminId = donation.admin._id;
+  const adminId = donation?._id;
   
   // if this is the first donation for this admin, initialize the count to 1
   if (!adminDonationCount[adminId]) {
@@ -235,7 +235,7 @@ Donations.forEach(donation => {
 const maxDonationsAdmin = Object.keys(adminDonationCount).reduce((a, b) => adminDonationCount[a] > adminDonationCount[b] ? a : b);
 
 // get the admin object with the highest donation count
-const maxDonationsAdminObj = Donations.find(donation => donation.admin._id === maxDonationsAdmin).admin;
+const maxDonationsAdminObj = Donations.find(donation => donation?._id === maxDonationsAdmin).admin;
 
 let highestOneTimeAmount = 0;
 

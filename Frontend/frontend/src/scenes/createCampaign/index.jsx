@@ -25,7 +25,6 @@ const campaignSchema = yup.object().shape({
   campaign_title: yup.string().required("Required"),
   required_amount: yup.string().required("Required"),
   category: yup.string().required("Required"),
-  description: yup.string().required("Required"),
   location: yup.string().required("Required"),
 });
 

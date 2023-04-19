@@ -475,7 +475,7 @@ const SuperAdminDashboard = () => {
                     {transaction._id.slice(0, 8)}
                   </Typography>
                   <Typography color={colors.grey[100]}>
-                    {transaction.admin.name}
+                    {transaction?.admin?.name}
                   </Typography>
                 </Box>
                 <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
