@@ -57,6 +57,7 @@ const Campaign = ({
     id,
     campaign_title,
     required_amount,
+    donated_amount,
     location,
     category,
     description,
@@ -83,8 +84,15 @@ const Campaign = ({
                     {category}
                 </Typography>
                 <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
-                    ${Number(required_amount).toFixed(2)}
+                    Campaign Target: ${""+Number(required_amount).toFixed(2)}
                 </Typography>
+                <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
+                Accumulated: ${""+Number(donated_amount).toFixed(2)}
+                </Typography>
+                <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
+                Completed: {""+Number(donated_amount/required_amount*100).toFixed(0)}%
+                </Typography>
+                
                 <LinearProgressWithLabel value={progress} />
 
 
@@ -142,8 +150,6 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
 
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)
-    //dummy data
-    const data = [{ id: 0, campaign_title: "Charity Drive for Salab Zadqan", required_amount: "1000", location: "Hyderabad", category: "Natural Disaster", description: "Donate to help out salab mutasireen", progress: 30 }, { id: 1, campaign_title: "Test 2", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 68 }, { id: 2, campaign_title: "Test 3", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 35 }, { id: 3, campaign_title: "Test 4", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 89 }, { id: 3, campaign_title: "Test 5", required_amount: "123", location: "Islamabad", category: "Meal", description: "Test 123", progress: 0 }]
     //restrict for smaller screens
     const isNonMobile = useMediaQuery("(min-width: 1000px)")
 
@@ -447,6 +453,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                         id,
                                         campaign_title,
                                         required_amount,
+                                        donated_amount,
                                         location,
                                         category,
                                         description,
@@ -458,6 +465,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                         id={id}
                                         campaign_title={campaign_title}
                                         required_amount={required_amount}
+                                        donated_amount={donated_amount}
                                         location={location}
                                         category={category}
                                         description={description}
@@ -475,6 +483,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                 id,
                                 campaign_title,
                                 required_amount,
+                                donated_amount,
                                 location,
                                 category,
                                 description,
@@ -486,6 +495,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                 id={id}
                                 campaign_title={campaign_title}
                                 required_amount={required_amount}
+                                donated_amount={donated_amount}
                                 location={location}
                                 category={category}
                                 description={description}

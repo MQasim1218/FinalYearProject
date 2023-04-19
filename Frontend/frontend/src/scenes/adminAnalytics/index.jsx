@@ -236,7 +236,6 @@ const AdminAnalytics = () => {
       </Box>
 
       <Box mt="2rem">
-        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>Campaigns Info</Typography>
       </Box>
 
       <Box
@@ -249,7 +248,6 @@ const AdminAnalytics = () => {
         <Box
           gridColumn="span 12"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
         >
           <AllCampaigns isDashboard={true} title="Latest Donated Campaigns" subtitle="The last three recently donated campaigns of this user" />
         </Box>
