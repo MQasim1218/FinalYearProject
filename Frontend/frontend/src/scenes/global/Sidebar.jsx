@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar"
 import 'react-pro-sidebar/dist/css/styles.css'
-import { Box, IconButton, Typography, useTheme } from '@mui/material'
+import { Avatar, Box, IconButton, Typography, useTheme } from '@mui/material'
 import { Link } from "react-router-dom"
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -84,25 +84,14 @@ const Sidebar = () => {
                         {!isCollapsed && (
                             <Box mb="25px" >
                                 <Box display="flex" justifyContent="center" alignItems="center" >
-                                    {theme.palette.mode === "dark" ? (
+
                                         <img
                                             alt="Admin-photo"
                                             width="100px"
                                             height="100px"
-                                            src={`../../assets/admin 2.png`}
-                                            style={{ cursor: "pointer", borderRadius: "50%" }}
+                                            src={user.user.picture}
+                                            style={{ cursor: "pointer", borderRadius: "50%", objectFit: "cover" }}
                                         />
-                                    ) : (
-                                        <img
-                                            alt="Admin-photo"
-                                            width="100px"
-                                            height="100px"
-                                            src={`../../assets/admin.png`}
-                                            style={{ cursor: "pointer", borderRadius: "50%" }}
-                                        />
-                                    )}
-
-
 
                                 </Box>
 
@@ -113,7 +102,7 @@ const Sidebar = () => {
                                         fontWeight="bold"
                                         sx={{ m: "10px 0 0 0" }}
                                     >
-                                        {user?.user?.name}
+                                        {user?.user?.name || "admion" }
                                     </Typography>
                                 </Box>
                             </Box>

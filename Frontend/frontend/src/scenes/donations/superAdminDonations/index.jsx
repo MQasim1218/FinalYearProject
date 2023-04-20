@@ -4,7 +4,7 @@ import { tokens } from "../../../theme";
 import { mockDataDonations } from "../../../data/mockData";
 import Header from "../../../components/Header";
 import { useState } from "react";
-import { useAllSuperAdminDonationsQuery, useGetSuperAdminDonationsToAdminQuery } from "../../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery, useGetSuperAdminDonationsToAdminQuery } from "../../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { flattenObj } from '../../../misc/ArrayFlatten'
 import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -14,7 +14,7 @@ import StatBox from "../../../components/StatBox";
 import AssistWalkerOutlinedIcon from "@mui/icons-material/AssistWalkerOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
-import { AttachMoneyOutlined, PersonOutline } from "@mui/icons-material";
+import { AttachMoneyOutlined, EmojiEventsOutlined, PersonOutline, VolunteerActivismOutlined } from "@mui/icons-material";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 
 const SuperAdminDonations = ({ single_admin }) => {
@@ -29,20 +29,26 @@ const SuperAdminDonations = ({ single_admin }) => {
 
   // console.log("User logged in is: ", user?.user?._id)
 
-  const {
+  let {
     isError,
     error,
     isLoading,
     isSuccess,
     data: Donations
   } = useAllSuperAdminDonationsQuery()
-  const {
+
+  console.log("Donations up above: ", Donations)
+
+
+
+  let {
+    data: DonsToAdmin,
     isError: adminIsErr,
     error: adminErr,
     isLoading: adminIsLoadn,
     isSuccess: adminIsSuccess,
-    data: DonsToAdmin
-  } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
+    
+  } = useGetSuperAdminDonationsToAdminQuery()
 
 
   if (single_admin) {
@@ -113,8 +119,6 @@ const SuperAdminDonations = ({ single_admin }) => {
     else if (adminIsSuccess) {
       console.log("Super Admin Doations to Admin data: ", DonsToAdmin)
 
-
-
       let SupAdminDonations = DonsToAdmin?.map((don, ind) => ({
         ...don,
         createdAt: don.createdAt.slice(0, 10),
@@ -124,6 +128,8 @@ const SuperAdminDonations = ({ single_admin }) => {
         donor_phone: don?.donor.contact,
         donated_on: don?.donordonationId?.createdAt.slice(0, 10)
       }))
+
+
 
       // lets see if we need to flatten the objects 
       // .map((don) => flattenObj(don))
@@ -145,43 +151,27 @@ const SuperAdminDonations = ({ single_admin }) => {
 
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
-      { field: "createdAt", headerName: "Donation Date" },
+      { field: "createdAt", headerName: "Given At", flex:1 },
       {
         field: "name",
-        headerName: "Name",
+        headerName: "Admin Name",
         flex: 1,
         cellClassName: "name-column--cell",
       },
-      {
-        field: "age",
-        headerName: "Age",
-        type: "number",
-        headerAlign: "left",
-        align: "left",
-      },
-      {
-        field: "phone",
-        headerName: "Phone Number",
-        flex: 1,
-      },
+
       {
         field: "email",
-        headerName: "Email",
-        flex: 1,
-      },
-      {
-        field: "address",
-        headerName: "Address",
-        flex: 1,
-      },
-      {
-        field: "city",
-        headerName: "City",
+        headerName: "Admin Email",
         flex: 1,
       },
       {
         field: "amount",
-        headerName: "Donation Amount",
+        headerName: "Given Amount ($)",
+        flex: 1,
+      },
+      {
+        field: "category",
+        headerName: "Category",
         flex: 1,
       },
       {
@@ -224,6 +214,39 @@ const SuperAdminDonations = ({ single_admin }) => {
     } else if (isError) { SupAdminDonsGrid = <h3>Error: {error.message}</h3> }
   }
 
+  const adminDonationCount = {};
+
+
+  console.log("Donations: ", Donations)
+// iterate through each donation object in DonsToAdmin
+Donations.forEach(donation => {
+  const adminId = donation?._id;
+  
+  // if this is the first donation for this admin, initialize the count to 1
+  if (!adminDonationCount[adminId]) {
+    adminDonationCount[adminId] = 1;
+  } else {
+    // increment the count if this admin has already received donations
+    adminDonationCount[adminId]++;
+  }
+});
+
+// get the admin with the highest donation count
+const maxDonationsAdmin = Object.keys(adminDonationCount).reduce((a, b) => adminDonationCount[a] > adminDonationCount[b] ? a : b);
+
+// get the admin object with the highest donation count
+const maxDonationsAdminObj = Donations.find(donation => donation?._id === maxDonationsAdmin).admin;
+
+let highestOneTimeAmount = 0;
+
+Donations.forEach(donation => {
+  const amount = donation.amount;
+
+  if (amount > highestOneTimeAmount) {
+    highestOneTimeAmount = amount;
+  }
+});
+
   return (
     
     <Box m="20px">
@@ -250,11 +273,12 @@ const SuperAdminDonations = ({ single_admin }) => {
       borderRadius="10px"
     >
       <StatBox
-        title="55"
+        title={single_admin ? DonsToAdmin?.length : Donations?.length}
         subtitle="Total Donations Made"
         progress={false}
+        // increase={}
         icon={
-          <AttachMoneyOutlined
+          <VolunteerActivismOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }
@@ -269,7 +293,7 @@ const SuperAdminDonations = ({ single_admin }) => {
       borderRadius="10px"
     >
       <StatBox
-        title="18-Mar-23"
+        title={single_admin ? DonsToAdmin[0]?.createdAt.slice(0,10) : Donations[0]?.createdAt.slice(0,10)}
         subtitle="Latest Donation"
         progress={false}
         icon={
@@ -288,7 +312,7 @@ const SuperAdminDonations = ({ single_admin }) => {
       borderRadius="10px"
     >
       <StatBox
-        title="Admin 1"
+        title={maxDonationsAdminObj.name}
         subtitle="Most Donations Made To"
         progress={false}
         icon={
@@ -308,11 +332,11 @@ const SuperAdminDonations = ({ single_admin }) => {
       borderRadius="10px"
     >
       <StatBox
-        title="10"
-        subtitle="Active Campaigns"
+        title={"$"+highestOneTimeAmount}
+        subtitle="Highest One Time Donation"
         progress={false}
         icon={
-          <CampaignOutlinedIcon
+          <EmojiEventsOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }

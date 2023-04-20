@@ -69,11 +69,13 @@ const GetAllAdmins = async (req, res, next) => {
 const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
+        console.log(req.body)
+        
         let usr = await AdminModel.signup(req.body)
 
         if (!usr) {
 
-            console.log("Cannot create an admin. SOme error occured!")
+            console.log("Cannot create an admin. Some error occured!")
             return res.send("Admin creation failed!")
         }
         let { user, token } = usr
@@ -108,6 +110,8 @@ const UpdateAdmin = async (req, res, next) => {
             email: req.body.email,
             age: req.body.age,
             password: req.body.password,
+            chatId: req.body.chatId,
+            picture: req.body.picture,
             contact: req.body.contact
         }
     )
@@ -149,6 +153,7 @@ const ChangeDetails = async (req, res, next) => {
             email: req.body.email,
             age: req.body.age,
             password: req.body.password,
+            chatId: req.body.chatId,
             contact: req.body.contact
         }
     )

@@ -92,7 +92,7 @@ const UserSidebar = () => {
                                     ml="15px"
                                 >
                                     <Typography variant="h3" color={colors.grey[100]}>
-                                        {user?.user?.name}
+                                        Donor
                                     </Typography>
                                     <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                                         <MenuOutlinedIcon />
@@ -105,23 +105,13 @@ const UserSidebar = () => {
                         {!isCollapsed && (
                             <Box mb="25px">
                                 <Box display="flex" justifyContent="center" alignItems="center">
-                                    {theme.palette.mode === "dark" ? (
-                                        <img
+                                <img
                                             alt="User-photo"
                                             width="100px"
                                             height="100px"
-                                            src={`../../assets/User 2.png`}
-                                            style={{ cursor: "pointer", borderRadius: "50%" }}
+                                            src={user.user.picture}
+                                            style={{ cursor: "pointer", borderRadius: "50%", objectFit: "cover" }}
                                         />
-                                    ) : (
-                                        <img
-                                            alt="User-photo"
-                                            width="100px"
-                                            height="100px"
-                                            src={`../../assets/User.png`}
-                                            style={{ cursor: "pointer", borderRadius: "50%" }}
-                                        />
-                                    )}
                                 </Box>
 
                                 <Box textAlign="center">
@@ -131,7 +121,7 @@ const UserSidebar = () => {
                                         fontWeight="bold"
                                         sx={{ m: "10px 0 0 0" }}
                                     >
-                                        {user?.user?.name | "User"}
+                                        {user?.user?.name || "User"}
 
                                     </Typography>
                                 </Box>

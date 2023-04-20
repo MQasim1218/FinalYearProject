@@ -38,7 +38,7 @@ export const adminApi = createApi({
             providesTags: (id) => [{ type: 'Admin', id: id }]
         }),
 
-        // 👨‍👨‍👦 Create a new Admin in the database!!📷
+        // 👨‍👨‍👦 Create a new Admin in the database!!
         createAdmin: builder.mutation({
             query: admin_data => ({
                 url: '/',

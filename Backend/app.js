@@ -24,6 +24,7 @@ var campaignsSpecRouter = require('./routes/Campaigns/CampaignSpecRouter');
 var adminDonationRouter = require('./routes/Donations/AdminDonRouter');
 var donorDonationRouter = require('./routes/Donations/DonorDonRouter');
 var superAdminDonationRouter = require('./routes/Donations/SupAdminDonRtr');
+var chatRouter = require('./routes/Chat/chatRouter');
 
 // TODO: Reports and Analytics routers need to be configured as required!!  
 
@@ -58,6 +59,8 @@ app.use('/superAdminDonations', superAdminDonationRouter);
 
 app.use('/gen_campaigns', campaignsGenRouter);
 app.use('/spec_campaigns', campaignsSpecRouter);
+
+app.use('/chat', chatRouter);
 
 
 // catch 404 and forward to error handler

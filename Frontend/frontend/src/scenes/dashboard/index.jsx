@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 // Import Redux Hooks for ...
 import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
 import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
-import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 import { useAdminCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";

@@ -9,16 +9,20 @@ import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CalendarChart from "../../components/CalendarChart";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { activityData as data } from "../../data/mockData";
 import { Navigation } from "@mui/icons-material";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useSingleAdminDonationsQuery } from "../../app/redux-features/Donations/AdminDonations/AdminDonsSlice";
+import { useSingleAdminDonationsQuery } from "../../app/redux-features/donations/AdminDonations/AdminDonsSlice";
 import { useGetDonorsForSingleAdminQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+import { PersonOutlineOutlined } from "@mui/icons-material";
 
+const Donors = ({ single_donor }) => {
+  let { data: donsFromDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllDonorsDonationsQuery()
 
-const Donors = ({ single_admin }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -44,7 +48,9 @@ const Donors = ({ single_admin }) => {
   } = useGetDonorsForSingleAdminQuery(user?.user?._id)
 
 
-  if (!single_admin) {
+
+
+  if (!single_donor) {
 
 
     // Get all the donors that have donated to a perticular campaign.
@@ -126,12 +132,12 @@ const Donors = ({ single_admin }) => {
       donors = donors.map((donor) => ({ ...donor, id: donor._id }))
       DonorsStatBox = (
         <StatBox
-          title={donors.length}
-          subtitle="Donors Donated"
+          title={donors?.length}
+          subtitle="Total Donors"
           progress={false}
           // increase="+9% This Month dyn"
           icon={
-            <AttachMoneyOutlinedIcon
+            <PersonOutlineOutlined
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
@@ -142,12 +148,12 @@ const Donors = ({ single_admin }) => {
 
       DonsByDonorsStatBox = < StatBox
         // ! title={donors?.reduce((prev, val) => prev + val.amount, 0)}
-        title={"10500"}
-        subtitle="Total Donations"
+        title={donsFromDonors?.length}
+        subtitle="Total Donations Made By Donors"
         progress={false}
         // increase={"+25% in " + currentYear}
         icon={
-          < AttachMoneyOutlinedIcon
+          < VolunteerActivismOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }
             }
           />
@@ -222,7 +228,7 @@ const Donors = ({ single_admin }) => {
       DonorsStatBox = (
         <StatBox
           title={singleAdmin_donors?.length}
-          subtitle="Donors Donated"
+          subtitle="Total Donors"
           progress={false}
           // increase="+9% This Month dyn"
           icon={

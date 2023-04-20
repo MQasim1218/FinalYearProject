@@ -10,9 +10,9 @@ import AlertModal from "../../components/AlertModal";
 
 import { useEffect } from "react";
 import axios from "axios";
-import { useDonateToAdminMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useDonateToAdminMutation } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
-import { useAllDonorsDonationsQuery } from "../../app/redux-features/Donations/DonorDonations/DonorDonsSlice";
+import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 // import axios from "axios"
 
 //initializing all inputs with their keys

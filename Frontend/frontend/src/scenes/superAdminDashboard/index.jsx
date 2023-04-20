@@ -17,7 +17,7 @@ import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
-import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 
 
 /**
@@ -475,7 +475,7 @@ const SuperAdminDashboard = () => {
                     {transaction._id.slice(0, 8)}
                   </Typography>
                   <Typography color={colors.grey[100]}>
-                    {transaction.admin.name}
+                    {transaction?.admin?.name}
                   </Typography>
                 </Box>
                 <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>

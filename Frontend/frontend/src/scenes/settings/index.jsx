@@ -11,59 +11,74 @@ import axios from "axios";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import PersonIcon from '@mui/icons-material/Person';
 import { useDropzone } from "react-dropzone";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 
-const initialValues = {
-  name: "",
-  email: "",
-  password: "",
-  chatId: "",
-  userType: "",
-  picture:"",
-};
+const Settings = () => {
 
-const userSchema = yup.object().shape({
-  name: yup.string().required("Required"),
-  email: yup.string().required("Required"),
-  password: yup.string().required("Required"),
-  chatId: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-  userType: yup.string().required("Required"),
-});
-
-
-
-
-const Register = () => {
-
-  
+  const {user} = useAuthContext()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
   const [open, setOpen] = useState(false)
-  const [picture, setProfileImage] = useState("https://res-console.cloudinary.com/deymti8ua/thumbnails/v1/image/upload/v1680606112/Y2xkLXNhbXBsZS0y/grid_landscape");
-  const [fileUrl, setFileUrl] = useState(null);
+  const [openTrue, setOpenTrue] = useState(false)
+  const [profileImage, setProfileImage] = useState(user?.user?.picture);
+  const [fileUrl, setFileUrl] = useState(user?.user?.picture);
+  
+  const initialValues = {
+    name: user?.user?.name || "",
+    email: user?.user?.email || "",
+    password: "",
+    chatId: "",
+    picture: user?.user?.picture,
+  };
+  
+  const userSchema = yup.object().shape({
+    name: yup.string().required("Required"),
+    email: yup.string().required("Required"),
+    password: yup.string().required("Required"),
+    chatId: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+  });
 
+  const id = user?.user?._id;
 
-  // UseSignUp hook to authenticate and store user to the database!
-  const { signup, loadn, err } = useSignUp()
+  console.log("Checking Admin ID: ",id)
+
+  const userType = JSON.parse(localStorage.getItem('userType'));
 
   const handleFormSubmit = async (values) => {
-    values.picture = picture;
-    console.log("Form values: ", values);
-    console.log("Checking with mubashir:",values.picture)
+    
+    // values.picture = picture;
+
+    console.log("Checking Values: ",values)
+    const { name, email, password, chatId, picture} = values;
+    const data = { name, email, password, chatId, picture:profileImage };
+    console.log("Checking Data: ",data)
     try {
-      const response = await signup(values);
-      console.log("SignUP Response: ", response);
-      if (response === false) {
-        navigate("/");
-      } else {
-        setOpen(true);
-      }
+      const response = await axios.patch( `http://localhost:5000/${userType}/update/${id}`,data);
+      console.log("Update Response: ", response);
+
+      const {email, chatId} = response.data
+     
+      const userChatID = localStorage.getItem('chatId');
+    
+      const chatUpdate = await axios.patch(`https://api.chatengine.io/users/${userChatID}/`, {
+        username: email,
+        secret: chatId,
+      }, {
+        headers: {
+          'Private-Key': process.env.REACT_APP_PRIVATE_KEY,
+        },
+      });
     } catch (error) {
       console.log(error);
       setOpen(true);
     }
+    setOpenTrue(true)
   };
+
+
+  
 
 
   const handleClose = (event, reason) => {
@@ -72,6 +87,8 @@ const Register = () => {
     }
 
     setOpen(false);
+    setOpenTrue(false);
+
   };
 
   const Dropzone = ({ setFieldValue }) => {
@@ -119,8 +136,8 @@ const Register = () => {
 
 
   return (
-    <Box padding="20px" height="auto" width="50vh" m="2% 0 0 38%" border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]}>
-      <Header title="Register" subtitle="Enter your Registeration details" />
+    <Box  margin padding="20px" m="0 0 0 30%" height="auto" width="40%" border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]}>
+      <Header title="Settings" subtitle="Update your account details" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -147,7 +164,7 @@ const Register = () => {
               }}
             >
               <Box>
-                     <Dropzone value={values.picture} setFieldValue={setFieldValue} />
+                     <Dropzone value={profileImage} setFieldValue={setFieldValue} />
                    </Box>
               <TextField
                 fullWidth
@@ -200,35 +217,11 @@ const Register = () => {
                 error={!!touched.chatId && !!errors.chatId}
                 sx={{ gridColumn: "span 2" }}
               />
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  variant="filled"
-                  type="text"
-                  value={values.userType}
-                  name="userType"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.userType && !!errors.userType}
-                  // helperText={touched.userType && errors.userType}
-                  sx={{ gridColumn: "span 2" }}
-                >
-                  <MenuItem value={"donor"}>Donor</MenuItem>
-                  <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
-                  <MenuItem value={"admin"}>Admin</MenuItem>
-                </Select>
-              </FormControl>
             </Box>
 
             <Box display="grid" justifyContent="center" mt="20px">
               <Button disabled={isSubmitting} type="submit" color="secondary" variant="contained">
-              {isSubmitting? "Loading...":"Register"}
-              </Button>
-              <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Already have an account?</Typography>
-              <Button onClick={() => navigate('/')} type="submit" color="primary" variant="contained">
-                Login
+              {isSubmitting? "Loading...":"Update"}
               </Button>
             </Box>
           </form>
@@ -236,7 +229,12 @@ const Register = () => {
       </Formik>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-          Registeration Failed! Email already exists!
+          Update Failed!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openTrue} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Update Successful! Please log in again to view changes.
         </Alert>
       </Snackbar>
     </Box>
@@ -244,4 +242,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Settings

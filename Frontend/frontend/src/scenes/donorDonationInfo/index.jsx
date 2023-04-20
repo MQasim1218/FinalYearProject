@@ -26,8 +26,8 @@ import { useParams } from "react-router-dom";
 import { mockDataDonationInfo } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
-import { useDonorSingleDonationsQuery, useSingleDonorDonationsQuery } from '../../app/redux-features/Donations/DonorDonations/DonorDonsSlice';
-import { useAllSA_DonsFromDonorDonationQuery, useAllSuperAdminDonationsQuery } from '../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice';
+import { useDonorSingleDonationsQuery } from '../../app/redux-features/donations/DonorDonations/DonorDonsSlice';
+import { useAllSA_DonsFromDonorDonationQuery, useAllSuperAdminDonationsQuery } from '../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 const DonorDonationInfo = () => {

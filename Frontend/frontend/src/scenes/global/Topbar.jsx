@@ -9,12 +9,19 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import { useAuthContext } from "../../hooks/useAuthContext";
+
+
 
 const Topbar = () => {
     const navigate = useNavigate();
+    const {user} = useAuthContext()
+
+    const userType = JSON.parse(localStorage.getItem('userType'));
+
 
     //Grabs the theme in react using mui
     const theme = useTheme()
@@ -39,12 +46,18 @@ const Topbar = () => {
 
             {/*Icons*/}
             <Box display="flex">
-                
-
-                <IconButton onClick={async () => {
-                        window.open('http://127.0.0.1:5173/');
+                {userType === "admin" || "superadmin" ? (<IconButton onClick={async () => { navigate('/chat')
+                        ;
                     }}>
                     <MessageOutlinedIcon />
+                </IconButton>) : (null)}
+                
+                
+
+                <IconButton onClick={async () => { navigate('/settings')
+                        ;
+                    }}>
+                    <SettingsOutlinedIcon />
                 </IconButton>
 
                 <IconButton onClick={colorMode.toggleColorMode}>

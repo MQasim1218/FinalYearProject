@@ -5,7 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
-import { useRegisterDonorDonationMutation } from "../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useRegisterDonorDonationMutation } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import AlertModal from "../../components/AlertModal";
 import { useState } from "react";
 
@@ -24,7 +24,6 @@ const initialValues = {
 const userSchema = yup.object().shape({
   donation_title: yup.string().required("Required"),
   amount: yup.string().required("Required"),
-  description: yup.string().required("Required"),
   catagory: yup.string().required("Required"),
   donor: yup.string().required("Required"),
 });
@@ -138,9 +137,7 @@ const DonationRegistration = () => {
   const colors = tokens(theme.palette.mode)
 
   return (
-    <Box m="20px">
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Donation Registered!" />
-      
+    <Box m="20px">      
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
     Donation From Donor Registered Successfully!
@@ -230,11 +227,11 @@ const DonationRegistration = () => {
                 select
                 variant="filled"
                 type="text"
-                label="Category *"
+                label="Catagory *"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.catagory}
-                name=""
+                name="catagory"
                 error={!!touched.catagory && !!errors.catagory}
                 helperText={touched.catagory && errors.catagory}
                 sx={{ gridColumn: "span 2" }}

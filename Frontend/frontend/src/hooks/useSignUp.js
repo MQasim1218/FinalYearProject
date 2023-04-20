@@ -10,10 +10,20 @@ const useSignUp = () => {
 
     const signup = async (user) => {
         // user is an object created by the form details
+        try{
         setLoadn(false)
         setError(null)
+        console.log('signup values at use signup',user)
+        const {email, chatId} = user
+        
+        const chatSignup = await axios.post('http://localhost:5000/chat/signup',user)
+        console.log('chat signup response',chatSignup)
 
-        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user)
+        const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user, {
+            headers: {
+                "Private-Key": process.env.REACT_APP_PRIVATE_KEY
+            }
+        })
 
 
         if (!res.status < 300) {
@@ -36,6 +46,11 @@ const useSignUp = () => {
             setLoadn(false)
             return true
         }
+     } catch (error) {
+            console.log(error)
+        }
+        
+
     }
     return { signup, loadn, err }
 }

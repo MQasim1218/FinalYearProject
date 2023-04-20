@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 // Donation Reducers
-import { adminDonationsApi } from './redux-features/Donations/AdminDonations/AdminDonsSlice'
-import { donorDonationsApi } from './redux-features/Donations/DonorDonations/DonorDonsSlice'
-import { superadminDonationsApi } from './redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice'
+import { adminDonationsApi } from './redux-features/donations/AdminDonations/AdminDonsSlice'
+import { donorDonationsApi } from './redux-features/donations/DonorDonations/DonorDonsSlice'
+import { superadminDonationsApi } from './redux-features/donations/SupAdminDonations/SupAdminDonationsSlice'
 // import donorDonReducer from './redux-features/donations/DonorDonSlice'
 // import categoryDonReducer from './redux-features/donations/CategoriesDonSlice'
 

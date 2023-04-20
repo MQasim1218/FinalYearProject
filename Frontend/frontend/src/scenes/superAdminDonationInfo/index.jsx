@@ -25,8 +25,8 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import { useParams } from "react-router-dom";
 import { mockDataDonationInfo } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
-import { useGetSingleDonationQuery } from '../../app/redux-features/Donations/SupAdminDonations/SupAdminDonationsSlice';
-import { useGetDonationsFromSingle_SADonationQuery } from '../../app/redux-features/Donations/AdminDonations/AdminDonsSlice';
+import { useGetSingleDonationQuery } from '../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice';
+import { useGetDonationsFromSingle_SADonationQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 
 
 const SuperAdminDonationInfo = () => {

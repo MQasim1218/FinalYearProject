@@ -22,6 +22,7 @@ const donorSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
+        // unique: true,
         trim: true,
         validate(value) {
             if (!validator.isEmail(value)) {
@@ -40,7 +41,13 @@ const donorSchema = mongoose.Schema({
             }
         },
     },
-
+    chatId: {
+        type: String,
+        trim: true,
+    }, // required
+    picture:{
+        type: String,
+    },
     contact: {
         type: String,
         // required: true,
@@ -103,7 +110,7 @@ donorSchema.statics.login = async function (email, password) {
 
 donorSchema.statics.signup = async function (donor) {
     try {
-        let { name, age, email, password, contact, location } = donor
+        let { name, age, email, password, contact,chatId, picture, location } = donor
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
@@ -118,7 +125,9 @@ donorSchema.statics.signup = async function (donor) {
             name: name, email: email,
             password: passEncrypted,
             age: age, location: location,
-            contact: contact
+            contact: contact,
+            chatId: chatId,
+            picture: picture,
         })
 
         return { user, token: await createJWT(user._id) }

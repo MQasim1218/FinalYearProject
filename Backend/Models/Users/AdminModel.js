@@ -39,6 +39,13 @@ const adminSchema = mongoose.Schema({
             }
         },
     }, // required
+    chatId: {
+        type: String,
+        trim: true,
+    }, // required
+    picture:{
+        type: String,
+    },
     contact: {
         type: String,
         // required: true,
@@ -106,7 +113,8 @@ adminSchema.statics.login = async function (email, password) {
 
 adminSchema.statics.signup = async function (admin) {
     try {
-        let { name, age, email, password, contact, location } = admin
+        console.log('admin vaklues at backend signup',admin)
+        let { name, age, email, password, chatId, picture, contact, location } = admin
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
@@ -120,6 +128,8 @@ adminSchema.statics.signup = async function (admin) {
         const user = await this.create({
             name: name, email: email,
             password: passEncrypted,
+            chatId: chatId,
+            picture: picture,
             age: age, location: location,
             contact: contact
         })

@@ -23,6 +23,11 @@ let router = express.Router()
 
 router.post('/signup', AdminController.AddNewAdmin)
 router.post('/login', AdminController.SignInAdmin)
+router.patch('/update/:id', AdminController.UpdateAdmin)
+router.delete('/delete/:id', AdminController.DeleteAdmin)
+router.get('/get/:id', AdminController.GetAdmin)
+
+
 
 // router.use(authorize)
 
@@ -113,9 +118,7 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
 router.get('/:id/donors', AdminController.GetDonorsForAdminCampaigns)
 // Get Admin
-router.get('/:id', AdminController.GetAdmin)
 
-router.delete('/:id', AdminController.DeleteAdmin)
 
 router.patch('/:id', AdminController.UpdateAdmin)
 
