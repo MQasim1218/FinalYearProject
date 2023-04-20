@@ -22,7 +22,6 @@ import { useParams } from "react-router-dom";
 import { useSingleCampaignQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { mockDataDonationInfo3 } from "../../data/mockData";
-import { useParams } from "react-router-dom";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -95,7 +94,7 @@ const CampaignInfo = () => {
   // ! Get total donations donations for the campaingn
 
   let { data: campDonations, isError: isCampDonsError, isLoading: isCampDonsLoading, error: campDonsError, isSuccess: isCampDonsSuccess } = useSingleCampaignDonationsQuery(id)
-  let { data: camp, isError: isCampError, error, isCampLoading, isSuccess: isCampSuccess } = useSingleCampaignQuery(id)
+  let { data: camp } = useSingleCampaignQuery(id)
 
   //options for donors
   const donor_opts = [
@@ -124,7 +123,6 @@ const CampaignInfo = () => {
 
     console.log("The donations are: ", campDonations)
     console.log("Creation date: ", camp)
-    let a = 'asdasd'
 
 
   }, [campDonations, camp])
@@ -381,7 +379,7 @@ const CampaignInfo = () => {
             Donations to Campaign
           </Typography>
         </Box>
-        {campDonations?.map((transaction, i) => (
+        {campDonations?.map((transaction) => (
           <Box
 
             key={`${transaction._id}`}
