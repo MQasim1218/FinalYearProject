@@ -13,6 +13,7 @@
 
 const router = require('express').Router()
 const DonorDonationController = require('../../Controllers/Donations/DonorDonsCntr')
+const SupAdminDonCntr = require('../../Controllers/Donations/SupAdminDonsCntrlr')
 const authorize = require('../../middleware/authorization')
 
 
@@ -26,6 +27,8 @@ const authorize = require('../../middleware/authorization')
 
 // All the donation made by a donor.
 router.get('/single/:id', DonorDonationController.SingleDonation)
+
+router.post('/registerDonation', SupAdminDonCntr.RegisterDonorDonation)
 
 
 // All the donation made by a donor.

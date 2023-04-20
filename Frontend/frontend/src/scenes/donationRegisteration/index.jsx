@@ -8,6 +8,7 @@ import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useRegisterDonorDonationMutation } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import AlertModal from "../../components/AlertModal";
 import { useState } from "react";
+import { useSA_RegisterDonorDonationMutation } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 
 // import axios from "axios"
 
@@ -105,7 +106,15 @@ const DonationRegistration = () => {
   }
 
   // NOTE: Get the Mutator for Donor Donation
-  let [setDonorDonation, { data, isError, isLoading, isSuccess, error }] = useRegisterDonorDonationMutation()
+  let [
+    setDonorDonation,
+    {
+      data, isError,
+      isLoading, isSuccess,
+      error
+    }
+  ] = useSA_RegisterDonorDonationMutation()
+
   // On submit, all inputs are stored in values
   const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
