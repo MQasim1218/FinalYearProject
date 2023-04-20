@@ -94,7 +94,7 @@ function App(props) {
         <div className="app">
           {accountType && <Sidebars />}
           <main className="content">
-          {accountType.userType && <Topbar />}
+            {accountType.userType && <Topbar />}
             <Routes>
               {/* {accountType === "donor" ? (
                     <> */}
@@ -175,8 +175,8 @@ function App(props) {
               <Route path="/donors" element={<Donors />} />
               <Route path="/donordonations" element={<DonorDonations />} />
               <Route path="/admindonations" element={<AdminDonations />} />
-             
-              <Route path="/superadmindonations" element={<SuperAdminDonations />} />
+
+              <Route path="/superadmindonations" element={<SuperAdminDonations single_admin={false} />} />
               <Route path="/categorydonations" element={<CategoryDonations />} />
               <Route path="/registerdonation" element={<DonationRegistration />} />
               <Route path="/superdonation" element={<SuperDonation />} />
@@ -189,8 +189,8 @@ function App(props) {
               <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
               <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
               <Route path="/donordonationinfo/:id" element={<DonorDonationInfo />} />
-              <Route path="/chat" element={<Chat/>} />
-              <Route path="/settings" element={<Settings/>} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/settings" element={<Settings />} />
 
               {/* <Route path="*" /> */}
               {/* </>

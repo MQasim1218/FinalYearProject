@@ -6,7 +6,7 @@ import Header from "../../../components/Header";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { useAllAdminsDonationsQuery, useSingleAdminDonationsQuery } from '../../../app/redux-features/Donations/AdminDonations/AdminDonsSlice'
+import { useAllAdminsDonationsQuery, useSingleAdminDonationsQuery } from '../../../app/redux-features/donations/AdminDonations/AdminDonsSlice'
 import { flattenObj } from "../../../misc/ArrayFlatten";
 import { UserContext } from "../../../context/UserContext";
 import { useAuthContext } from "../../../hooks/useAuthContext";

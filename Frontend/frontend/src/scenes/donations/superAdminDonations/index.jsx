@@ -26,8 +26,9 @@ const SuperAdminDonations = ({ single_admin }) => {
 
   const { user } = useAuthContext()
   let SupAdminDonsGrid = <></>
+  // let Donations = [];
 
-  // console.log("User logged in is: ", user?.user?._id)
+  console.log("User logged in is: ", user?.user?._id)
 
   let {
     isError,
@@ -47,8 +48,8 @@ const SuperAdminDonations = ({ single_admin }) => {
     error: adminErr,
     isLoading: adminIsLoadn,
     isSuccess: adminIsSuccess,
-    
-  } = useGetSuperAdminDonationsToAdminQuery()
+
+  } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
 
 
   if (single_admin) {
@@ -148,10 +149,9 @@ const SuperAdminDonations = ({ single_admin }) => {
     } else if (adminIsErr) { SupAdminDonsGrid = <h3>Error: {adminErr?.message}</h3> }
 
   } else {
-
     const columns = [
       { field: "id", headerName: "ID", flex: 0.5 },
-      { field: "createdAt", headerName: "Given At", flex:1 },
+      { field: "createdAt", headerName: "Given At", flex: 1 },
       {
         field: "name",
         headerName: "Admin Name",
@@ -193,16 +193,15 @@ const SuperAdminDonations = ({ single_admin }) => {
     else if (isSuccess) {
       console.log("Super Admin Doations data: ", Donations)
 
-      let SupAdminDonations = Donations
-        .map((don, ind) => ({
-          ...don,
-          createdAt: don?.createdAt.slice(0, 10),
-          id: don._id,
-          ind: ind + 1,
-          // donor_name: don.donor.name,
-          // donor_phone: don.donor.contact,
-          // donated_on: don?.donordonationId?.createdAt.slice(0, 10)
-        }))
+      let SupAdminDonations = Donations?.map((don, ind) => ({
+        ...don,
+        createdAt: don?.createdAt.slice(0, 10),
+        id: don._id,
+        ind: ind + 1,
+        // donor_name: don.donor.name,
+        // donor_phone: don.donor.contact,
+        // donated_on: don?.donordonationId?.createdAt.slice(0, 10)
+      }))
         .map((don) => flattenObj(don))
 
       SupAdminDonsGrid = <DataGrid
@@ -218,131 +217,133 @@ const SuperAdminDonations = ({ single_admin }) => {
 
 
   console.log("Donations: ", Donations)
-// iterate through each donation object in DonsToAdmin
-Donations.forEach(donation => {
-  const adminId = donation?._id;
-  
-  // if this is the first donation for this admin, initialize the count to 1
-  if (!adminDonationCount[adminId]) {
-    adminDonationCount[adminId] = 1;
-  } else {
-    // increment the count if this admin has already received donations
-    adminDonationCount[adminId]++;
-  }
-});
+  // iterate through each donation object in DonsToAdmin
+  Donations?.forEach(donation => {
+    const adminId = donation?._id;
 
-// get the admin with the highest donation count
-const maxDonationsAdmin = Object.keys(adminDonationCount).reduce((a, b) => adminDonationCount[a] > adminDonationCount[b] ? a : b);
+    // if this is the first donation for this admin, initialize the count to 1
+    if (!adminDonationCount[adminId]) {
+      adminDonationCount[adminId] = 1;
+    } else {
+      // increment the count if this admin has already received donations
+      adminDonationCount[adminId]++;
+    }
+  });
 
-// get the admin object with the highest donation count
-const maxDonationsAdminObj = Donations.find(donation => donation?._id === maxDonationsAdmin).admin;
+  // get the admin with the highest donation count
+  const maxDonationsAdmin = Object.keys(adminDonationCount)?.reduce((a, b) => adminDonationCount[a] > adminDonationCount[b] ? a : b, 0);
 
-let highestOneTimeAmount = 0;
+  // get the admin object with the highest donation count
+  let maxDonationsAdminObj = Donations?.find(donation => donation?._id === maxDonationsAdmin).admin;
 
-Donations.forEach(donation => {
-  const amount = donation.amount;
+  let highestOneTimeAmount = 0;
 
-  if (amount > highestOneTimeAmount) {
-    highestOneTimeAmount = amount;
-  }
-});
+  Donations?.forEach(donation => {
+    const amount = donation.amount;
+
+    if (amount > highestOneTimeAmount) {
+      highestOneTimeAmount = amount;
+    }
+  });
 
   return (
-    
+
     <Box m="20px">
-     
+
       <Header
         title={"SUPERADMIN DONATIONS"} subtitle={"Manage SuperAdmin donations"}
       />
 
-       {/* Grids and Charts */}
-    <Box
-    display="grid"
-    gridTemplateColumns="repeat(12, 1fr)"
-    gridAutoRows="140px"
-    gap="20px">
+      {/* Grids and Charts */}
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px">
 
-    {/* ROW 1 */}
-   
-    <Box
-      gridColumn="span 3"
-      backgroundColor={colors.primary[400]}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="10px"
-    >
-      <StatBox
-        title={single_admin ? DonsToAdmin?.length : Donations?.length}
-        subtitle="Total Donations Made"
-        progress={false}
-        // increase={}
-        icon={
-          <VolunteerActivismOutlined
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />
-        }
-      />
-    </Box>
-    <Box
-      gridColumn="span 3"
-      backgroundColor={colors.primary[400]}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="10px"
-    >
-      <StatBox
-        title={single_admin ? DonsToAdmin[0]?.createdAt.slice(0,10) : Donations[0]?.createdAt.slice(0,10)}
-        subtitle="Latest Donation"
-        progress={false}
-        icon={
-          <CalendarMonthOutlinedIcon
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />
-        }
-      />
-    </Box>
-    <Box
-      gridColumn="span 3"
-      backgroundColor={colors.primary[400]}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="10px"
-    >
-      <StatBox
-        title={maxDonationsAdminObj.name}
-        subtitle="Most Donations Made To"
-        progress={false}
-        icon={
-          <PersonOutline
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />
-        }
-      />
-    </Box>
+        {/* ROW 1 */}
 
-    <Box
-      gridColumn="span 3"
-      backgroundColor={colors.primary[400]}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="10px"
-    >
-      <StatBox
-        title={"$"+highestOneTimeAmount}
-        subtitle="Highest One Time Donation"
-        progress={false}
-        icon={
-          <EmojiEventsOutlined
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="10px"
+        >
+          <StatBox
+            title={single_admin ? DonsToAdmin?.length : Donations?.length}
+            subtitle="Total Donations Made"
+            progress={false}
+            // increase={}
+            icon={
+              <VolunteerActivismOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
           />
-        }
-      />
-    </Box>
-    </Box>
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="10px"
+        >
+          {
+            Donations && <StatBox
+              title={single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10)}
+              subtitle="Latest Donation"
+              progress={false}
+              icon={
+                <CalendarMonthOutlinedIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          }
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="10px"
+        >
+          <StatBox
+            title={maxDonationsAdminObj?.name}
+            subtitle="Most Donations Made To"
+            progress={false}
+            icon={
+              <PersonOutline
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="10px"
+        >
+          <StatBox
+            title={"$" + highestOneTimeAmount}
+            subtitle="Highest One Time Donation"
+            progress={false}
+            icon={
+              <EmojiEventsOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+      </Box>
 
 
       <Box

@@ -42,7 +42,7 @@ router.get('admin/:admin_id/range/:start_date/:end_date/:category?', SupAdminDon
 // Get single supadmin donation
 router.get('/single/:id?', SupAdminDonCntr.GetSingleDonation)
 
-// Get single supadmin donation
+// Get single donor donations made to the super admin.
 router.get('/singleDonorDonation/:id?', SupAdminDonCntr.GetDonsForSingleDonorDonation)
 
 

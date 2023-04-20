@@ -15,6 +15,7 @@ const donorFields = ["name", "email", "contact"]
 
 
 const GetAllDonations = async (req, res, next) => {
+    console.log("Getting all the SuperAdmin donations!! 👓👓")
     try {
         let cat = req.params.category
         if (cat == null) {
@@ -22,6 +23,8 @@ const GetAllDonations = async (req, res, next) => {
                 .find({})
                 .populate("admin", adminFeilds)
                 .exec()
+
+            console.log(Dons)
             res.json(Dons)
         } else {
             let Dons = await SuperAdminDons.find({ category: cat }).exec()
@@ -231,13 +234,14 @@ const GetDonations_TimeRange = async (req, res, next) => {
 // All the doantions made to a particular admin since day 1
 const AllDonationsToAdmin = async (req, res, next) => {
 
-    console.log("Getting the donations made to one Admin by the SuperAdmin!")
+
+    console.log("Getting the donations made to one Admin by the SuperAdmin! 🎇🎇🎗")
     try {
         let cat = req.params.category
         let adminId = req.params.admin_id
+        console.log("The Admin id is: ", adminId)
 
-        if (adminId != undefined) {
-            console.log("The Admin id is: ", adminId)
+        if (adminId != null) {
 
             if (cat == null) {
                 let Dons = await SuperAdminDons.find({ admin: adminId })
@@ -265,6 +269,8 @@ const AllDonationsToAdmin = async (req, res, next) => {
                 }).exec()
                 res.json(Dons)
             }
+        } else {
+            res.json({})
         }
     } catch (error) {
         console.log('error encountered while retreiving Super Admin donations!\nError: ', error)

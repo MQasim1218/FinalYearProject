@@ -17,7 +17,15 @@ import { useState, useEffect } from "react";
 import { VolunteerActivismOutlined } from "@mui/icons-material";
 
 const Admins = () => {
-  let { data: donsToAdmins, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllSuperAdminDonationsQuery()
+  let {
+    data: donsToAdmins,
+    isLoading: isDonsLoading,
+    error: donsError,
+    isError: isDonsError,
+    isSuccess: IsDonsSuccess
+  } = useAllSuperAdminDonationsQuery()
+
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentYear = new Date().getFullYear();
@@ -35,26 +43,26 @@ const Admins = () => {
     console.log(chatEmail, chatPassword)
 
 
-    const chatGet = await axios.delete(`https://api.chatengine.io/users/me/`,{
+    const chatGet = await axios.delete(`https://api.chatengine.io/users/me/`, {
       headers: {
-          "Project-ID": process.env.REACT_APP_PROJECT_ID,
-          "User-Name": chatEmail,
-          "User-Secret": chatPassword
+        "Project-ID": process.env.REACT_APP_PROJECT_ID,
+        "User-Name": chatEmail,
+        "User-Secret": chatPassword
       }
-}
-  )
+    }
+    )
 
 
 
-  console.log("Chat Get:",chatGet)
+    console.log("Chat Get:", chatGet)
 
 
-    const response = await axios.delete( `http://localhost:5000/admin/delete/${id}`);
-    
-    
-setOpen(true);
+    const response = await axios.delete(`http://localhost:5000/admin/delete/${id}`);
 
-  setRefresh (!refresh)
+
+    setOpen(true);
+
+    setRefresh(!refresh)
 
   }
 
@@ -127,11 +135,11 @@ setOpen(true);
       type: 'actions',
       headerName: "Delete",
       width: 100,
-      
+
       getActions: (row) => [
-        <GridActionsCellItem  icon={<DeleteIcon />} onClick={() => handleDelete(row.id)} label="Delete" />,
+        <GridActionsCellItem icon={<DeleteIcon />} onClick={() => handleDelete(row.id)} label="Delete" />,
       ],
-      
+
     },
   ];
 
@@ -150,10 +158,9 @@ setOpen(true);
   if (adminsIsLoading) {
     AdminsStatBox = <h3>Loading Content 🧇🧇🍖</h3>
   }
-
   else if (adminsIsSuccess) {
     admins = admins.map(admin => ({ ...admin, id: admin._id }))
-   
+
     AdminsStatBox = (
       <StatBox
         // title={ }
@@ -173,6 +180,8 @@ setOpen(true);
     AdminsDataGrid = < DataGrid checkboxSelection rows={admins} columns={columns} components={{ Toolbar: GridToolbar }} />
   }
   else if (isAdminsError) AdminsStatBox = <h3>{`Error: ${adminsError.message}`}</h3>
+
+
 
   // ! Donations to Admin
   if (isDonsLoading) DonsToAdminsStatBox = <h3>Loading Content</h3>
@@ -308,10 +317,10 @@ setOpen(true);
         }
       </Box>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           User Deleted! Please Refresh
         </Alert>
-        </Snackbar>
+      </Snackbar>
     </Box>
   );
 }
