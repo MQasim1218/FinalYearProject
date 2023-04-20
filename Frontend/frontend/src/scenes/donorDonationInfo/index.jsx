@@ -147,7 +147,12 @@ const DonorDonationInfo = () => {
   // }, [])
   // const { isError, error, isLoading, isSuccess, data: Donations } = useSingleDonorsDonationQuery(id)
 
-  let { data: donor_donation, isSuccess: donationIsSuccess } = useDonorSingleDonationsQuery(id)
+  let {
+    data: donor_donation,
+    isSuccess: donationIsSuccess
+  } = useDonorSingleDonationsQuery(id)
+
+  
   if (donationIsSuccess) {
     console.log("Retrieved donor donation is: ", donor_donation)
   }

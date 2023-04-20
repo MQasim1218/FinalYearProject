@@ -19,15 +19,15 @@ export const donorDonationsApi = allDonorDonationsApi.injectEndpoints({
         }),
 
 
-        // donorSingleDonations: builder.query({
-        //     query: (donationId, category) => ({
-        //         url: category == null ? `single/${donationId}` : `${donationId}/${category}`,
-        //         method: 'GET',
-        //     }),
-        //     providesTags: [{ type: 'DonorDonations' }]
-        // }),
+        donorSingleDonations: builder.query({
+            query: (donationId, category) => ({
+                url: category == null ? `single/${donationId}` : `${donationId}/${category}`,
+                method: 'GET',
+            }),
+            providesTags: [{ type: 'DonorDonations' }]
+        }),
 
-        
+
 
         singleDonorYearDonations: builder.query({
             query: (donorId, year, category) => ({
