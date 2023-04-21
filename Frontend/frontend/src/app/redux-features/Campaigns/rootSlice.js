@@ -18,6 +18,9 @@ const Campaigns = createApi({
             {
                 query: () => `/`,
                 providesTags: ['AllCampaigns', "Campaign"]
+                // {
+                //     'AllCam': data...
+                // }
             }
         ),
 

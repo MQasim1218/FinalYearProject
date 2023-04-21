@@ -11,21 +11,29 @@ export const superadminDonationsApi = createApi({
         //     headers.set('authorization', `Bearer ${token}`)
         // }
     }),
-    tagTypes: ['SuperAdminDonations', "SuperAdminDonationsToAdmin"],
+    tagTypes: ['SuperAdminDonations', "SuperAdminDonationsToAdmin", "SingleDontion", "DonorDonationsToSuperAdminDonations"],
 
 
     endpoints: (builder) => ({
 
-        // 👨‍👨‍👦 Fetch all Admins 📷
+        // 👨‍👨‍👦 Fetch all Donations made to the Admins 📷
         allSuperAdminDonations: builder.query({
             query: (category) => category == null ? `/` : `/${category}`,
-            providesTags: ['SuperAdminDonationsToAdmin']
+            providesTags: ['SuperAdminDonations']
         }),
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getSuperAdminDonationsToAdmin: builder.query({
             query: (admin_id, category) => category == null ? `/admin/${admin_id}` : `/admin/${admin_id}/${category}`,
             providesTags: (admin_id) => [{ type: 'SuperAdminDonationsToAdmin', id: admin_id }]
+            /**
+             * { SupAdDonsToAdmin: 
+             *      {
+             *          1: ...dons
+             *          2: ...dons
+             *      }
+             * }
+             */
         }),
 
         // 🎅🏼🥓Fetch a single donation. Need to check the backend API now!
@@ -84,22 +92,22 @@ export const superadminDonationsApi = createApi({
         }),
 
 
-        registerDonorDonation: builder.mutation({
-            query: (don_donation) => ({
-                url: `/registerDonation`,
-                body: don_donation,
-                method: 'POST'
-            }),
+        // registerDonorDonation: builder.mutation({
+        //     query: (don_donation) => ({
+        //         url: `/registerDonation`,
+        //         body: don_donation,
+        //         method: 'POST'
+        //     }),
 
-            // Pick out data and prevent nested properties in a hook or selector
-            transformResponse: response => response.data,
+        //     // Pick out data and prevent nested properties in a hook or selector
+        //     transformResponse: response => response.data,
 
-            // Pick out errors and prevent nested properties in a hook or selector
-            transformErrorResponse: response => response.status,
+        //     // Pick out errors and prevent nested properties in a hook or selector
+        //     transformErrorResponse: response => response.status,
 
-            // ! Need to make sure if these are the tags to renewww!!
-            invalidatesTags: (id) => ['SuperAdminDonations', 'SuperAdminDonationsToAdmin']
-        })
+        //     // ! Need to make sure if these are the tags to renewww!!
+        //     invalidatesTags: (id) => ['DonorDonationsToSuperAdminDonations']
+        // })
     })
 })
 
@@ -111,6 +119,6 @@ export const {
 
     // STUB: All mutations down here!!
     useDonateToAdminMutation,
-    useRegisterDonorDonationMutation,
+    // useRegisterDonorDonationMutation,
     useAllSA_DonsFromDonorDonationQuery
 } = superadminDonationsApi
