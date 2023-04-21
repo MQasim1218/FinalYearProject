@@ -11,7 +11,7 @@ import { flattenObj } from "../../../misc/ArrayFlatten";
 import { UserContext } from "../../../context/UserContext";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import StatBox from "../../../components/StatBox";
-import { AttachMoneyOutlined } from "@mui/icons-material";
+import { AttachMoneyOutlined, VolunteerActivismOutlined } from "@mui/icons-material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { PersonOutline } from "@mui/icons-material";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
@@ -44,23 +44,22 @@ const AdminDonations = ({ single_admin }) => {
 
   if (!single_admin) {
     const columns = [
-      { field: "id", headerName: "ID", flex: 0.5 },
-      { field: "ind", headerName: "Num" },
+      { field: "ind", headerName: "Num", flex: 0.5 },
       { field: "createdAt", headerName: "Date" },
       {
         field: "name",
-        headerName: "Name",
+        headerName: "Admin Name",
         flex: 1,
         cellClassName: "name-column--cell",
       },
       {
-        field: "contact",
-        headerName: "Phone Number",
+        field: "email",
+        headerName: "Admin Email",
         flex: 1,
       },
       {
-        field: "email",
-        headerName: "Admin Email",
+        field: "donorName",
+        headerName: "Donor Name",
         flex: 1,
       },
       {
@@ -98,7 +97,7 @@ const AdminDonations = ({ single_admin }) => {
       // console.log("Admins Doations data: ", adminDonations)
       let adminDonations = []
       adminDonations = Donations
-        .map((don, ind) => ({ ...don, id: don._id, ind }))
+        .map((don, ind) => ({ ...don,createdAt: don?.createdAt.slice(0, 10), id: don._id, ind }))
         .map((don) => flattenObj(don))
       console.log("Admin donations are: ", adminDonations)
 
@@ -115,23 +114,22 @@ const AdminDonations = ({ single_admin }) => {
 
   } else {
     const columns = [
-      { field: "id", headerName: "ID", flex: 0.5 },
       { field: "ind", headerName: "Num", flex: 0.5 },
       { field: "createdAt", headerName: "Date" },
       {
         field: "name",
-        headerName: "Name",
+        headerName: "Admin Name",
         flex: 1,
         cellClassName: "name-column--cell",
       },
       {
-        field: "contact",
-        headerName: "Phone Number",
+        field: "email",
+        headerName: "Admin Email",
         flex: 1,
       },
       {
-        field: "email",
-        headerName: "Admin Email",
+        field: "donorName",
+        headerName: "Donor Name",
         flex: 1,
       },
       {
@@ -169,7 +167,7 @@ const AdminDonations = ({ single_admin }) => {
       // console.log("Admins Doations data: ", adminDonations)
       let adminDonations = []
       adminDonations = singleDonations
-        .map((don, index) => ({ ...don, id: don._id, count: index + 1 }))
+        .map((don, index) => ({ ...don, id: don._id, createdAt: don?.createdAt.slice(0, 10), count: index + 1 }))
         .map((don) => flattenObj(don))
       console.log("Admin donations are: ", adminDonations)
 
@@ -211,11 +209,11 @@ const AdminDonations = ({ single_admin }) => {
           borderRadius="10px"
         >
           <StatBox
-            title="55"
+            title={single_admin ? singleDonations?.length : Donations?.length}
             subtitle="Total Donations Made"
             progress={false}
             icon={
-              <AttachMoneyOutlined
+              <VolunteerActivismOutlined
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }

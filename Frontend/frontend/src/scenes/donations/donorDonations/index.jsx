@@ -15,6 +15,8 @@ import { PersonOutline } from "@mui/icons-material";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+import { useQuery } from 'react-query';
+
 
 const DonorDonations = () => {
   const navigate = useNavigate();
@@ -22,13 +24,14 @@ const DonorDonations = () => {
   const colors = tokens(theme.palette.mode);
   let ref = useRef(null)
 
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "ind", headerName: "Num", flex: 0.5 },
     { field: "createdAt", headerName: "Date", flex: 1 },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Donor Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
@@ -36,7 +39,7 @@ const DonorDonations = () => {
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      flex: 1.5,
     }, 
     {
       field: "total",
