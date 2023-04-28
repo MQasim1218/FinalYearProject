@@ -1,6 +1,8 @@
 const express = require('express')
 const AdminModel = require('../../Models/Users/AdminModel')
 const AdminController = require('../../Controllers/Users/AdminCntr')
+const SuperAdminController = require('../../Controllers/Users/SuperAdminCntrlr')
+const SuperAdminModel = require('../../Models/Users/SuperAdmin')
 const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
 const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
 const authorize = require('../../middleware/authorization')
@@ -21,11 +23,11 @@ let router = express.Router()
  * TODO: 
  */
 
-router.post('/signup', AdminController.AddNewAdmin)
-router.post('/login', AdminController.SignInAdmin)
+// router.post('/signup', SuperAdminController.AddNewAdmin)
+router.post('/login', SuperAdminController.SignIn)
 router.patch('/update/:id', AdminController.UpdateAdmin)
 
-router.use(authorize)
+// router.use(authorize)
 
 // localhost:5000/admin/signup
 router.get(

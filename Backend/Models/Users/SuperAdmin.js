@@ -68,7 +68,7 @@ const SuperAdminSchema = mongoose.Schema({
 
     DonorReference: {
         name: String,
-        
+
     }
 
     // Audit Reports Done by the Particular Admin
@@ -87,23 +87,41 @@ const createJWT = async (_id) => {
     return jwt.sign({ id: _id, userType: "Admin" }, secret, { expiresIn: '1h' })
 }
 
-adminSchema.statics.login = async function (email, password) {
+SuperAdminSchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
-    let user = await this.findOne({ email: email }).exec()
-    console.log("I am here!!")
-    if (!user) {
-        console.log("No admin with the provided email")
-        return null
-    }
-    let token = await createJWT(user._id)
-    console.log(token)
-    if (bcrypt.compareSync(password, user.password)) return { admin: user, token: token }
+
+    // console.log("I am here!!")
+    // if (!user) {
+    //     console.log("No admin with the provided email")
+    //     return null
+    // }
+    // let token = await createJWT(user._id)
+    // console.log(token)
+    // let EMAIL, PASSWORD;
+
+
+    let NAME = process.env.SUPERADMIN_NAME
+    let EMAIL = process.env.SUPERADMIN_EMAIL
+    let PASSWORD = process.env.SUPERADMIN_PASSWORD
+
+    console.log("Name: ", NAME, "\tEmail: ", EMAIL, "\tPassword: ", PASSWORD)
+    console.log("Email Provided: ", email, "\tPassword: ", PASSWORD)
+
+
+
+    // Make the token for the SuperAdmin!
+    let token = await createJWT(EMAIL)
+    console.log("Token generated: ", token)
+
+    // This needs to be handled with bcrypt hashing for the production!!
+    if (password === PASSWORD && email === EMAIL) return { user: { NAME, EMAIL }, token: token }
+
     console.log("The password provided is incorrect!")
-    return null
+    return { user: null, token: null }
 
 }
 
-adminSchema.statics.signup = async function (admin) {
+SuperAdminSchema.statics.signup = async function (admin) {
     try {
         let { name, age, email, password, contact, location } = admin
         const salt = await bcrypt.genSalt(13)
@@ -131,6 +149,6 @@ adminSchema.statics.signup = async function (admin) {
     }
 }
 
-const Admin = mongoose.model('admin', adminSchema)
+const SuperAdmin = mongoose.model('superadmin', SuperAdminSchema)
 
-module.exports = Admin
+module.exports = SuperAdmin
