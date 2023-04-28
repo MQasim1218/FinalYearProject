@@ -14,12 +14,14 @@
 
 const SuperAdminModel = require("../../Models/Users/SuperAdmin")
 const dotenv = require('dotenv')
+const fs = require('fs');
+const envfile = require('envfile');
 
 
 
 // NOTE: This function returns all the Donations made by the SuperAdmin. 
 const UpdateAccountDetails = async (req, res, next) => {
-    
+
 }
 
 const SignIn = async (req, res, next) => {
@@ -42,8 +44,10 @@ const SignIn = async (req, res, next) => {
 // Get all the Donations 
 const ChangePassword = async (req, res, next) => {
     try {
+        console.log("We are here, resetting the Superadmins email!!")
+
         // Set the Pass to the new pass!
-        process.env.SUPERADMIN_PASSWORD = req.body.new_pass
+        process.env.SUPERADMIN_PASSWORD = req.body.pass
 
         dotenv.config({ path: "../../.env" })
 
@@ -54,16 +58,31 @@ const ChangePassword = async (req, res, next) => {
 }
 
 // Get Donations made in a month...
+// FIXME: UNable to update the SuperAdmin Email or password in the Backend!
 const ChangeEmail = async (req, res, next) => {
     try {
+        console.log("We are here, resetting the Superadmins email!!")
         // Set the Pass to the new pass!
-        process.env.SUPERADMIN_EMAIL = req.body.new_email
+        console.log("Email recieved is: ", req.body.email)
+        let sp = "../../.env"
+        let parsedFile = envfile.parse(sp);
+
+        process.env.SUPERADMIN_EMAIL = req.body.email
+
+        // Write the updated values back to the .env file
+        fs.writeFileSync(sp, envfile.stringify(parsedFile));
+
+
+
+        console.log(process.env.SUPERADMIN_EMAIL)
 
         dotenv.config({ path: "../../.env" })
 
         console.log("Super Admin Updated successfully!!")
+        res.json({ email: process.env.SUPERADMIN_EMAIL, pass: process.env.SUPERADMIN_PASSWORD })
     } catch (err) {
         console.log(err.message)
+        next(err)
     }
 }
 
@@ -75,8 +94,4 @@ module.exports = {
     SignIn,
     ChangeEmail,
     ChangePassword,
-
-    // SuperAdmin Actions!!
-    DonateToAdmin, // Send money to Admin
-    RegisterDonorDonation
 }

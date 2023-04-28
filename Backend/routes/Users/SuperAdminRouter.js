@@ -25,7 +25,12 @@ let router = express.Router()
 
 // router.post('/signup', SuperAdminController.AddNewAdmin)
 router.post('/login', SuperAdminController.SignIn)
-router.patch('/update/:id', AdminController.UpdateAdmin)
+router.patch('/change_email', SuperAdminController.ChangeEmail)
+router.patch('/change_pass', SuperAdminController.ChangePassword)
+
+
+// FIXME: This needs tobe implemented!!
+// router.get('/forgot_password', SuperAdminController.)
 
 // router.use(authorize)
 
