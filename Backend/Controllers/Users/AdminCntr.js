@@ -70,7 +70,7 @@ const AddNewAdmin = async (req, res, next) => {
     try {
         console.log("Got a request for creating a new Admin")
         console.log(req.body)
-        
+
         let usr = await AdminModel.signup(req.body)
 
         if (!usr) {
@@ -119,14 +119,14 @@ const UpdateAdmin = async (req, res, next) => {
     res.json(newAdmin)
 }
 
-const DeleteAdmin = async (req, res, next) => {
-    AdminModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
-        if (error) {
-            next(error)
-        }
-        res.json(data)
-    })
-}
+// const DeleteAdmin = async (req, res, next) => {
+//     AdminModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+//         if (error) {
+//             next(error)
+//         }
+//         res.json(data)
+//     })
+// }
 
 // Authentication Operations
 const ChangeAuthDetails = async (req, res, next) => {
@@ -259,7 +259,7 @@ module.exports = {
     GetAdmin,
     AddNewAdmin,
     UpdateAdmin,
-    DeleteAdmin,
+    // DeleteAdmin,
     SignInAdmin,
     GetAllAdmins,
     ChangeDetails,

@@ -28,6 +28,12 @@ router.post('/login', SuperAdminController.SignIn)
 router.patch('/change_email', SuperAdminController.ChangeEmail)
 router.patch('/change_pass', SuperAdminController.ChangePassword)
 
+router.delete('', (req, res, next) => {
+    // ! Need to figure a way to (not) the super admin from the env file.
+
+
+})
+
 
 // FIXME: This needs tobe implemented!!
 // router.get('/forgot_password', SuperAdminController.)
@@ -122,7 +128,7 @@ router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
 // Get Admin
 router.get('/:id', AdminController.GetAdmin)
 
-router.delete('/:id', AdminController.DeleteAdmin)
+// router.delete('/:id', AdminController.DeleteAdmin)
 
 router.patch('/:id', AdminController.UpdateAdmin)
 

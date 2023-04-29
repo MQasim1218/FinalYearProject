@@ -26,6 +26,20 @@ router.post('/login', DonorController.DonorSignIn)
 //Donor Update
 router.patch('/update/:id', DonorController.UpdateDonor)
 
+// Mark donor as deleted!!
+router.patch(
+    '/remove_donor/:donor_id',
+    async (req, res, next) => {
+        let id = req.params.donor_id
+
+        let result = await DonorModel.findByIdAndUpdate(id, { deleted: true }).exec()
+        if (result) {
+            console.log("The user got deleted sucesfully")
+            res.json(result)
+        }
+    }
+)
+
 // Index page for Donors. Nothing here!
 // router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
 

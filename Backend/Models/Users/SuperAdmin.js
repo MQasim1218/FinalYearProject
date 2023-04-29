@@ -49,6 +49,12 @@ const SuperAdminSchema = mongoose.Schema({
         trim: true,
     }, // required
 
+
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+
     location: {
         type: {
             type: String,

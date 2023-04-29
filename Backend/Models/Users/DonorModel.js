@@ -45,7 +45,7 @@ const donorSchema = mongoose.Schema({
         type: String,
         trim: true,
     }, // required
-    picture:{
+    picture: {
         type: String,
     },
     contact: {
@@ -53,6 +53,12 @@ const donorSchema = mongoose.Schema({
         // required: true,
         trim: true
     },
+
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+
     location: {
         type: {
             type: String,
@@ -65,6 +71,7 @@ const donorSchema = mongoose.Schema({
             default: [0, 0]
         }
     },
+
     donated_campaigns_specific: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
@@ -110,7 +117,7 @@ donorSchema.statics.login = async function (email, password) {
 
 donorSchema.statics.signup = async function (donor) {
     try {
-        let { name, age, email, password, contact,chatId, picture, location } = donor
+        let { name, age, email, password, contact, chatId, picture, location } = donor
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 

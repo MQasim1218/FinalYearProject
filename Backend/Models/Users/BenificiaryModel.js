@@ -45,6 +45,12 @@ const benificairySchema = mongoose.Schema({
         // required: true,
         trim: true,
     },
+
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+
     location: {
         type: {
             type: String,
@@ -56,6 +62,9 @@ const benificairySchema = mongoose.Schema({
             // required: true
         }
     },
+
+
+
     requested_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
