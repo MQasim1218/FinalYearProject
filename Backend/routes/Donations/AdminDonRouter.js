@@ -43,10 +43,10 @@ router.get('/superdonation/:id', AdminDonationController.Superdonation)
 router.get('/camp/:camp_id', AdminDonationController.GetCampaignDonations)
 
 // Get donations made by Admins to Campaings in a year -- Filterable by catogory
-router.get('/:year/:category?', AdminDonationController.GetYearDonations)
+router.get('/donations/:year/:category?', AdminDonationController.GetYearDonations)
 
-// Get donations made by the SuperAdmin in a Month
-router.get('/:year/:month/:category?', AdminDonationController.GetMonthDonations)
+// Get donations made by the Admins in a Month
+router.get('/month_donations/:year/:month/:category?', AdminDonationController.GetMonthDonations)
 
 
 // REVIEW: Donations between a Specified timeperiod

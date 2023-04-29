@@ -1,5 +1,6 @@
 const GenCamps = require('../../Models/Campaings/GeneralCampaigns')
 const AdminDons = require('../../Models/Donations/DonationAdmin')
+const toISODate = require('../../utils/isoDate')
 
 const adminFeilds = ['id', 'name', 'age', 'email', 'contact']
 const campFeilds = ['id', 'campaign_title', 'category', 'location']
@@ -115,39 +116,56 @@ const Superdonation = async (req, res, next) => {
 }
 
 // Get Donations made by all the Admins in a month...
+// ANCHOR: ISO Date issue fixed!!
 const GetMonthDonations = async (req, res, next) => {
     try {
+
+        console.log("Here to get the donations of all the admins")
         let cat = req.params.category
         let year = req.params.year
         let month = req.params.month
-        if (cat == null) {
-            // Get all the donations by the super Admin in a month.
-            let Dons = await SuperAdminDons
-                .find({
-                    createdAt: {
-                        $gte: ISODate(`${year}-${month}-01`),
-                        $lt: ISODate(`${year}-${month + 1}-01`)
-                    }
-                })
-                .populate('admin')
-                .populate('campaign', campFeilds)
-                .exec()
-            res.json(Dons)
-        } else {
-            let Dons = await SuperAdminDons
-                .find({
-                    createdAt: {
-                        $gte: ISODate(`${year}-${month}-01`),
-                        $lt: ISODate(`${year}-${month + 1}-01`)
-                    },
-                    category: cat
-                })
-                .populate('admin')
-                .populate('campaign', campFeilds)
-                .exec()
 
-            res.json(Dons)
+        if (month != null && date != null) {
+
+            let startDate_ISO = toISODate(`${year}-${month}-01`)
+            let endDate_ISO = toISODate(`${year}-${month + 1}-01`)
+
+            if (startDate_ISO == null || endDate_ISO == null) return res.send("Invalid date format!")
+
+            if (cat == null) {
+                // Get all the donations by the super Admin in a month.
+                let Dons = await SuperAdminDons
+                    .find({
+                        createdAt: {
+                            $gte: startDate_ISO,
+                            $lte: endDate_ISO
+                        }
+                    })
+                    .populate('admin')
+                    .populate('campaign', campFeilds)
+                    .exec()
+                res.json(Dons)
+            } else {
+                let Dons = await SuperAdminDons
+                    .find({
+                        createdAt: {
+                            $gte: startDate_ISO,
+                            $lt: endDate_ISO
+                        },
+                        category: cat
+                    })
+                    .populate('admin')
+                    .populate('campaign', campFeilds)
+                    .exec()
+
+                res.json(Dons)
+            }
+        } else {
+            return res.send("Month or Year not provided!!")
         }
+
+
+
     } catch (error) {
         console.log('error encountered while retrieving Siepr Admin donations!\nError: ', error)
         res.send(error)
