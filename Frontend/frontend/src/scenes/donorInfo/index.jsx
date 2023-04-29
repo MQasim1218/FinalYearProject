@@ -23,6 +23,7 @@ const DonorInfo = () => {
   let { id } = useParams();
   const [donations, setDonations] = useState([])
   const [max_don, setMaxDon] = useState(-1)
+  const [accountTier, setAccountTier] = useState("")
 
   // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   const { user } = useAuthContext()
@@ -61,20 +62,18 @@ const DonorInfo = () => {
               variant="h5"
               fontWeight="600"
             >
-              {transaction._id.slice(0, 8)}
+              {transaction.donation_title}
             </Typography>
-            <Typography color={colors.grey[100]}>
-              {transaction.donor.name}
-            </Typography>
+  
           </Box>
-          <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
           <Box
             backgroundColor={colors.greenAccent[500]}
             p="5px 10px"
             borderRadius="4px"
             color={colors.grey[900]}
           >
-            ${transaction.amount}
+            ${transaction.amount + transaction.amountDonated}
           </Box>
         </Box>
       ))
@@ -90,6 +89,31 @@ const DonorInfo = () => {
       setMaxDon(donorDons?.reduce((max, don) => don.amount > max ? don.amount : max, 0));
     }
   }, [isDonorDonsSuccess, donorDons])
+
+
+  let maxDonation = 0;
+
+  for (let i = 0; i < donorDons?.length; i++) {
+    const donation = donorDons[i];
+    if (donation.amountDonated > maxDonation) {
+      maxDonation = donation.amountDonated;
+    }
+  }
+
+  let totalDonations = 0;
+
+for (let i = 0; i < donorDons?.length; i++) {
+  const donation = donorDons[i];
+  totalDonations += donation.amountDonated + donation.amount;
+}
+
+if(totalDonations <= 500){
+  setAccountTier("Bronze")
+}
+else if(totalDonations <= 1000){
+  setAccountTier("Silver")}
+else if(totalDonations >= 5000){
+  setAccountTier("Gold")}
 
 
   return (<Box m="20px">
@@ -125,8 +149,7 @@ const DonorInfo = () => {
             />
           }
           // participated="5"
-          joindate={user?.user?.createdAt.slice(0, 10) || ""}
-          latestdonation={donations && donations[donations.length - 1]?.createdAt}
+          joindate={donor?.createdAt.slice(0, 10) || ""}
         />
       </Box>
       <Box
@@ -137,9 +160,9 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={max_don || "loading"}
-          subtitle="Highest One Time Donation"
-          increase="This Month: $190"
+          title={"Number of Donations: "+donorDons?.length}
+          subtitle={"Highest One Time Donation: $"+maxDonation}
+          increase={"Total Donations: $"+totalDonations}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -156,8 +179,7 @@ const DonorInfo = () => {
       >
         <StatBox
           title="Account Tier"
-          subtitle="Gold"
-          increase="Awarded by: ADMIN"
+          subtitle={accountTier}
           icon={
             <LocalPoliceOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

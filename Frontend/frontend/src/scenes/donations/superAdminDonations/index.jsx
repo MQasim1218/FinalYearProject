@@ -63,18 +63,6 @@ const SuperAdminDonations = ({ single_admin }) => {
       },
       { field: "createdAt", headerName: "Given At", flex: 1 },
       {
-        field: "name",
-        headerName: "Admin Name",
-        flex: 1,
-        cellClassName: "name-column--cell",
-      },
-
-      {
-        field: "email",
-        headerName: "Admin Email",
-        flex: 1,
-      },
-      {
         field: "amount",
         headerName: "Given Amount ($)",
         flex: 1,

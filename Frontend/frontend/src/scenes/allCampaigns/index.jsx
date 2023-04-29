@@ -265,9 +265,9 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
 
         if (user) {
             fetchCampaigns().then((data) => {
-                console.log(data)
                 setIsLoadn(false)
                 let camps = data.map((camp, indx) => ({ ...camp, id: indx + 1 }))
+                console.log("HERE IS CAMPAIGN DATA:"+camps)             
                 setCampaigns(camps)
             })
         } else {
@@ -461,7 +461,6 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                                     }
                                 ) => (
                                     <Campaign
-                                        key={id}
                                         id={id}
                                         campaign_title={campaign_title}
                                         required_amount={required_amount}
@@ -491,7 +490,6 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
                             }
                         ) => (
                             <Campaign
-                                key={id}
                                 id={id}
                                 campaign_title={campaign_title}
                                 required_amount={required_amount}

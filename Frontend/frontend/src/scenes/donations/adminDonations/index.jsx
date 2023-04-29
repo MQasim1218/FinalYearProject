@@ -185,6 +185,18 @@ const AdminDonations = ({ single_admin }) => {
     } else if (singleIsError) { AdminsDonsGrid = <h3>Error: {singleError.message}</h3> }
   }
 
+   
+  let maxDonation = 0;
+  // Loop through each donation object in the singleDonations array
+  singleDonations?.forEach(donation => {
+    // Check if the current donation amount is greater than the previous maximum donation amount
+    if (donation.amount > maxDonation) {
+      // Update the maximum donation amount if the current donation amount is greater
+      maxDonation = donation.amount;
+    }
+  });
+  
+
   return (
     <Box m="20px">
       <Header
@@ -267,7 +279,7 @@ const AdminDonations = ({ single_admin }) => {
           borderRadius="10px"
         >
           <StatBox
-            title="$5000"
+            title={maxDonation}
             subtitle="Highest Donation To Beneficiary"
             progress={false}
             icon={

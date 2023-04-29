@@ -24,12 +24,12 @@ import { useParams } from "react-router-dom";
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useGetAdminQuery } from '../../app/redux-features/users/AdminSlice';
 
+
+
 const AdminAnalytics = () => {
   let { id } = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-
 
   const {
     data: adminDons,

@@ -26,7 +26,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AlertModal from "../../components/AlertModal";
-
+import { useParams } from "react-router-dom";
 //initializing all inputs with their keys
 const initialValues = {
   total_amount: "",
@@ -120,8 +120,7 @@ const CampaignInfo = () => {
     setTotDon(campDonations?.reduce((acc, curr) => acc + curr.amount, 0))
     setDonors(new Set(campDonations?.map(don => don.donorId._id)).size)
 
-    console.log("The donations are: ", campDonations)
-    console.log("Creation date: ", camp)
+   
 
 
   }, [campDonations, camp])
