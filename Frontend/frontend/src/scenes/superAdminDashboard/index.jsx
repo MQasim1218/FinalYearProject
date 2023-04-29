@@ -457,8 +457,7 @@ const SuperAdminDashboard = () => {
           {
             donations && donations.map((transaction, i) => (
               <Box
-
-                key={`${transaction._id}`}
+                key={`${transaction.donation_title}`}
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
