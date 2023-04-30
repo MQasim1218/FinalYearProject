@@ -76,7 +76,14 @@ const DonorSignIn = async (req, res, next) => {
 
 const AllDonors = async (req, res, next) => {
     console.log("FrontEnd Request Here")
-    DonorModel.find({}).exec(function (error, data) {
+
+    // Either the data obj has no entity deleted, or the entitiy is set to false
+    DonorModel.find({
+        $or: [
+            { deleted: { $exists: false } },
+            { deleted: false }
+        ]
+    }).sort({ createdAt: 'desc' }).exec(function (error, data) {
         if (error) {
             return next(error);
         }
@@ -145,7 +152,7 @@ const Donate = async (req, res, next) => {
 }
 
 const UpdateDonor = async (req, res, next) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)   
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     try {
         await DonorModel.findByIdAndUpdate(
             req.params.id,

@@ -61,13 +61,22 @@ const GetYearDonations = async (req, res, next) => {
         let cat = req.params.category
         let year = req.params.year
 
+        if (year == null) return res.status(400).send("provide a value for the year!!")
+
+        let stDate = toISODate(`${year}-01-01`)
+        let endDate = toISODate(`${year + 1}-01-01`)
+
+        if (stDate == null || endDate == null) return res.status(400).send("provide a value for the year!!")
+
+
         if (cat == null) {
             // Get all the donations by the super Admin in a year.
+
             let Dons = await AdminDons
                 .find({
                     createdAt: {
-                        $gte: ISODate(`${year}-01-01`),
-                        $lt: ISODate(`${year + 1}-01-01`)
+                        $gte: stDate,
+                        $lt: endDate
                     }
                 })
                 .populate('admin')
@@ -79,8 +88,8 @@ const GetYearDonations = async (req, res, next) => {
             let Dons = await AdminDons
                 .find({
                     createdAt: {
-                        $gte: ISODate(`${year}-01-01`),
-                        $lt: ISODate(`${year + 1}-01-01`)
+                        $gte: stDate,
+                        $lt: endDate
                     },
                     category: cat
                 })
@@ -177,14 +186,28 @@ const GetDonations_After = async (req, res, next) => {
     try {
         let cat = req.params.category
         let start_date = req.params.start_date
+
+        if (start_date == null) {
+            console.log("Start date is null")
+            return res.send("Start Date is undefined!!")
+        }
+
+        let stDate = toISODate(start_date)
+        if (stDate == null) {
+            console.log("Invalid Date provided!")
+            res.status(400).send("Invalid Date Format Provided!")
+        }
+
+
         if (cat == null) {
             // Get all the donations by the super Admin in a month.
             let Dons = await AdminDons
                 .find({
                     createdAt: {
-                        $gte: ISODate(`${start_date}`),
+                        $gte: stDate,
                     }
                 })
+                .sort({ createdAt: 'desc' })
                 .populate('admin')
                 .populate('campaign', campFeilds)
                 .exec()
@@ -194,10 +217,11 @@ const GetDonations_After = async (req, res, next) => {
             let Dons = await AdminDons
                 .find({
                     createdAt: {
-                        $gte: ISODate(`${start_date}`),
+                        $gte: stDate,
                     },
                     category: cat
                 })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
                 .populate('admin')
                 .populate('campaign', campFeilds)
                 .exec()
@@ -214,21 +238,46 @@ const GetDonations_Before = async (req, res, next) => {
     try {
         let cat = req.params.category
         let end_date = req.params.end_date
+
+        if (end_date == null) {
+            console.log("Ending date is null")
+            return res.send("End-Date is undefined!!")
+        }
+
+        let endDate = toISODate(end_date)
+        if (endDate == null) {
+            console.log("Invalid Date provided!")
+            res.status(400).send("Invalid Date Format Provided!")
+        }
+
+
         if (cat == null) {
             // Get all the donations by the super Admin in a month.
-            let Dons = await AdminDons.find({
-                createdAt: {
-                    $lte: ISODate(`${end_date}`),
-                }
-            }).exec()
+            let Dons = await AdminDons
+                .find({
+                    createdAt: {
+                        $lte: endDate,
+                    }
+                })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
+
             res.json(Dons)
         } else {
-            let Dons = await AdminDons.find({
-                createdAt: {
-                    $lte: ISODate(`${end_date}`),
-                },
-                category: cat
-            }).exec()
+            let Dons = await AdminDons.
+                find({
+                    createdAt: {
+                        $lte: endDate,
+                    },
+                    category: cat
+                })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
             res.json(Dons)
         }
     } catch (error) {
@@ -278,17 +327,30 @@ const AdminAllDonations = async (req, res, next) => {
         console.log("In here")
         let cat = req.params.category
         let adminId = req.params.adminId
+        if (adminId == null) {
+            return res.status(400).send("No admin id provided!")
+        }
 
         if (cat == null) {
             // Get all the donations made by the Donors
-            let Dons = await AdminDons.find({ admin: adminId }).exec()
+            let Dons = await AdminDons.find({ admin: adminId })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         } else {
             // Get all the Donations by all the donors for a particular category.
             let Dons = await AdminDons.find({
                 category: cat,
                 admin: adminId
-            }).exec()
+            })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+            
             res.json(Dons)
         }
     } catch (error) {
