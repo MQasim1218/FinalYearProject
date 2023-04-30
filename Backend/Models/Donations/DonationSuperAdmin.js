@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 
 const supAdminDonationSchema = mongoose.Schema({
 
+    
     amount: {
         type: Number,
         required: true,

@@ -1,5 +1,7 @@
 const GenCamps = require('../../Models/Campaings/GeneralCampaigns')
 const AdminDons = require('../../Models/Donations/DonationAdmin')
+const SADonationModel = require('../../Models/Donations/DonationSuperAdmin')
+
 const toISODate = require('../../utils/isoDate')
 
 const adminFeilds = ['id', 'name', 'age', 'email', 'contact']
@@ -139,6 +141,7 @@ const GetMonthDonations = async (req, res, next) => {
             let startDate_ISO = toISODate(`${year}-${month}-01`)
             let endDate_ISO = toISODate(`${year}-${month + 1}-01`)
 
+            // FIXME: This is technically my fault, since I am creating the date!
             if (startDate_ISO == null || endDate_ISO == null) return res.send("Invalid date format!")
 
             if (cat == null) {
@@ -325,6 +328,7 @@ const AdminAllDonations = async (req, res, next) => {
     try {
 
         console.log("In here")
+
         let cat = req.params.category
         let adminId = req.params.adminId
         if (adminId == null) {
@@ -350,7 +354,7 @@ const AdminAllDonations = async (req, res, next) => {
                 .populate('admin')
                 .populate('campaign', campFeilds)
                 .exec()
-            
+
             res.json(Dons)
         }
     } catch (error) {
@@ -369,25 +373,52 @@ const AdminYearDonations = async (req, res, next) => {
         let cat = req.params.category
         let adminId = req.params.adminId
         let year = req.params.year
+
+        if (adminId == null) {
+
+            return res.status(400).send("No admin id provided!")
+        }
+
+        if (year == null) {
+            return res.status(400).send("No value for year provided!")
+        }
+
+        let stDate = toISODate(`${year}-01-01`)
+        let endDate = toISODate(`${year + 1}-01-01`)
+
+        if (stDate == null || endDate == null) {
+            return res.status(400).send("Invalid Date format provided!")
+        }
+
         if (cat == null) {
             // Get all the donations by the super Admin in a year.
             let Dons = await AdminDons.find({
                 createdAt: {
-                    $gte: new Date(`${year}-01-01`).toISOString(),
-                    $lt: new Date(`${year + 1}-01-01`).toISOString()
+                    $gte: stDate,
+                    $lt: endDate
                 },
                 admin: adminId
-            }).exec()
+            })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         } else {
             let Dons = await AdminDons.find({
                 createdAt: {
-                    $gte: ISODate(`${year}-01-01`),
-                    $lt: ISODate(`${year + 1}-01-01`)
+                    $gte: stDate,
+                    $lt: endDate
                 },
                 category: cat,
                 admin: adminId
-            }).exec()
+            })
+                .sort({ createdAt: 'desc' }) // sort in decending order! Latest donations first!!
+                .populate('admin')
+                .populate('campaign', campFeilds)
+                .exec()
+
             res.json(Dons)
         }
     } catch (error) {
@@ -533,14 +564,23 @@ const AdminDonations_TimeRange = async (req, res, next) => {
 
 const AdminCampaignDonationsAll = async (req, res, next) => {
     try {
+        // Since only the owner of the campaign can donate to the campaign,
+        // there is no need to worry about the admin ID.
+
         let campId = req.params.campId
         let Dons = await AdminDons.find({
             campaign: campId
-        }).exec()
+        })
+            .sort({ createdAt: 'desc' })
+            .populate('admin')
+            .populate('campaign', campFeilds)
+            .exec()
+
+
         res.json(Dons)
 
     } catch (error) {
-        console.log('error encountered while retrieving Admin donations!\nError: ', error)
+        console.log('error encountered while retrieving Admin donations to a campaign!\nError: ', error)
         res.send(error)
     }
 }
@@ -549,14 +589,32 @@ const AdminCampaignDonationsYear = async (req, res, next) => {
         let campId = req.params.campId
         let year = req.params.year
 
+        if (campId == null || year == null) {
+            console.log("Campaign Id recieved is: ", campId)
+            console.log("Year recieved is: ", year)
+            return res.status(400).send("Reqest params are not valid!!")
+        }
+
+        let stDate = toISODate(`${year}-01-01`)
+        let endDate = toISODate(`${year + 1}-01-01`)
+
+        if (stDate == null || endDate == null) {
+            return res.status(400).send("Failed to parse date!! Invalid date params!")
+        }
+
         // Get all the donations by the super Admin in a year.
         let Dons = await AdminDons.find({
             createdAt: {
-                $gte: ISODate(`${year}-01-01`),
-                $lt: ISODate(`${year + 1}-01-01`)
+                $gte: stDate,
+                $lt: endDate
             },
             campaign: campId
-        }).exec()
+        })
+            .sort({ createdAt: 'desc' })
+            .populate('admin')
+            .populate('campaign', campFeilds)
+            .exec()
+
         res.json(Dons)
 
     } catch (error) {
@@ -666,14 +724,22 @@ const AdminCampaignDonations_TimeRange = async (req, res, next) => {
 const SingleDonation = async (req, res, next) => {
     try {
         let donationId = req.params.id
+        if (donationId == null) {
+            res.status(400).send("The donation Id cannot be null")
+        }
+
         let Don = await AdminDons.find({
             _id: donationId
-        }).exec()
+        })
+            .populate('admin')
+            .populate('campaign', campFeilds)
+            .exec()
+
         res.json(Don)
 
     } catch (error) {
-        console.log('error encountered while retrieving Admin donations!\nError: ', error)
-        res.send(error)
+        console.log('error encountered while retrieving a single donation by the Admin!\nError: ', error.message)
+        res.send(error.message)
     }
 }
 
@@ -681,6 +747,16 @@ const DonateToCampaign = async (req, res, next) => {
     // ! Awesome work.. Half the Backend isnt done
 
     // let camp_id = req.body.camp_id
+    /**
+     * When a dontion is made by the admin to a campaign
+     * 1. Update the Amount donated to the campaign.
+     * 2. Add the donation to the list of donations received by the campaign.
+     * 3. Add the campaign to the list of campaigns supported by the donor! 
+     * ! IF IT IS NOT ALREADY THERE!!
+     * 4. Decrease the total amount of money available with the admin
+     * 5. Increase the total donated amount from the donor's donation and the superadmin donation.  
+     */
+
     try {
         let don = await AdminDons.create(req.body)
         if (don) {
@@ -688,10 +764,21 @@ const DonateToCampaign = async (req, res, next) => {
             console.log("Created donation.. Waiting for campaign to update!!")
             let amount = parseInt(req.body.amount)
 
+            // Update the amount donated to campaign
             let camp = await GenCamps.findById(req.body.campaign).exec()
             camp.donated_amount += amount
             camp.save()
             // res.json({ don, camp })
+
+            // ANCHOR: I am working here!!            
+            SADonationModel.findByIdAndUpdate(
+                don.supAdminDonation,
+                {
+                    $inc: {}
+                }
+            )
+
+
             res.send("The donation was sucessfull")
         } else {
             res.send('Could not register the donation to the campaign!')

@@ -474,13 +474,19 @@ const DonateToAdmin = async (req, res, next) => {
         let { admin, donordonationId, amount } = req.body
 
         let adminUpdated = await Admin.findByIdAndUpdate(admin, {
-            $inc: { amount }
+            $inc: {
+                donated: amount,
+                remaining: -amount
+            }
         })
 
         console.log(adminUpdated)
 
         let donorDonationUpdated = await DonorDons.findByIdAndUpdate(donordonationId, {
-            $inc: { amount: -amount, amountDonated: amount }
+            $inc: {
+                amountRemaining: -amount,
+                amountDonated: amount
+            }
         })
 
         console.log("Updated Donor donation entry!!: ", donorDonationUpdated)

@@ -1,11 +1,14 @@
 const { default: mongoose } = require("mongoose");
 
 const adminDonationSchema = mongoose.Schema({
+
+    // Total Amount donated by the Admin to any campaign
     amount: {
         type: Number,
         required: true,
         default: 0
     },
+
     admin: {
         type: mongoose.Types.ObjectId,
         ref: 'admin',
@@ -21,6 +24,8 @@ const adminDonationSchema = mongoose.Schema({
         ref: 'donor',
         required: true,
     },
+
+    // Reference to where the donation is coming from!!
     supAdminDonation: {
         type: mongoose.Types.ObjectId,
         required: true,
