@@ -24,15 +24,16 @@ import { useParams } from "react-router-dom";
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useGetAdminQuery } from '../../app/redux-features/users/AdminSlice';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { EmojiEventsOutlined, VolunteerActivismOutlined } from '@mui/icons-material';
 
 
 
 const AdminAnalytics = () => {
   const { user } = useAuthContext()
   let { id } = useParams();
+  const [accountTier, setAccountTier] = useState("")
 
-  
-  if(id === undefined) {
+  if (id === undefined) {
     id = user?.user?._id
   }
 
@@ -76,13 +77,13 @@ const AdminAnalytics = () => {
           {/* {console.log(transaction)} */}
           <Box>
 
-            <Typography
+            {/* <Typography
               color={colors.greenAccent[500]}
               variant="h5"
               fontWeight="600"
             >
               {transaction._id.slice(0, 8)}
-            </Typography>
+            </Typography> */}
 
             <Typography color={colors.grey[100]}>
               {transaction.admin.name}
@@ -104,7 +105,37 @@ const AdminAnalytics = () => {
   }
   if (isAdminErr) console.log("Error: ", AdminErr.message)
 
+  let totalDonations = 0;
 
+  adminDons?.forEach(donation => {
+    totalDonations += donation.amount;
+  });
+
+  useEffect(() => {
+    if (totalDonations <= 500) {
+      setAccountTier("Bronze")
+    }
+    else if (totalDonations <= 1000) {
+      setAccountTier("Silver")
+    }
+    else if (totalDonations >= 5000) {
+      setAccountTier("Gold")
+    }
+  }, [totalDonations]);
+
+  let latestCreatedAt = null;
+
+adminDons?.forEach(donation => {
+  const createdAtDate = new Date(donation.createdAt);
+  if (!latestCreatedAt || createdAtDate > latestCreatedAt) {
+    latestCreatedAt = createdAtDate;
+  }
+});
+
+const highestDonation = adminDons?.reduce((highest, current) => {
+  const currentAmount = current.amount || 0; // ensure a default value of 0 for missing or invalid data
+  return Math.max(highest, currentAmount);
+}, 0);
 
   return (
     <Box m="20px">
@@ -119,7 +150,7 @@ const AdminAnalytics = () => {
       {/* Grids and Charts */}
       <Box
         display="grid"
-        gridTemplateColumns="repeat(8, 1fr)"
+        gridTemplateColumns="repeat(16, 1fr)"
         gridAutoRows="140px"
         gap="20px"
       >
@@ -150,8 +181,8 @@ const AdminAnalytics = () => {
           justifyContent="center"
         >
           <StatBox
-            title="Account Tier"
-            subtitle="Gold"
+            title={accountTier}
+            subtitle={"Account Tier"}
             // increase="Awarded by: ADMIN"
             icon={
               <LocalPoliceOutlinedIcon
@@ -169,8 +200,8 @@ const AdminAnalytics = () => {
           justifyContent="center"
         >
           <StatBox
-            title={`${admin?.total_donation}` | -1}
-            subtitle="Total Donation Received"
+            title={`$${admin?.availableAmount + totalDonations}`}
+            subtitle="Total Donations Received"
             // increase="This Month: $190"
             icon={
               <AttachMoneyOutlinedIcon
@@ -179,8 +210,7 @@ const AdminAnalytics = () => {
             }
           />
         </Box>
-
-
+        
         <Box
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
@@ -189,7 +219,7 @@ const AdminAnalytics = () => {
           justifyContent="center"
         >
           <StatBox
-            title={`${admin?.amount_available}` | -1}
+            title={`$${admin?.availableAmount}` || -1}
             subtitle="Available Amount"
             // increase="This Month: $190"
             icon={
@@ -200,9 +230,85 @@ const AdminAnalytics = () => {
           />
         </Box>
 
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={latestCreatedAt ? latestCreatedAt.toISOString().slice(0, 10).replace(/-/g, '/') : null}
+            subtitle="Last Donation Made"
+            // increase="This Month: $190"
+            icon={
+              <CalendarMonthOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={adminDons?.length}
+            subtitle="Total Donations Made"
+            // increase="This Month: $190"
+            icon={
+              <VolunteerActivismOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={"$"+highestDonation}
+            subtitle="Highest One Time Donation"
+            // increase="This Month: $190"
+            icon={
+              <EmojiEventsOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={admin?.general_campaigns?.length + admin?.specific_campaigns?.length}
+            subtitle="Campaigns Created"
+            // increase="This Month: $190"
+            icon={
+              <CampaignOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
 
 
       </Box>
+
       <Box mt="2rem">
         <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>User Analyitcs</Typography>
       </Box>
@@ -257,7 +363,7 @@ const AdminAnalytics = () => {
           gridColumn="span 12"
           gridRow="span 2"
         >
-          <AllCampaigns isDashboard={true} title="Latest Donated Campaigns" subtitle="The last three recently donated campaigns of this user" />
+          <AllCampaigns isDashboard={true} title="Campaigns" subtitle="Latest campaigns made by this admin" id={admin?.general_campaigns} />
         </Box>
       </Box>
     </Box>)

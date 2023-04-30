@@ -195,6 +195,19 @@ const AdminDonations = ({ single_admin }) => {
       maxDonation = donation.amount;
     }
   });
+
+  let latestCreatedAt = null;
+
+  singleDonations?.forEach(donation => {
+  const createdAtDate = new Date(donation.createdAt);
+  if (!latestCreatedAt || createdAtDate > latestCreatedAt) {
+    latestCreatedAt = createdAtDate;
+  }
+});
+
+console.log(latestCreatedAt)
+
+console.log("Latest createdAt date:", latestCreatedAt);
   
 
   return (
@@ -240,7 +253,7 @@ const AdminDonations = ({ single_admin }) => {
           borderRadius="10px"
         >
           <StatBox
-            title="18-Mar-23"
+            title={latestCreatedAt ? latestCreatedAt.toISOString().slice(0, 10).replace(/-/g, '/') : null}
             subtitle="Latest Donation"
             progress={false}
             icon={
@@ -324,7 +337,7 @@ const AdminDonations = ({ single_admin }) => {
           },
         }}
       >
-        {"Printing the donations of the Admins"}
+        <Typography mb="1em" variant="h4" color={colors.blueAccent[500]}>Donation Breakdown</Typography>
         {AdminsDonsGrid}
       </Box>
     </Box>

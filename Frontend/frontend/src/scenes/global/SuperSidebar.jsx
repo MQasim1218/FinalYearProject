@@ -140,7 +140,6 @@ const SuperSidebar = () => {
                             <Item title="Donor Donations" to="/donordonations" icon={<AttachMoneyOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Super Admin Donations" to="/superadmindonations" icon={<AttachMoneyOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Admin Donations" to="/admindonations" icon={<AttachMoneyOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Category Donations" to="/categorydonations" icon={<AttachMoneyOutlinedIcon />} selected={selected} setSelected={setSelected} />
 
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Allocate Donations</Typography>
                             <Item title="Register Donations" to="/registerdonation" icon={<PriceCheckOutlinedIcon />} selected={selected} setSelected={setSelected} />

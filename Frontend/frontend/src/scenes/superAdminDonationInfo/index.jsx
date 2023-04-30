@@ -160,7 +160,7 @@ const SuperAdminDonationInfo = () => {
       >
         <StatBox
           title={singleDonation?.admin?.name}
-          subtitle="Person Donation Allocated To"
+          subtitle="Admin Donation Allocated To"
           icon={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
@@ -174,8 +174,8 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={"$"+singleDonation?.amount + singleDonation?.donated}
-          subtitle="Total Donation"
+          title={"$"+singleDonation?.amount}
+          subtitle="Donation Amount"
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -209,7 +209,7 @@ const SuperAdminDonationInfo = () => {
       >
         <StatBox
           title={"$"+singleDonation?.donated}
-          subtitle="Donated Amount"
+          subtitle="Donated To Campaign"
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

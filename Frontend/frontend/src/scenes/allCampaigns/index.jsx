@@ -145,8 +145,9 @@ function LinearProgressWithLabel(props) {
 }
 
 
-const AllCampaigns = ({ isDashboard = false, title, subtitle }) => {
+const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
 
+    //FUTURE WORK: USE ID TO GET LATEST 3-4 CAMPAIGNS OF AN ADMIN. THE ID WILL CONTAIN ALL OF THE GENERAL CAMPAIGN IDs FOR THAT ADMIN. I AM ALREADY PASSING IDs OF THE CAMPAIGNS FROM THE ADMIN ANALYTICS PAGE. 
 
     const theme = useTheme()
     const colors = tokens(theme.palette.mode)

@@ -18,7 +18,7 @@ import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
-
+import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 
 /**
  * NOTE: Data to be fetched 
@@ -37,102 +37,11 @@ const SuperAdminDashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  // ANCHOR: ### Data feilds for the page ###
-  // const [activeCampaigns, setActiveCamps] = useState([])
-  // const [totDonations, setTotDon] = useState(0)
-  // const [activeDonors, setActiveDonors] = useState([])
-  // const [activeBenifs, setActiveBenifs] = useState([])
-  // const [donations, setDonations] = useState([])
-  /**
-   * Lazy fetch all the dynamic data needed for the dashboard.
-   */
-  // useEffect(() => {
-  //   //   // Get all the campaigns and count them
-  //   //   // TODO: Cache these campaigns using context API
-  //   const getCampaigns = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-  //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-  //       if (gen_res.status < 300 && gen_res.status < 300) {
-  //         let data = gen_res.data.concat(spec_res.data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   const getDonors = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         setActiveDonors(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   const getBenificiries = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/benificiary/")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   const getDonations = async () => {
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donations/all/")
-  //       if (res.status < 400) {
-  //         let data = res.data
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  let { data: donsFromDonors } = useAllDonorsDonationsQuery()
 
-  //   getDonations().then((dons) => {
-  //     console.log(dons)
-  //     setDonations(dons)
+  console.log("Donor Donations", donsFromDonors)
 
-  //     let tot = 0
-  //     dons.forEach(don => {
-  //       tot += don.amount
-  //     });
-  //     console.log(tot)
-  //     // alert(tot)
-  //     setTotDon(tot)
-  //   })
-
-  //   getCampaigns().then((camps) => {
-  //     setActiveCamps(camps)
-  //   })
-  //   getDonors().then((dons) => {
-  //     setActiveDonors(dons)
-  //   })
-  //   getBenificiries().then((benifs) => {
-  //     setActiveBenifs(benifs)
-  //   })
-
-  //   return (() => console.log("No clean up"))
-  // }, [])
-
-
-  // ! Admins StatBox
+  if (donsFromDonors === undefined) donsFromDonors = []
 
 
   let {
@@ -153,7 +62,7 @@ const SuperAdminDashboard = () => {
         title={admins.length}
         subtitle="Active Admins"
         progress={false}
-        increase="+14% This Month dyn"
+        //increase="+14% This Month dyn"
         icon={
           <AttachMoneyOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -185,7 +94,7 @@ const SuperAdminDashboard = () => {
         title={donors.length}
         subtitle="Active Donors"
         progress={false}
-        increase="+14% This Month dyn"
+        //increase="+14% This Month dyn"
         icon={
           <AttachMoneyOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -219,7 +128,7 @@ const SuperAdminDashboard = () => {
         title={benifs.length}
         subtitle="Active Benificaries"
         progress={false}
-        increase="+14% This Month dyn"
+        //increase="+14% This Month dyn"
         icon={
           <AttachMoneyOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -253,7 +162,7 @@ const SuperAdminDashboard = () => {
         title={camps.length}
         subtitle="Active Campaigns"
         progress={false}
-        increase="+43% This Month dyn"
+        //increase="+43% This Month dyn"
         icon={
           <CampaignOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -277,6 +186,14 @@ const SuperAdminDashboard = () => {
   if (isDonorsSuccess) {
     console.log("Donations by the SuperAdmin", donations)
   }
+
+
+  const total = donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)
+  const used = donsFromDonors.reduce((partialTot, don) => partialTot + don.amountDonated, 0)
+
+  const remainingPercent = used / total
+
+  console.log("%: ", remainingPercent)
 
   return (
     <Box m="20px">
@@ -414,14 +331,14 @@ const SuperAdminDashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Donations Accumulated
+                Donations Registered
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                "10"
+                {donsFromDonors?.length}
               </Typography>
             </Box>
             <Box>
@@ -466,13 +383,6 @@ const SuperAdminDashboard = () => {
               >
 
                 <Box>
-                  <Typography
-                    color={colors.greenAccent[500]}
-                    variant="h5"
-                    fontWeight="600"
-                  >
-                    {transaction._id.slice(0, 8)}
-                  </Typography>
                   <Typography color={colors.grey[100]}>
                     {transaction?.admin?.name}
                   </Typography>
@@ -499,7 +409,7 @@ const SuperAdminDashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaigns
+            Allocation To Admin
           </Typography>
           <Box
             display="flex"
@@ -507,15 +417,28 @@ const SuperAdminDashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
+            <ProgressCircle progress={remainingPercent} size="125" />
+
+          </Box>
+          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" mt="15px">
+            <Box>
             <Typography
               variant="h5"
-              color={colors.greenAccent[500]}
               sx={{ mt: "15px" }}
             >
-              $28,352 revenue generated for campaigns dyn
+              {"$" + total}
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <Typography color={colors.greenAccent[500]}>Total Donations Recieved</Typography>
+            </Box>
+            <Box>
+            <Typography
+              variant="h5"
+              sx={{ mt: "15px" }}
+            >
+              {"$" + used}
+            </Typography>
+            <Typography color={colors.blueAccent[500]}>Total Donations Used</Typography>
+            </Box>
           </Box>
         </Box>
         <Box

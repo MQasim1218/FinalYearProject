@@ -16,6 +16,8 @@ import { AccountTypeContext } from '../../accountTypeContext';
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useSingleDonorDonationsQuery } from '../../app/redux-features/donations/DonorDonations/DonorDonsSlice';
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+
 
 const DonorInfo = () => {
   const theme = useTheme();
@@ -132,7 +134,7 @@ useEffect(() => {
     {/* Grids and Charts */}
     <Box
       display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
+      gridTemplateColumns="repeat(16, 1fr)"
       gridAutoRows="140px"
       gap="20px"
     >
@@ -146,7 +148,7 @@ useEffect(() => {
       >
         <UserBox
           name={donor?.name || "loading"}
-          accounttype={accountType || ""}
+          accounttype={`(${accountType})` || ""}
           picture={
             <PersonOutlineOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -164,9 +166,26 @@ useEffect(() => {
         justifyContent="center"
       >
         <StatBox
-          title={"Number of Donations: "+donorDons?.length}
-          subtitle={"Highest One Time Donation: $"+maxDonation}
-          increase={"Total Donations: $"+totalDonations}
+          title={donorDons?.length}
+          subtitle={"Number Of Donations"}
+          increase={`Highest: $${maxDonation}`}
+          icon={
+            <VolunteerActivismOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 4"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"$"+totalDonations}
+          subtitle={"Total Donations"}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

@@ -1,10 +1,11 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, useTheme, Typography } from "@mui/material";
 import { tokens } from "../theme";
 
 const ProgressCircle = ({ progress = "0.75", size = "40" }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const angle = progress * 360;
+  const percentage = Math.round(progress * 100);
   return (
     <Box
       sx={{
@@ -15,7 +16,11 @@ const ProgressCircle = ({ progress = "0.75", size = "40" }) => {
         width: `${size}px`,
         height: `${size}px`,
       }}
-    />
+    >
+      <Box mt="40%" ml="18%">
+      <Typography variant="h6" color={colors.greenAccent[500]}>{percentage+"% Allocated"}</Typography>
+      </Box>
+      </Box>
   );
 };
 
