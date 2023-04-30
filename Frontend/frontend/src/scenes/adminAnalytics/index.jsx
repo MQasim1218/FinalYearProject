@@ -23,11 +23,19 @@ import UserLineChart from '../../components/UserLineChart';
 import { useParams } from "react-router-dom";
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useGetAdminQuery } from '../../app/redux-features/users/AdminSlice';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 
 
 const AdminAnalytics = () => {
+  const { user } = useAuthContext()
   let { id } = useParams();
+
+  
+  if(id === undefined) {
+    id = user?.user?._id
+  }
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 

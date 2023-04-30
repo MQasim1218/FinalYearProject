@@ -83,12 +83,12 @@ const DonorInfo = () => {
 
 
 
-  useEffect(() => {
-    if (isDonorDonsSuccess) {
-      setDonations(donorDons)
-      setMaxDon(donorDons?.reduce((max, don) => don.amount > max ? don.amount : max, 0));
-    }
-  }, [isDonorDonsSuccess, donorDons])
+  // useEffect(() => {
+  //   if (isDonorDonsSuccess) {
+  //     setDonations(donorDons)
+  //     setMaxDon(donorDons?.reduce((max, don) => don.amount > max ? don.amount : max, 0));
+  //   }
+  // }, [isDonorDonsSuccess, donorDons])
 
 
   let maxDonation = 0;
@@ -107,13 +107,17 @@ for (let i = 0; i < donorDons?.length; i++) {
   totalDonations += donation.amountDonated + donation.amount;
 }
 
-if(totalDonations <= 500){
-  setAccountTier("Bronze")
-}
-else if(totalDonations <= 1000){
-  setAccountTier("Silver")}
-else if(totalDonations >= 5000){
-  setAccountTier("Gold")}
+useEffect(() => {
+  if(totalDonations <= 500){
+    setAccountTier("Bronze")
+  }
+  else if(totalDonations <= 1000){
+    setAccountTier("Silver")
+  }
+  else if(totalDonations >= 5000){
+    setAccountTier("Gold")
+  }
+}, [totalDonations]);
 
 
   return (<Box m="20px">
