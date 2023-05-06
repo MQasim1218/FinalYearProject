@@ -11,10 +11,6 @@ const DonorDonationModel = require('../../Models/Donations/DonationDonor')
 
 const authorize = require('../../middleware/authorization')
 
-const { json } = require('express')
-
-
-const { mongo, default: mongoose } = require('mongoose')
 let router = express.Router()
 
 // Donor SignUp

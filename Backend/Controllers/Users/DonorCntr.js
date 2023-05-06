@@ -6,6 +6,8 @@ const DonorDonations = require("../../Models/Donations/DonationDonor")
 const SpecificCampaign = require("../../Models/Campaings/SpecificCampaign")
 const GeneralCampaign = require("../../Models/Campaings/GeneralCampaigns")
 
+const stripe = require('stripe')
+
 
 const DonorSignUp = async (req, res, next) => {
     // let donor = await DonorModel.findOne({ email: req.body.email }).exec()
@@ -103,14 +105,48 @@ const GetDonor = async (req, res, next) => {
         })
 }
 
+
+/**
+ * Donation flow.
+ * Donor is making the donation -- so -- lets assume we are gonna use stripe for this.
+ * ! Does the donor donate to the campain :: Currently ----NO----
+ * ! Doesnt the SuperAdmin simple register the donor donation. SOME CASES. Donor has to be able to make donations on his own aswell
+ * 
+ * SECTION: Stripe Architecture
+ * One main account - SuperAdmin Account!
+ * SuperAdmin creates a payment intent -- But how?? the SA doesnt know how much the donor wants to donate
+ * NOTE: Possible solution. Donor can select the amount he/she wants to donate from his/her portal.
+ * The donor submits the form on the portal that conatains the details, the the stripe checkout the collects 
+ * that information to make a custom checkout-page for the donation.  
+ */
 const Donate = async (req, res, next) => {
     // Must recieve data
     // - Donation amount
     // - Donor ID 
-    // - Donation Type
+    // - Donation Category
+    // - 
     try {
+
+        // Do the Stripe process first
+        let session = await stripe.checkout.sessions.create({
+            line_items: [
+                {
+                    price: price_1N4l7LD4d2tkTPKse5AzTfAg,
+                    quantity: 1
+                },
+            ],
+            mode: 'payment',
+            submit_type: 'donate',
+
+            success_url: 'https://example.com/success',
+            cancel_url: 'https://example.com/cancel',
+        })
+
+        return res.redirect(303, session)
+
+
+
         // Create a donation entry
-        // The real part with Stripe need to be tackled in the later implementation.
         let donation_entry = await DonorDonations.create(req.body)
         if (!donation_entry) {
             res.send("Couldnt create a donation entry for the donor!!")
