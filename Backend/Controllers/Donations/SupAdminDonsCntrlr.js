@@ -21,13 +21,22 @@ const GetAllDonations = async (req, res, next) => {
         if (cat == null) {
             let Dons = await SuperAdminDons
                 .find({})
+                .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
+                .populate("donordonationId", don_donation_fields)
+                .populate("donor", donorFields)
                 .exec()
 
             console.log(Dons)
             res.json(Dons)
         } else {
-            let Dons = await SuperAdminDons.find({ category: cat }).exec()
+            let Dons = await SuperAdminDons.find({ category: cat })
+                .sort({ createdAt: 'desc' })
+                .populate("admin", adminFeilds)
+                .populate("donordonationId", don_donation_fields)
+                .populate("donor", donorFields)
+                .exec()
+
             res.json(Dons)
         }
     } catch (error) {
@@ -44,7 +53,10 @@ const GetSingleDonation = async (req, res, next) => {
         if (id != null) {
             let Don = await SuperAdminDons
                 .findById(id)
+                .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
+                .populate("donordonationId", don_donation_fields)
+                .populate("donor", donorFields)
                 .exec()
             res.json(Don)
         } else {
@@ -53,12 +65,13 @@ const GetSingleDonation = async (req, res, next) => {
         }
     } catch (error) {
         console.log('error encountered while retreiving Single Super Admin donation!\nError: ', error)
-        res.send(error)
+        res.status(500).send(error.message)
     }
 }
 
+// Get all the donarions made by the super admin using the donor's specific donations.
 const GetDonsForSingleDonorDonation = async (req, res, next) => {
-    console.log("Here to fetch SA Donations from a single Donor Dons")
+    console.log("Here to fetch SA Donations from a single Donor Donation")
     try {
         let don_id = req.params?.id
 
@@ -67,7 +80,10 @@ const GetDonsForSingleDonorDonation = async (req, res, next) => {
         if (don_id != null) {
             let Don = await SuperAdminDons
                 .find({ donordonationId: don_id })
+                .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
+                .populate("donordonationId", don_donation_fields)
+                .populate("donor", donorFields)
                 .exec()
             res.json(Don)
         } else {
@@ -270,11 +286,11 @@ const AllDonationsToAdmin = async (req, res, next) => {
                 res.json(Dons)
             }
         } else {
-            res.json({})
+            res.status(400).send({ msg: "Error: Admin id is null" })
         }
     } catch (error) {
         console.log('error encountered while retreiving Super Admin donations!\nError: ', error)
-        res.send(error)
+        res.status(500).send(error.message)
     }
 
 }

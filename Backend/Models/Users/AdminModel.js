@@ -69,10 +69,14 @@ const adminSchema = mongoose.Schema({
         }
 
     },
+
+    // Amount available with the Admin!!
     availableAmount: {
         type: Number,
         default: 0
     },
+
+
     specific_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'

@@ -2,18 +2,20 @@ const { default: mongoose } = require("mongoose");
 
 const supAdminDonationSchema = mongoose.Schema({
 
-    
+    // The total amount donated by the SuperAdmin to the Admin
     amount: {
         type: Number,
         required: true,
         default: true
     },
 
+    // The amount which has been donated by the admin from the total donation amount(Above-top) 
     donated: {
         type: Number,
         default: 0
     },
 
+    // The amount which remains donated by the admin from the total donation amount(Above-top) 
     remaining: {
         type: Number,
         required: true,

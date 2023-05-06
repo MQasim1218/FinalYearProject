@@ -1,6 +1,8 @@
 const GenCamps = require('../../Models/Campaings/GeneralCampaigns')
 const AdminDons = require('../../Models/Donations/DonationAdmin')
 const SADonationModel = require('../../Models/Donations/DonationSuperAdmin')
+const DonorModel = require('../../Models/Users/DonorModel')
+const AdminModel = require('../../Models/Users/AdminModel')
 
 const toISODate = require('../../utils/isoDate')
 
@@ -748,13 +750,15 @@ const DonateToCampaign = async (req, res, next) => {
 
     // let camp_id = req.body.camp_id
     /**
+     * FIXME: :: Where are the checks?? Can the admin donate
+     * more than the value of the available donation?? 
+     * 
      * When a dontion is made by the admin to a campaign
-     * 1. Update the Amount donated to the campaign.
-     * 2. Add the donation to the list of donations received by the campaign.
-     * 3. Add the campaign to the list of campaigns supported by the donor! 
+     * 1. Update the Amount donated to the campaign. ✅✅✅
+     * 3. Add the campaign to the list of campaigns supported by the donor! ✅✅✅
      * ! IF IT IS NOT ALREADY THERE!!
-     * 4. Decrease the total amount of money available with the admin
-     * 5. Increase the total donated amount from the donor's donation and the superadmin donation.  
+     * 4. Decrease the total amount of money available with the admin ✅✅✅
+     * 5. Increase the total donated amount from the superadmin's donation.✅✅✅
      */
 
     try {
@@ -770,11 +774,35 @@ const DonateToCampaign = async (req, res, next) => {
             camp.save()
             // res.json({ don, camp })
 
-            // ANCHOR: I am working here!!            
-            SADonationModel.findByIdAndUpdate(
+            // ANCHOR: Get the SuperAdmin Donation(where the admin donation originally came from!!) and ...!UPDATE!            
+            let saUpdResult = await SADonationModel.findByIdAndUpdate(
                 don.supAdminDonation,
                 {
-                    $inc: {}
+                    $inc: {
+                        donated: amount, // Increase the donated amount!
+                        remaining: -amount // Decrease the remaining amount!
+                    }
+                }
+            ).exec()
+
+            // Update the Donor and add this campaign to the
+            // list of Campaings supported by the donor!!
+            let resDonUpdate = await DonorModel.findOneAndUpdate(
+                { _id: don.donorId },
+                {
+                    // Add to set only adds the Campaigns that are 
+                    $addToSet: {
+                        // we can also use don.campaign to get the campaign id!!
+                        donated_campaigns_general: camp._id
+                    }
+                }
+            ).exec()
+
+            // Amount available with the admin updated.
+            let resAdminUpd = await AdminModel.findByIdAndUpdate(
+                don.admin,
+                {
+                    $inc: { availableAmount: -amount }
                 }
             )
 
