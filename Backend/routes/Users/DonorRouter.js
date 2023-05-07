@@ -62,12 +62,12 @@ router.get('/:id/donations', DonorController.GetDonations)
 // Donor retrival
 router.get('/:id', DonorController.GetDonor)
 
+router.post('/donate', DonorController.Donate)
 // Update a donor 
 router.put('/:id', DonorController.UpdateDonor)
 
 router.delete('/:id',)
 
-router.post('/donate/:campaign_id', DonorController.Donate)
 
 
 

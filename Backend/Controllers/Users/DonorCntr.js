@@ -6,7 +6,7 @@ const DonorDonations = require("../../Models/Donations/DonationDonor")
 const SpecificCampaign = require("../../Models/Campaings/SpecificCampaign")
 const GeneralCampaign = require("../../Models/Campaings/GeneralCampaigns")
 
-const stripe = require('stripe')
+const stripe = require('stripe')('sk_test_51N4jJpD4d2tkTPKs2hMsKxF6cI2qEJALDyfgJzoXzAP1sdplbgi8H4R7wOFomnMN722KG6pXBOlkeEERlBDyJiM300tMCNI0t1')
 
 
 const DonorSignUp = async (req, res, next) => {
@@ -96,12 +96,15 @@ const AllDonors = async (req, res, next) => {
 
 const GetDonor = async (req, res, next) => {
     DonorModel.findOne({ _id: req.params.id })
-        .exec(function (error, data) {
+        .exec(function (error, donor) {
             if (error) {
-                console.log("Resource not in donor/:id - Skipping this route altogether!!")
+                console.log("No donor with the given ID exists!!")
                 return next()
             }
-            res.json(data)
+
+            if (donor.deteted == true) { }
+
+            res.json(donor)
         })
 }
 
@@ -126,12 +129,13 @@ const Donate = async (req, res, next) => {
     // - Donation Category
     // - 
     try {
+        console.log("Making the donatios as donor")
 
         // Do the Stripe process first
         let session = await stripe.checkout.sessions.create({
             line_items: [
                 {
-                    price: price_1N4l7LD4d2tkTPKse5AzTfAg,
+                    price: "price_1N4l7LD4d2tkTPKse5AzTfAg",
                     quantity: 1
                 },
             ],
@@ -142,14 +146,13 @@ const Donate = async (req, res, next) => {
             cancel_url: 'https://example.com/cancel',
         })
 
-        return res.redirect(303, session)
 
 
 
         // Create a donation entry
         let donation_entry = await DonorDonations.create(req.body)
         if (!donation_entry) {
-            res.send("Couldnt create a donation entry for the donor!!")
+            return res.send("Couldnt create a donation entry for the donor!!")
         }
 
         // ! This needs tobe looked into..
@@ -179,11 +182,14 @@ const Donate = async (req, res, next) => {
         //         { $push: { donated_campaigns_general: req.params.campaign_id } }
         //     )
         // }
-        res.json(donation_entry)
+
+        // Redirect the user to the Stripe Page
+        return res.redirect(303, session.url)
+        // res.json(donation_entry)
 
     } catch (error) {
         console.log(error)
-        res.send(error)
+        return res.send(error)
     }
 }
 
@@ -339,7 +345,7 @@ const SearchAvailableCampaigns = async (req, res, next) => {
 }
 
 const DeleteDonor = function (req, res, next) {
-    DonorModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+    DonorModel.findOneAndUpdate({ _id: req.params.id }, { deleted: true }).exec(function (error, data) {
         if (error) {
             next(error)
         }

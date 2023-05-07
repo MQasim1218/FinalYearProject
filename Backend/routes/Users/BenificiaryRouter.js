@@ -93,7 +93,10 @@ router.get('/', function (req, res, next) {
 
 // Delete a benificiary.
 router.delete('/:id', function (req, res, next) {
-    beneficiaryModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
+    // Mark the benificiary as deleted! Do not remove the entry!
+    beneficiaryModel.findByIdAndUpdate(req.params.id, {
+        deleted: true
+    }).exec(function (error, data) {
         if (error) {
             next(error)
         }
@@ -101,7 +104,8 @@ router.delete('/:id', function (req, res, next) {
     })
 })
 
-// NOTE - This is to update or upload a file for the benificiary
+// NOTE - This is to upload or update an existing file for the benificiary
+// FIXME - Please complete me.
 router.put('/upload_file', () => { })
 
 
