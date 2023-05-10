@@ -50,16 +50,37 @@ const GetAllApporvedCampaigns = async (req, res, next) => {
 const GetOneCampaign = async (req, res, next) => {
     // console.log(req.body)
     try {
-        let spec = SpecificCampaigns.findById(req.params.id).exec()
+        console.log("Getting single specific campaign")
+        let spec = await SpecificCampaigns.findById(req.params.id).exec()
         res.json(spec)
     } catch (error) {
         console.log(error.message)
-        // res.send(error.message)
         next(error)
     }
 }
 
-const GetAvailable = (req, res, next) => { }
+const GetAvailable = async (req, res, next) => {
+    try {
+        console.log("Getting available campaigns")
+        let camps = await SpecificCampaigns.find({
+            // Since deleted is a new feild, it wont be available on all docs
+            // This can be removed in prodcution since all the new feilds will have this..
+            // Mostly for debugging.
+            $or: [
+                { deleted: { $exists: false } }, // there is not feild called deleted
+                { deleted: false }
+            ],
+            rejected: false,
+            completed: false,
+            approved: true
+        })
+
+        res.json(camps)
+
+    } catch (err) {
+
+    }
+}
 
 
 

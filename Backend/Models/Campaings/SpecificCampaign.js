@@ -42,7 +42,7 @@ let campaignSchema = mongoose.Schema({
 
     // Below are the fields for campaign status...
     approved: { type: Boolean, required: true, default: false },
-    completed: { type: Boolean, default: false },
+    completed: { type: Boolean, default: false, required: true },
     rejected: { type: Boolean, required: true, default: false },
     deleted: { type: Boolean, required: true, default: false },
     donations: [{ type: mongoose.Types.ObjectId, ref: 'donation' }],
