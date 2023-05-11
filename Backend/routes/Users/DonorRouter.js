@@ -44,11 +44,23 @@ router.get(
     DonorController.AllDonors
 );
 
+router.get(
+    '/deleted',
+    DonorController.GetDeleted
+)
+
 // ! NOTE: IG This route should be a part of Campaigns Router!!
 // Search Campaigns
 router.get(
     '/available_campaigns',
     DonorController.SearchAvailableCampaigns
+)
+
+
+// Get all the campaigns where the donor has donated!
+router.get(
+    'donated_camps/:donor_id',
+    DonorController.GetDonatedCapmaigns
 )
 
 // ! NOTE: IG This route should be a part of Campaigns Router!!

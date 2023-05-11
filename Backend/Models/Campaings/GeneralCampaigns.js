@@ -43,7 +43,7 @@ let generalCampaignSchema = mongoose.Schema({
     },
 
     // Add the urls of cloud documents
-    campaign_documents: [
+    campaign_docs: [
         {
             // type: String,
 

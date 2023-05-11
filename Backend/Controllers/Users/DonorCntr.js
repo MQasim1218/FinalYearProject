@@ -308,7 +308,10 @@ const SearchCampaignByTitle = async (req, res, next) => {
 
 const GetDonatedCapmaigns = async (req, res, next) => {
     try {
-        let donor = await DonorModel.findOne({ _id: req.params.id }).populate(['donated_campaigns_specific', 'donated_campaigns_general']).exec()
+        let donor = await DonorModel.findOne({ _id: req.params.id })
+            .populate('donated_campaigns_specific')
+            .populate('donated_campaigns_general')
+            .exec()
         res.json([...donor.donated_campaigns_specific, ...donated_campaigns_general])
     } catch (error) {
         res.send(error.message)
@@ -361,25 +364,51 @@ const SearchAvailableCampaigns = async (req, res, next) => {
     }
 }
 
+const GetDeleted = async (req, res, next) => {
+    try {
+        let del_donors = await DonorModel
+            .find({
+                deleted: true
+            })
+            .exec()
+
+        res.json(del_donors)
+    } catch (error) {
+        console.log("Error occured! Error: ", err.message)
+        res.status(500).send("Failed to deleted donors!")
+    }
+
+
+}
 
 const MarkDonorAsDeleted = async (req, res, next) => {
-    let id = req.params.donor_id
 
-    let result = await DonorModel.findByIdAndUpdate(id, { deleted: true }).exec()
-    if (result) {
-        console.log("The donor got deleted sucesfully")
-        res.json(result)
-    }
-}
+    try {
+        let id = req.params.donor_id
 
-const DeleteDonor = function (req, res, next) {
-    DonorModel.findOneAndUpdate({ _id: req.params.id }, { deleted: true }).exec(function (error, data) {
-        if (error) {
-            next(error)
+        let result = await DonorModel.findByIdAndUpdate(id, { deleted: true }).exec()
+        if (result) {
+            console.log("The donor got removed sucesfully")
+            res.json(result)
         }
-        res.json(data)
-    })
+    } catch (err) {
+        console.log("Error occured! Error: ", err.message)
+        res.status(500).send("Failed to mark donor as deleted!")
+    }
+
 }
+
+// const DeleteDonor = async function (req, res, next) {
+//     DonorModel.findOneAndUpdate(
+//         { _id: req.params.id },
+//         { deleted: true })
+//         .exec(function (error, data) {
+//             if (error) {
+//                 next(error)
+//             }
+//             res.json(data)
+//         })
+// }
 
 module.exports = {
     SearchAvailableCampaigns,
@@ -394,5 +423,8 @@ module.exports = {
     AllDonors,
     GetDonor,
     Donate,
-    MarkDonorAsDeleted
+
+    // Today's work: Mai 11, 2023
+    MarkDonorAsDeleted,
+    GetDeleted
 }

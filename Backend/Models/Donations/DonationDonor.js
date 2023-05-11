@@ -21,6 +21,16 @@ const donorDonationSchema = mongoose.Schema({
         default: -1,
     },
 
+    camp_spec: {
+        type: mongoose.Types.ObjectId,
+        ref: 'specific_campaign',
+    },
+
+    camp_general: {
+        type: mongoose.Types.ObjectId,
+        ref: 'general_campaign',
+    },
+
     donor: {
         type: mongoose.Types.ObjectId,
         ref: 'donor',

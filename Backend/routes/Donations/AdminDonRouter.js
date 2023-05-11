@@ -24,6 +24,8 @@ const authorize = require('../../middleware/authorization')
 router.get('/:category?', AdminDonationController.GetAllDonations)
 
 
+
+
 // Get donations made by the Admins in a Month
 router.get('/month_donations/:year/:month/:category?', AdminDonationController.GetMonthDonations)
 

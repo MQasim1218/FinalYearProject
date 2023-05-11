@@ -1,5 +1,5 @@
 
-const SpecificCampaigns = require('../../Models/Campaings/SpecificCampaign')
+const SpecCamps = require('../../Models/Campaings/SpecificCampaign')
 
 const GetAllCampaigns = async (req, res, next) => {
     // console.log(req.body)
@@ -9,12 +9,16 @@ const GetAllCampaigns = async (req, res, next) => {
          * Need to make sure of a few things.. The campaign is neither rejected nor deleted.
          * The campaign is apporved and not 
          */
-        let spec = await SpecificCampaigns.find({
+        let spec = await SpecCamps.find({
             $or: [
                 { rejected: { $exists: false } }, // the feild `rejected` doesn't exist on the dpcument!
                 { rejected: false } // Get only the ones that have rejected set to false.
             ]
-        }).exec()
+        })
+            .sort({ createdAt: "desc" })
+            .exec()
+
+
         res.json(spec)
     } catch (error) {
         console.log(error)
