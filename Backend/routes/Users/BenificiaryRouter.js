@@ -113,16 +113,17 @@ router.put('/upload_file', () => { })
 // #################  Capmaigns  ##################
 
 // Appeal a campaign
-router.post("/appeal/:benif_id/campaign", async (req, res, next) => {
+router.post("/appeal/:benif_id/", async (req, res, next) => {
 
     try {
         let sc = await SpecCapmaignModel.create(req.body)
         console.log(sc)
-        sc.beneficiary = benif_id
-        beneficiaryModel.findByIdAndUpdate(
+        sc.beneficiary = req.params.benif_id
+        await beneficiaryModel.findByIdAndUpdate(
             req.params.benif_id,
-            { $push: { requested_campaigns: data._id } }
+            { $push: { requested_campaigns: sc._id } }
         )
+        
         sc.save()
 
         res.status(200).json(sc)

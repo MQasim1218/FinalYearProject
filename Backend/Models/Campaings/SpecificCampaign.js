@@ -9,21 +9,18 @@ let campaignSchema = mongoose.Schema({
         trim: true
     },
 
-    campaign_amount: {
+    required_amount: {
         type: Number,
         required: true,
         trim: true
     },
     description: {
         type: String,
-        required: true,
+        // required: true,
         trim: true
     },
 
-    required_amount: {
-        type: String,
-        required: true
-    },
+
 
     donated_amount: {
         type: Number,
@@ -35,7 +32,7 @@ let campaignSchema = mongoose.Schema({
         required: true
     },
 
-    campaign_documents: [
+    campaign_docs: [
         {
             // type: String,
 
@@ -62,7 +59,7 @@ let campaignSchema = mongoose.Schema({
         },
         coordinates: {
             type: [Number],
-            required: true
+            // required: true
         }
     },
 

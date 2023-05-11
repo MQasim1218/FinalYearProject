@@ -419,7 +419,7 @@ module.exports = {
     DonorSignIn,
     DonorSignUp,
     UpdateDonor,
-    DeleteDonor,
+    // MarkDonorAsDeleted,
     AllDonors,
     GetDonor,
     Donate,

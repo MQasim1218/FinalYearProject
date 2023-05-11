@@ -23,24 +23,33 @@ router.get("/", SpecificCampaigns.GetAllCampaigns)
 router.post("/appeal", SpecificCampaigns.AppealCampaign)
 
 // This is incase the admin wants to upload more documents than the ones already uploaded during campaign creation.
+// The update is successful but the result retuned is not !
 router.post(
     '/upload_docs/:camp_id',
     async (req, res, next) => {
         // Get the urls (for the files uploaded in to the cloudinary)
         // Add the urls to the documents list!
 
+        console.log("Adding the docs url to the campigns")
+
         try {
             // Got the urls!!
             let urls = req.body.urls
-            let res = await SpecCampaigns.findByIdAndUpdate(req.params.camp_id, {
-                $push: { campaign_docs: urls }
-            })
+            console.log(urls)
 
-            res.json(res)
+            let result = await SpecCampaigns.findByIdAndUpdate(req.params.camp_id, {
+                $push: { campaign_docs: { $each: urls } }
+            }).exec()
+
+            result = await SpecCampaigns.findById(req.params.camp_id).exec()
+
+            console.log(result)
+
+            return res.json(result)
 
         } catch (err) {
             console.log("Error occured trying to add doc urls")
-            res.status(500).send("Err: ", err.message)
+            return res.status(500).send("Err: " + err.message)
         }
     }
 )

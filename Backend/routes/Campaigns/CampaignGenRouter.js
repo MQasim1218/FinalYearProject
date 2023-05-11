@@ -28,18 +28,25 @@ router.post(
         // Get the urls (for the files uploaded in to the cloudinary)
         // Add the urls to the documents list!
 
+        console.log("Adding the docs url to the campigns")
+
         try {
             // Got the urls!!
             let urls = req.body.urls
-            let res = await GeneralCampaign.findByIdAndUpdate(req.params.camp_id, {
-                $push: { campaign_docs: urls }
-            })
+            console.log(urls)
+            let result = await GeneralCampaign.findByIdAndUpdate(req.params.camp_id, {
+                $push: { campaign_docs: { $each: urls } }
+            }).exec()
 
-            res.json(res)
+            result = await GeneralCampaign.findById(req.params.camp_id)
+
+            console.log(result)
+
+            return res.json(result)
 
         } catch (err) {
             console.log("Error occured trying to add doc urls")
-            res.status(500).send("Err: ", err.message)
+            res.status(500).send("Err: " + err.message)
         }
     }
 )
