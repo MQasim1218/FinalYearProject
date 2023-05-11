@@ -19,36 +19,37 @@ router.post('/signup', DonorController.DonorSignUp)
 // Donor Login
 router.post('/login', DonorController.DonorSignIn)
 
-//Donor Update
-router.patch('/update/:id', DonorController.UpdateDonor)
-
-// Mark donor as deleted!!
-router.patch(
-    '/remove_donor/:donor_id',
-    async (req, res, next) => {
-        let id = req.params.donor_id
-
-        let result = await DonorModel.findByIdAndUpdate(id, { deleted: true }).exec()
-        if (result) {
-            console.log("The user got deleted sucesfully")
-            res.json(result)
-        }
-    }
-)
-
-// Index page for Donors. Nothing here!
-// router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
-
 // FIXME: !!
 // ! router.use(authorize)
 // ! This is just commented for the sake of removing authorization from the programme
 
+//Donor Update
+router.patch(
+    '/update/:id',
+    DonorController.UpdateDonor
+)
+
+// Mark donor as deleted!!
+router.patch(
+    '/remove_donor/:donor_id',
+    DonorController.MarkDonorAsDeleted
+)
+
+
+
+
 // Get all donors
-router.get('/', DonorController.AllDonors);
+router.get(
+    '/',
+    DonorController.AllDonors
+);
 
 // ! NOTE: IG This route should be a part of Campaigns Router!!
 // Search Campaigns
-router.get('/available_campaigns', DonorController.SearchAvailableCampaigns)
+router.get(
+    '/available_campaigns',
+    DonorController.SearchAvailableCampaigns
+)
 
 // ! NOTE: IG This route should be a part of Campaigns Router!!
 // Search Campaign Based on Title

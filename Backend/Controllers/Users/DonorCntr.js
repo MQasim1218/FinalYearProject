@@ -77,7 +77,7 @@ const DonorSignIn = async (req, res, next) => {
 }
 
 const AllDonors = async (req, res, next) => {
-    console.log("FrontEnd Request Here")
+    console.log("Getting all the donors")
 
     // Either the data obj has no entity deleted, or the entitiy is set to false
     DonorModel.find({
@@ -193,19 +193,21 @@ const Donate = async (req, res, next) => {
     }
 }
 
+
+// Need to test this if this works fine.
 const UpdateDonor = async (req, res, next) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const hashedPassword = await bcrypt.hash(req.body?.password, 10)
     try {
         await DonorModel.findByIdAndUpdate(
             req.params.id,
             {
-                name: req.body.name,
-                age: req.body.age,
-                email: req.body.email,
+                name: req.body?.name,
+                age: req.body?.age,
+                email: req.body?.email,
                 password: hashedPassword,
-                contact: req.body.contact,
-                picture: req.body.picture,
-                location: req.body.location
+                contact: req.body?.contact,
+                picture: req.body?.picture,
+                location: req.body?.location
             }
         )
         let donor = await DonorModel.findById(req.params.id).exec()
@@ -325,13 +327,28 @@ const GetDonations = async (req, res, next) => {
 }
 
 const SearchAvailableCampaigns = async (req, res, next) => {
+    console.log("Getting all the available campaigns")
+
     try {
         let available = { specific: null, general: null }
 
-        let specific_av = await SpecificCampaign.find({ approved: true, completed: { $in: [false, null] } }).exec()
+        let specific_av = await SpecificCampaign
+            .find({
+                approved: true,
+                completed: { $in: [false, null] }
+            })
+            .sort({ createdAt: "desc" }) // Do we need to populate any feilds??
+            .exec()
+
+
         if (specific_av) available.specific = specific_av
         // completed: false, approved: true
-        let general_av = await GeneralCampaign.find({ approved: true, completed: { $in: [false, null] } })
+        let general_av = await GeneralCampaign.find(
+            {
+                approved: true,
+                completed: { $in: [false, null] }
+            }
+        )
         if (general_av) available.general = general_av
 
         // res.json(JSON.stringify(available))
@@ -341,6 +358,17 @@ const SearchAvailableCampaigns = async (req, res, next) => {
         console.log("Got a error while fetching the campaigns")
         console.log("Error: ", error.message)
         res.send("Error occured: " + error.message)
+    }
+}
+
+
+const MarkDonorAsDeleted = async (req, res, next) => {
+    let id = req.params.donor_id
+
+    let result = await DonorModel.findByIdAndUpdate(id, { deleted: true }).exec()
+    if (result) {
+        console.log("The donor got deleted sucesfully")
+        res.json(result)
     }
 }
 
@@ -365,5 +393,6 @@ module.exports = {
     DeleteDonor,
     AllDonors,
     GetDonor,
-    Donate
+    Donate,
+    MarkDonorAsDeleted
 }

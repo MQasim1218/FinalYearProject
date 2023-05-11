@@ -25,7 +25,7 @@ router.post("/appeal", SpecificCampaigns.AppealCampaign)
  * ANCHOR: This route is only to be used to append the the list of documents already attached!
  * Generally, the benif uploads the documents directly from the appeal page, not here, this is to aad furhter documents. 
 */
-router.post("/upload_docs", SpecificCampaigns.UploadDocuments)
+// router.post("/upload_docs", SpecificCampaigns.UploadDocuments)
 // * router.get("appealed status?? because this is visiable in multiple placess")
 
 
