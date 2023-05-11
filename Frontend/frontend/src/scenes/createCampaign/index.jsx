@@ -1,13 +1,16 @@
-import { Box, Button, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
+import { Box, Button, TextField, useTheme, Checkbox, Typography, FormControlLabel, InputAdornment, MenuItem, Avatar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import AlertModal from "../../components/AlertModal";
 import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useDropzone } from "react-dropzone";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import PersonIcon from '@mui/icons-material/Person';
 
 //initializing all inputs with their keys
 const initialValues = {
@@ -18,6 +21,7 @@ const initialValues = {
   archived: false,
   category: "Education",
   completed: false,
+  url_docs: []
 };
 
 //schema for validation
@@ -35,6 +39,11 @@ const CreateCampaign = () => {
 
   //Code for the OnCLick POPUP
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [urls, setURLS] = useState([]);
+  const [fileUrl, setFileUrl] = useState(null);
+
+
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -95,7 +104,7 @@ const CreateCampaign = () => {
   const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
 
-    // ! We are using a hard coded value for the LoggedIn Admin.
+    values.url_docs = urls;
 
 
 
@@ -112,6 +121,75 @@ const CreateCampaign = () => {
 
     //To reset the forms values after submit.
     resetForm()
+  };
+
+
+
+  const Dropzone = ({ setFieldValue }) => {
+    const onDrop = useCallback(async (acceptedFiles) => {
+      // Do something with the files
+      console.log(acceptedFiles);
+
+
+      // ! eslint-disable-next-line no-use-before-define
+      // const uploadedImage = await uploadToCloudinary(acceptedFiles[0]);
+      const formData = new FormData();
+
+      // Appending all the files to the formData.
+      acceptedFiles.forEach((file) => {
+        formData.append('file', file);
+      });
+
+      // Accept all the files from ??
+      // fidazzwm => File upload access
+      formData.append('preset', 'pj7wsjbl');
+
+
+      const results = await axios.post('https://api.cloudinary.com/v1_1/deymti8ua/image/upload', formData, {
+        params: {
+          upload_preset: 'pj7wsjbl',
+          multiple: true,
+        },
+      });
+
+      console.log(results);
+      console.log(results.data.secure_url);
+
+
+      setURLS(results.data.map((result) => result.secure_url));
+
+      setFieldValue('file', acceptedFiles);
+      setFileUrls(
+        acceptedFiles.map((file) => URL.createObjectURL(file))
+      );
+
+
+    }, [setFieldValue]);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+    return (
+      <div {...getRootProps()} sx={{ gridColumn: 'span 1', display: 'flex', }}>
+        <input {...getInputProps()} />
+
+        {/* Technically we dont need this code as its simple file upload!! */}
+        <Avatar sx={{ alignItems: 'stretch', width: '100px', height: '100px', borderWidth: '1px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', marginTop: '3em', marginBottom: '-2em', cursor: 'pointer' }}>
+          {/* Either display a  dummy person or the uploaded image */}
+
+          {
+            fileUrl ? <img src={fileUrl} alt="file preview" /> : isDragActive ? <CloudUploadIcon color="primary" sx={{ fontSize: '3rem' }} />
+              : (
+                <div sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <PersonIcon sx={{ fontSize: '3rem' }} />
+                  <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                    Upload Here
+                  </Typography>
+                </div>
+              )
+          }
+        </Avatar>
+      </div>
+    );
   };
 
 
@@ -135,6 +213,7 @@ const CreateCampaign = () => {
           handleBlur,
           handleChange,
           handleSubmit,
+          setFieldValue
         }) => (
           <form onSubmit={handleSubmit}>
             <Box
@@ -234,7 +313,9 @@ const CreateCampaign = () => {
 
               <FormControlLabel control={<Checkbox name="archived" onBlur={handleBlur} onChange={handleChange} value={values.archived} sx={{ color: "white", '&.Mui-checked': { color: "white", }, }} />} label="Archived" />
               <FormControlLabel control={<Checkbox name="completed" onBlur={handleBlur} onChange={handleChange} value={values.completed} sx={{ color: "white", '&.Mui-checked': { color: "white", }, }} />} label="Completed" />
-
+              <Box>
+                <Dropzone value={values.picture} setFieldValue={setFieldValue} />
+              </Box>
             </Box>
 
             <Box display="flex" justifyContent="center" mt="20px">
