@@ -19,7 +19,7 @@ const initialValues = {
   password: "",
   chatId: "",
   userType: "",
-  picture:"",
+  picture: "",
 };
 
 const userSchema = yup.object().shape({
@@ -30,18 +30,15 @@ const userSchema = yup.object().shape({
   userType: yup.string().required("Required"),
 });
 
-
-
-
 const Register = () => {
 
-  
+
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
   const [open, setOpen] = useState(false)
   const [picture, setProfileImage] = useState("https://res-console.cloudinary.com/deymti8ua/thumbnails/v1/image/upload/v1680606112/Y2xkLXNhbXBsZS0y/grid_landscape");
-  const [fileUrl, setFileUrl] = useState(null);
+  const [fileUrl, setFileUrl] = useState(null); // WHAT IS THIS BOSS?
 
 
   // UseSignUp hook to authenticate and store user to the database!
@@ -50,7 +47,7 @@ const Register = () => {
   const handleFormSubmit = async (values) => {
     values.picture = picture;
     console.log("Form values: ", values);
-    console.log("Checking with mubashir:",values.picture)
+    console.log("Checking with mubashir:", values.picture)
     try {
       const response = await signup(values);
       console.log("SignUP Response: ", response);
@@ -147,8 +144,8 @@ const Register = () => {
               }}
             >
               <Box>
-                     <Dropzone value={values.picture} setFieldValue={setFieldValue} />
-                   </Box>
+                <Dropzone value={values.picture} setFieldValue={setFieldValue} />
+              </Box>
               <TextField
                 fullWidth
                 variant="filled"
@@ -224,7 +221,7 @@ const Register = () => {
 
             <Box display="grid" justifyContent="center" mt="20px">
               <Button disabled={isSubmitting} type="submit" color="secondary" variant="contained">
-              {isSubmitting? "Loading...":"Register"}
+                {isSubmitting ? "Loading..." : "Register"}
               </Button>
               <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Already have an account?</Typography>
               <Button onClick={() => navigate('/')} type="submit" color="primary" variant="contained">

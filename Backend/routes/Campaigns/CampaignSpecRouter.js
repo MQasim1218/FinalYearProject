@@ -34,7 +34,7 @@ router.post(
 
         try {
             // Got the urls!!
-            let urls = req.body.urls
+            let urls = req.body.doc_urls
             console.log(urls)
 
             let result = await SpecCampaigns.findByIdAndUpdate(req.params.camp_id, {

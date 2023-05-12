@@ -32,7 +32,7 @@ router.post(
 
         try {
             // Got the urls!!
-            let urls = req.body.urls
+            let urls = req.body.doc_urls
             console.log(urls)
             let result = await GeneralCampaign.findByIdAndUpdate(req.params.camp_id, {
                 $push: { campaign_docs: { $each: urls } }

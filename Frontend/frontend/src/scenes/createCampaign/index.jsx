@@ -8,7 +8,7 @@ import { useState } from "react";
 import AlertModal from "../../components/AlertModal";
 import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
+import { useDropzone } from "react-dropzone"
 //initializing all inputs with their keys
 const initialValues = {
   campaign_title: "",
@@ -18,6 +18,7 @@ const initialValues = {
   archived: false,
   category: "Education",
   completed: false,
+  doc_urls: [] // this is for docs_urls
 };
 
 //schema for validation
@@ -33,6 +34,9 @@ const CreateCampaign = () => {
 
   let { user } = useAuthContext()
 
+  let [docs, setDocs] = useState([])
+  let [fileURL, setFileURL] = useState()
+
   //Code for the OnCLick POPUP
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => {
@@ -45,6 +49,7 @@ const CreateCampaign = () => {
 
   //Options for location entry
   // TODO: This needs tobe made dynamic and linked to Google Maps
+  // FIXME: Ive gotta make these two dynamic!!
   const locations = [
     {
       value: 'Islamabad',
@@ -94,10 +99,6 @@ const CreateCampaign = () => {
   //on submit, all inputs are stored in values
   const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
-
-    // ! We are using a hard coded value for the LoggedIn Admin.
-
-
 
     let camp = await axios.post(
       `http://localhost:5000/admin/${user?.user?._id}/addGeneralCampaign`,
