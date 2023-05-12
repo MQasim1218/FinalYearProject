@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography, Snackbar, Alert } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Header from "../../components/Header";
@@ -40,6 +40,7 @@ const Login = (props) => {
   const { login } = useLogin()
   const dispatch = useDispatch()
   const { user } = useAuthContext()
+  const [open, setOpen] = useState(false)
 
   const handleFormSubmit = async (values) => {
     //This setAccountType will help with the correct sidebar display on login.
@@ -50,12 +51,25 @@ const Login = (props) => {
     // console.log("Form values: ", values);
     // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
+    try{
     await login(email, password, userType)
 
     console.log(`${userType} login sucessful`)
     console.log(`navigating now!`)
     navigate(`/${userType}dashboard`)
+    }
+    catch(err){
+      setOpen(true)
+    }
 
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -162,6 +176,11 @@ const Login = (props) => {
           </form>
         )}
       </Formik>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          Login Failed! Email or password is incorrect.
+        </Alert>
+      </Snackbar>
     </Box>
 
   )

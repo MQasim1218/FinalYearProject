@@ -17,10 +17,17 @@ export const rootAdminDonationsApi = createApi({
         // Different views shall be held in injected Endpoints from extended slices
         // ! Need to figure out where each of these is located!
         donateToCampaign: builder.mutation({
-            query: (id) => ({
-                url: `/donate/${id}`,
-                method: 'POST'
-            }),
+            query: ({ id, ...values }) => {
+                console.log("Incoming ID: ", id)
+
+                // The id that comes here is actually the amount and the donation  to donate!
+
+                return {
+                    url: `/donate/${id}`,
+                    method: 'POST',
+                    body: values
+                }
+            },
             invalidatesTags: ['AdminDonations', 'AllAdminDonations']
         }),
 

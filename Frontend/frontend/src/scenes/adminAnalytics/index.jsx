@@ -201,8 +201,7 @@ const highestDonation = adminDons?.reduce((highest, current) => {
         >
           <StatBox
             title={`$${admin?.availableAmount + totalDonations}`}
-            subtitle="Total Donations Received"
-            // increase="This Month: $190"
+            subtitle="Total Donations Made"
             icon={
               <AttachMoneyOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

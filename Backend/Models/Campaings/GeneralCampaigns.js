@@ -47,7 +47,7 @@ let generalCampaignSchema = mongoose.Schema({
         default: false
     },
 
-    catagory: {
+    category: {
         type: String,
         Enum: ["ABC", "DEF", "GHI"],
         // required: true

@@ -61,7 +61,7 @@ const Campaign = ({
     location,
     category,
     description,
-    progress,
+    progress = donated_amount / required_amount * 100,
     isDashboard = false,
 
 }) => {
@@ -90,7 +90,7 @@ const Campaign = ({
                 Accumulated: ${""+Number(donated_amount).toFixed(2)}
                 </Typography>
                 <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
-                Completed: {""+Number(donated_amount/required_amount*100).toFixed(0)}%
+                    Completed:
                 </Typography>
                 
                 <LinearProgressWithLabel value={progress} />
@@ -103,12 +103,6 @@ const Campaign = ({
                         </Typography>
                         <Typography variant='h5' color={colors.grey[100]}>
                             {description}
-                        </Typography>
-                        <Typography sx={{ mt: "0.8em" }} variant='h6' color={colors.blueAccent[400]}>
-                            Location:
-                        </Typography>
-                        <Typography variant='h6' color={colors.grey[100]}>
-                            {location}
                         </Typography>
                     </CardContent>
                 </Collapse>) : undefined}
@@ -132,8 +126,7 @@ function LinearProgressWithLabel(props) {
                     color="success"
                     sx={{ backgroundColor: colors.primary[900], color }}
                     variant="determinate"
-                    {...props} /
-                >
+                    {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
                 <Typography variant="body2" color="text.secondary">{`${Math.round(
@@ -273,7 +266,6 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
             })
         } else {
             console.log("No user is Logged in")
-            alert("No user is logged in!!")
         }
 
         return (() => {
@@ -451,18 +443,18 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
                             {
                                 campaigns.map((
                                     {
-                                        id,
+                                        _id,
                                         campaign_title,
                                         required_amount,
                                         donated_amount,
                                         location,
                                         category,
                                         description,
-                                        progress
+                                        progress = donated_amount / required_amount * 100
                                     }
                                 ) => (
                                     <Campaign
-                                        id={id}
+                                        id={_id}
                                         campaign_title={campaign_title}
                                         required_amount={required_amount}
                                         donated_amount={donated_amount}
@@ -480,18 +472,18 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
                     (<Box mt="20px" display="grid" gridTemplateColumns="repeat(4,minmax(0,1fr))" justifyContent="space-between" rowGap="20px" columnGap="1.33%" sx={{ "& > div": { gridColumn: undefined } }}>
                         {campaigns.map((
                             {
-                                id,
+                                _id,
                                 campaign_title,
                                 required_amount,
                                 donated_amount,
                                 location,
                                 category,
                                 description,
-                                progress
+                                progress = donated_amount / required_amount * 100
                             }
                         ) => (
                             <Campaign
-                                id={id}
+                                id={_id}
                                 campaign_title={campaign_title}
                                 required_amount={required_amount}
                                 donated_amount={donated_amount}

@@ -600,15 +600,25 @@ const SingleDonation = async (req, res, next) => {
 const DonateToCampaign = async (req, res, next) => {
     // ! Awesome work.. Half the Backend isnt done
 
-    // let camp_id = req.body.camp_id
+    let camp_id = req.params.camp_id
+
     try {
+        console.log("here to create donation in the admin")
         let don = await AdminDons.create(req.body)
         if (don) {
 
             console.log("Created donation.. Waiting for campaign to update!!")
             let amount = parseInt(req.body.amount)
 
-            let camp = await GenCamps.findById(req.body.campaign).exec()
+
+            // This is to update the campaign details.
+            /**
+             * Things to change.
+             * Campaign donated amount
+             * donations to this campaign.
+             * 
+             */
+            let camp = await GenCamps.findById(camp_id).exec()
             camp.donated_amount += amount
             camp.save()
             // res.json({ don, camp })
@@ -618,8 +628,9 @@ const DonateToCampaign = async (req, res, next) => {
         }
 
 
-    } catch (error) {
-
+    } catch (err) {
+        console.log("Error:  ", err.message)
+        return res.send(err.message)
     }
 
 

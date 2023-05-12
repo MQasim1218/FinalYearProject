@@ -19,6 +19,7 @@ import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySli
 import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+import { PersonOutlineOutlined } from "@mui/icons-material";
 
 /**
  * NOTE: Data to be fetched 
@@ -64,7 +65,7 @@ const SuperAdminDashboard = () => {
         progress={false}
         //increase="+14% This Month dyn"
         icon={
-          <AttachMoneyOutlinedIcon
+          <PersonOutlineOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }
@@ -96,7 +97,7 @@ const SuperAdminDashboard = () => {
         progress={false}
         //increase="+14% This Month dyn"
         icon={
-          <AttachMoneyOutlinedIcon
+          <PersonOutlineOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }
@@ -130,7 +131,7 @@ const SuperAdminDashboard = () => {
         progress={false}
         //increase="+14% This Month dyn"
         icon={
-          <AttachMoneyOutlinedIcon
+          <PersonOutlineOutlined
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />
         }

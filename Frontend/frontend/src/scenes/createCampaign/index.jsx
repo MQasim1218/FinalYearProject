@@ -1,26 +1,25 @@
-import { Box, Button, TextField, useTheme, Checkbox, Typography, FormControlLabel, InputAdornment, MenuItem, Avatar } from "@mui/material";
+import { Box, Button, TextField, useTheme, Checkbox, Typography, FormControlLabel, InputAdornment, MenuItem, Avatar, Snackbar, Alert } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { useCallback, useState } from "react";
-import AlertModal from "../../components/AlertModal";
 import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useDropzone } from "react-dropzone";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import PersonIcon from '@mui/icons-material/Person';
+import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import { ConstructionOutlined } from "@mui/icons-material";
 
 //initializing all inputs with their keys
 const initialValues = {
   campaign_title: "",
   required_amount: "",
   description: "",
-  location: "ISL",
-  archived: false,
+  location: "Islamabad",
   category: "Education",
-  completed: false,
   url_docs: []
 };
 
@@ -38,19 +37,18 @@ const CreateCampaign = () => {
   let { user } = useAuthContext()
 
   //Code for the OnCLick POPUP
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [urls, setURLS] = useState([]);
+  const [urls, setUrls] = useState([]);
   const [fileUrl, setFileUrl] = useState(null);
+  const [open, setOpen] = useState(false)
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
-
-  const openModal = () => {
-    setModalIsOpen(true);
+    setOpen(false);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
 
   //Options for location entry
   // TODO: This needs tobe made dynamic and linked to Google Maps
@@ -117,10 +115,12 @@ const CreateCampaign = () => {
 
     console.log("camp created: ", camp)
     //To show the popup component.
-    openModal()
 
     //To reset the forms values after submit.
     resetForm()
+    setFileUrl(null)
+    setUrls([])
+    setOpen(true);
   };
 
 
@@ -133,61 +133,79 @@ const CreateCampaign = () => {
 
       // ! eslint-disable-next-line no-use-before-define
       // const uploadedImage = await uploadToCloudinary(acceptedFiles[0]);
-      const formData = new FormData();
+
+      const URLs = [];
+
+      for (let i = 0; i < acceptedFiles.length; i++) {
+        const formData = new FormData();
 
       // Appending all the files to the formData.
-      acceptedFiles.forEach((file) => {
+        let file = acceptedFiles[i];
+
         formData.append('file', file);
-      });
 
       // Accept all the files from ??
       // fidazzwm => File upload access
       formData.append('preset', 'pj7wsjbl');
 
 
-      const results = await axios.post('https://api.cloudinary.com/v1_1/deymti8ua/image/upload', formData, {
+      const results = await axios.post('https://api.cloudinary.com/v1_1/deymti8ua/auto/upload', formData, {
         params: {
           upload_preset: 'pj7wsjbl',
-          multiple: true,
         },
       });
 
-      console.log(results);
-      console.log(results.data.secure_url);
+      console.log("URLS: "+results.data.secure_url)
+        URLs.push(results.data.secure_url);
+        
+    }
 
-
-      setURLS(results.data.map((result) => result.secure_url));
 
       setFieldValue('file', acceptedFiles);
-      setFileUrls(
-        acceptedFiles.map((file) => URL.createObjectURL(file))
-      );
+
+      setFileUrl( acceptedFiles.length + " files selected" )
+
+      setUrls(URLs);
+
 
 
     }, [setFieldValue]);
 
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     return (
-      <div {...getRootProps()} sx={{ gridColumn: 'span 1', display: 'flex', }}>
+      <div {...getRootProps()} sx={{ gridColumn: 'span 1', display: 'flex', flexDirection: 'row' }}>
         <input {...getInputProps()} />
 
         {/* Technically we dont need this code as its simple file upload!! */}
-        <Avatar sx={{ alignItems: 'stretch', width: '100px', height: '100px', borderWidth: '1px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', marginTop: '3em', marginBottom: '-2em', cursor: 'pointer' }}>
+        <Button sx={{
+          backgroundColor: colors.blueAccent[700],
+          color: colors.grey[100],
+          fontSize: "14px",
+          fontWeight: "bold",
+          padding: "10px 20px",
+        }} >
+
           {/* Either display a  dummy person or the uploaded image */}
 
           {
-            fileUrl ? <img src={fileUrl} alt="file preview" /> : isDragActive ? <CloudUploadIcon color="primary" sx={{ fontSize: '3rem' }} />
+            fileUrl ? <div sx={{ display: 'flex', flexDirection: 'row' }}>
+              <AttachFileOutlinedIcon sx={{ fontSize: '1.5rem' }} />
+              <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                {fileUrl}
+              </Typography>
+            </div>
               : (
-                <div sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <PersonIcon sx={{ fontSize: '3rem' }} />
+                <div sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <AttachFileOutlinedIcon sx={{ fontSize: '1.5rem' }} />
                   <Typography variant="body2" sx={{ textAlign: 'center' }}>
-                    Upload Here
+                    Upload Documents
                   </Typography>
                 </div>
               )
           }
-        </Avatar>
+        </Button>
       </div>
     );
   };
@@ -198,7 +216,6 @@ const CreateCampaign = () => {
 
   return (
     <Box m="20px">
-      <AlertModal isOpen={modalIsOpen} onClose={closeModal} message="Campaign Created Sucessfully!" />
       <Header title="CREATE CAMPAIGN" subtitle="Create A New Campaign" />
 
       <Formik
@@ -311,10 +328,8 @@ const CreateCampaign = () => {
                 rows={4}
               />
 
-              <FormControlLabel control={<Checkbox name="archived" onBlur={handleBlur} onChange={handleChange} value={values.archived} sx={{ color: "white", '&.Mui-checked': { color: "white", }, }} />} label="Archived" />
-              <FormControlLabel control={<Checkbox name="completed" onBlur={handleBlur} onChange={handleChange} value={values.completed} sx={{ color: "white", '&.Mui-checked': { color: "white", }, }} />} label="Completed" />
               <Box>
-                <Dropzone value={values.picture} setFieldValue={setFieldValue} />
+                <Dropzone value={values.url_docs} setFieldValue={setFieldValue} />
               </Box>
             </Box>
 
@@ -326,6 +341,11 @@ const CreateCampaign = () => {
           </form>
         )}
       </Formik>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Campaign Created Successfully!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 

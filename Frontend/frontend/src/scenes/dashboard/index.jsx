@@ -24,6 +24,7 @@ import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
 import { useAdminCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
+import { PersonOutlineOutlined } from "@mui/icons-material";
 
 
 /**
@@ -176,7 +177,7 @@ const Dashboard = () => {
       progress={false}
       // increase="+14% This Month dyn"
       icon={
-        <AttachMoneyOutlinedIcon
+        <PersonOutlineOutlined
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
         />
       }
@@ -205,7 +206,7 @@ const Dashboard = () => {
       progress={false}
       // increase="+14% This Month dyn"
       icon={
-        <AttachMoneyOutlinedIcon
+        <PersonOutlineOutlined
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
         />
       }
@@ -233,7 +234,7 @@ const Dashboard = () => {
       progress={false}
       // increase="+14% This Month dyn"
       icon={
-        <AttachMoneyOutlinedIcon
+        <PersonOutlineOutlined
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
         />
       }
@@ -250,6 +251,13 @@ const Dashboard = () => {
     isError: isDonationsError,
     isSuccess: isDonationsSuccess
   } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
+
+  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount + don.donated, 0)
+  const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
+
+  const remainingPercent = used / total
+
+  console.log("%: ", remainingPercent)
 
 
   let DonationsList = <></>
@@ -425,7 +433,7 @@ const Dashboard = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={campaigns?.filter((camp) => (!camp.completed))?.length}
+            title={campaigns?.length}
             subtitle="Active Admin Campaigns"
             progress={false}
             // increase="+43% This Month dyn"
@@ -484,7 +492,7 @@ const Dashboard = () => {
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                "10"
+                {sa_donations?.length}
               </Typography>
             </Box>
             <Box>
@@ -528,7 +536,7 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaigns
+            Allocation To Campaigns
           </Typography>
           <Box
             display="flex"
@@ -536,15 +544,28 @@ const Dashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $28,352 revenue generated for campaigns dyn
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <ProgressCircle progress={remainingPercent} size="130" />
+
+          </Box>
+          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" mt="15px">
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + total}
+              </Typography>
+              <Typography color={colors.greenAccent[500]}>Total Donations Recieved</Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + used}
+              </Typography>
+              <Typography color={colors.blueAccent[500]}>Total Donations Used</Typography>
+            </Box>
           </Box>
         </Box>
         <Box

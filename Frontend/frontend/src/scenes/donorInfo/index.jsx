@@ -254,28 +254,6 @@ useEffect(() => {
 
 
     </Box>
-
-    <Box mt="2rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>
-        Campaigns Info - Change this with Campaigns Donated by the Donor
-      </Typography>
-    </Box>
-
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px"
-    >
-      {/* ROW 3 */}
-      <Box
-        gridColumn="span 12"
-        gridRow="span 2"
-      //backgroundColor={colors.primary[400]}
-      >
-        <HomeScreenCampaigns isDashboard={true} title="Latest Donated Campaigns" subtitle="The last three recently donated campaigns of this user" />
-      </Box>
-    </Box>
   </Box>)
 }
 

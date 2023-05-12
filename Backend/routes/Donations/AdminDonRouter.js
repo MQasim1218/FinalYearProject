@@ -109,7 +109,7 @@ router.get('camp/:id/range/:start_date/:end_date/:category?', AdminDonationContr
 )
 
 // Make Donations by Admin to campaign
-router.post('/donate/', AdminDonationController.DonateToCampaign)
+router.post('/donate/:camp_id', AdminDonationController.DonateToCampaign)
 
 /**
  * ! Need to add routes for Campaign Specific Queries

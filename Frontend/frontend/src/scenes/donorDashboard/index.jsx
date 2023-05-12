@@ -15,6 +15,10 @@ import axios from "axios";
 import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useSingleDonorDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import LineChart from "../../components/LineChart";
+import UserLineChart from '../../components/UserLineChart';
+
 
 const DonorDashboard = () => {
   const theme = useTheme();
@@ -25,57 +29,59 @@ const DonorDashboard = () => {
 
   const { user } = useAuthContext();
 
-  console.log("FRONTEND", user?.user?._id)
-
-  let {data, isSuccess} =  useSingleDonorDonationsQuery(user?.user?._id)
-  let totalDonations
+  let { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } =  useSingleDonorDonationsQuery(user?.user?._id)
 
 
-  if(isSuccess){
-    totalDonations = data.reduce((total, don) => {
-      return total + don.amount
-    },0)
+
+  console.log("Donor donation data is: ", donorDons)
+
+  const totalAmount = donorDons?.reduce((acc, curr) => {
+    return acc + curr.amount + curr.amountDonated;
+  }, 0);
+
+  console.log("Total Sum: "+totalAmount);
+
+
+  let RecDonations = <></>
+  if (isDonorDonsSuccess) {
+    // setDonations(donorDons)
+    RecDonations = (
+      donorDons?.map((transaction, i) => (
+        <Box
+
+          key={`${i}`}
+          display="flex"
+
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`4px solid ${colors.primary[500]}`}
+          p="15px"
+        >
+          {/* {console.log(transaction)} */}
+          <Box>
+            <Typography
+              color={colors.greenAccent[500]}
+              variant="h5"
+              fontWeight="600"
+            >
+              {transaction.donation_title}
+            </Typography>
+
+          </Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
+          <Box
+            backgroundColor={colors.greenAccent[500]}
+            p="5px 10px"
+            borderRadius="4px"
+            color={colors.grey[900]}
+          >
+            ${transaction.amount + transaction.amountDonated}
+          </Box>
+        </Box>
+      ))
+    )
   }
-
-
-
-  console.log("Donor logged in is: ", user?.user)
-
-  // useEffect(() => {
-  //   const DonorDonations = async () => {
-  //     // FIXME !!
-  //     let donor_id = user.user.user._id; // Hardconded value for the sake of testing purpose!!
-  //     console.log("Id:", donor_id);
-  //     console.log("token:", user.user.token);
-
-  //     let res = await axios.get(
-  //       `http://localhost:5000/donor/${donor_id}/donations`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${user.user.token}`,
-  //         },
-  //       }
-  //     );
-  //     if (res.status < 400) return res.data;
-  //     else return null;
-  //   };
-  // let donations_data = useAxiosGet("http://localhost:5000/donor/donations").then((data) => {
-  //   DonorDonations()
-  //     .then((donations) => {
-  //       if (donations === null) throw Error("No data recieved");
-
-  //       let tot = 0;
-  //       donations.forEach((don) => (tot += don.amount));
-  //       setTotalDonations(tot);
-  //       setDonorDonations(donations);
-  //       console.log(donorDonations);
-  //     })
-  //     .catch((error) => console.log("Error: ", error.message));
-
-  //   return () => {
-  //     console.log("Cleaning up the mess.. not quite actually.");
-  //   };
-  // }, []);
+  if (isDonorDonsErr) console.log("Error: ", donorDonsErr.message)
 
   return (
     <Box m="20px">
@@ -121,10 +127,8 @@ const DonorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={totalDonations}
+            title={"$" + totalAmount}
             subtitle="Total Donated"
-            progress="0.65"
-            increase="This Month: $110"
             icon={
               <AttachMoneyOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -140,12 +144,10 @@ const DonorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="36"
-            subtitle="Beneficiaries Helped"
-            progress="0.50"
-            increase="This Month: 4"
+            title={user?.user?.createdAt.slice(0,10)}
+            subtitle="Date Joined"
             icon={
-              <AssistWalkerOutlinedIcon
+              <CalendarMonthOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -178,10 +180,8 @@ const DonorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={donorDonations.length}
+            title={user?.user?.donated_campaigns_general.length + user?.user?.donated_campaigns_specific.length}
             subtitle="Campaigns Participated"
-            progress="0.85"
-            increase="This Month: 1"
             icon={
               <CampaignOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -196,7 +196,7 @@ const DonorDashboard = () => {
           color={colors.blueAccent[500]}
           sx={{ m: "15px 0 0 10px" }}
         >
-          Latest Campaigns
+          Donation Analytics
         </Typography>
       </Box>
       <Box
@@ -206,13 +206,36 @@ const DonorDashboard = () => {
         gap="20px"
       >
         {/* ROW 2 */}
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          overflow="auto"
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
+            p="15px"
+          >
+            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              Recent Donations
+            </Typography>
+          </Box>
+
+          {RecDonations}
+
+        </Box>
 
         <Box
-          gridColumn="span 12"
-        //gridRow="span 1"
-        //backgroundColor={colors.primary[400]}
+          gridColumn="span 8"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
         >
-          <HomeScreenCampaigns isDashboard={true} />
+          <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Yearly Donations</Typography>
+          <UserLineChart isDashboard={true} />
         </Box>
         {/* <Box
           gridColumn="span 4"

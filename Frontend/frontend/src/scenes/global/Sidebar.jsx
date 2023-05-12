@@ -90,7 +90,7 @@ const Sidebar = () => {
                                             width="100px"
                                             height="100px"
                                             src={user.user.picture}
-                                            style={{ cursor: "pointer", borderRadius: "50%", objectFit: "cover" }}
+                                            style={{ borderRadius: "50%", objectFit: "cover" }}
                                         />
 
                                 </Box>

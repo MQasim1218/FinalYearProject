@@ -82,14 +82,11 @@ const SuperDonation = () => {
         .map((don, index) => ({ value: don._id, label: don.amount, id: index, name: don.donor.name, category: don.catagory }))
         .map((opt) => (
           <MenuItem key={opt.id} value={opt.value} id={opt.id}>
-            {opt.name+ " ($"+ opt.label+")" + " - " + opt.category}
+            {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
           </MenuItem>
         ))
     else if (donsIsError) console.log(donsError.message)
   }
-
-
-
 
 
   //Options for category entry
