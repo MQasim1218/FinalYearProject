@@ -3,6 +3,7 @@ import React from 'react'
 import Sidebar from './Sidebar';
 import SuperSidebar from './SuperSidebar';
 import UserSidebar from './UserSidebar';
+import BeneficiarySidebar from './BeneficiarySidebar';
 import { AccountTypeContext } from '../../accountTypeContext';
 
 function getSidebar(accountType) {
@@ -16,6 +17,8 @@ function getSidebar(accountType) {
             return Sidebar
         case 'superadmin':
             return SuperSidebar
+        case 'beneficiary':
+            return BeneficiarySidebar
         default:
             return null;
     }

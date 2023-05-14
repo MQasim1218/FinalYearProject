@@ -155,7 +155,7 @@ const Login = (props) => {
                   sx={{ gridColumn: "span 2" }}
                 >
                   <MenuItem value={"donor"}>Donor</MenuItem>
-                  <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
+                  <MenuItem value={"beneficiary"}>Beneficiary</MenuItem>
                   <MenuItem value={"admin"}>Admin</MenuItem>
                   <MenuItem value={"superadmin"}>Super Admin</MenuItem>
 
@@ -172,7 +172,6 @@ const Login = (props) => {
                 Register
               </Button>
             </Box>
-
           </form>
         )}
       </Formik>

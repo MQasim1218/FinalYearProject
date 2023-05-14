@@ -79,10 +79,10 @@ const AdminDonationInfo = () => {
     //     }
     //   }
 
-    //   const getBenificiries = async () => {
+    //   const getBeneficiries = async () => {
     //     // const res = await fetch('http://localhost:5000/admin')
     //     try {
-    //       let res = await axios.get("http://localhost:5000/benificiary/")
+    //       let res = await axios.get("http://localhost:5000/beneficiary/")
     //       if (res.status < 300) {
     //         let data = res.data
     //         console.log(data)
@@ -127,8 +127,8 @@ const AdminDonationInfo = () => {
     // //   getDonors().then((dons) => {
     // //     setActiveDonors(dons)
     // //   })
-    // //   getBenificiries().then((benifs) => {
-    // //     setActiveBenifs(benifs)
+    // //   getBeneficiries().then((benefs) => {
+    // //     setActiveBenefs(benefs)
     // //   })
 
     // return (() => console.log("No clean up"))

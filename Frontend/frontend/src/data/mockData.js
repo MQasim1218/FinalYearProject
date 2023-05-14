@@ -323,7 +323,7 @@ export const mockDataDonations = [
   //     phone: "(665)121-5454",
   //     address: "0912 Won Street, Alabama, SY 10001",
   //   },
-  //   benificiary: {
+  //   beneficiary: {
   //     name: "Jon Doe",
   //     email: "johnDoe@gmail.com",
   //     age: 28,

@@ -22,7 +22,7 @@ import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
 import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
 import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
+import { useAllBenefsQuery } from "../../app/redux-features/users/BeneficiarySlice";
 import { useAdminCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 import { PersonOutlineOutlined } from "@mui/icons-material";
 
@@ -33,7 +33,7 @@ import { PersonOutlineOutlined } from "@mui/icons-material";
  * ? Total number of active campaigns
  * ? Total donations made
  * ? Total number of Active donors (Donated in last 6 months)
- * ? Total number of Benificiries (Have a campaign running)
+ * ? Total number of Beneficiries (Have a campaign running)
  * ? Total number of Active Campaigns (Completed::false, Approved::true)
  * ? Recent donations made (fetch last 4-5)
  * ? 
@@ -91,10 +91,10 @@ const Dashboard = () => {
   //     }
   //   }
 
-  //   const getBenificiries = async () => {
+  //   const geeBeneficiries = async () => {
   //     // const res = await fetch('http://localhost:5000/admin')
   //     try {
-  //       let res = await axios.get("http://localhost:5000/benificiary/")
+  //       let res = await axios.get("http://localhost:5000/beneficiary/")
   //       if (res.status < 300) {
   //         let data = res.data
   //         console.log(data)
@@ -139,8 +139,8 @@ const Dashboard = () => {
   //   getDonors().then((dons) => {
   //     setActiveDonors(dons)
   //   })
-  //   getBenificiries().then((benifs) => {
-  //     setActiveBenifs(benifs)
+  //   e().then((benefs) => {
+  //     setActiveBenefs(benefs)
   //   })
 
   //   return (() => console.log("No clean up"))
@@ -214,23 +214,23 @@ const Dashboard = () => {
   )
   else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
-  // ! Benificiaries StatBox
+  // ! Beneficiaries StatBox
   let {
-    data: benifs,
-    isLoading: isBenifsLoading,
-    error: benifsError,
-    isError: isBenifError,
-    isSuccess: isBenifsSuccess
-  } = useAllBenifsQuery()
+    data: benefs,
+    isLoading: isBenefsLoading,
+    error: benefsError,
+    isError: isBenefError,
+    isSuccess: isBenefsSuccess
+  } = useAllBenefsQuery()
 
 
-  let BenifsStatBox = <></>
-  if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
-  else if (isBenifsSuccess) BenifsStatBox = (
+  let BenefsStatBox = <></>
+  if (isBenefsLoading) BenefsStatBox = <h3>Loading Content</h3>
+  else if (isBenefsSuccess) BenefsStatBox = (
     <StatBox
       // title={ }
-      title={benifs.length}
-      subtitle="Active Benificaries"
+      title={benefs.length}
+      subtitle="Active Beneficaries"
       progress={false}
       // increase="+14% This Month dyn"
       icon={
@@ -240,7 +240,7 @@ const Dashboard = () => {
       }
     />
   )
-  else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
+  else if (isBenefError) BenefsStatBox = <h3>{`Error: ${benefsError.message}`}</h3>
 
 
   // ! Recent Donations
@@ -255,7 +255,14 @@ const Dashboard = () => {
   const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount + don.donated, 0)
   const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
 
-  const remainingPercent = used / total
+  let remainingPercent = 0
+
+  if (total === 0) {
+     remainingPercent = 0
+  }
+  else{
+   remainingPercent = used / total
+  }
 
   console.log("%: ", remainingPercent)
 
@@ -411,7 +418,7 @@ const Dashboard = () => {
               />
             }
           /> */}
-          {BenifsStatBox}
+          {BenefsStatBox}
         </Box>
         <Box
           gridColumn="span 3"

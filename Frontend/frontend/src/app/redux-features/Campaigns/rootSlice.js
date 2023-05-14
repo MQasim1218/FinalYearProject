@@ -13,7 +13,7 @@ const Campaigns = createApi({
     endpoints: (builder) => ({
 
         // NOTE: This endpoint fetches all the campaigns created by the Admin.. 
-        // Not those created by the benificiries
+        // Not those created by the beneficiries
         allCampaigns: builder.query(
             {
                 query: () => `/`,

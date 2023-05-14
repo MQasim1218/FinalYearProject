@@ -7,7 +7,7 @@ let loanSchema = mongoose.Schema({
     donated_amount: { type: Number, default: 0 },
     returned_amount: { type: Number, default: 0 },
     description: { type: String, required: true },
-    benificiary: { type: mongoose.Types.ObjectId, ref: 'benificairy' },
+    beneficiary: { type: mongoose.Types.ObjectId, ref: 'beneficiary' },
     approved: { type: Boolean, required: true, default: false },
     rejected: { type: Boolean, required: true, default: false },
     completed: { type: Boolean, required: true, default: false },

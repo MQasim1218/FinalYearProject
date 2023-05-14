@@ -1,5 +1,5 @@
 const { adminSchema } = require('../Models/AdminModel')
-const { benificairySchema } = require('../Models/BenificiaryModel')
+const { beneficiarySchema } = require('../Models/BeneficiaryModel')
 const mongoose = require("mongoose")
 
 let auditSchema = mongoose.Schema({
@@ -24,8 +24,8 @@ let auditSchema = mongoose.Schema({
     // Admins that are a part of the Audit
     auditor_admin: [adminSchema],
 
-    // Benificiary that is the part of the Audit
-    auditor_benef: benificairySchema,
+    // Beneficiary that is the part of the Audit
+    auditor_benef: beneficiarySchema,
 
 
     // ANCHOR - Need to check this later 

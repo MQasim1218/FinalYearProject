@@ -36,15 +36,21 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 //initializing all inputs with their keys
 const initialValues = {
-  total_amount: "",
-  donor: "Donor1",
+  amount: "",
+  supAdminDonation: "",
+  donorId: "",
+  campaign: "",
+  admin: ""
 
 };
 
 //schema for validation
 const userSchema = yup.object().shape({
-  total_amount: yup.string().required("Required"),
-  donor: yup.string().required("Required"),
+  amount: yup
+    .string()
+    .test('positive', 'Amount must be greater than 0', value => parseFloat(value) > 0)
+    .required('Required'),
+  supAdminDonation: yup.string().required("Required"),
 
 });
 
@@ -61,13 +67,12 @@ const CampaignInfo = () => {
   const [donors, setDonors] = useState([])
   const [totDonations, setTotDon] = useState(0)
   const [activeDonors, setActiveDonors] = useState([])
-  const [activeBenifs, setActiveBenifs] = useState([])
+  const [activeBenefs, setActiveBenefs] = useState([])
   const [donations, setDonations] = useState([])
   const [openModal, setModalOpen] = useState(false)
   const [open, setOpen] = useState(false)
 
-
-  const { user } = useAuthContext()
+  let { user } = useAuthContext()
 
   const userType = localStorage.getItem("userType")
 
@@ -88,13 +93,18 @@ const CampaignInfo = () => {
       isLoading, isSuccess,
       error
     }
-  ] = useDonateToCampaignMutation() // Can't pass values here! 
+  ] = useDonateToCampaignMutation(id)
 
 
-  const handleFormSubmit = async (values, { resetForm }) => {
-    console.log(values);
+  const handleFormSubmit = async (values, {resetForm}) => {
 
-    let response = await setAdminToCampaignDonation({ id, values })
+    values.admin = user?.user?._id
+    values.campaign = id
+
+
+    console.log("11111111111111111", values);
+
+    let response = await setAdminToCampaignDonation({ values })
     if (isError && !isLoading) {
       console.log(error)
     }
@@ -105,6 +115,7 @@ const CampaignInfo = () => {
     setOpen(true);
 
     //To reset the forms values after submit.
+    resetForm()
 
     setModalOpen(false)
   };
@@ -122,9 +133,7 @@ const CampaignInfo = () => {
   let { data: campDonations, isError: isCampDonsError, isLoading: isCampDonsLoading, error: campDonsError, isSuccess: isCampDonsSuccess } = useSingleCampaignDonationsQuery(id)
   let { data: camp } = useSingleCampaignQuery(id)
 
-  let adminID = camp?.admin
-
-  const { data: admin } = useGetAdminQuery(adminID)
+  const { data: admin } = useGetAdminQuery(camp?.admin)
 
 
   console.log("Admin Details: ", admin)
@@ -134,25 +143,6 @@ const CampaignInfo = () => {
 
   console.log("Campaign Donations: ", campDonations)
 
-  //options for donors
-  const donor_opts = [
-    {
-      value: 'Donor1',
-      label: 'Donor 1',
-    },
-    {
-      value: 'Donor2',
-      label: 'Donor 2',
-    },
-    {
-      value: 'Donor3',
-      label: 'Donor 3',
-    },
-    {
-      value: 'Donor4',
-      label: 'Donor 4',
-    },
-  ];
 
   let {
     data: allDonsToAdmin,
@@ -160,29 +150,21 @@ const CampaignInfo = () => {
     isError: isAllDonsToAdminError,
     isLoading: allDonsToAdminLoading,
     isSuccess: allDonsToAdminSuccess
-  } = useGetSuperAdminDonationsToAdminQuery(adminID)
+  } = useGetSuperAdminDonationsToAdminQuery(camp?.admin)
 
 
   if (!allDonsToAdminLoading) {
-    if (allDonsToAdminSuccess)
+    if (allDonsToAdminSuccess) {
       console.log("Dons to the admins are", allDonsToAdmin)
 
-    allDonsToAdmin = allDonsToAdmin
-      .filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
-      .map((don, index) => ({
-        name: don.donation_title,
-        value: don._id,
-        label: don.amount,
-        id: index,
-        category: don.category,
-        supAdminDonation: don._id,
-        admin: user?.user?._id
-      }))
-      .map((opt) => (
-        <MenuItem key={opt.id} value={opt.value} id={opt.id}>
-          {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
-        </MenuItem>
-      ))
+      allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
+        .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
+        .map((opt) => (
+          <MenuItem key={opt.id} value={opt.value} id={opt.id}>
+            {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
+          </MenuItem>
+        ))
+    }
   }
   else if (isAllDonsToAdminError) console.log(allDonsToAdminError.message)
 
@@ -447,10 +429,10 @@ const CampaignInfo = () => {
                       }}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.total_amount}
-                      name="total_amount"
-                      error={!!touched.total_amount && !!errors.total_amount}
-                      helperText={touched.total_amount && errors.total_amount}
+                      value={values.amount}
+                      name="amount"
+                      error={!!touched.amount && !!errors.amount}
+                      helperText={touched.amount && errors.amount}
                       sx={{ gridColumn: "span 2" }}
                     />
 
@@ -462,10 +444,10 @@ const CampaignInfo = () => {
                       label="From *"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.donor}
-                      name="donor"
-                      error={!!touched.donor && !!errors.donor}
-                      helperText={touched.donor && errors.donor}
+                      value={values.supAdminDonation}
+                      name="supAdminDonation"
+                      error={!!touched.supAdminDonation && !!errors.supAdminDonation}
+                      helperText={touched.supAdminDonation && errors.supAdminDonation}
                       sx={{ gridColumn: "span 2" }}
                     >{allDonsToAdmin}
                     </TextField>

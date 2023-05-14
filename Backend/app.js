@@ -11,7 +11,7 @@ require('dotenv').config()
 var indexRouter = require('./routes/index');
 
 // NOTE: All user routers
-var beneficiaryRouter = require('./routes/Users/BenificiaryRouter');
+var beneficiaryRouter = require('./routes/Users/BeneficiaryRouter');
 var donorRouter = require('./routes/Users/DonorRouter');
 var adminRouter = require('./routes/Users/AdminRouter');
 var superAdminRouter = require('./routes/Users/SuperAdminRouter')
@@ -46,7 +46,7 @@ mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfull
 app.use('/', indexRouter);
 
 // User Routers
-app.use('/benificiary', beneficiaryRouter);
+app.use('/beneficiary', beneficiaryRouter);
 app.use('/admin', adminRouter);
 app.use('/superAdmin', superAdminRouter);
 app.use('/donor', donorRouter);

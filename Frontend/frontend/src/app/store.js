@@ -14,7 +14,7 @@ import authReducer from './redux-features/authSlice'
 import { adminApi } from './redux-features/users/AdminSlice'
 import { donorApi } from './redux-features/users/DonorSlice'
 import { superadminApi } from './redux-features/users/SuperAdminSlice'
-import { benificiaryApi } from './redux-features/users/BenificiarySlice'
+import { beneficiaryApi } from './redux-features/users/BeneficiarySlice'
 import { campaignsApi } from './redux-features/Campaigns/exporterSlice'
 
 const store = configureStore({
@@ -33,7 +33,7 @@ const store = configureStore({
         // User Reducers 🌄
         [adminApi.reducerPath]: adminApi.reducer,
         [donorApi.reducerPath]: donorApi.reducer,
-        [benificiaryApi.reducerPath]: benificiaryApi.reducer,
+        [beneficiaryApi.reducerPath]: beneficiaryApi.reducer,
         [superadminApi.reducerPath]: superadminApi.reducer,
 
 
@@ -51,7 +51,7 @@ const store = configureStore({
             .concat(adminApi.middleware)
             .concat(donorApi.middleware)
             .concat(superadminApi.middleware)
-            .concat(benificiaryApi.middleware)
+            .concat(beneficiaryApi.middleware)
             .concat(donorDonationsApi.middleware)
             .concat(adminDonationsApi.middleware)
             .concat(superadminDonationsApi.middleware)

@@ -600,9 +600,12 @@ const SingleDonation = async (req, res, next) => {
 const DonateToCampaign = async (req, res, next) => {
     // ! Awesome work.. Half the Backend isnt done
 
-    let camp_id = req.params.camp_id
+    let camp_id = req.body.campaign
 
     try {
+
+        console.log("Request recieved is: ", req.body)
+
         console.log("here to create donation in the admin")
         let don = await AdminDons.create(req.body)
         if (don) {
@@ -630,7 +633,7 @@ const DonateToCampaign = async (req, res, next) => {
 
     } catch (err) {
         console.log("Error:  ", err.message)
-        return res.send(err.message)
+        return res.status(500).send(err.message)
     }
 
 

@@ -15,7 +15,7 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import axios from "axios";
 import { useAllAdminsQuery } from "../../app/redux-features/users/AdminSlice";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
-import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
+import { useAllBenefsQuery } from "../../app/redux-features/users/BeneficiarySlice";
 import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
@@ -27,7 +27,7 @@ import { PersonOutlineOutlined } from "@mui/icons-material";
  * ? Total number of active campaigns
  * ? Total donations made
  * ? Total number of Active donors (Donated in last 6 months)
- * ? Total number of Benificiries (Have a campaign running)
+ * ? Total number of Beneficiries (Have a campaign running)
  * ? Total number of Active Campaigns (Completed::false, Approved::true)
  * ? Recent donations made (fetch last 4-5)
  * @returns Dynamic Dashboard Component
@@ -109,25 +109,25 @@ const SuperAdminDashboard = () => {
 
 
 
-  // ! Benificiaries StatBox
+  // ! Beneficiaries StatBox
   let {
-    data: benifs,
-    error: benifsError,
-    isError: isBenifError,
-    isSuccess: isBenifsSuccess,
-    isLoading: isBenifsLoading
-  } = useAllBenifsQuery()
-  let BenifsStatBox = null
-  if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
-  else if (isBenifsSuccess) {
-    // console.log("Benifs data: ", benifs)
-    // benifs.forEach((benif => { benif.id = benif._id }))
+    data: benefs,
+    error: benefsError,
+    isError: isBenefError,
+    isSuccess: isBenefsSuccess,
+    isLoading: isBenefsLoading
+  } = useAllBenefsQuery()
+  let BenefsStatBox = null
+  if (isBenefsLoading) BenefsStatBox = <h3>Loading Content</h3>
+  else if (isBenefsSuccess) {
+    // console.log("Benefs data: ", benefs)
+    // benefs.forEach((benef => { benef.id = benef._id }))
 
-    BenifsStatBox = (
+    BenefsStatBox = (
       <StatBox
         // title={ }
-        title={benifs.length}
-        subtitle="Active Benificaries"
+        title={benefs.length}
+        subtitle="Active Beneficaries"
         progress={false}
         //increase="+14% This Month dyn"
         icon={
@@ -138,7 +138,7 @@ const SuperAdminDashboard = () => {
       />
     )
   }
-  else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
+  else if (isBenefError) BenefsStatBox = <h3>{`Error: ${benefsError.message}`}</h3>
 
 
 
@@ -152,12 +152,12 @@ const SuperAdminDashboard = () => {
     isLoading: isCampsLoading
   } = useAllCampaignsQuery()
 
-  // console.log("Logging benifs data", benifs)
+  // console.log("Logging benefs data", benefs)
   let CampsStatBox = <></>
   if (isCampsLoading) CampsStatBox = <h3>Loading Content</h3>
   else if (isCampsSuccess) {
-    // console.log("Benifs data: ", benifs)
-    // benifs.forEach((benif => { benif.id = benif._id }))
+    // console.log("Benefs data: ", benefs)
+    // benefs.forEach((benef => { benef.id = benef._id }))
     CampsStatBox = (
       <StatBox
         title={camps.length}
@@ -240,7 +240,7 @@ const SuperAdminDashboard = () => {
               />
             }
           /> */}
-          {BenifsStatBox}
+          {BenefsStatBox}
         </Box>
         <Box
           gridColumn="span 3"

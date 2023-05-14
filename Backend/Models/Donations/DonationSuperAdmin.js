@@ -45,7 +45,7 @@ const supAdminDonationSchema = mongoose.Schema({
         // required: true,
         default: 'General'
     }
-    // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
+    // I dont see if we need to add location for doantion | Both donor and beneficiary have thier own location.
 },
     {
         timestamps: true,
