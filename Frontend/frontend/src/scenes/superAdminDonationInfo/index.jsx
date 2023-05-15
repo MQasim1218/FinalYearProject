@@ -27,6 +27,7 @@ import { mockDataDonationInfo } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { useGetSingleDonationQuery } from '../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice';
 import { useGetDonationsFromSingle_SADonationQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
+import { VolunteerActivismOutlined } from '@mui/icons-material';
 
 
 const SuperAdminDonationInfo = () => {
@@ -159,7 +160,7 @@ const SuperAdminDonationInfo = () => {
       >
         <StatBox
           title={singleDonation?.admin?.name}
-          subtitle="Person Donation Allocated"
+          subtitle="Admin Donation Allocated To"
           icon={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
@@ -173,8 +174,8 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={singleDonation?.amount}
-          subtitle="Donation amount"
+          title={"$"+singleDonation?.amount}
+          subtitle="Donation Amount"
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -193,7 +194,7 @@ const SuperAdminDonationInfo = () => {
           title={singleDonation?.donated}
           subtitle="Campaigns Supported"
           icon={
-            <CalendarMonthOutlinedIcon
+            <VolunteerActivismOutlined
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
@@ -207,36 +208,15 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={singleDonation?.remaining}
-          subtitle="Remaining Amount"
+          title={"$"+singleDonation?.donated}
+          subtitle="Donated To Campaign"
           icon={
-            <CalendarMonthOutlinedIcon
+            <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
         />
       </Box>
-
-      {/* 
-        This was the Donation Date! I am adding it to the top
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="22-Feb-2023"
-            subtitle="Date Donation Given To Admin"
-            icon={
-              <CalendarMonthOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box> 
-      */}
     </Box>
     <Box mt="5rem">
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Admin Donations from this Super Donations</Typography>

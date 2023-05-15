@@ -42,8 +42,7 @@ import DonorDonationInfo from './scenes/donorDonationInfo';
 import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
 import AdminDonationInfo from './scenes/adminDonationInfo';
 import Settings from './scenes/settings';
-// What is this boss!!
-import DonationRequests from './scenes/donationRequests';
+import BeneficiaryDashboard from './scenes/beneficiaryDashboard';
 
 
 
@@ -101,10 +100,6 @@ function App(props) {
               <Route path="/donordashboard" element={<DonorDashboard />} />
               <Route path="/viewdonations" element={<ViewDonations />} />
               <Route path="/viewcampaigns" element={<AllCampaigns />} />
-
-              {/* FIXME: */}
-              {/* WHY are there 2 UserAnalytics routes.. Both Leading to the same page? */}
-              {/* WHY should the donor be able to see user analytics other than themselves */}
               <Route path="/useranalytics" element={<DonorInfo />} />
               <Route path="/areaanalytics" element={<AreaAnalytics />} />
               <Route path="/timeanalytics" element={<TimeAnalytics />} />
@@ -118,46 +113,11 @@ function App(props) {
                   ) : accountType === "admin" ? (
                     <> */}
               <Route path="/admindashboard" element={<Dashboard />} />
-
-
-              {
-                /* 
-                  Only get the donations made to campaigns 
-                  initiated by the Admin.. 
-                  Dont need all the campaign dinations 
-                */
-              }
               <Route path="/incoming-donations" element={<SuperAdminDonations single_admin={true} />} />
-
-              {
-                /* 
-                  Only get the donations made to campaigns 
-                  initiated by the Admin.. 
-                  Dont need all the campaign dinations 
-                */
-              }
               <Route path="/outgoing-donations" element={<AdminDonations single_admin={true} />} />
-
-
-              {/* Dont need this route.. Its already handled */}
-              {/* <Route path="/recent" element={<Recent />} /> */}
-
-
-              {
-                /*
-                  This needs serious makeovers!!
-                    1. Need to make it so that it is campaign specific..
-                    2. In-corporate multi-page form for collecting different information.
-                    3. Custom forms for many different doation catagories.
-                */
-              }
               <Route path="/donors" element={<Donors single_admin={true} />} />
               <Route path="/createCampaign" element={<CreateCampaign />} />
-
-              {/* Will look into this later-onn!! */}
               <Route path="/viewcampaign" element={<AllCampaigns />} />
-
-
               <Route path="/graphs" element={<Graphs />} />
               <Route path="/geography" element={<GeographyMap />} />
               <Route path="/adminanalytics" element={<AdminAnalytics />} />
@@ -196,6 +156,10 @@ function App(props) {
               <Route path="/chat" element={<Chat />} />
               <Route path="/settings" element={<Settings />} />
 
+
+              {/* BENEFICIARY ROUTES: */}
+              <Route path="/beneficiarydashboard" element={< BeneficiaryDashboard />} />
+
               {/* <Route path="*" /> */}
               {/* </>
                   ) : (
@@ -206,6 +170,16 @@ function App(props) {
               {/* </> */}
               {/* ) */}
               {/* } */}
+
+
+
+
+
+
+
+
+
+
             </Routes>
           </main>
         </div>

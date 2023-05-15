@@ -17,7 +17,7 @@ import CampaignLineChart from "../../components/CampaignLineChart";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import HomeScreenCampaigns from "../../components/HomeScreenCampaigns";
-import { useSingleCampaignDonationsQuery } from "../../app/redux-features/donations/AdminDonations/AdminDonsSlice";
+import { useDonateToCampaignMutation, useSingleCampaignDonationsQuery } from "../../app/redux-features/donations/AdminDonations/AdminDonsSlice";
 import { useSingleCampaignQuery } from "../../app/redux-features/Campaigns/exporterSlice";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { mockDataDonationInfo3 } from "../../data/mockData";
@@ -26,18 +26,31 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AlertModal from "../../components/AlertModal";
+import { useParams } from "react-router-dom";
+import { useGetAdminQuery } from "../../app/redux-features/users/AdminSlice";
+import { CampaignOutlined, ConstructionOutlined, EmojiEventsOutlined, PersonOutlineOutlined, VolunteerActivismOutlined } from "@mui/icons-material";
+import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 //initializing all inputs with their keys
 const initialValues = {
-  total_amount: "",
-  donor: "Donor1",
+  amount: "",
+  supAdminDonation: "",
+  donorId: "",
+  campaign: "",
+  admin: ""
 
 };
 
 //schema for validation
 const userSchema = yup.object().shape({
-  total_amount: yup.string().required("Required"),
-  donor: yup.string().required("Required"),
+  amount: yup
+    .string()
+    .test('positive', 'Amount must be greater than 0', value => parseFloat(value) > 0)
+    .required('Required'),
+  supAdminDonation: yup.string().required("Required"),
 
 });
 
@@ -54,10 +67,16 @@ const CampaignInfo = () => {
   const [donors, setDonors] = useState([])
   const [totDonations, setTotDon] = useState(0)
   const [activeDonors, setActiveDonors] = useState([])
-  const [activeBenifs, setActiveBenifs] = useState([])
+  const [activeBenefs, setActiveBenefs] = useState([])
   const [donations, setDonations] = useState([])
   const [openModal, setModalOpen] = useState(false)
   const [open, setOpen] = useState(false)
+
+  let { user } = useAuthContext()
+
+  const userType = localStorage.getItem("userType")
+
+  console.log("USERTYPE: ", JSON.parse(userType))
 
   const handleModalClose = () => {
     setModalOpen(false)
@@ -67,11 +86,30 @@ const CampaignInfo = () => {
     setModalOpen(true)
   }
 
-  const handleFormSubmit = async (values, { resetForm }) => {
-    console.log(values);
+  let [
+    setAdminToCampaignDonation,
+    {
+      data, isError,
+      isLoading, isSuccess,
+      error
+    }
+  ] = useDonateToCampaignMutation(id)
 
-    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    // JSON.parse(data)
+
+  const handleFormSubmit = async (values, {resetForm}) => {
+
+    values.admin = user?.user?._id
+    values.campaign = id
+
+
+    console.log("11111111111111111", values);
+
+    let response = await setAdminToCampaignDonation({ values })
+    if (isError && !isLoading) {
+      console.log(error)
+    }
+
+    console.log("Output: ", response)
 
     //To show the popup component.
     setOpen(true);
@@ -95,44 +133,57 @@ const CampaignInfo = () => {
   let { data: campDonations, isError: isCampDonsError, isLoading: isCampDonsLoading, error: campDonsError, isSuccess: isCampDonsSuccess } = useSingleCampaignDonationsQuery(id)
   let { data: camp } = useSingleCampaignQuery(id)
 
-  //options for donors
-  const donor_opts = [
-    {
-      value: 'Donor1',
-      label: 'Donor 1',
-    },
-    {
-      value: 'Donor2',
-      label: 'Donor 2',
-    },
-    {
-      value: 'Donor3',
-      label: 'Donor 3',
-    },
-    {
-      value: 'Donor4',
-      label: 'Donor 4',
-    },
-  ];
+  const { data: admin } = useGetAdminQuery(camp?.admin)
 
+
+  console.log("Admin Details: ", admin)
+
+
+  console.log("Campaign Details: ", camp)
+
+  console.log("Campaign Donations: ", campDonations)
+
+
+  let {
+    data: allDonsToAdmin,
+    error: allDonsToAdminError,
+    isError: isAllDonsToAdminError,
+    isLoading: allDonsToAdminLoading,
+    isSuccess: allDonsToAdminSuccess
+  } = useGetSuperAdminDonationsToAdminQuery(camp?.admin)
+
+
+  if (!allDonsToAdminLoading) {
+    if (allDonsToAdminSuccess) {
+      console.log("Dons to the admins are", allDonsToAdmin)
+
+      allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
+        .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
+        .map((opt) => (
+          <MenuItem key={opt.id} value={opt.value} id={opt.id}>
+            {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
+          </MenuItem>
+        ))
+    }
+  }
+  else if (isAllDonsToAdminError) console.log(allDonsToAdminError.message)
+
+
+
+  console.log("All Donations to Admin from the super admin: ", allDonsToAdmin)
 
   useEffect(() => {
     setTotDon(campDonations?.reduce((acc, curr) => acc + curr.amount, 0))
     setDonors(new Set(campDonations?.map(don => don.donorId._id)).size)
 
-    console.log("The donations are: ", campDonations)
-    console.log("Creation date: ", camp)
+
 
 
   }, [campDonations, camp])
 
   useEffect(() => {
-    console.log(totDonations)
   }, [campDonations, camp])
 
-
-  //   return (() => console.log("No clean up"))
-  // }, [])
 
   return (<Box m="20px">
 
@@ -166,12 +217,10 @@ const CampaignInfo = () => {
         {
           isCampDonsSuccess &&
           <StatBox
-            title={totDonations}
-            subtitle="Donations Recieved"
-            progress="0.65"
-            increase="This Month: $110"
+            title={"Created By:"}
+            subtitle={admin?.name}
             icon={
-              <AttachMoneyOutlinedIcon
+              <PersonOutlineOutlined
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -197,12 +246,10 @@ const CampaignInfo = () => {
         {
           isCampDonsSuccess &&
           <StatBox
-            title={donors}
-            subtitle="Donors Participated"
-            progress="0.50"
-            increase="This Month: 4"
+            title={camp?.campaign_title}
+            subtitle="Campaign Title"
             icon={
-              <PeopleOutlinedIcon
+              <CampaignOutlined
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -238,19 +285,91 @@ const CampaignInfo = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Box>
-          <Button sx={{
-            backgroundColor: colors.blueAccent[700],
-            color: colors.grey[100],
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "10px 20px",
-          }} onClick={handleModalOpen}>
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Donate Now!
-          </Button>
-        </Box>
+        <StatBox
+          title={"$" + camp?.donated_amount}
+          subtitle="Donations Recieved"
+          increase={"Goal: $" + camp?.required_amount}
+          icon={
+            <AttachMoneyOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
       </Box>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={campDonations?.length}
+          subtitle="Number of Donations"
+          icon={
+            <VolunteerActivismOutlined
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"dyn"}
+          subtitle="Highest one time donation"
+          icon={
+            <EmojiEventsOutlined
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"dyn"}
+          subtitle="Highest Donation By"
+          icon={
+            <PersonOutlineOutlined
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      {JSON.parse(userType) === "admin" ?
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box>
+            <Button sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }} onClick={handleModalOpen}>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Donate Now!
+            </Button>
+
+          </Box>
+        </Box>
+        : <Box></Box>}
     </Box>
     <>
       <Box style={{ marginTop: '2%' }}>
@@ -310,10 +429,10 @@ const CampaignInfo = () => {
                       }}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.total_amount}
-                      name="total_amount"
-                      error={!!touched.total_amount && !!errors.total_amount}
-                      helperText={touched.total_amount && errors.total_amount}
+                      value={values.amount}
+                      name="amount"
+                      error={!!touched.amount && !!errors.amount}
+                      helperText={touched.amount && errors.amount}
                       sx={{ gridColumn: "span 2" }}
                     />
 
@@ -325,16 +444,12 @@ const CampaignInfo = () => {
                       label="From *"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.donor}
-                      name="donor"
-                      error={!!touched.donor && !!errors.donor}
-                      helperText={touched.donor && errors.donor}
+                      value={values.supAdminDonation}
+                      name="supAdminDonation"
+                      error={!!touched.supAdminDonation && !!errors.supAdminDonation}
+                      helperText={touched.supAdminDonation && errors.supAdminDonation}
                       sx={{ gridColumn: "span 2" }}
-                    >{donor_opts.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+                    >{allDonsToAdmin}
                     </TextField>
                   </Box>
 
@@ -475,7 +590,7 @@ const CampaignInfo = () => {
       </Box> */}
     </Box>
 
-    <Box mt="2rem">
+    {/* <Box mt="2rem">
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>
         Browse Similar Campaigns - To make dynamic later on!!
       </Typography>
@@ -513,7 +628,7 @@ const CampaignInfo = () => {
       }}
     >
       <HomeScreenCampaigns isDashboard={true} title="" subtitle="" />
-    </Box>
+    </Box> */}
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
         Donation Made To Campaign Successfully!

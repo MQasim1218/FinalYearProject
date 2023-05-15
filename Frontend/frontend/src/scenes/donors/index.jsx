@@ -70,24 +70,12 @@ const Donors = ({ single_donor }) => {
 
 
     const columns = [
-      { field: "id", headerName: "ID" },
+      { field: "ind", headerName: "Num" },
       {
         field: "name",
         headerName: "Name",
-        flex: 1,
+        flex: 0.5,
         cellClassName: "name-column--cell",
-      },
-      {
-        field: "age",
-        headerName: "Age",
-        type: "number",
-        headerAlign: "left",
-        align: "left",
-      },
-      {
-        field: "contact",
-        headerName: "Phone Number",
-        flex: 1,
       },
       {
         field: "email",
@@ -95,11 +83,15 @@ const Donors = ({ single_donor }) => {
         flex: 1,
       },
       {
-        field: "totaldonations",
-        headerName: "Total Donations",
+        field: "createdAt",
+        headerName: "Date Joined",
+        flex: 0.5,
+      },
+      {
+        field: "total",
+        headerName: "Number of Campaigns Supported",
         flex: 1,
       },
-
       {
 
         // Okay
@@ -111,16 +103,6 @@ const Donors = ({ single_donor }) => {
           <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
         ],
       },
-      {
-        // Okay
-        field: 'Delete',
-        type: 'actions',
-        headerName: "Delete",
-        width: 100,
-        getActions: () => [
-          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
-        ],
-      },
     ];
 
 
@@ -129,7 +111,7 @@ const Donors = ({ single_donor }) => {
     else if (isDonorsSuccess) {
       // donors.forEach((donor) => { donor.id = donor._id })
       console.log("donors recieved are: ", donors)
-      donors = donors.map((donor) => ({ ...donor, id: donor._id }))
+      donors = donors.map((donor, ind) => ({ ...donor, createdAt: donor?.createdAt.slice(0, 10), ind, id: donor?._id, total: donor?.donated_campaigns_specific.length + donor?.donated_campaigns_general.length }))
       DonorsStatBox = (
         <StatBox
           title={donors?.length}
@@ -166,24 +148,12 @@ const Donors = ({ single_donor }) => {
   } else {
 
     const columns = [
-      { field: "id", headerName: "ID" },
+      { field: "ind", headerName: "Num" },
       {
         field: "name",
         headerName: "Name",
-        flex: 1,
+        flex: 0.5,
         cellClassName: "name-column--cell",
-      },
-      {
-        field: "age",
-        headerName: "Age",
-        type: "number",
-        headerAlign: "left",
-        align: "left",
-      },
-      {
-        field: "contact",
-        headerName: "Phone Number",
-        flex: 1,
       },
       {
         field: "email",
@@ -191,8 +161,13 @@ const Donors = ({ single_donor }) => {
         flex: 1,
       },
       {
-        field: "totaldonations",
-        headerName: "Total Donations",
+        field: "createdAt",
+        headerName: "Date Joined",
+        flex: 0.5,
+      },
+      {
+        field: "total",
+        headerName: "Number of Campaigns Supported",
         flex: 1,
       },
 
@@ -205,16 +180,6 @@ const Donors = ({ single_donor }) => {
         width: 100,
         getActions: (row) => [
           <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
-        ],
-      },
-      {
-        // Okay
-        field: 'Delete',
-        type: 'actions',
-        headerName: "Delete",
-        width: 100,
-        getActions: () => [
-          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
         ],
       },
     ];

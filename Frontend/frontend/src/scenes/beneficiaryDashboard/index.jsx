@@ -18,11 +18,82 @@ import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutlined';
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
+import { useAuthContext } from "../../hooks/useAuthContext";
+
 
 
 const BeneficiaryDashboard = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    let {user} = useAuthContext()
+
+  let {
+    data: sa_donations,
+    isLoading: isDonationsLoading,
+    error: donationsError,
+    isError: isDonationsError,
+    isSuccess: isDonationsSuccess
+  } = useGetSuperAdminDonationsToAdminQuery (user?.user?._id) //Change this mutation query with the one for beneficiary when it is created.
+
+  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount + don.donated, 0)
+  const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
+
+  let remainingPercent = 0
+
+  if (total === 0) {
+    remainingPercent = 0
+  }
+  else {
+    remainingPercent = used / total
+  }
+
+  console.log("%: ", remainingPercent)
+
+
+  let DonationsList = <></>
+  if (isDonationsLoading) DonationsList = <h3>Loading Content</h3>
+  else if (isDonationsSuccess) {
+    console.log("Donations", sa_donations)
+    DonationsList = (
+      sa_donations?.map((transaction, i) => (
+        <Box
+          key={`${i}`}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`4px solid ${colors.primary[500]}`}
+          p="15px"
+        >
+
+          <Box>
+            <Typography
+              color={colors.greenAccent[500]}
+              variant="h5"
+              fontWeight="600"
+            >
+              {transaction?._id.slice(0, 8)}
+            </Typography>
+            <Typography color={colors.grey[100]}>
+              {transaction?.donor.name}
+            </Typography>
+          </Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
+          <Box
+            backgroundColor={colors.greenAccent[500]}
+            p="5px 10px"
+            borderRadius="4px"
+            color={colors.grey[900]}
+          >
+            ${transaction?.amount}
+          </Box>
+        </Box>
+      ))
+    )
+  }
+  else if (isDonationsError) DonationsList = <h3>{`Error: ${donationsError.message}`}</h3>
 
     return (<Box m="20px">
             <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -63,8 +134,6 @@ const BeneficiaryDashboard = () => {
           <StatBox
             title="$550"
             subtitle="Donations Recieved"
-            progress="0.65"
-            increase="This Month: $150"
             icon={
               <AttachMoneyOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -80,12 +149,10 @@ const BeneficiaryDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="$1,200"
-            subtitle="Loans Recieved"
-            progress="0.50"
-            increase="This Month: $400"
+            title="3"
+            subtitle="Campaigns Requested"
             icon={
-              <CurrencyExchangeOutlinedIcon
+              <VolunteerActivismOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -118,12 +185,11 @@ const BeneficiaryDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="$800"
-            subtitle="Loan Pending"
-            progress="0.85"
+            title="1"
+            subtitle="Campaign Active"
             //increase="This Month: 1"
             icon={
-              <HourglassBottomOutlinedIcon
+              <CampaignOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -142,11 +208,11 @@ const BeneficiaryDashboard = () => {
         {/* ROW 2 */}
         
         <Box
-          gridColumn="span 12"
+          gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-          {/* <Box
+          <Box
             mt="25px"
             p="0 30px"
             display="flex "
@@ -169,18 +235,33 @@ const BeneficiaryDashboard = () => {
                 $59,342.32
               </Typography>
             </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box> */}
-          {/* <Box height="250px" m="-20px 0 0 0">
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
             <LineChart isDashboard={true} />
-          </Box> */}
+          </Box>
         </Box>
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          overflow="auto"
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
+            p="15px"
+          >
+            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              Recent Donations Reveived
+            </Typography>
+          </Box>
+          {DonationsList}
+        </Box>
+
+
         {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -251,8 +332,8 @@ const BeneficiaryDashboard = () => {
           backgroundColor={colors.primary[400]}
           p="30px"
         >
-          {/* <Typography variant="h5" fontWeight="600">
-            Campaigns
+          <Typography variant="h5" fontWeight="600">
+            Requested VS Recieved Donations
           </Typography>
           <Box
             display="flex"
@@ -260,16 +341,29 @@ const BeneficiaryDashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $28,352 revenue generated for campaigns
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
-          </Box> */}
+            <ProgressCircle progress={remainingPercent} beneficiary={1} size="130" />
+
+          </Box>
+          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" mt="15px">
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + total}
+              </Typography>
+              <Typography color={colors.greenAccent[500]}>Total Donations Requested</Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + used}
+              </Typography>
+              <Typography color={colors.blueAccent[500]}>Total Donations Recieved</Typography>
+            </Box>
+          </Box>
         </Box>
         <Box
           gridColumn="span 4"

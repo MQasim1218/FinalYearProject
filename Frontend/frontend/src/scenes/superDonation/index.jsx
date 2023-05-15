@@ -18,7 +18,7 @@ import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/D
 //initializing all inputs with their keys
 const initialValues = {
   donation_title: "",
-  amount: 0,
+  amount: "",
   description: "",
   admin: "",
   catagory: "",
@@ -29,7 +29,10 @@ const initialValues = {
 //schema for validation
 const userSchema = yup.object().shape({
   donation_title: yup.string().required("Required"),
-  amount: yup.string().required("Required"),
+  amount: yup
+    .string()
+    .test('positive', 'Amount must be greater than 0', value => parseFloat(value) > 0)
+    .required('Required'),
   catagory: yup.string().required("Required"),
   admin: yup.string().required("Required"),
   donordonationId: yup.string().required("Required"),
@@ -78,17 +81,15 @@ const SuperDonation = () => {
   if (!donsIsLoading) {
     if (donsIsSuccess)
       dons = dons
-        .map((don, index) => ({ value: don._id, label: don.amount, id: index }))
+        .filter((don) => don.amount !== 0) // NOTE: Filtering out the donations with amount 0 
+        .map((don, index) => ({ value: don._id, label: don.amount, id: index, name: don.donor.name, category: don.catagory }))
         .map((opt) => (
           <MenuItem key={opt.id} value={opt.value} id={opt.id}>
-            {opt.label}
+            {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
           </MenuItem>
         ))
     else if (donsIsError) console.log(donsError.message)
   }
-
-
-
 
 
   //Options for category entry

@@ -34,7 +34,7 @@ export const adminApi = createApi({
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getAdmin: builder.query({
-            query: (id) => `${id}`,
+            query: (id) => `get/${id}`,
             providesTags: (id) => [{ type: 'Admin', id: id }]
         }),
 

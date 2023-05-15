@@ -68,7 +68,7 @@ let generalCampaignSchema = mongoose.Schema({
     },
 
     // TODO: Need to fix the Enum part for the campaign category!! 🍁🎶
-    catagory: {
+    category: {
         type: String,
         // Enum: ["ABC", "DEF", "GHI"],
         required: true

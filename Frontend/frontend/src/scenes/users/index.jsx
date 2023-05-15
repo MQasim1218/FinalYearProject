@@ -69,14 +69,14 @@ const Users = () => {
     },
 
     {
-      
+
       // Okay
       field: 'View',
       type: 'actions',
       headerName: "View",
       width: 100,
       getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)}  />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
       ],
     },
 
@@ -115,7 +115,7 @@ const Users = () => {
           )
           setIsLoading(false)
         } else {
-          res = await axios.get("http://localhost:5000/benificiary")
+          res = await axios.get("http://localhost:5000/beneficiary")
           setIsLoading(false)
         }
 

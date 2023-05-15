@@ -58,7 +58,7 @@ const donorDonationSchema = mongoose.Schema({
     },
 
 
-    // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
+    // I dont see if we need to add location for doantion | Both donor and beneficiary have thier own location.
 },
     {
         timestamps: true,

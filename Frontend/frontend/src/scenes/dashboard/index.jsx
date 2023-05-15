@@ -22,8 +22,9 @@ import { useAllAdminsQuery } from '../../app/redux-features/users/AdminSlice'
 import { useAllDonorsQuery } from '../../app/redux-features/users/DonorSlice'
 import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useAllBenifsQuery } from "../../app/redux-features/users/BenificiarySlice";
+import { useAllBenefsQuery } from "../../app/redux-features/users/BeneficiarySlice";
 import { useAdminCampaignsQuery } from "../../app/redux-features/Campaigns/exporterSlice";
+import { PersonOutlineOutlined } from "@mui/icons-material";
 
 
 /**
@@ -32,7 +33,7 @@ import { useAdminCampaignsQuery } from "../../app/redux-features/Campaigns/expor
  * ? Total number of active campaigns
  * ? Total donations made
  * ? Total number of Active donors (Donated in last 6 months)
- * ? Total number of Benificiries (Have a campaign running)
+ * ? Total number of Beneficiries (Have a campaign running)
  * ? Total number of Active Campaigns (Completed::false, Approved::true)
  * ? Recent donations made (fetch last 4-5)
  * ? 
@@ -90,10 +91,10 @@ const Dashboard = () => {
   //     }
   //   }
 
-  //   const getBenificiries = async () => {
+  //   const geeBeneficiries = async () => {
   //     // const res = await fetch('http://localhost:5000/admin')
   //     try {
-  //       let res = await axios.get("http://localhost:5000/benificiary/")
+  //       let res = await axios.get("http://localhost:5000/beneficiary/")
   //       if (res.status < 300) {
   //         let data = res.data
   //         console.log(data)
@@ -138,8 +139,8 @@ const Dashboard = () => {
   //   getDonors().then((dons) => {
   //     setActiveDonors(dons)
   //   })
-  //   getBenificiries().then((benifs) => {
-  //     setActiveBenifs(benifs)
+  //   e().then((benefs) => {
+  //     setActiveBenefs(benefs)
   //   })
 
   //   return (() => console.log("No clean up"))
@@ -176,7 +177,7 @@ const Dashboard = () => {
       progress={false}
       // increase="+14% This Month dyn"
       icon={
-        <AttachMoneyOutlinedIcon
+        <PersonOutlineOutlined
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
         />
       }
@@ -205,7 +206,7 @@ const Dashboard = () => {
       progress={false}
       // increase="+14% This Month dyn"
       icon={
-        <AttachMoneyOutlinedIcon
+        <PersonOutlineOutlined
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
         />
       }
@@ -213,33 +214,33 @@ const Dashboard = () => {
   )
   else if (isDonorsError) DonorsStatBox = <h3>{`Error: ${donorsError.message}`}</h3>
 
-  // ! Benificiaries StatBox
+  // ! Beneficiaries StatBox
   let {
-    data: benifs,
-    isLoading: isBenifsLoading,
-    error: benifsError,
-    isError: isBenifError,
-    isSuccess: isBenifsSuccess
-  } = useAllBenifsQuery()
+    data: benefs,
+    isLoading: isBenefsLoading,
+    error: benefsError,
+    isError: isBenefError,
+    isSuccess: isBenefsSuccess
+  } = useAllBenefsQuery()
 
 
-  let BenifsStatBox = <></>
-  if (isBenifsLoading) BenifsStatBox = <h3>Loading Content</h3>
-  else if (isBenifsSuccess) BenifsStatBox = (
+  let BenefsStatBox = <></>
+  if (isBenefsLoading) BenefsStatBox = <h3>Loading Content</h3>
+  else if (isBenefsSuccess) BenefsStatBox = (
     <StatBox
       // title={ }
-      title={benifs.length}
-      subtitle="Active Benificaries"
+      title={benefs.length}
+      subtitle="Active Beneficaries"
       progress={false}
       // increase="+14% This Month dyn"
       icon={
-        <AttachMoneyOutlinedIcon
+        <PersonOutlineOutlined
           sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
         />
       }
     />
   )
-  else if (isBenifError) BenifsStatBox = <h3>{`Error: ${benifsError.message}`}</h3>
+  else if (isBenefError) BenefsStatBox = <h3>{`Error: ${benefsError.message}`}</h3>
 
 
   // ! Recent Donations
@@ -250,6 +251,20 @@ const Dashboard = () => {
     isError: isDonationsError,
     isSuccess: isDonationsSuccess
   } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
+
+  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount + don.donated, 0)
+  const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
+
+  let remainingPercent = 0
+
+  if (total === 0) {
+     remainingPercent = 0
+  }
+  else{
+   remainingPercent = used / total
+  }
+
+  console.log("%: ", remainingPercent)
 
 
   let DonationsList = <></>
@@ -403,7 +418,7 @@ const Dashboard = () => {
               />
             }
           /> */}
-          {BenifsStatBox}
+          {BenefsStatBox}
         </Box>
         <Box
           gridColumn="span 3"
@@ -425,7 +440,7 @@ const Dashboard = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={campaigns?.filter((camp) => (!camp.completed))?.length}
+            title={campaigns?.length}
             subtitle="Active Admin Campaigns"
             progress={false}
             // increase="+43% This Month dyn"
@@ -484,7 +499,7 @@ const Dashboard = () => {
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                "10"
+                {sa_donations?.length}
               </Typography>
             </Box>
             <Box>
@@ -528,7 +543,7 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaigns
+            Allocation To Campaigns
           </Typography>
           <Box
             display="flex"
@@ -536,15 +551,28 @@ const Dashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $28,352 revenue generated for campaigns dyn
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <ProgressCircle progress={remainingPercent} size="130" />
+
+          </Box>
+          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" mt="15px">
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + total}
+              </Typography>
+              <Typography color={colors.greenAccent[500]}>Total Donations Recieved</Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + used}
+              </Typography>
+              <Typography color={colors.blueAccent[500]}>Total Donations Used</Typography>
+            </Box>
           </Box>
         </Box>
         <Box

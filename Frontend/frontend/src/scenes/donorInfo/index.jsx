@@ -16,6 +16,8 @@ import { AccountTypeContext } from '../../accountTypeContext';
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useSingleDonorDonationsQuery } from '../../app/redux-features/donations/DonorDonations/DonorDonsSlice';
 import { useGetDonorQuery } from '../../app/redux-features/users/DonorSlice';
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+
 
 const DonorInfo = () => {
   const theme = useTheme();
@@ -23,6 +25,7 @@ const DonorInfo = () => {
   let { id } = useParams();
   const [donations, setDonations] = useState([])
   const [max_don, setMaxDon] = useState(-1)
+  const [accountTier, setAccountTier] = useState("")
 
   // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   const { user } = useAuthContext()
@@ -61,20 +64,18 @@ const DonorInfo = () => {
               variant="h5"
               fontWeight="600"
             >
-              {transaction._id.slice(0, 8)}
+              {transaction.donation_title}
             </Typography>
-            <Typography color={colors.grey[100]}>
-              {transaction.donor.name}
-            </Typography>
+  
           </Box>
-          <Box color={colors.grey[100]}>{transaction.createdAt}</Box>
+          <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
           <Box
             backgroundColor={colors.greenAccent[500]}
             p="5px 10px"
             borderRadius="4px"
             color={colors.grey[900]}
           >
-            ${transaction.amount}
+            ${transaction.amount + transaction.amountDonated}
           </Box>
         </Box>
       ))
@@ -84,12 +85,41 @@ const DonorInfo = () => {
 
 
 
-  useEffect(() => {
-    if (isDonorDonsSuccess) {
-      setDonations(donorDons)
-      setMaxDon(donorDons?.reduce((max, don) => don.amount > max ? don.amount : max, 0));
+  // useEffect(() => {
+  //   if (isDonorDonsSuccess) {
+  //     setDonations(donorDons)
+  //     setMaxDon(donorDons?.reduce((max, don) => don.amount > max ? don.amount : max, 0));
+  //   }
+  // }, [isDonorDonsSuccess, donorDons])
+
+
+  let maxDonation = 0;
+
+  for (let i = 0; i < donorDons?.length; i++) {
+    const donation = donorDons[i];
+    if (donation.amountDonated > maxDonation) {
+      maxDonation = donation.amountDonated;
     }
-  }, [isDonorDonsSuccess, donorDons])
+  }
+
+  let totalDonations = 0;
+
+for (let i = 0; i < donorDons?.length; i++) {
+  const donation = donorDons[i];
+  totalDonations += donation.amountDonated + donation.amount;
+}
+
+useEffect(() => {
+  if(totalDonations <= 500){
+    setAccountTier("Bronze")
+  }
+  else if(totalDonations <= 1000){
+    setAccountTier("Silver")
+  }
+  else if(totalDonations >= 5000){
+    setAccountTier("Gold")
+  }
+}, [totalDonations]);
 
 
   return (<Box m="20px">
@@ -104,7 +134,7 @@ const DonorInfo = () => {
     {/* Grids and Charts */}
     <Box
       display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
+      gridTemplateColumns="repeat(16, 1fr)"
       gridAutoRows="140px"
       gap="20px"
     >
@@ -118,15 +148,14 @@ const DonorInfo = () => {
       >
         <UserBox
           name={donor?.name || "loading"}
-          accounttype={accountType || ""}
+          accounttype={`(${accountType})` || ""}
           picture={
             <PersonOutlineOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
           // participated="5"
-          joindate={user?.user?.createdAt.slice(0, 10) || ""}
-          latestdonation={donations && donations[donations.length - 1]?.createdAt}
+          joindate={donor?.createdAt.slice(0, 10) || ""}
         />
       </Box>
       <Box
@@ -137,9 +166,26 @@ const DonorInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={max_don || "loading"}
-          subtitle="Highest One Time Donation"
-          increase="This Month: $190"
+          title={donorDons?.length}
+          subtitle={"Number Of Donations"}
+          increase={`Highest: $${maxDonation}`}
+          icon={
+            <VolunteerActivismOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 4"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"$"+totalDonations}
+          subtitle={"Total Donations"}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -156,8 +202,7 @@ const DonorInfo = () => {
       >
         <StatBox
           title="Account Tier"
-          subtitle="Gold"
-          increase="Awarded by: ADMIN"
+          subtitle={accountTier}
           icon={
             <LocalPoliceOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -208,28 +253,6 @@ const DonorInfo = () => {
       </Box>
 
 
-    </Box>
-
-    <Box mt="2rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>
-        Campaigns Info - Change this with Campaigns Donated by the Donor
-      </Typography>
-    </Box>
-
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px"
-    >
-      {/* ROW 3 */}
-      <Box
-        gridColumn="span 12"
-        gridRow="span 2"
-      //backgroundColor={colors.primary[400]}
-      >
-        <HomeScreenCampaigns isDashboard={true} title="Latest Donated Campaigns" subtitle="The last three recently donated campaigns of this user" />
-      </Box>
     </Box>
   </Box>)
 }

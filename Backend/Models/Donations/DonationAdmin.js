@@ -6,7 +6,6 @@ const adminDonationSchema = mongoose.Schema({
     amount: {
         type: Number,
         required: true,
-        default: 0
     },
 
     admin: {
@@ -38,7 +37,7 @@ const adminDonationSchema = mongoose.Schema({
     }
 
     // isLoan: { type: Boolean, default: false },
-    // I dont see if we need to add location for doantion | Both donor and benificiary have thier own location.
+    // I dont see if we need to add location for doantion | Both donor and beneficiary have thier own location.
 },
     {
         timestamps: true,

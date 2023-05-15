@@ -10,28 +10,28 @@ Routes/Controllers
             View all Loans
             Waive Loan / Discount Loan
 
-2.  Benificiary:
+2.  Beneficiary:
 
         Authentication:
             SignUp
             SignIn
-            Get Benificiary
+            Get Beneficiary
             Update Account Details
             Delete Account
 
         Donation:
             Appeal Campaign
-            View all Campaigns for the benificiary
+            View all Campaigns for the beneficiary
             View donations for particular Campaign
 
         Loans:
             Appeal Loan
-            View all Loans for the benificiary
+            View all Loans for the beneficiary
             View donations for particular Loan
             Return Loan to Organization
             Upload Files
         
-        Benificiary Analytics
+        Beneficiary Analytics
             Activity on a Campaign.
             Donations for a time period.
             Donations from a location.
@@ -55,7 +55,7 @@ Routes/Controllers
 
         Loans:
             Appeal Campaign
-            View all Campaigns for the benificiary
+            View all Campaigns for the beneficiary
             View donations for particular Campaign
 
         Donor Analytics:

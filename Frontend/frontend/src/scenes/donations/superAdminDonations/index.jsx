@@ -55,52 +55,23 @@ const SuperAdminDonations = ({ single_admin }) => {
   if (single_admin) {
 
     const columns = [
-      { field: "id", headerName: "ID" },
-      { field: "ind", headerName: "Num" },
-      { field: "index", headerName: "Count" },
       {
-        field: "donation_title", // Need to get the donor name somehoww...
+        field: "donation_title", 
         headerName: "Title",
         flex: 1,
         cellClassName: "name-column--cell",
       },
-
+      { field: "createdAt", headerName: "Given At", flex: 1 },
       {
-        field: "donor_name", // Need to get the donor name somehoww...
-        headerName: "Donor Name",
-        flex: 1,
-        cellClassName: "name-column--cell",
-      },
-      {
-        field: "donor_phone",
-        headerName: "Phone Number",
+        field: "amount",
+        headerName: "Given Amount ($)",
         flex: 1,
       },
-      { field: "donated_on", headerName: "Donated On" },
-      { field: "createdAt", headerName: "Transferred On" },
-
-      // Lets only have a map marker.. jis ko click krke location pr bnda chala jai
       {
         field: "category",
         headerName: "Category",
         flex: 1,
       },
-      {
-        field: "amount",
-        headerName: "Total",
-        flex: 1,
-      },
-      {
-        field: "donated",
-        headerName: "Amount Donated",
-        flex: 1,
-      },
-      {
-        field: "remaining",
-        headerName: "Amount remaining",
-        flex: 1,
-      },
-
       {
 
         // Okay
@@ -150,7 +121,12 @@ const SuperAdminDonations = ({ single_admin }) => {
 
   } else {
     const columns = [
-      { field: "id", headerName: "ID", flex: 0.5 },
+      {
+        field: "donation_title", 
+        headerName: "Title",
+        flex: 1,
+        cellClassName: "name-column--cell",
+      },
       { field: "createdAt", headerName: "Given At", flex: 1 },
       {
         field: "name",
@@ -217,24 +193,50 @@ const SuperAdminDonations = ({ single_admin }) => {
 
 
   console.log("Donations: ", Donations)
+
   // iterate through each donation object in DonsToAdmin
-  Donations?.forEach(donation => {
-    const adminId = donation?._id;
+  // Donations?.forEach(donation => {
+  //   const adminId = donation?._id;
 
-    // if this is the first donation for this admin, initialize the count to 1
-    if (!adminDonationCount[adminId]) {
-      adminDonationCount[adminId] = 1;
+  //   // if this is the first donation for this admin, initialize the count to 1
+  //   if (!adminDonationCount[adminId]) {
+  //     adminDonationCount[adminId] = 1;
+  //   } else {
+  //     // increment the count if this admin has already received donations
+  //     adminDonationCount[adminId]++;
+  //   }
+  // });
+
+  // // get the admin with the highest donation count
+  // const maxDonationsAdmin = Object.keys(adminDonationCount)?.reduce((a, b) => adminDonationCount[a] > adminDonationCount[b] ? a : b, 0);
+
+  // // get the admin object with the highest donation count
+  // let maxDonationsAdminObj = Donations?.find(donation => donation?._id === maxDonationsAdmin).admin;
+
+
+  const adminDonations = Donations?.reduce((acc, curr) => {
+    const adminId = curr?.admin?._id;
+    if (!acc[adminId]) {
+      acc[adminId] = { admin: curr?.admin, count: 1 };
     } else {
-      // increment the count if this admin has already received donations
-      adminDonationCount[adminId]++;
+      acc[adminId].count++;
     }
-  });
+    return acc;
+  }, {});
+  
+  // Get the admin with the most number of donations
+  let maxAdmin = null;
+  let maxCount = -Infinity;
+  for (const adminId in adminDonations) {
+    if (adminDonations[adminId]?.count > maxCount) {
+      maxCount = adminDonations[adminId]?.count;
+      maxAdmin = adminDonations[adminId]?.admin;
+    }
+  }
+  
+  console.log(`Admin ${maxAdmin?.name} (${maxAdmin?.email}) received the most donations (${maxCount})`);
+  
 
-  // get the admin with the highest donation count
-  const maxDonationsAdmin = Object.keys(adminDonationCount)?.reduce((a, b) => adminDonationCount[a] > adminDonationCount[b] ? a : b, 0);
-
-  // get the admin object with the highest donation count
-  let maxDonationsAdminObj = Donations?.find(donation => donation?._id === maxDonationsAdmin).admin;
 
   let highestOneTimeAmount = 0;
 
@@ -313,7 +315,8 @@ const SuperAdminDonations = ({ single_admin }) => {
           borderRadius="10px"
         >
           <StatBox
-            title={maxDonationsAdminObj?.name}
+            title={maxAdmin?.name}
+            increase={"Donations: "+maxCount}
             subtitle="Most Donations Made To"
             progress={false}
             icon={

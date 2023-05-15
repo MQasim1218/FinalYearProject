@@ -748,7 +748,8 @@ const SingleDonation = async (req, res, next) => {
 const DonateToCampaign = async (req, res, next) => {
     // ! Awesome work.. Half the Backend isnt done
 
-    // let camp_id = req.body.camp_id
+    let camp_id = req.body.campaign
+
     /**
      * FIXME: :: Where are the checks?? Can the admin donate
      * more than the value of the available donation?? 
@@ -762,6 +763,10 @@ const DonateToCampaign = async (req, res, next) => {
      */
 
     try {
+
+        console.log("Request recieved is: ", req.body)
+
+        console.log("here to create donation in the admin")
         let don = await AdminDons.create(req.body)
         if (don) {
 
@@ -769,7 +774,15 @@ const DonateToCampaign = async (req, res, next) => {
             let amount = parseInt(req.body.amount)
 
             // Update the amount donated to campaign
-            let camp = await GenCamps.findById(req.body.campaign).exec()
+
+            // This is to update the campaign details.
+            /**
+             * Things to change.
+             * Campaign donated amount
+             * donations to this campaign.
+             * 
+             */
+            let camp = await GenCamps.findById(camp_id).exec()
             camp.donated_amount += amount
             camp.save()
             // res.json({ don, camp })
@@ -813,8 +826,9 @@ const DonateToCampaign = async (req, res, next) => {
         }
 
 
-    } catch (error) {
-
+    } catch (err) {
+        console.log("Error:  ", err.message)
+        return res.status(500).send(err.message)
     }
 
 

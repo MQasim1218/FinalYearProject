@@ -3,7 +3,7 @@ const validator = require("validator");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
-const benificairySchema = mongoose.Schema({
+const beneficiarySchema = mongoose.Schema({
 
     name: {
         type: String,
@@ -40,6 +40,9 @@ const benificairySchema = mongoose.Schema({
         type: String,
         trim: true,
     }, // required
+    picture: {
+        type: String,
+    },
     contact: {
         type: String,
         // required: true,
@@ -95,36 +98,36 @@ const benificairySchema = mongoose.Schema({
 
 const createJWT = async (_id) => {
     let secret = process.env.JWT_SECRET
-    return jwt.sign({ id: _id, userType: "Benificiary" }, secret, { expiresIn: '1h' })
+    return jwt.sign({ id: _id, userType: "Beneficiary" }, secret, { expiresIn: '1h' })
 }
 
 
-benificairySchema.statics.login = async function (email, password) {
+beneficiarySchema.statics.login = async function (email, password) {
     // const emailEncrypted = await bcrypt.hash(email, salt)
     let user = await this.findOne({ email: email }).exec()
     if (!user) {
-        console.log("No benificiary with the provided email")
+        console.log("No beneficiary with the provided email")
         return null
     }
     // console.log(user)
-    if (bcrypt.compareSync(password, user.password)) return { benificiary: user, token: await createJWT(user._id) }
+    if (bcrypt.compareSync(password, user.password)) return { beneficiary: user, token: await createJWT(user._id) }
     else console.log("The password provided is incorrect!")
     return null
 }
 
 
-benificairySchema.statics.signup = async function (benificiary) {
+beneficiarySchema.statics.signup = async function (beneficiary) {
     try {
-        let { name, email, password } = benificiary
+        let { name, email, password, chatId, picture } = beneficiary
         // FIXME: Set the inputs back to normal.
-        // let { name, age, email, password, contact, location } = benificiary
+        // let { name, age, email, password, contact, location } = beneficiary
 
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
         let exists = await this.findOne({ email }).exec()
         if (exists) {
-            console.log("Alreay a same benificairy with the same email exists")
+            console.log("Alreay a same beneficiary with the same email exists")
             console.log(exists)
             return null
         }
@@ -133,11 +136,13 @@ benificairySchema.statics.signup = async function (benificiary) {
             name,
             email,
             password: passEncrypted,
+            chatId: chatId,
+            picture: picture,
             // age: age, location: location,
             // contact: contact
         })
 
-        console.log("Benificiary returned: ", user)
+        console.log("Beneficiary returned: ", user)
 
         return {
             user,
@@ -149,6 +154,6 @@ benificairySchema.statics.signup = async function (benificiary) {
     }
 }
 
-const beneficiaryModel = mongoose.model('benificiary', benificairySchema)
+const beneficiaryModel = mongoose.model('beneficiary', beneficiarySchema)
 
-module.exports = { beneficiaryModel, benificairySchema }
+module.exports = { beneficiaryModel, beneficiarySchema }

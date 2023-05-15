@@ -38,7 +38,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false)
   const [picture, setProfileImage] = useState("https://res-console.cloudinary.com/deymti8ua/thumbnails/v1/image/upload/v1680606112/Y2xkLXNhbXBsZS0y/grid_landscape");
-  const [fileUrl, setFileUrl] = useState(null); // WHAT IS THIS BOSS?
+  const [fileUrl, setFileUrl] = useState(null);
 
 
   // UseSignUp hook to authenticate and store user to the database!
@@ -213,7 +213,7 @@ const Register = () => {
                   sx={{ gridColumn: "span 2" }}
                 >
                   <MenuItem value={"donor"}>Donor</MenuItem>
-                  <MenuItem value={"benificiary"}>Beneficiary</MenuItem>
+                  <MenuItem value={"beneficiary"}>Beneficiary</MenuItem>
                   <MenuItem value={"admin"}>Admin</MenuItem>
                 </Select>
               </FormControl>
@@ -231,9 +231,9 @@ const Register = () => {
           </form>
         )}
       </Formik>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-          Registeration Failed! Email already exists!
+          Registeration Failed!
         </Alert>
       </Snackbar>
     </Box>

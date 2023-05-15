@@ -1,5 +1,5 @@
 const AdminModel = require("../Models/Users/AdminModel")
-const { beneficiaryModel } = require("../Models/Users/BenificiaryModel")
+const { beneficiaryModel } = require("../Models/Users/BeneficiaryModel")
 const donorModel = require("../Models/Users/DonorModel")
 const jwt = require('jsonwebtoken')
 
@@ -41,7 +41,7 @@ const authorize = async (req, res, next) => {
             case "donor" || "Donor":
                 req.user = await donorModel.findById(id).exec()
                 break;
-            case "benificiary" || "Benificiary":
+            case "beneficiary" || "Beneficiary":
                 req.user = await beneficiaryModel.findById(id).exec()
                 break;
             default:

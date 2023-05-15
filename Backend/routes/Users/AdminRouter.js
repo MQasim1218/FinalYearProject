@@ -122,7 +122,7 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 // router.get('/analytics/interactive_map/city')
 // router.post('/analytics/city')
 // router.get('/analytics/donor')
-// router.get('/analytics/benificiary')
+// router.get('/analytics/beneficiary')
 // router.get('/analytics/')
 // router.get('/adminCampaigns')
 // router.get('/adminCampaigns')
