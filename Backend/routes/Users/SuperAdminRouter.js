@@ -103,6 +103,11 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
     }
 })
 
+router.get('download_reports', (req, res, next) => {
+    
+    
+    res.sendFile()
+})
 
 
 // Empty routes.. Will do these in a little while

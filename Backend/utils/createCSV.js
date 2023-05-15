@@ -5,13 +5,19 @@ const fs = require('fs');
  * @param {*} data: The data to be populated in the csv. 
  * @param {*} headers: The names of the csv headers. 
  * @param {*} filename: Name to be given to the file. This gets appended with the currrent time to keep record and ordering.
- * @returns 
+ * @returns string filepath 
  */
 function createCSV_fromData(data, headers, filename) {
+    console.log("Here in the function to create a csv!!")
     try {
+
         const csvRows = [];
+        let filepath = ""
+
+        // Create the top headers for the csv
         csvRows.push(headers.join(',')); // add header row
 
+        // Create && Append comma seperarted data rows to the csv array 
         for (let i = 0; i < data.length; i++) {
             const row = [];
             for (let j = 0; j < headers.length; j++) {
@@ -21,18 +27,16 @@ function createCSV_fromData(data, headers, filename) {
             csvRows.push(row.join(','));
         }
 
-
-        let exists = fs.existsSync("AuditFiles")
+        // Check if the directory exists, else create to store the files.
+        let exists = fs.existsSync("../Reports/Finalcial_reports")
         if (!exists) // Create a new directroy if not exists
-            fs.mkdir('AuditFiles', err => {
+            fs.mkdir('../Reports/Finalcial_reports', err => {
                 if (err) {
                     console.log(err.message)
                 } else {
-                    console.log("Created")
+                    console.log("Created The Directory")
                 }
             })
-
-
 
         const csv = csvRows.join('\n');
 
@@ -43,10 +47,13 @@ function createCSV_fromData(data, headers, filename) {
                 console.log('File saved');
             }
         });
-    } catch (error) {
-        return err.message
-    }
 
+        return filepath
+
+    } catch (error) {
+        console.log(err.message)
+        return null
+    }
 }
 
 module.exports = createCSV_fromData
