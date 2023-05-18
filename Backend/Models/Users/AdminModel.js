@@ -43,7 +43,7 @@ const adminSchema = mongoose.Schema({
         type: String,
         trim: true,
     }, // required
-    picture: {
+    picture:{
         type: String,
     },
     contact: {
@@ -51,12 +51,7 @@ const adminSchema = mongoose.Schema({
         // required: true,
         trim: true,
     }, // required
-
-    deleted: {
-        type: Boolean,
-        defalut: false
-    },
-
+    
     location: {
         type: String,
         // required: true,
@@ -67,14 +62,10 @@ const adminSchema = mongoose.Schema({
         // required: true,
         trim: true,
     },
-
-    // Amount available with the Admin!!
     availableAmount: {
         type: Number,
         default: 0
     },
-
-
     specific_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
