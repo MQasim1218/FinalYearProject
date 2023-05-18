@@ -122,7 +122,7 @@ donorSchema.statics.login = async function (email, password) {
 
 donorSchema.statics.signup = async function (donor) {
     try {
-        let { name, age, email, password, contact, chatId, picture, location } = donor
+        let { name, age, email, password, contact, chatId, picture, location, city } = donor
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
