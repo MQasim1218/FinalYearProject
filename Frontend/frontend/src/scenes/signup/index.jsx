@@ -32,9 +32,6 @@ const userSchema = yup.object().shape({
   userType: yup.string().required("Required"),
 });
 
-
-
-
 const Register = () => {
 
 

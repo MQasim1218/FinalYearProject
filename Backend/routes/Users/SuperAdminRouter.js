@@ -1,6 +1,8 @@
 const express = require('express')
 const AdminModel = require('../../Models/Users/AdminModel')
 const AdminController = require('../../Controllers/Users/AdminCntr')
+const SuperAdminController = require('../../Controllers/Users/SuperAdminCntrlr')
+const SuperAdminModel = require('../../Models/Users/SuperAdmin')
 const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
 const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
 const authorize = require('../../middleware/authorization')
@@ -21,11 +23,22 @@ let router = express.Router()
  * TODO: 
  */
 
-router.post('/signup', AdminController.AddNewAdmin)
-router.post('/login', AdminController.SignInAdmin)
-router.patch('/update/:id', AdminController.UpdateAdmin)
+// router.post('/signup', SuperAdminController.AddNewAdmin)
+router.post('/login', SuperAdminController.SignIn)
+router.patch('/change_email', SuperAdminController.ChangeEmail)
+router.patch('/change_pass', SuperAdminController.ChangePassword)
 
-router.use(authorize)
+router.delete('', (req, res, next) => {
+    // ! Need to figure a way to (not) the super admin from the env file.
+
+
+})
+
+
+// FIXME: This needs tobe implemented!!
+// router.get('/forgot_password', SuperAdminController.)
+
+// router.use(authorize)
 
 // localhost:5000/admin/signup
 router.get(
@@ -90,6 +103,11 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
     }
 })
 
+router.get('download_reports', (req, res, next) => {
+    
+    
+    res.sendFile()
+})
 
 
 // Empty routes.. Will do these in a little while
@@ -115,7 +133,7 @@ router.post('/:id/addGeneralCampaign', AdminController.AddGeneralCampaign)
 // Get Admin
 router.get('/:id', AdminController.GetAdmin)
 
-router.delete('/:id', AdminController.DeleteAdmin)
+// router.delete('/:id', AdminController.DeleteAdmin)
 
 router.patch('/:id', AdminController.UpdateAdmin)
 

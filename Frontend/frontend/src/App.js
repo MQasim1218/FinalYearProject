@@ -142,7 +142,11 @@ function App(props) {
 
               <Route path="/superadmindonations" element={<SuperAdminDonations single_admin={false} />} />
               <Route path="/categorydonations" element={<CategoryDonations />} />
+              
+              {/* Register donation taken from the donors! */}
               <Route path="/registerdonation" element={<DonationRegistration />} />
+              
+              {/* Give donation to an Admin!! */}
               <Route path="/superdonation" element={<SuperDonation />} />
               <Route path="/graphs" element={<Graphs />} />
               <Route path="/geography" element={<GeographyMap />} />

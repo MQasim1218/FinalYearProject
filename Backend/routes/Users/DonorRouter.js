@@ -11,10 +11,6 @@ const DonorDonationModel = require('../../Models/Donations/DonationDonor')
 
 const authorize = require('../../middleware/authorization')
 
-const { json } = require('express')
-
-
-const { mongo, default: mongoose } = require('mongoose')
 let router = express.Router()
 
 // Donor SignUp
@@ -23,22 +19,49 @@ router.post('/signup', DonorController.DonorSignUp)
 // Donor Login
 router.post('/login', DonorController.DonorSignIn)
 
-//Donor Update
-router.patch('/update/:id', DonorController.UpdateDonor)
-
-// Index page for Donors. Nothing here!
-// router.get('/', (req, res, next) => { res.send("Welcome to donor page") })
-
 // FIXME: !!
 // ! router.use(authorize)
 // ! This is just commented for the sake of removing authorization from the programme
 
+//Donor Update
+router.patch(
+    '/update/:id',
+    DonorController.UpdateDonor
+)
+
+// Mark donor as deleted!!
+router.patch(
+    '/remove_donor/:donor_id',
+    DonorController.MarkDonorAsDeleted
+)
+
+
+
+
 // Get all donors
-router.get('/', DonorController.AllDonors);
+router.get(
+    '/',
+    DonorController.AllDonors
+);
+
+router.get(
+    '/deleted',
+    DonorController.GetDeleted
+)
 
 // ! NOTE: IG This route should be a part of Campaigns Router!!
 // Search Campaigns
-router.get('/available_campaigns', DonorController.SearchAvailableCampaigns)
+router.get(
+    '/available_campaigns',
+    DonorController.SearchAvailableCampaigns
+)
+
+
+// Get all the campaigns where the donor has donated!
+router.get(
+    'donated_camps/:donor_id',
+    DonorController.GetDonatedCapmaigns
+)
 
 // ! NOTE: IG This route should be a part of Campaigns Router!!
 // Search Campaign Based on Title
@@ -52,12 +75,12 @@ router.get('/:id/donations', DonorController.GetDonations)
 // Donor retrival
 router.get('/:id', DonorController.GetDonor)
 
+router.post('/donate', DonorController.Donate)
 // Update a donor 
 router.put('/:id', DonorController.UpdateDonor)
 
 router.delete('/:id',)
 
-router.post('/donate/:campaign_id', DonorController.Donate)
 
 
 

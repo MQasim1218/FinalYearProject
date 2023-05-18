@@ -6,6 +6,8 @@ const DonorDonations = require("../../Models/Donations/DonationDonor")
 const SpecificCampaign = require("../../Models/Campaings/SpecificCampaign")
 const GeneralCampaign = require("../../Models/Campaings/GeneralCampaigns")
 
+const stripe = require('stripe')('sk_test_51N4jJpD4d2tkTPKs2hMsKxF6cI2qEJALDyfgJzoXzAP1sdplbgi8H4R7wOFomnMN722KG6pXBOlkeEERlBDyJiM300tMCNI0t1')
+
 
 const DonorSignUp = async (req, res, next) => {
     // let donor = await DonorModel.findOne({ email: req.body.email }).exec()
@@ -75,8 +77,15 @@ const DonorSignIn = async (req, res, next) => {
 }
 
 const AllDonors = async (req, res, next) => {
-    console.log("FrontEnd Request Here")
-    DonorModel.find({}).exec(function (error, data) {
+    console.log("Getting all the donors")
+
+    // Either the data obj has no entity deleted, or the entitiy is set to false
+    DonorModel.find({
+        $or: [
+            { deleted: { $exists: false } },
+            { deleted: false }
+        ]
+    }).sort({ createdAt: 'desc' }).exec(function (error, data) {
         if (error) {
             return next(error);
         }
@@ -87,26 +96,63 @@ const AllDonors = async (req, res, next) => {
 
 const GetDonor = async (req, res, next) => {
     DonorModel.findOne({ _id: req.params.id })
-        .exec(function (error, data) {
+        .exec(function (error, donor) {
             if (error) {
-                console.log("Resource not in donor/:id - Skipping this route altogether!!")
+                console.log("No donor with the given ID exists!!")
                 return next()
             }
-            res.json(data)
+
+            if (donor.deteted == true) { }
+
+            res.json(donor)
         })
 }
 
+
+/**
+ * Donation flow.
+ * Donor is making the donation -- so -- lets assume we are gonna use stripe for this.
+ * ! Does the donor donate to the campain :: Currently ----NO----
+ * ! Doesnt the SuperAdmin simple register the donor donation. SOME CASES. Donor has to be able to make donations on his own aswell
+ * 
+ * SECTION: Stripe Architecture
+ * One main account - SuperAdmin Account!
+ * SuperAdmin creates a payment intent -- But how?? the SA doesnt know how much the donor wants to donate
+ * NOTE: Possible solution. Donor can select the amount he/she wants to donate from his/her portal.
+ * The donor submits the form on the portal that conatains the details, the the stripe checkout the collects 
+ * that information to make a custom checkout-page for the donation.  
+ */
 const Donate = async (req, res, next) => {
     // Must recieve data
     // - Donation amount
     // - Donor ID 
-    // - Donation Type
+    // - Donation Category
+    // - 
     try {
+        console.log("Making the donatios as donor")
+
+        // Do the Stripe process first
+        let session = await stripe.checkout.sessions.create({
+            line_items: [
+                {
+                    price: "price_1N4l7LD4d2tkTPKse5AzTfAg",
+                    quantity: 1
+                },
+            ],
+            mode: 'payment',
+            submit_type: 'donate',
+
+            success_url: 'https://example.com/success',
+            cancel_url: 'https://example.com/cancel',
+        })
+
+
+
+
         // Create a donation entry
-        // The real part with Stripe need to be tackled in the later implementation.
         let donation_entry = await DonorDonations.create(req.body)
         if (!donation_entry) {
-            res.send("Couldnt create a donation entry for the donor!!")
+            return res.send("Couldnt create a donation entry for the donor!!")
         }
 
         // ! This needs tobe looked into..
@@ -136,27 +182,32 @@ const Donate = async (req, res, next) => {
         //         { $push: { donated_campaigns_general: req.params.campaign_id } }
         //     )
         // }
-        res.json(donation_entry)
+
+        // Redirect the user to the Stripe Page
+        return res.redirect(303, session.url)
+        // res.json(donation_entry)
 
     } catch (error) {
         console.log(error)
-        res.send(error)
+        return res.send(error)
     }
 }
 
+
+// Need to test this if this works fine.
 const UpdateDonor = async (req, res, next) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)   
+    const hashedPassword = await bcrypt.hash(req.body?.password, 10)
     try {
         await DonorModel.findByIdAndUpdate(
             req.params.id,
             {
-                name: req.body.name,
-                age: req.body.age,
-                email: req.body.email,
+                name: req.body?.name,
+                age: req.body?.age,
+                email: req.body?.email,
                 password: hashedPassword,
-                contact: req.body.contact,
-                picture: req.body.picture,
-                location: req.body.location
+                contact: req.body?.contact,
+                picture: req.body?.picture,
+                location: req.body?.location
             }
         )
         let donor = await DonorModel.findById(req.params.id).exec()
@@ -257,7 +308,10 @@ const SearchCampaignByTitle = async (req, res, next) => {
 
 const GetDonatedCapmaigns = async (req, res, next) => {
     try {
-        let donor = await DonorModel.findOne({ _id: req.params.id }).populate(['donated_campaigns_specific', 'donated_campaigns_general']).exec()
+        let donor = await DonorModel.findOne({ _id: req.params.id })
+            .populate('donated_campaigns_specific')
+            .populate('donated_campaigns_general')
+            .exec()
         res.json([...donor.donated_campaigns_specific, ...donated_campaigns_general])
     } catch (error) {
         res.send(error.message)
@@ -276,13 +330,28 @@ const GetDonations = async (req, res, next) => {
 }
 
 const SearchAvailableCampaigns = async (req, res, next) => {
+    console.log("Getting all the available campaigns")
+
     try {
         let available = { specific: null, general: null }
 
-        let specific_av = await SpecificCampaign.find({ approved: true, completed: { $in: [false, null] } }).exec()
+        let specific_av = await SpecificCampaign
+            .find({
+                approved: true,
+                completed: { $in: [false, null] }
+            })
+            .sort({ createdAt: "desc" }) // Do we need to populate any feilds??
+            .exec()
+
+
         if (specific_av) available.specific = specific_av
         // completed: false, approved: true
-        let general_av = await GeneralCampaign.find({ approved: true, completed: { $in: [false, null] } })
+        let general_av = await GeneralCampaign.find(
+            {
+                approved: true,
+                completed: { $in: [false, null] }
+            }
+        )
         if (general_av) available.general = general_av
 
         // res.json(JSON.stringify(available))
@@ -295,14 +364,51 @@ const SearchAvailableCampaigns = async (req, res, next) => {
     }
 }
 
-const DeleteDonor = function (req, res, next) {
-    DonorModel.deleteOne({ _id: req.params.id }).exec(function (error, data) {
-        if (error) {
-            next(error)
-        }
-        res.json(data)
-    })
+const GetDeleted = async (req, res, next) => {
+    try {
+        let del_donors = await DonorModel
+            .find({
+                deleted: true
+            })
+            .exec()
+
+        res.json(del_donors)
+    } catch (error) {
+        console.log("Error occured! Error: ", err.message)
+        res.status(500).send("Failed to deleted donors!")
+    }
+
+
 }
+
+const MarkDonorAsDeleted = async (req, res, next) => {
+
+    try {
+        let id = req.params.donor_id
+
+        let result = await DonorModel.findByIdAndUpdate(id, { deleted: true }).exec()
+        if (result) {
+            console.log("The donor got removed sucesfully")
+            res.json(result)
+        }
+    } catch (err) {
+        console.log("Error occured! Error: ", err.message)
+        res.status(500).send("Failed to mark donor as deleted!")
+    }
+
+}
+
+// const DeleteDonor = async function (req, res, next) {
+//     DonorModel.findOneAndUpdate(
+//         { _id: req.params.id },
+//         { deleted: true })
+//         .exec(function (error, data) {
+//             if (error) {
+//                 next(error)
+//             }
+//             res.json(data)
+//         })
+// }
 
 module.exports = {
     SearchAvailableCampaigns,
@@ -313,8 +419,12 @@ module.exports = {
     DonorSignIn,
     DonorSignUp,
     UpdateDonor,
-    DeleteDonor,
+    // MarkDonorAsDeleted,
     AllDonors,
     GetDonor,
-    Donate
+    Donate,
+
+    // Today's work: Mai 11, 2023
+    MarkDonorAsDeleted,
+    GetDeleted
 }

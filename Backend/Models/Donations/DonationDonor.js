@@ -1,10 +1,34 @@
 const { default: mongoose } = require("mongoose");
 
 const donorDonationSchema = mongoose.Schema({
+
+    // The total amount initially donated by the donor 
     amount: {
         type: Number,
         required: true,
         default: true
+    },
+
+    // The amount that is donted from the total amount!
+    amountDonated: {
+        type: Number,
+        default: 0,
+    },
+
+    // The remaining amount from the total amount@!!
+    amountRemaining: {
+        type: Number,
+        default: -1,
+    },
+
+    camp_spec: {
+        type: mongoose.Types.ObjectId,
+        ref: 'specific_campaign',
+    },
+
+    camp_general: {
+        type: mongoose.Types.ObjectId,
+        ref: 'general_campaign',
     },
 
     donor: {
@@ -13,10 +37,7 @@ const donorDonationSchema = mongoose.Schema({
         required: true,
     },
 
-    amountDonated: {
-        type: Number,
-        default: 0,
-    },
+
 
     donation_title: {
         type: String,

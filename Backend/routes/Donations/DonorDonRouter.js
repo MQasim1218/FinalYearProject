@@ -28,6 +28,7 @@ const authorize = require('../../middleware/authorization')
 // All the donation made by a donor.
 router.get('/single/:id', DonorDonationController.SingleDonation)
 
+// Since SUPADMIN registers the donation, thus the sup admin is called
 router.post('/registerDonation', SupAdminDonCntr.RegisterDonorDonation)
 
 

@@ -190,21 +190,28 @@ const DonorAllDonations = async (req, res, next) => {
     try {
         let cat = req.params.category
         let donor_id = req.params.donor_id
-        console.log("Donor ID coming from frontend: ",donor_id)
+
         if (cat == null) {
-            // Get all the donations made by the Donors
+            // Get all the donations made by a Donor
             let Dons = await DonorDons.find({
                 donor: donor_id
-            }).exec()
+            })
+                .sort({ createdAt: "desc" })
+                .exec()
 
-            console.log("Donor Donations are IN BACKEND: ", Dons)
+            console.log("All the Donor-Donations are: ", Dons)
             res.json(Dons)
         } else {
             // Get all the Donations by specific donor for a particular category.
-            let Dons = await DonorDons.find({
-                category: cat,
-                donor: donor_id
-            }).exec()
+            let Dons = await DonorDons.find(
+                {
+                    category: cat,
+                    donor: donor_id
+                }
+            )
+                .sort({ createdAt: "desc" })
+                .exec()
+
             res.json(Dons)
         }
     } catch (error) {
@@ -214,12 +221,17 @@ const DonorAllDonations = async (req, res, next) => {
 }
 
 const SingleDonation = async (req, res, next) => {
-    console.log("Got a requwst to fetch a single donation!!")
+    console.log("Got a request to fetch a single donation!!")
     try {
-        // Get donation made by the Donors
-        let Donation = await DonorDons.findById(
-            req.params.id
-        ).populate('donor').exec()
+        // Get information for single donation made by a Donor.
+        let Donation = await DonorDons
+            .findById(
+                req.params.id
+            )
+            .populate('donor')
+            .populate("specific_campaign")
+            .populate('general_campaign')
+            .exec()
 
         console.log("Donor Donation is: ", Donation)
 
@@ -311,5 +323,6 @@ module.exports = {
     GetDonations_TimeRange,
     GetYearDonations,
     GetMonthDonations,
-    SingleDonation
+    SingleDonation,
+
 }

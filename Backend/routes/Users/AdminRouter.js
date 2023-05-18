@@ -24,7 +24,7 @@ let router = express.Router()
 router.post('/signup', AdminController.AddNewAdmin)
 router.post('/login', AdminController.SignInAdmin)
 router.patch('/update/:id', AdminController.UpdateAdmin)
-router.delete('/delete/:id', AdminController.DeleteAdmin)
+// router.delete('/delete/:id', AdminController.DeleteAdmin)
 router.get('/get/:id', AdminController.GetAdmin)
 
 
@@ -36,6 +36,21 @@ router.get(
     '/appealedCampaigns',
     AdminController.ViewAppealedCampaigns
 )
+
+
+router.patch(
+    '/remove_admin/:admin_id',
+    async (req, res, next) => {
+        let id = req.params.admin_id
+
+        let result = await AdminModel.findByIdAndUpdate(id, { deleted: true }).exec()
+        if (result) {
+            console.log("The user got deleted sucesfully")
+            res.json(result)
+        }
+    }
+)
+
 
 // })
 // router.get('/allCampigns/:id', async (req, res, next) => {

@@ -40,6 +40,9 @@ const CreateCampaign = () => {
 
   let { user } = useAuthContext()
 
+  let [docs, setDocs] = useState([])
+  let [fileURL, setFileURL] = useState()
+
   //Code for the OnCLick POPUP
   const [urls, setUrls] = useState([]);
   const [fileUrl, setFileUrl] = useState(null);
@@ -56,6 +59,7 @@ const CreateCampaign = () => {
 
   //Options for location entry
   // TODO: This needs tobe made dynamic and linked to Google Maps
+  // FIXME: Ive gotta make these two dynamic!!
   const locations = [
     {
       value: 'Islamabad',

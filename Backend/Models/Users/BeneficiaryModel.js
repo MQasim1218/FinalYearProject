@@ -48,6 +48,12 @@ const beneficiarySchema = mongoose.Schema({
         // required: true,
         trim: true,
     },
+
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+
     location: {
         type: String,
         // required: true,
@@ -58,6 +64,9 @@ const beneficiarySchema = mongoose.Schema({
         // required: true,
         trim: true,
     },
+
+
+
     requested_campaigns: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'

@@ -12,6 +12,10 @@
  *  5. 
  */
 
+const SuperAdminModel = require("../../Models/Users/SuperAdmin")
+const dotenv = require('dotenv')
+const fs = require('fs');
+const envfile = require('envfile');
 
 
 
@@ -20,24 +24,74 @@ const UpdateAccountDetails = async (req, res, next) => {
 
 }
 
+const SignIn = async (req, res, next) => {
+    try {
+        let { user, token } = await SuperAdminModel.login(req.body?.email, req.body?.password)
+
+        if (user) {
+            console.log("Admin logged in sucessfully", user)
+            res.json({ user, token })
+        } else {
+            console.log("Incorrect Credentials!!")
+            res.send("Incorrect Credentials")
+        }
+    } catch (error) {
+        console.log("Error encountered: ", error.message)
+        next(error)
+    }
+}
+
 // Get all the Donations 
-const ChangePassword = async (req, res, next) => { }
+const ChangePassword = async (req, res, next) => {
+    try {
+        console.log("We are here, resetting the Superadmins email!!")
+
+        // Set the Pass to the new pass!
+        process.env.SUPERADMIN_PASSWORD = req.body.pass
+
+        dotenv.config({ path: "../../.env" })
+
+        console.log("Super Admin Saved successfully!!")
+    } catch (err) {
+        console.log(err.message)
+    }
+}
 
 // Get Donations made in a month...
-const ChangeEmail = async (req, res, next) => { }
+// FIXME: UNable to update the SuperAdmin Email or password in the Backend!
+const ChangeEmail = async (req, res, next) => {
+    try {
+        console.log("We are here, resetting the Superadmins email!!")
+        // Set the Pass to the new pass!
+        console.log("Email recieved is: ", req.body.email)
+        let sp = "../../.env"
+        let parsedFile = envfile.parse(sp);
+
+        process.env.SUPERADMIN_EMAIL = req.body.email
+
+        // Write the updated values back to the .env file
+        fs.writeFileSync(sp, envfile.stringify(parsedFile));
 
 
-// Make Donation to an Admin
-const DonateToAdmin = async (req, res, next) => { }
 
-// Register a donation
-const RegisterDonorDonation = async () => { }
+        console.log(process.env.SUPERADMIN_EMAIL)
+
+        dotenv.config({ path: "../../.env" })
+
+        console.log("Super Admin Updated successfully!!")
+        res.json({ email: process.env.SUPERADMIN_EMAIL, pass: process.env.SUPERADMIN_PASSWORD })
+    } catch (err) {
+        console.log(err.message)
+        next(err)
+    }
+}
+
 
 // Get All the donations 
 
 module.exports = {
-
-
-
-    DonateToAdmin, // Send money to Admin
+    // CRUD Options!!
+    SignIn,
+    ChangeEmail,
+    ChangePassword,
 }

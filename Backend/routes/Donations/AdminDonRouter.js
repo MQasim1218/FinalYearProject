@@ -23,6 +23,13 @@ const authorize = require('../../middleware/authorization')
 // Get all Admin donations to campaigns -- Filter for a particular category!!
 router.get('/:category?', AdminDonationController.GetAllDonations)
 
+
+
+
+// Get donations made by the Admins in a Month
+router.get('/month_donations/:year/:month/:category?', AdminDonationController.GetMonthDonations)
+
+
 router.get('/admin/:admin_id/', async (req, res) => {
     console.log("The admin id recieved is: ", req.params.admin_id)
     // res.send(`Admin id recieved: ${req.params.admin_id}`)
@@ -43,10 +50,8 @@ router.get('/superdonation/:id', AdminDonationController.Superdonation)
 router.get('/camp/:camp_id', AdminDonationController.GetCampaignDonations)
 
 // Get donations made by Admins to Campaings in a year -- Filterable by catogory
-router.get('/:year/:category?', AdminDonationController.GetYearDonations)
+router.get('/donations/:year/:category?', AdminDonationController.GetYearDonations)
 
-// Get donations made by the SuperAdmin in a Month
-router.get('/:year/:month/:category?', AdminDonationController.GetMonthDonations)
 
 
 // REVIEW: Donations between a Specified timeperiod

@@ -45,14 +45,26 @@ const donorSchema = mongoose.Schema({
         type: String,
         trim: true,
     }, // required
-    picture:{
+
+
+    // We need to be sure this is a valid url o not?? OR MAYBE no need to verify.
+    // Not a crucial piece of information!
+    picture: {
         type: String,
     },
+
+
     contact: {
         type: String,
         // required: true,
         trim: true
     },
+
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+
     location: {
         type: String,
         // required: true,
@@ -63,6 +75,7 @@ const donorSchema = mongoose.Schema({
         // required: true,
         trim: true
     },
+
     donated_campaigns_specific: [{
         type: mongoose.Schema.ObjectId,
         ref: 'specific_campaign'
@@ -74,6 +87,7 @@ const donorSchema = mongoose.Schema({
     }],
     tota_don_amount: {},
 
+    // Need to work this part up this weekend!
     account_details: { type: accDetailsSchema },
 
 
