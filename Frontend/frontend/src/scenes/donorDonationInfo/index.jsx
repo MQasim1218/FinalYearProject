@@ -118,9 +118,9 @@ const DonorDonationInfo = () => {
       ...don,
       ind: ind,
       id: don._id,
-      createdAt: don.createdAt.slice(0, 10),
-      admin_name: don.admin.name,
-      admin_email: don.admin.email,
+      createdAt: don.createdAt?.slice(0, 10),
+      admin_name: don.admin?.name,
+      admin_email: don.admin?.email,
     }))
   }
 

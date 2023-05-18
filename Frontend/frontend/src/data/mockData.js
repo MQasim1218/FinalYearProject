@@ -579,7 +579,7 @@ export const mockBarData = [
   {
     City: "ISL",
     "Education": 137,
-    "EducationColor": "hsl(229, 70%, 50%)",
+    EducationColor: "hsl(229, 70%, 50%)",
     Meals: 96,
     MealsColor: "hsl(296, 70%, 50%)",
     NaturalDisaster: 72,
@@ -1030,6 +1030,10 @@ export const mockGeographyData = [
   },
   {
     id: "AUT",
+    value: 798526,
+  },
+  {
+    id: "AUS",
     value: 798526,
   },
   {

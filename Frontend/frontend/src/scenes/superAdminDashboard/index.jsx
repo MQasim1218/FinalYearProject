@@ -191,8 +191,15 @@ const SuperAdminDashboard = () => {
 
   const total = donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)
   const used = donsFromDonors.reduce((partialTot, don) => partialTot + don.amountDonated, 0)
+  
+  let remainingPercent = 0
 
-  const remainingPercent = used / total
+  if (total === 0) {
+    remainingPercent = 0
+  }
+  else {
+    remainingPercent = used / total
+  }
 
   console.log("%: ", remainingPercent)
 
@@ -369,7 +376,7 @@ const SuperAdminDashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Donations
+              Recent Donations - SuperAdmin to Admin
             </Typography>
           </Box>
           {
@@ -423,22 +430,22 @@ const SuperAdminDashboard = () => {
           </Box>
           <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" mt="15px">
             <Box>
-            <Typography
-              variant="h5"
-              sx={{ mt: "15px" }}
-            >
-              {"$" + total}
-            </Typography>
-            <Typography color={colors.greenAccent[500]}>Total Donations Recieved</Typography>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + total}
+              </Typography>
+              <Typography color={colors.greenAccent[500]}>Total Donations Recieved</Typography>
             </Box>
             <Box>
-            <Typography
-              variant="h5"
-              sx={{ mt: "15px" }}
-            >
-              {"$" + used}
-            </Typography>
-            <Typography color={colors.blueAccent[500]}>Total Donations Used</Typography>
+              <Typography
+                variant="h5"
+                sx={{ mt: "15px" }}
+              >
+                {"$" + used}
+              </Typography>
+              <Typography color={colors.blueAccent[500]}>Total Donations Used</Typography>
             </Box>
           </Box>
         </Box>

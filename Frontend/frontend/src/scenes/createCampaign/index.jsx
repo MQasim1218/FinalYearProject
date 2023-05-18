@@ -26,9 +26,13 @@ const initialValues = {
 //schema for validation
 const campaignSchema = yup.object().shape({
   campaign_title: yup.string().required("Required"),
-  required_amount: yup.string().required("Required"),
+  required_amount: yup
+    .string()
+    .test('positive', 'Amount must be greater than 0', value => parseFloat(value) > 0)
+    .required('Required'),
   category: yup.string().required("Required"),
   location: yup.string().required("Required"),
+  url_docs: yup.array().required("Required"),
 });
 
 
@@ -316,7 +320,7 @@ const CreateCampaign = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Campaign Description *"
+                label="Campaign Description (optional)"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.description}

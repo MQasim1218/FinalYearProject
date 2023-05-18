@@ -1,14 +1,72 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
-import { mockPieData as data } from "../data/mockData";
+import { useAllDonorsDonationsQuery } from "../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+
+
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useAllDonorsDonationsQuery()
+
+  console.log("Donations by all donors: ", donorDons)
+
+  const donationCounts = donorDons?.reduce((acc, cur) => {
+    // Check if the category exists in the accumulator object
+    if (acc.hasOwnProperty(cur.catagory)) {
+      // If it does, increment the count for that catagory
+      acc[cur.catagory]++;
+    } else {
+      // If it doesn't, initialize the count for that catagory to 1
+      acc[cur.catagory] = 1;
+    }
+    return acc;
+  }, {});
+
+  let mockPieData = []
+
+  if (donorDons) {
+
+    let MealCount = donationCounts.Meal
+    let EducationCount = donationCounts.Education
+    let NaturalDisasterCount = donationCounts.NaturalDisaster
+    let MedicalCount = donationCounts.Medical
+
+    mockPieData = [
+      {
+        id: "Education",
+        label: "Education",
+        value: EducationCount,
+        color: "hsl(104, 70%, 50%)",
+      },
+      {
+        id: "Meals",
+        label: "Meals",
+        value: MealCount,
+        color: "hsl(229, 70%, 50%)",
+      },
+      {
+        id: "NaturalDisaster",
+        label: "NaturalDisaster",
+        value: NaturalDisasterCount,
+        color: "hsl(291, 70%, 50%)",
+      },
+      {
+        id: "Medical",
+        label: "Medical",
+        value: MedicalCount,
+        color: "hsl(162, 70%, 50%)",
+      },
+    ];
+  
+  }
+
+
   return (
     <ResponsivePie
-      data={data}
+      data={mockPieData}
       theme={{
         axis: {
           domain: {
@@ -37,9 +95,9 @@ const PieChart = () => {
           },
         },
         tooltip: {
-            container: {
-                color: "black",
-            }
+          container: {
+            color: "black",
+          }
         }
       }}
       colors={{ scheme: 'nivo' }}

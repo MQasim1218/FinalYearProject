@@ -156,7 +156,7 @@ const CampaignInfo = () => {
   if (!allDonsToAdminLoading) {
     if (allDonsToAdminSuccess) {
       console.log("Dons to the admins are", allDonsToAdmin)
-
+      if(allDonsToAdmin?.length > 0) {
       allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
         .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
         .map((opt) => (
@@ -165,6 +165,7 @@ const CampaignInfo = () => {
           </MenuItem>
         ))
     }
+  }
   }
   else if (isAllDonsToAdminError) console.log(allDonsToAdminError.message)
 

@@ -295,8 +295,8 @@ const SuperAdminDonations = ({ single_admin }) => {
         >
           {
             Donations && <StatBox
-              title={single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10)}
-              subtitle="Latest Donation"
+              title={ DonsToAdmin?.length ? single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10) : "None"}
+              subtitle={ "Latest Donation Made"}
               progress={false}
               icon={
                 <CalendarMonthOutlinedIcon
@@ -315,8 +315,8 @@ const SuperAdminDonations = ({ single_admin }) => {
           borderRadius="10px"
         >
           <StatBox
-            title={maxAdmin?.name}
-            increase={"Donations: "+maxCount}
+            title={maxAdmin?.name || "No one"}
+            increase={ `Donations: ${maxCount === -Infinity ? 0 : maxCount}` }
             subtitle="Most Donations Made To"
             progress={false}
             icon={

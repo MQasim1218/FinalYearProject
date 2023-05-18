@@ -27,7 +27,7 @@ let generalCampaignSchema = mongoose.Schema({
 
     description: {
         type: String,
-        required: true
+        required: false,
     },
 
     location: {

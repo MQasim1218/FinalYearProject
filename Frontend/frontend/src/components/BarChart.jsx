@@ -1,15 +1,77 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarData as data } from "../data/mockData";
+import { useAllDonorsDonationsQuery } from "../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 
 const BarChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useAllDonorsDonationsQuery()
+
+  console.log("Donations by all donors in bar: ", donorDons)
+
+  const donationCounts = {};
+
+  // Loop through each object in the donorDons array
+  donorDons?.forEach((donorDon) => {
+    // Check if the location is "Pakistan"
+    if (donorDon?.donor?.location === "Pakistan") {
+      const category = donorDon?.catagory;
+      const city = donorDon?.donor.city;
+
+      // Check if the city already exists in the donationCounts object
+      if (donationCounts.hasOwnProperty(city)) {
+        // Check if the category already exists for the city
+        if (donationCounts[city].hasOwnProperty(category)) {
+          // Increment the count for the category in the city
+          donationCounts[city][category].count += 1;
+        } else {
+          // Create a new entry for the category in the city and initialize the count
+          donationCounts[city][category] = { count: 1 };
+        }
+      } else {
+        // Create a new entry for the city and the category with the count
+        donationCounts[city] = { [category]: { count: 1 } };
+      }
+    }
+  });
+
+  console.log("City wise data: ", donationCounts);
+
+  function generateBarData(donationCounts) {
+    const mockBarData = [];
+
+    // Iterate over the keys of the donationCounts object
+    Object.keys(donationCounts).forEach((city) => {
+      const categories = donationCounts[city]; // Get the categories object
+
+      // Create an object for the city
+      const cityData = { City: city };
+
+      // Iterate over the categories object
+      Object.entries(categories).forEach(([category, { count }]) => {
+        // Add category count to the cityData object
+        cityData[category] = count;
+
+        // Add color property for the category
+        const color = `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`;
+        cityData[`${category}Color`] = color;
+      });
+
+      // Add the cityData object to the mockBarData array
+      mockBarData.push(cityData);
+    });
+
+    return mockBarData;
+  }
+
+  const mockBarData = generateBarData(donationCounts);
+
+
   return (
     <ResponsiveBar
-        data={data}
+        data={mockBarData}
         theme={{
             // added
             axis: {
@@ -63,7 +125,7 @@ const BarChart = ({ isDashboard = false }) => {
           }}
         keys={[
             'Education',
-            'Meals',
+            'Meal',
             'NaturalDisaster',
             'Medical'
         ]}

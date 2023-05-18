@@ -21,7 +21,7 @@ const initialValues = {
   amount: "",
   description: "",
   admin: "",
-  catagory: "",
+  category: "",
   donordonationId: "",
 
 };
@@ -33,7 +33,7 @@ const userSchema = yup.object().shape({
     .string()
     .test('positive', 'Amount must be greater than 0', value => parseFloat(value) > 0)
     .required('Required'),
-  catagory: yup.string().required("Required"),
+  category: yup.string().required("Required"),
   admin: yup.string().required("Required"),
   donordonationId: yup.string().required("Required"),
 });
@@ -82,7 +82,7 @@ const SuperDonation = () => {
     if (donsIsSuccess)
       dons = dons
         .filter((don) => don.amount !== 0) // NOTE: Filtering out the donations with amount 0 
-        .map((don, index) => ({ value: don._id, label: don.amount, id: index, name: don.donor.name, category: don.catagory }))
+        .map((don, index) => ({ value: don._id, label: don.amount, id: index, name: don.donor?.name, category: don.catagory }))
         .map((opt) => (
           <MenuItem key={opt.id} value={opt.value} id={opt.id}>
             {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
@@ -93,7 +93,7 @@ const SuperDonation = () => {
 
 
   //Options for category entry
-  const catagorys = [
+  const categorys = [
     {
       value: 'Education',
       label: 'Education',
@@ -143,7 +143,7 @@ const SuperDonation = () => {
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values, { resetForm }) => {
+  const handleFormSubmit = async (values) => {
     console.log(values);
     console.log('About to send the backend request@@!')
 
@@ -156,7 +156,6 @@ const SuperDonation = () => {
     setOpen(true);
 
     //To reset the forms values after submit.
-    resetForm()
   };
 
   const handleClose = (event, reason) => {
@@ -284,14 +283,14 @@ const SuperDonation = () => {
                 label="Category *"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.catagory}
-                name="catagory"
-                error={!!touched.catagory && !!errors.catagory}
-                helperText={touched.catagory && errors.catagory}
+                value={values.category}
+                name="category"
+                error={!!touched.category && !!errors.category}
+                helperText={touched.category && errors.category}
                 sx={{ gridColumn: "span 2" }}
               >
                 {
-                  catagorys.map((option) => (
+                  categorys.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>

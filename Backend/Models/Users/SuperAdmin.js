@@ -50,15 +50,15 @@ const SuperAdminSchema = mongoose.Schema({
     }, // required
 
     location: {
-        type: {
-            type: String,
-            enum: ['Point', 'Polygon'],
-            // required: true
-        },
-        coordinates: {
-            type: [Number],
-            // required: true
-        }
+        type: String,
+        // required: true,
+        trim: true,
+    },
+
+    city: {
+        type: String,
+        // required: true,
+        trim: true,
     },
 
     Donations: {
@@ -105,7 +105,7 @@ adminSchema.statics.login = async function (email, password) {
 
 adminSchema.statics.signup = async function (admin) {
     try {
-        let { name, age, email, password, contact, location } = admin
+        let { name, age, email, password, contact, location, city } = admin
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
@@ -120,6 +120,7 @@ adminSchema.statics.signup = async function (admin) {
             name: name, email: email,
             password: passEncrypted,
             age: age, location: location,
+            city: city,
             contact: contact
         })
         let token = await createJWT(user._id)

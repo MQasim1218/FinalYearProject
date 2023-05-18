@@ -26,10 +26,15 @@ const DonorInfo = () => {
   const [donations, setDonations] = useState([])
   const [max_don, setMaxDon] = useState(-1)
   const [accountTier, setAccountTier] = useState("")
+ 
 
   // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   const { user } = useAuthContext()
   let accountType = useContext(AccountTypeContext)
+
+  if (id === undefined) {
+    id = user?.user?._id
+  }
 
   const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useSingleDonorDonationsQuery(id)
   const { data: donor } = useGetDonorQuery(id)
