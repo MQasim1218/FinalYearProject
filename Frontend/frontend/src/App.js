@@ -85,7 +85,6 @@ function App(props) {
     setAccountType(value);
   }
 
-
   return (
     //Context for colormode, so we can use it anywhere.
     <ColorModeContext.Provider value={colorMode}>

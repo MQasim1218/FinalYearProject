@@ -282,3 +282,5 @@ router.post("/:id/loans/return/:loan_id", async (req, res, next) => {
 
 // // Activity on Campaign(s) based on location
 // router.get(path, function () { })
+
+module.exports = router

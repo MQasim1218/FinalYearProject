@@ -24,7 +24,7 @@ const GetAllDonations = async (req, res, next) => {
                 .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
                 .populate("donordonationId", don_donation_fields)
-                .populate("donor", donorFields)
+                //.populate("donor", donorFields)
                 .exec()
 
             console.log(Dons)
@@ -34,7 +34,7 @@ const GetAllDonations = async (req, res, next) => {
                 .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
                 .populate("donordonationId", don_donation_fields)
-                .populate("donor", donorFields)
+                //.populate("donor", donorFields)
                 .exec()
 
             res.json(Dons)

@@ -52,6 +52,7 @@ const SuperAdminDashboard = () => {
     isError: isAdminsError,
     isSuccess: adminsIsSuccess
   } = useAllAdminsQuery()
+  
   let AdminsStatBox = null
   if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
   else if (adminsIsSuccess) {
@@ -187,7 +188,6 @@ const SuperAdminDashboard = () => {
   if (isDonorsSuccess) {
     console.log("Donations by the SuperAdmin", donations)
   }
-
 
   const total = donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)
   const used = donsFromDonors.reduce((partialTot, don) => partialTot + don.amountDonated, 0)
@@ -380,7 +380,7 @@ const SuperAdminDashboard = () => {
             </Typography>
           </Box>
           {
-            donations && donations.map((transaction, i) => (
+            donations && donations?.map((transaction, i) => (
               <Box
                 key={`${transaction.donation_title}`}
                 display="flex"
