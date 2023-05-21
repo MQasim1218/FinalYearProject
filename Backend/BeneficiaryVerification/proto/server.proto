@@ -11,5 +11,12 @@ message ImageNamesReq{
 }
 
 message PredictionsRes {
-    repeated string preds = 1;
+    // repeated string preds = 1;
+    map<string, Prediction> preds = 1;
 }
+
+message Prediction{
+    repeated string incidents = 1;
+    repeated string places = 2;
+}
+

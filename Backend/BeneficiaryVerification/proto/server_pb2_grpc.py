@@ -14,8 +14,8 @@ class Ben_VerificationStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SayHello = channel.unary_unary(
-                '/verification.Ben_Verification/SayHello',
+        self.VerifyImages = channel.unary_unary(
+                '/verification.Ben_Verification/VerifyImages',
                 request_serializer=proto_dot_server__pb2.ImageNamesReq.SerializeToString,
                 response_deserializer=proto_dot_server__pb2.PredictionsRes.FromString,
                 )
@@ -24,7 +24,7 @@ class Ben_VerificationStub(object):
 class Ben_VerificationServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def SayHello(self, request, context):
+    def VerifyImages(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,8 +33,8 @@ class Ben_VerificationServicer(object):
 
 def add_Ben_VerificationServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SayHello': grpc.unary_unary_rpc_method_handler(
-                    servicer.SayHello,
+            'VerifyImages': grpc.unary_unary_rpc_method_handler(
+                    servicer.VerifyImages,
                     request_deserializer=proto_dot_server__pb2.ImageNamesReq.FromString,
                     response_serializer=proto_dot_server__pb2.PredictionsRes.SerializeToString,
             ),
@@ -49,7 +49,7 @@ class Ben_Verification(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def SayHello(request,
+    def VerifyImages(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,7 +59,7 @@ class Ben_Verification(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/verification.Ben_Verification/SayHello',
+        return grpc.experimental.unary_unary(request, target, '/verification.Ben_Verification/VerifyImages',
             proto_dot_server__pb2.ImageNamesReq.SerializeToString,
             proto_dot_server__pb2.PredictionsRes.FromString,
             options, channel_credentials,

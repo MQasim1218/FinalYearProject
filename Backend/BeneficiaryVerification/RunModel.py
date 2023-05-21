@@ -14,16 +14,24 @@ import pprint
 
 import matplotlib.pyplot as plt
 
-# The models
-model = []
+# inference_loader = transforms.Compose([
+#         transforms.Resize((256, 256)),
+#         transforms.CenterCrop(224),
+#         transforms.ToTensor(),
+#         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+# ])
+# model = []
 
+def init():
 # Create an inference loader!!
-inference_loader = transforms.Compose([
-    transforms.Resize((256, 256)),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+    global inference_loader, model
+    inference_loader = transforms.Compose([
+        transforms.Resize((256, 256)),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+    model = []
 
 
 def get_model():
@@ -41,7 +49,7 @@ def get_model():
 
 
 
-
+# NOTE: We will get the filenames in the request!
 def get_data():
     # get the data
     image_filenames = sorted(
@@ -66,37 +74,11 @@ Program flow
     Get the predictions 
 """
 
-# images = get_data()
 
-batch_input = preprocess_data(images)
-
-
-# Create empty dictionaries to store the inference results
-inference_dict = {}
-
-# Get the predictions from the model
-predictions = get_predictions_from_model(
-    incidents_model=model,
-    batch_input=batch_input,
-    image_paths=images,
-    index_to_incident_mapping=get_index_to_incident_mapping(),
-    index_to_place_mapping=get_index_to_place_mapping(),
-    inference_dict=inference_dict,
-    topk=1,
-    activation="softmax", 
-)
-
-pprint.pprint(predictions) 
-
-for image in predictions:
-    img = cv2.imread(image)[:, :, ::-1].copy()
-    plt.imshow(img)
-    plt.show()
-    pprint.pprint(predictions[image])
 
 
 # This is the rpc endpoint that the node api
-def getPrediction(img_paths):
+def getPrediction(images):
     """
         1. Call the getPrediction method with the image paths from the node 
         2. Load the image from its path
@@ -107,5 +89,38 @@ def getPrediction(img_paths):
         7. In Node, save the result in the database!
     """
     print("Getting the prediction for the input images")
+
+    global model, inference_loader
     if (model == []):
         model = get_model()
+
+    # images = get_data()
+
+    batch_input = preprocess_data(images)
+
+
+    # Create empty dictionaries to store the inference results
+    inference_dict = {}
+
+    # Get the predictions from the model
+    predictions = get_predictions_from_model(
+        incidents_model=model,
+        batch_input=batch_input,
+        image_paths=images,
+        index_to_incident_mapping=get_index_to_incident_mapping(),
+        index_to_place_mapping=get_index_to_place_mapping(),
+        inference_dict=inference_dict,
+        topk=1,
+        activation="softmax", 
+    )
+
+    # pprint.pprint(predictions) 
+
+    # ! Code only for debugging. Throttling, thus to be deleated!
+    # for image in predictions:
+    #     img = cv2.imread(image)[:, :, ::-1].copy()
+    #     plt.imshow(img)
+    #     plt.show()
+    #     pprint.pprint(predictions[image])
+
+    return predictions
