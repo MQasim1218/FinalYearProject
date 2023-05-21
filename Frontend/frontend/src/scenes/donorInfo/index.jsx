@@ -25,8 +25,8 @@ const DonorInfo = () => {
   let { id } = useParams();
   const [donations, setDonations] = useState([])
   const [max_don, setMaxDon] = useState(-1)
-  const [accountTier, setAccountTier] = useState("")
- 
+  const [accountTier, setAccountTier] = useState("Bronze")
+
 
   // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   const { user } = useAuthContext()
@@ -71,7 +71,7 @@ const DonorInfo = () => {
             >
               {transaction.donation_title}
             </Typography>
-  
+
           </Box>
           <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
           <Box
@@ -109,22 +109,22 @@ const DonorInfo = () => {
 
   let totalDonations = 0;
 
-for (let i = 0; i < donorDons?.length; i++) {
-  const donation = donorDons[i];
-  totalDonations += donation.amountDonated + donation.amount;
-}
+  for (let i = 0; i < donorDons?.length; i++) {
+    const donation = donorDons[i];
+    totalDonations += donation.amountDonated + donation.amount;
+  }
 
-useEffect(() => {
-  if(totalDonations <= 500){
-    setAccountTier("Bronze")
-  }
-  else if(totalDonations <= 1000){
-    setAccountTier("Silver")
-  }
-  else if(totalDonations >= 5000){
-    setAccountTier("Gold")
-  }
-}, [totalDonations]);
+  useEffect(() => {
+    if (totalDonations <= 5000) {
+      setAccountTier("Bronze")
+    }
+    else if (totalDonations <= 10000) {
+      setAccountTier("Silver")
+    }
+    else if (totalDonations >= 15000) {
+      setAccountTier("Gold")
+    }
+  }, [totalDonations]);
 
 
   return (<Box m="20px">
@@ -189,7 +189,7 @@ useEffect(() => {
         justifyContent="center"
       >
         <StatBox
-          title={"$"+totalDonations}
+          title={"$" + totalDonations}
           subtitle={"Total Donations"}
           icon={
             <AttachMoneyOutlinedIcon
@@ -207,7 +207,7 @@ useEffect(() => {
       >
         <StatBox
           title="Account Tier"
-          subtitle={accountTier}
+          subtitle={accountTier ? accountTier : "Bronze"}
           icon={
             <LocalPoliceOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

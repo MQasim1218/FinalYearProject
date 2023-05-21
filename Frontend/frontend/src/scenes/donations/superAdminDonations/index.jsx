@@ -295,7 +295,7 @@ const SuperAdminDonations = ({ single_admin }) => {
         >
           {
             Donations && <StatBox
-              title={ DonsToAdmin?.length ? single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10) : "None"}
+              title={  single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10) }
               subtitle={ "Latest Donation Made"}
               progress={false}
               icon={

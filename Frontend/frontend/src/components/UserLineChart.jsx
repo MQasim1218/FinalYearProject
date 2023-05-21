@@ -62,7 +62,7 @@ const UserLineChart = (isDashboard=true) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: isDashboard ? undefined : 'transportation',
+            legend: isDashboard ? undefined : 'Months',
             legendOffset: 36,
             legendPosition: 'middle'
         }}
@@ -82,7 +82,7 @@ const UserLineChart = (isDashboard=true) => {
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
-        useMesh={false}
+        useMesh={true}
         legends={[
             {
                 anchor: 'bottom-right',

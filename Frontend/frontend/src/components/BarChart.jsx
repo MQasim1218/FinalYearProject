@@ -171,7 +171,7 @@ const BarChart = ({ isDashboard = false }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: isDashboard ? undefined : 'Donations',
+            legend: isDashboard ? undefined : 'Number Of Donations',
             legendPosition: 'middle',
             legendOffset: -40
         }}

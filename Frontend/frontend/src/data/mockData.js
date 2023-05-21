@@ -74,7 +74,7 @@ export const mockDonationRequests = [
     amount: "$200",
     category: "Education",
     allocated: "Admin 2"
-  },{
+  }, {
     id: 3,
     date: "25-Feb-2023",
     donor: "Aown Raza",
@@ -234,7 +234,7 @@ export const mockDataBeneficiary = [
     phone: "(222)444-5555",
     accounttype: "Beneficiary",
   },
-  
+
 ];
 
 export const mockDataDonor = [
@@ -3128,7 +3128,7 @@ export const activityData = [
     "day": "2015-07-19"
   },
   {
-    "value": 209,
+    "value": 500,
     "day": "2021-01-09"
   },
   {
