@@ -1,3 +1,5 @@
 /node_modules
 /BeneficiaryVerification/pretrained_weights/
 /BeneficiaryVerification/data/
+
+/DataAggregation/Reports
