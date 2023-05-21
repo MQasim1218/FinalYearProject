@@ -21,12 +21,12 @@ const donorDonationSchema = mongoose.Schema({
         default: -1,
     },
 
-    camp_spec: {
+    specific_campaign: {
         type: mongoose.Types.ObjectId,
         ref: 'specific_campaign',
     },
 
-    camp_general: {
+    general_campaign: {
         type: mongoose.Types.ObjectId,
         ref: 'general_campaign',
     },

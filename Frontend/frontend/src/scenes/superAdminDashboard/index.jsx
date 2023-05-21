@@ -189,7 +189,7 @@ const SuperAdminDashboard = () => {
     console.log("Donations by the SuperAdmin", donations)
   }
 
-  const total = donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)
+  const total = donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)
   const used = donsFromDonors.reduce((partialTot, don) => partialTot + don.amountDonated, 0)
   
   let remainingPercent = 0

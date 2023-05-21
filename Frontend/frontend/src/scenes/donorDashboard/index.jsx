@@ -36,7 +36,7 @@ const DonorDashboard = () => {
   console.log("Donor donation data is: ", donorDons)
 
   const totalAmount = donorDons?.reduce((acc, curr) => {
-    return acc + curr.amount + curr.amountDonated;
+    return acc + curr.amount;
   }, 0);
 
   console.log("Total Sum: "+totalAmount);
@@ -75,7 +75,7 @@ const DonorDashboard = () => {
             borderRadius="4px"
             color={colors.grey[900]}
           >
-            ${transaction.amount + transaction.amountDonated}
+            ${transaction.amount}
           </Box>
         </Box>
       ))

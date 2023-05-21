@@ -261,7 +261,7 @@ const Admins = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            {/* <CalendarChart isDashboard={true} /> */}
+            <CalendarChart isDashboard={true} isAdmin={true} />
           </Box>
         </Box>
 

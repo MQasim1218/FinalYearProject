@@ -772,7 +772,7 @@ const Geography = ({ isDashboard = false }) => {
       }}
       features={geoFeatures.features}
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-      domain={[0, 4500]}
+      domain={[0, 7500]}
       unknownColor="#666666"
       label="properties.name"
       valueFormat=".2s"
@@ -781,7 +781,7 @@ const Geography = ({ isDashboard = false }) => {
       projectionRotation={[0, 0, 0]}
       graticuleLineColor="#dddddd"
       borderWidth={1.5}
-      borderColor="#ffffff"
+      borderColor={colors.grey[400]}
       colors="PuBu"
       legends={!isDashboard ? [
         {

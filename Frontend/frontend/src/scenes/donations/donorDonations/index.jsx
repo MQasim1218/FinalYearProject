@@ -47,7 +47,7 @@ const DonorDonations = () => {
       flex: 1,
     },
     {
-      field: "amount",
+      field: "amountRemaining",
       headerName: "Remaining Donation Amount ($)",
       flex: 1,
     },
@@ -97,7 +97,7 @@ const DonorDonations = () => {
   else if (isSuccess) {
 
     let DonorDonations = Donations
-      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind, total: don.amount + don.amountDonated }))
+      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind, total: don.amount, amountRemaining: don.amount - don.amountDonated }))
       .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid
@@ -118,7 +118,7 @@ const DonorDonations = () => {
   for (const donation of donsFromDonors) {
     
     const donorname = donation?.donor?.name;
-    const donationAmount = donation.amountDonated + donation.amount;
+    const donationAmount =  donation.amount;
   
     // Update donation count for each donor
     if (!donationCount[donorname]) {
@@ -179,7 +179,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)}
+            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
             subtitle="Total Funds Recieved"
             progress={false}
             icon={
@@ -198,7 +198,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
+            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount - don.amountDonated, 0)}
             subtitle="Total Unallocated Funds"
             progress={false}
             icon={

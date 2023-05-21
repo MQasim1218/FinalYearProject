@@ -26,7 +26,7 @@ const LineChart = ({ isDashboard = false }) => {
 
   // Iterate over the donorDons array
   donorDons?.forEach((don) => {
-    const { catagory, amount, amountDonated, createdAt } = don;
+    const { catagory, amount, createdAt } = don;
     const month = new Date(createdAt).getMonth(); // Get the month index (0-11)
     const monthName = months[month]; // Get the month name
     const donationYear = new Date(createdAt).getFullYear();
@@ -43,7 +43,7 @@ const LineChart = ({ isDashboard = false }) => {
       }
 
       // Update the corresponding month's value in the lineChartData array
-      lineChartData[catagory][month].y += amount + amountDonated;
+      lineChartData[catagory][month].y += amount;
     }
   });
 

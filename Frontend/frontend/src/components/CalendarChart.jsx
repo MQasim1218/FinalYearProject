@@ -3,9 +3,20 @@ import { ResponsiveCalendar } from "@nivo/calendar"
 import { tokens } from "../theme";
 import { useAllDonorsDonationsQuery } from "../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 import { useState } from 'react';
+import { useAllAdminsDonationsQuery } from "../app/redux-features/donations/AdminDonations/AdminDonsSlice";
 
+const CalendarChart = ({ isDashboard = false , isAdmin = false}) => {
 
-const CalendarChart = ({ isDashboard = false }) => {
+  let queryResult = null;
+
+  if (!isAdmin) {
+    queryResult = useAllDonorsDonationsQuery();
+  } else {
+    queryResult = useAllAdminsDonationsQuery();
+  }
+
+  const { data: donorDons } = queryResult;
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -23,7 +34,6 @@ const CalendarChart = ({ isDashboard = false }) => {
   // Format the result in the desired format
   const formattedDate = `${currentYear}-${lastMonthOfYear.toString().padStart(2, '0')}-${lastMonthDays.toString().padStart(2, '0')}`;
 
-  const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useAllDonorsDonationsQuery()
 
   const counts = {};
 

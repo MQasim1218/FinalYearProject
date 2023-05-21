@@ -56,7 +56,7 @@ const GetSingleDonation = async (req, res, next) => {
                 .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
                 .populate("donordonationId", don_donation_fields)
-                .populate("donor", donorFields)
+                //.populate("donor", donorFields)
                 .exec()
             res.json(Don)
         } else {
@@ -83,7 +83,7 @@ const GetDonsForSingleDonorDonation = async (req, res, next) => {
                 .sort({ createdAt: 'desc' })
                 .populate("admin", adminFeilds)
                 .populate("donordonationId", don_donation_fields)
-                .populate("donor", donorFields)
+                //.populate("donor", donorFields)
                 .exec()
             res.json(Don)
         } else {

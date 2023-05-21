@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, Tooltip } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import StatBox from "../../components/StatBox";
@@ -26,9 +26,9 @@ const DonorInfo = () => {
   const [donations, setDonations] = useState([])
   const [max_don, setMaxDon] = useState(-1)
   const [accountTier, setAccountTier] = useState("Bronze")
+  const [text, setText] = useState("Bronze")
 
 
-  // COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
   const { user } = useAuthContext()
   let accountType = useContext(AccountTypeContext)
 
@@ -102,10 +102,12 @@ const DonorInfo = () => {
 
   for (let i = 0; i < donorDons?.length; i++) {
     const donation = donorDons[i];
-    if (donation.amountDonated > maxDonation) {
-      maxDonation = donation.amountDonated;
+    if (donation.amount > maxDonation) {
+      maxDonation = donation.amount;
     }
   }
+
+  console.log("Max: ", donorDons)
 
   let totalDonations = 0;
 
@@ -117,12 +119,15 @@ const DonorInfo = () => {
   useEffect(() => {
     if (totalDonations <= 5000) {
       setAccountTier("Bronze")
+      setText("Donations Less Than $5000")
     }
     else if (totalDonations <= 10000) {
       setAccountTier("Silver")
+      setText("Donations Less Than $10000")
     }
-    else if (totalDonations >= 15000) {
+    else if (totalDonations > 10000) {
       setAccountTier("Gold")
+      setText("Donations More Than $10000")
     }
   }, [totalDonations]);
 
@@ -198,23 +203,25 @@ const DonorInfo = () => {
           }
         />
       </Box>
-      <Box
-        gridColumn="span 4"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title="Account Tier"
-          subtitle={accountTier ? accountTier : "Bronze"}
-          icon={
-            <LocalPoliceOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
+      <Tooltip title={<Typography variant='h6' color={colors.greenAccent[400]}>{text}</Typography>} arrow>
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={accountTier ? accountTier : "Bronze"}
+            subtitle={"Account Tier"}
+            icon={
+              <LocalPoliceOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+      </Tooltip>
     </Box>
     <Box mt="2rem">
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>User Analyitcs</Typography>

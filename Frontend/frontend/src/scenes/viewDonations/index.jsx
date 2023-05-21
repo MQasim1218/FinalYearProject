@@ -1,112 +1,100 @@
 import { Box } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataDonations } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useSingleDonorDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
+import { flattenObj } from "../../misc/ArrayFlatten";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { Navigate, useNavigate } from "react-router-dom";
 
 const ViewDonations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [donations, setDonations] = useState([])
   const { user } = useAuthContext()
+  let ref = useRef(null)
+  const navigate = useNavigate();
+
+  let id = user?.user?._id
+
+
+  const { data: donorDonations, isLoading, isSuccess } = useSingleDonorDonationsQuery(id)
+
+  console.log(donorDonations)
+  
 
   const columns = [
+    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "ind", headerName: "Num", flex: 0.5 },
+    { field: "createdAt", headerName: "Date", flex: 1 },
     {
-      field: "id",
-      headerName: "ID",
-      flex: 0.5
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      flex: 1
-    },
-
-    {
-      field: "name",
-      headerName: "Donor Name",
-      type: "number",
-      flex: 1
-
-      // headerAlign: "left",
-      // align: "left",
-    },
-    {
-      field: "amount",
-      headerName: "Amount",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "isLoan",
-      headerName: "Donation Type",
+      field: "total",
+      headerName: "Initial Donation ($)",
       flex: 1,
     },
-    // {
-    //   field: "email",
-    //   headerName: "Email Used",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "address",
-    //   headerName: "Address",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "city",
-    //   headerName: "City",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "donationamount",
-    //   headerName: "Donation Amount",
-    //   flex: 1,
-    // },
+    {
+      field: "amountRemaining",
+      headerName: "Remaining Donation Amount ($)",
+      flex: 1,
+    },
+    {
+      field: "amountDonated",
+      headerName: "Allocated Amount ($)",
+      flex: 1,
+    },
+    {
+      field: "catagory",
+      headerName: "Category",
+      flex: 1,
+    },
+    {
+
+      // Okay
+      field: 'View',
+      type: 'actions',
+      headerName: "View",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem
+          icon={<VisibilityOutlinedIcon />}
+          label="View"
+          onClick={() => {
+            navigate(
+              `/donordonationinfo/${row.id}`
+            )
+          }}
+        />,
+      ],
+    },
   ];
 
+  let DonorsDonsGrid = <></>
 
-  useEffect(() => {
+  if (isLoading) DonorsDonsGrid = <h3>Content Loading</h3>
+  else if (isSuccess) {
 
-    const getDonations = async () => {
-      let id = user.user.user._id
-      console.log("Token: ", user.user.token)
-      console.log("User Id: ", user.user.user._id)
-      let res = await axios.get(
-        `http://localhost:5000/donor/${id}/donations`,
-        {
-          headers: {
-            'Authorization': `Bearer ${user.user.token}`,
-            'Content-Type': 'application-json'
-          }
-        }
-      )
+    let DonorDonations = donorDonations
+      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind, total: don.amount, amountRemaining: don.amount - don.amountDonated }))
+      .map((don) => flattenObj(don))
 
-      if (res.status < 400) {
-        // FIXME: Needs to get rid of user.user.user.name! Only user.obj.name
-        console.log("I guess we getting the donations for ", user.user.user.name)
-        return res.data
-      }
-      else return null
-    }
+    DonorsDonsGrid = <DataGrid
+      ref={ref}
+      checkboxSelection
+      rows={DonorDonations}
+      columns={columns}
+      components={{ Toolbar: GridToolbar }}
+      columnVisibilityModel={{
+        id: false
+      }}
+    />
+  } else if (isError) { DonorsDonsGrid = <h3>Content Loading</h3> }
 
 
-    getDonations().then((donations) => {
-      let dons = donations.map((don, indx) => ({
-        id: indx + 1,
-        name: don.donor.name,
-        date: don.createdAt,
-        amount: don.amount,
-        isLoan: don.isLoan
-      }))
-      setDonations(dons)
-    })
-
-    return () => { }
-  }, [])
 
 
   return (
@@ -147,13 +135,7 @@ const ViewDonations = () => {
           },
         }}
       >
-        <DataGrid
-          checkboxSelection
-          // rows={mockDataDonations}
-          rows={donations}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+        {DonorsDonsGrid}
       </Box>
     </Box>
   );
