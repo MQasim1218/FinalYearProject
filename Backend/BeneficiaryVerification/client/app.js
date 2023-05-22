@@ -2,9 +2,7 @@ const express = require('express');
 const multer = require('multer')
 // const upload = require("express-fileupload")
 const { callVerifyImages, init_srv } = require('./grpcClient');
-const path = require('path');
 const fs = require('fs');
-const { clearLine } = require('readline');
 
 
 const app = express();
@@ -65,4 +63,4 @@ app.listen(3000, () => {
 
     // When the server starts, initialize the ML models aswell
     init_srv()
-});
+}); 

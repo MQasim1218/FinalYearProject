@@ -3,6 +3,8 @@ const { beneficiaryModel } = require('../../Models/Users/BeneficiaryModel')
 const SpecCapmaignModel = require('../../Models/Campaings/SpecificCampaign')
 const LoanModel = require('../../Models/Campaings/LoanModel')
 const authorize = require('../../middleware/authorization')
+const multer = require('multer')
+const { callVerifyImages } = require('../../utils/grpcClient')
 
 
 let router = express.Router()
@@ -101,15 +103,29 @@ router.delete('/:id', function (req, res, next) {
     })
 })
 
+
+// Create a storage for multer
+const storage = multer.diskStorage({
+    // ! Will need to change the storage destination in the main code! 
+    destination: '../../BeneficiaryVerification/temp/',
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '_' + file.originalname);
+    }
+});
+
+const upload_files = multer({ storage: storage });
+
+
 // NOTE - This is to update or upload a file for the beneficiary
-router.put('/upload_file', () => { })
+router.put('/upload_file', upload_files.array('images'), (req, res, next) => { })
 
 
 // #################  Capmaigns  ##################
 // #################  Capmaigns  ##################
+
 
 // Appeal a campaign
-router.post("/appeal/:benef_id/campaign", async (req, res, next) => {
+router.post("/appeal/:benef_id/campaign", upload_files.array('images'), async (req, res, next) => {
 
     try {
         let sc = await SpecCapmaignModel.create(req.body)
@@ -125,6 +141,39 @@ router.post("/appeal/:benef_id/campaign", async (req, res, next) => {
     } catch (error) {
         console.log("Error: ", error.message)
         next(error)
+    }
+
+    try {
+        // ! Will also need to settle this path in the main project
+
+        let paths = req.files.map(file => file.path)
+
+        const imagePaths = req.files.map(file => file.path.slice(3));
+        console.log('Image Paths:', imagePaths);
+
+        // Call the function for image verification and obtain predictions
+        let predictions = await callVerifyImages(imagePaths);
+
+        // Send the response 
+        res.json(predictions);
+
+
+        // Delete the files
+        paths.forEach(file_path => {
+            fs.unlink(file_path, err => {
+                if (err)
+                    console.log("Error deleting the file at " + file_path + "\n", err.message)
+                else
+                    console.log("File deleted successfully")
+            })
+        });
+
+        return
+
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 
 })
