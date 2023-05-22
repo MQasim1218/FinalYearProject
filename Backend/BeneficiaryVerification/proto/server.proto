@@ -4,7 +4,13 @@ package verification;
 
 service Ben_Verification {
     rpc VerifyImages (ImageNamesReq) returns (PredictionsRes);
+    rpc InitSrv (EmptyMessage) returns (EmptyMessage); 
 }
+
+
+
+message EmptyMessage{}
+
 
 message ImageNamesReq{
     repeated string images = 1;

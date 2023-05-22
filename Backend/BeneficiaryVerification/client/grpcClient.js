@@ -17,35 +17,35 @@ const client = new verifierProto.verification.Ben_Verification(
     grpc.credentials.createInsecure()
 )
 
+function init_srv(params) {
+
+    let request = {}
+    client.InitSrv(request, () => { })
+}
 
 
-function callVerifyImages(images, cb) {
-    // Create the verification request with the images paths
-    const request = { images: images }
+async function callVerifyImages(images) {
 
-    let res = client.VerifyImages(request, (err, response) => {
-        if (err) {
-            // Console log the error!
-            console.error(err)
-            return null
-        }
-
-        // I assume the callback is where you handld the predictions.
-        // It would be better to return the predictions to the caller API to handle, 
-        // rather than send a func to handle here
-        // console.log(response)
-
-        // Extract the predictions from the response
-        const predictions = {};
-        for (const [imagePath, prediction] of Object.entries(response.preds)) {
-            predictions[imagePath] = {
-                incidents: prediction.incidents,
-                places: prediction.places
-            };
-        }
-
-        return cb(predictions)
+    return new Promise((resolve, reject) => {
+        const request = { images: images }
+        client.VerifyImages(request, (err, response) => {
+            if (err) {
+                // Console log the error!
+                console.error(err)
+                reject(err)
+            } else {
+                const predictions = {};
+                for (const [imagePath, prediction] of Object.entries(response.preds)) {
+                    predictions[imagePath] = {
+                        incidents: prediction.incidents,
+                        places: prediction.places
+                    };
+                }
+                resolve(predictions)
+            }
+        })
     })
+    // Create the verification request with the images paths
 }
 
 images = [
@@ -57,4 +57,7 @@ images = [
 
 
 
-module.exports = { callVerifyImages }
+module.exports = {
+    callVerifyImages,
+    init_srv
+}

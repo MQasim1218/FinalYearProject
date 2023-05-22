@@ -20,18 +20,20 @@ import matplotlib.pyplot as plt
 #         transforms.ToTensor(),
 #         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 # ])
-# model = []
+model = []
 
 def init():
 # Create an inference loader!!
     global inference_loader, model
+    
     inference_loader = transforms.Compose([
         transforms.Resize((256, 256)),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    model = []
+    if (model == []):
+        model = get_model()
 
 
 def get_model():
@@ -45,35 +47,6 @@ def get_model():
     update_incidents_model_to_eval_mode(incidents_model)
 
     return incidents_model
-
-
-
-
-# NOTE: We will get the filenames in the request!
-def get_data():
-    # get the data
-    image_filenames = sorted(
-        glob.glob("test_images/*")
-    )
-
-    print(image_filenames)
-
-    # Check the incoming images!
-    # for image_filename in image_filenames:
-    #     img = cv2.imread(image_filename)[:, :, ::-1].copy()
-    #     plt.imshow(img)
-    #     plt.show()
-
-    return image_filenames
-
-
-"""
-Program flow
-    Get the incident model
-    Get the data
-    Get the predictions 
-"""
-
 
 
 
@@ -91,9 +64,8 @@ def getPrediction(images):
     print("Getting the prediction for the input images")
 
     global model, inference_loader
-    if (model == []):
-        model = get_model()
 
+    print("We have the model!!")
     # images = get_data()
 
     batch_input = preprocess_data(images)

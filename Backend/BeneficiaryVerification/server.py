@@ -17,12 +17,11 @@ import proto.server_pb2_grpc as server_pb2_grpc
 
 class VerificationServicer(server_pb2_grpc.Ben_VerificationServicer):
     
+    def InitSrv(self, request, context):
+        # Initialize the Model and the Global variables!
+        RunModel.init()
     
     def VerifyImages(self, request, context):
-        
-        # Initialize the Global variables!
-        RunModel.init()
-        
         # Create a response object
         response = server_pb2.PredictionsRes()
 

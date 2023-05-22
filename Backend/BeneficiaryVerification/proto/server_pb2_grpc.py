@@ -19,12 +19,23 @@ class Ben_VerificationStub(object):
                 request_serializer=proto_dot_server__pb2.ImageNamesReq.SerializeToString,
                 response_deserializer=proto_dot_server__pb2.PredictionsRes.FromString,
                 )
+        self.InitSrv = channel.unary_unary(
+                '/verification.Ben_Verification/InitSrv',
+                request_serializer=proto_dot_server__pb2.EmptyMessage.SerializeToString,
+                response_deserializer=proto_dot_server__pb2.EmptyMessage.FromString,
+                )
 
 
 class Ben_VerificationServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def VerifyImages(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def InitSrv(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -37,6 +48,11 @@ def add_Ben_VerificationServicer_to_server(servicer, server):
                     servicer.VerifyImages,
                     request_deserializer=proto_dot_server__pb2.ImageNamesReq.FromString,
                     response_serializer=proto_dot_server__pb2.PredictionsRes.SerializeToString,
+            ),
+            'InitSrv': grpc.unary_unary_rpc_method_handler(
+                    servicer.InitSrv,
+                    request_deserializer=proto_dot_server__pb2.EmptyMessage.FromString,
+                    response_serializer=proto_dot_server__pb2.EmptyMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -62,5 +78,22 @@ class Ben_Verification(object):
         return grpc.experimental.unary_unary(request, target, '/verification.Ben_Verification/VerifyImages',
             proto_dot_server__pb2.ImageNamesReq.SerializeToString,
             proto_dot_server__pb2.PredictionsRes.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def InitSrv(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/verification.Ben_Verification/InitSrv',
+            proto_dot_server__pb2.EmptyMessage.SerializeToString,
+            proto_dot_server__pb2.EmptyMessage.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
