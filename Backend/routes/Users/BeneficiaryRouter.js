@@ -4,7 +4,7 @@ const SpecCapmaignModel = require('../../Models/Campaings/SpecificCampaign')
 const LoanModel = require('../../Models/Campaings/LoanModel')
 const authorize = require('../../middleware/authorization')
 const multer = require('multer')
-const { callVerifyImages } = require('../../utils/grpcClient')
+// const { callVerifyImages } = require('../../utils/grpcClient')
 
 
 let router = express.Router()

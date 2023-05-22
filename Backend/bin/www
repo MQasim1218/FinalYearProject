@@ -5,7 +5,7 @@
  * Module dependencies.
  */
 
-const { init_srv } = require('../utils/grpcClient');
+// const { init_srv } = require('../utils/grpcClient');
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
