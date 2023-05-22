@@ -33,6 +33,7 @@ import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/D
 import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import JSZip from 'jszip';
 
 //initializing all inputs with their keys
 const initialValues = {
@@ -71,6 +72,8 @@ const CampaignInfo = () => {
   const [donations, setDonations] = useState([])
   const [openModal, setModalOpen] = useState(false)
   const [open, setOpen] = useState(false)
+  const [openDoc, setOpenDoc] = useState(false)
+
 
   let { user } = useAuthContext()
 
@@ -126,6 +129,7 @@ const CampaignInfo = () => {
     }
 
     setOpen(false);
+    setOpenDoc(false);
   };
 
   // ! Get total donations donations for the campaingn
@@ -184,6 +188,37 @@ const CampaignInfo = () => {
 
   useEffect(() => {
   }, [campDonations, camp])
+
+  const handleDownload = async () => {
+    if (camp?.campaign_docs.length === 0) {
+      setOpenDoc(true);
+      return;
+    }
+
+    const date = camp?.createdAt.slice(0,10);
+
+    const zip = new JSZip();
+
+    const downloadPromises = camp?.campaign_docs.map(async (fileUrl) => {
+      const response = await fetch(fileUrl);
+      const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+      const fileData = await response.blob();
+      zip.file(fileName, fileData);
+    });
+
+    await Promise.all(downloadPromises);
+
+    zip.generateAsync({ type: 'blob' }).then((content) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(content);
+      link.download = `${camp?.campaign_title} ${date}.zip`;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
+
 
 
   return (<Box m="20px">
@@ -356,7 +391,7 @@ const CampaignInfo = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Box>
+          <Box sx={{padding: "5px"}}>
             <Button sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -364,13 +399,46 @@ const CampaignInfo = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }} onClick={handleModalOpen}>
-              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              <AttachMoneyOutlinedIcon sx={{ mr: "10px" }} />
               Donate Now!
             </Button>
 
           </Box>
+          <Box sx={{ padding: "5px" }}>
+            <Button sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }} onClick={handleDownload}>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Docs
+            </Button>
+
+          </Box>
         </Box>
-        : <Box></Box>}
+        : <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box sx={{ padding: "5px" }}>
+            <Button sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }} onClick={handleDownload}>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Docs
+            </Button>
+
+          </Box>
+        </Box>}
     </Box>
     <>
       <Box style={{ marginTop: '2%' }}>
@@ -633,6 +701,11 @@ const CampaignInfo = () => {
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
         Donation Made To Campaign Successfully!
+      </Alert>
+    </Snackbar>
+    <Snackbar open={openDoc} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+        No Files Available For Download!
       </Alert>
     </Snackbar>
   </Box>)

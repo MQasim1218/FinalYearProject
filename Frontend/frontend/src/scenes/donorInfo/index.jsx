@@ -80,7 +80,7 @@ const DonorInfo = () => {
             borderRadius="4px"
             color={colors.grey[900]}
           >
-            ${transaction.amount + transaction.amountDonated}
+            ${transaction.amount}
           </Box>
         </Box>
       ))
@@ -113,7 +113,7 @@ const DonorInfo = () => {
 
   for (let i = 0; i < donorDons?.length; i++) {
     const donation = donorDons[i];
-    totalDonations += donation.amountDonated + donation.amount;
+    totalDonations += donation.amount;
   }
 
   useEffect(() => {

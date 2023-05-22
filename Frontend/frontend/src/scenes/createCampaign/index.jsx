@@ -18,9 +18,9 @@ const initialValues = {
   campaign_title: "",
   required_amount: "",
   description: "",
-  location: "Islamabad",
+  //location: "Islamabad",
   category: "Education",
-  url_docs: []
+  campaign_docs: []
 };
 
 //schema for validation
@@ -31,8 +31,8 @@ const campaignSchema = yup.object().shape({
     .test('positive', 'Amount must be greater than 0', value => parseFloat(value) > 0)
     .required('Required'),
   category: yup.string().required("Required"),
-  location: yup.string().required("Required"),
-  url_docs: yup.array().required("Required"),
+  //location: yup.string().required("Required"),
+  campaign_docs: yup.array().required("Required"),
 });
 
 
@@ -60,24 +60,24 @@ const CreateCampaign = () => {
   //Options for location entry
   // TODO: This needs tobe made dynamic and linked to Google Maps
   // FIXME: Ive gotta make these two dynamic!!
-  const locations = [
-    {
-      value: 'Islamabad',
-      label: 'ISL',
-    },
-    {
-      value: 'Rawalpindi',
-      label: 'RWP',
-    },
-    {
-      value: 'Lahore',
-      label: 'LHR',
-    },
-    {
-      value: 'Faisalabad',
-      label: 'FSD',
-    },
-  ];
+  // const locations = [
+  //   {
+  //     value: 'Islamabad',
+  //     label: 'ISL',
+  //   },
+  //   {
+  //     value: 'Rawalpindi',
+  //     label: 'RWP',
+  //   },
+  //   {
+  //     value: 'Lahore',
+  //     label: 'LHR',
+  //   },
+  //   {
+  //     value: 'Faisalabad',
+  //     label: 'FSD',
+  //   },
+  // ];
 
   // STUB: Options for category entry
   // TODO: MAke Dynamic based on Registered Campaign tpyes..
@@ -110,7 +110,7 @@ const CreateCampaign = () => {
   const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
 
-    values.url_docs = urls;
+    values.campaign_docs = urls;
 
 
 
@@ -282,7 +282,7 @@ const CreateCampaign = () => {
                 helperText={touched.required_amount && errors.required_amount}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
+              {/* <TextField
                 fullWidth
                 select
                 variant="filled"
@@ -300,7 +300,7 @@ const CreateCampaign = () => {
                   {option.label}
                 </MenuItem>
               ))}
-              </TextField>
+              </TextField> */}
               <TextField
                 fullWidth
                 select
@@ -337,7 +337,7 @@ const CreateCampaign = () => {
               />
 
               <Box>
-                <Dropzone value={values.url_docs} setFieldValue={setFieldValue} />
+                <Dropzone value={values.campaign_docs} setFieldValue={setFieldValue} />
               </Box>
             </Box>
 

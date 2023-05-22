@@ -46,7 +46,7 @@ const CalendarChart = ({ isDashboard = false , isAdmin = false}) => {
 
     // If the date already exists in the counts object, increment its value by 1
     if (counts[date]) {
-      counts[date]++;
+      counts[date+"Donations"]++;
     } else {
       // Otherwise, initialize the count to 1
       counts[date] = 1;

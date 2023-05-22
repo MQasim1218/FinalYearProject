@@ -197,7 +197,7 @@ const BeneficiaryDashboard = () => {
         </Box>
       </Box>
       <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>...</Typography>
+              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
             </Box>
       <Box
         display="grid"
