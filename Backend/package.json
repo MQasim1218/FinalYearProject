@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.8.14",
     "@grpc/proto-loader": "^0.7.7",
     "axios": "^1.3.4",
     "bcrypt": "^5.1.0",
@@ -16,7 +17,6 @@
     "envfile": "^6.18.0",
     "express": "~4.16.1",
     "gridfs-stream": "^1.1.1",
-    "grpc": "^1.24.11",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",

@@ -1,8 +1,9 @@
-const grpc = require('grpc')
+const grpc = require('@grpc/grpc-js')
+
 const protoLoader = require('@grpc/proto-loader')
 
 
-const pkgDef = protoLoader.loadSync('../BeneficiaryVerification/proto/server.proto', {
+const pkgDef = protoLoader.loadSync('server.proto', {
     keepCase: true,
     longs: String,
     enums: String,
@@ -10,12 +11,12 @@ const pkgDef = protoLoader.loadSync('../BeneficiaryVerification/proto/server.pro
     oneofs: true
 })
 
-// const verifierProto = grpc.loadPackageDefinition(pkgDef)
+const verifierProto = grpc.loadPackageDefinition(pkgDef)
 
-// const client = new verifierProto.verification.Ben_Verification(
-//     'localhost:50051',
-//     grpc.credentials.createInsecure()
-// )
+const client = new verifierProto.verification.Ben_Verification(
+    'localhost:50051',
+    grpc.credentials.createInsecure()
+)
 
 
 function init_srv() {

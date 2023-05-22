@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package verification;
+
+service Ben_Verification {
+    rpc VerifyImages (ImageNamesReq) returns (PredictionsRes);
+    rpc InitSrv (EmptyMessage) returns (EmptyMessage); 
+}
+
+
+
+message EmptyMessage{}
+
+
+message ImageNamesReq{
+    repeated string images = 1;
+}
+
+message PredictionsRes {
+    // repeated string preds = 1;
+    map<string, Prediction> preds = 1;
+}
+
+message Prediction{
+    repeated string incidents = 1;
+    repeated string places = 2;
+}
+
