@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 #         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 # ])
 model = []
+inference_loader = ""
 
 def init():
 # Create an inference loader!!
@@ -69,6 +70,8 @@ def getPrediction(images):
     # images = get_data()
 
     batch_input = preprocess_data(images)
+
+    print("Preprocessed the images!!")
 
 
     # Create empty dictionaries to store the inference results

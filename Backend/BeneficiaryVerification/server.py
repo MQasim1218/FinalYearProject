@@ -27,6 +27,8 @@ class VerificationServicer(server_pb2_grpc.Ben_VerificationServicer):
         images = request.images
         print("THE IMAGES RECIEVED ARE: ", images)
 
+        
+
         # Send the image urls to the getPrediction function of the Model.
         
         preds = RunModel.getPrediction(images)
@@ -35,6 +37,7 @@ class VerificationServicer(server_pb2_grpc.Ben_VerificationServicer):
         # response.preds[:] = []
 
         for image_path, prediction in preds.items():
+            print("Path: ", image_path)
             pred_message = response.preds[image_path]
             pred_message.incidents.extend(prediction['incidents'])
             pred_message.places.extend(prediction['places'])

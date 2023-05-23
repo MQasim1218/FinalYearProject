@@ -27,7 +27,7 @@ app.post('/verify', upload_files.array('images'), async (req, res) => {
 
         let paths = req.files.map(file => file.path)
 
-        const imagePaths = req.files.map(file => file.path.slice(3));
+        const imagePaths = req.files.map(file => file.path.slice(2));
         console.log('Image Paths:', imagePaths);
 
         // Call the function for image verification and obtain predictions
