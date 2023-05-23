@@ -277,16 +277,17 @@ const AllDonationsToAdmin = async (req, res, next) => {
 
                 console.log("Donations Returned are: ", Dons)
 
-                res.json(Dons)
+                return res.json(Dons)
+
             } else {
                 let Dons = await SuperAdminDons.find({
                     admin: adminId,
                     category: cat
                 }).exec()
-                res.json(Dons)
+                return res.json(Dons)
             }
         } else {
-            res.status(400).send({ msg: "Error: Admin id is null" })
+            return res.status(400).send({ msg: "Error: Admin id is null" })
         }
     } catch (error) {
         console.log('error encountered while retreiving Super Admin donations!\nError: ', error)
@@ -472,38 +473,42 @@ const DonateToAdmin = async (req, res, next) => {
 
     try {
         console.log("A request for donation to admin recieved!!")
+
         // let { admin, amount: am, donordonationId } = req.body
 
         // STUB: Step1: Destructure the req.body to get the adminId, donationId,
 
         console.log("Req body: ", req.body)
+        let { admin, donordonationId, amount } = req.body
 
         let don = await SuperAdminDons.create(req.body)
         if (don) {
+            let update = await SuperAdminDons.findByIdAndUpdate(don._id, { remaining: amount }).exec()
             console.log("The daontion was successfull")
+            console.log('Donation created :', don)
         } else {
             console.log("the donation failed")
         }
 
-        console.log('Donation created :', don)
 
-        let { admin, donordonationId, amount } = req.body
+        // FIXME: This is critical logical error!
+        // ! This code is wrong!
+        // let adminUpdated = await Admin.findByIdAndUpdate(admin, {
+        //     $inc: {
+        //         donated: amount,
+        //         remaining: -amount
+        //     }
+        // })
 
-        let adminUpdated = await Admin.findByIdAndUpdate(admin, {
-            $inc: {
-                donated: amount,
-                remaining: -amount
-            }
-        })
+        // console.log(adminUpdated)
 
-        console.log(adminUpdated)
-
+        // ! Increment the amount in donor donation!
         let donorDonationUpdated = await DonorDons.findByIdAndUpdate(donordonationId, {
             $inc: {
                 amountRemaining: -amount,
                 amountDonated: amount
             }
-        })
+        }).exec()
 
         console.log("Updated Donor donation entry!!: ", donorDonationUpdated)
 
@@ -529,7 +534,20 @@ const RegisterDonorDonation = async (req, res, next) => {
         // let { amount, donor } = req.body
         console.log("Request body: ", req.body)
 
+        let { amount } = req.body
+
+
         let donor_donation = await DonorDons.create(req.body)
+
+        if (donor_donation) {
+
+            let don = await DonorDons.findByIdAndUpdate(donor_donation._id, {
+                amountRemaining: amount
+            }).exec()
+
+
+            console.log("The donor donation registered is: ", don)
+        }
 
         res.json(donor_donation)
 

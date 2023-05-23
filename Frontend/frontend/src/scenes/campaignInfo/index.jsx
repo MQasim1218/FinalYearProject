@@ -324,97 +324,75 @@ const CampaignInfo = () => {
           }
         </Box>
 
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={camp?.createdAt.slice(0, 10)}
-          subtitle="Creation Date"
-          icon={
-            <CalendarMonthOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={"$" + camp?.donated_amount}
-          subtitle="Donations Recieved"
-          increase={"Goal: $" + camp?.required_amount}
-          icon={
-            <AttachMoneyOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={campDonations?.length}
-          subtitle="Number of Donations"
-          icon={
-            <VolunteerActivismOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={highestAmount}
-          subtitle="Highest one time donation"
-          icon={
-            <EmojiEventsOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Box sx={{ padding: "5px" }}>
-          <Button sx={{
-            backgroundColor: colors.blueAccent[700],
-            color: colors.grey[100],
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "10px 20px",
-          }} onClick={handleDownload}>
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Docs
-          </Button>
-
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={camp?.createdAt.slice(0, 10)}
+            subtitle="Creation Date"
+            icon={
+              <CalendarMonthOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
         </Box>
-      </Box>
-      {JSON.parse(userType) === "admin" ?
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={"$" + camp?.donated_amount}
+            subtitle="Donations Recieved"
+            increase={"Goal: $" + camp?.required_amount}
+            icon={
+              <AttachMoneyOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={campDonations?.length}
+            subtitle="Number of Donations"
+            icon={
+              <VolunteerActivismOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={highestAmount}
+            subtitle="Highest one time donation"
+            icon={
+              <EmojiEventsOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
@@ -429,18 +407,40 @@ const CampaignInfo = () => {
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
-            }} onClick={handleModalOpen}>
-              <AttachMoneyOutlinedIcon sx={{ mr: "10px" }} />
-              Donate Now!
+            }} onClick={handleDownload}>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Docs
             </Button>
 
           </Box>
         </Box>
-        : <Box>
-        </Box>}
-    </Box>
-    <>
-      <Box style={{ marginTop: '2%' }}>
+        {JSON.parse(userType) === "admin" ?
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Box sx={{ padding: "5px" }}>
+              <Button sx={{
+                backgroundColor: colors.blueAccent[700],
+                color: colors.grey[100],
+                fontSize: "14px",
+                fontWeight: "bold",
+                padding: "10px 20px",
+              }} onClick={handleModalOpen}>
+                <AttachMoneyOutlinedIcon sx={{ mr: "10px" }} />
+                Donate Now!
+              </Button>
+
+            </Box>
+          </Box>
+          : <Box>
+          </Box>}
+      </Box>
+      <>
+        <Box style={{ marginTop: '2%' }}>
 
           <Modal open={openModal} onClose={handleModalClose}>
 
