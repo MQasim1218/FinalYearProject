@@ -779,12 +779,12 @@ const DonateToCampaign = async (req, res, next) => {
              * Things to change.
              * Campaign donated amount
              * donations to this campaign.
-             * 
              */
             let camp = await GenCamps.findById(camp_id).exec()
             camp.donated_amount += amount
             camp.save()
             res.json({ don, camp })
+
 
             // ANCHOR: Get the SuperAdmin Donation(where the admin donation originally came from!!) and ...!UPDATE!            
             let saUpdResult = await SADonationModel.findByIdAndUpdate(
@@ -796,6 +796,8 @@ const DonateToCampaign = async (req, res, next) => {
                     }
                 }
             ).exec()
+
+            console.log(saUpdResult)
 
             // Update the Donor and add this campaign to the
             // list of Campaings supported by the donor!!

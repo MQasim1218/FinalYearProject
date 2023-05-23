@@ -23,6 +23,8 @@ const SuperAdminDonations = ({ single_admin }) => {
   const colors = tokens(theme.palette.mode);
   let [view, setView] = useState("superadmin")
 
+  console.log("The value of single_admin is: ", single_admin)
+
 
   const { user } = useAuthContext()
   let SupAdminDonsGrid = <></>
@@ -38,7 +40,7 @@ const SuperAdminDonations = ({ single_admin }) => {
     data: Donations
   } = useAllSuperAdminDonationsQuery()
 
-  console.log("Donations up above: ", Donations)
+  // console.log("Donations up above: ", Donations)
 
 
 
@@ -51,12 +53,14 @@ const SuperAdminDonations = ({ single_admin }) => {
 
   } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
 
+  // console.log("Super Admin Doations to Admin data: ", DonsToAdmin)
+
 
   if (single_admin) {
 
     const columns = [
       {
-        field: "donation_title", 
+        field: "donation_title",
         headerName: "Title",
         flex: 1,
         cellClassName: "name-column--cell",
@@ -122,7 +126,7 @@ const SuperAdminDonations = ({ single_admin }) => {
   } else {
     const columns = [
       {
-        field: "donation_title", 
+        field: "donation_title",
         headerName: "Title",
         flex: 1,
         cellClassName: "name-column--cell",
@@ -223,7 +227,7 @@ const SuperAdminDonations = ({ single_admin }) => {
     }
     return acc;
   }, {});
-  
+
   // Get the admin with the most number of donations
   let maxAdmin = null;
   let maxCount = -Infinity;
@@ -233,9 +237,9 @@ const SuperAdminDonations = ({ single_admin }) => {
       maxAdmin = adminDonations[adminId]?.admin;
     }
   }
-  
+
   console.log(`Admin ${maxAdmin?.name} (${maxAdmin?.email}) received the most donations (${maxCount})`);
-  
+
 
 
   let highestOneTimeAmount = 0;
@@ -247,6 +251,11 @@ const SuperAdminDonations = ({ single_admin }) => {
       highestOneTimeAmount = amount;
     }
   });
+
+  let DateData
+  if (isSuccess && adminIsSuccess) {
+    DateData = single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10)
+  }
 
   return (
 
@@ -295,8 +304,8 @@ const SuperAdminDonations = ({ single_admin }) => {
         >
           {
             Donations && <StatBox
-              title={  single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10) }
-              subtitle={ "Latest Donation Made"}
+              title={DateData}
+              subtitle={"Latest Donation Made"}
               progress={false}
               icon={
                 <CalendarMonthOutlinedIcon
@@ -316,7 +325,7 @@ const SuperAdminDonations = ({ single_admin }) => {
         >
           <StatBox
             title={maxAdmin?.name || "No one"}
-            increase={ `Donations: ${maxCount === -Infinity ? 0 : maxCount}` }
+            increase={`Donations: ${maxCount === -Infinity ? 0 : maxCount}`}
             subtitle="Most Donations Made To"
             progress={false}
             icon={

@@ -19,7 +19,7 @@ const supAdminDonationSchema = mongoose.Schema({
     remaining: {
         type: Number,
         required: true,
-        default: 0
+        default: -1
     },
 
     donation_title: {
