@@ -106,6 +106,7 @@ function App(props) {
               <Route path="/useranalytics" element={<DonorInfo />} />
               <Route path="/areaanalytics" element={<AreaAnalytics />} />
               <Route path="/timeanalytics" element={<TimeAnalytics />} />
+              <Route path="/donate" element={<Donate />} />
               <Route path="/geographymap" element={<GeographyMap />} />
               <Route path="/donationreports" element={<DonationReports />} />
               <Route path="/expenditurereports" element={<ExpenditureReports />} />
@@ -141,10 +142,10 @@ function App(props) {
 
               <Route path="/superadmindonations" element={<SuperAdminDonations single_admin={false} />} />
               <Route path="/categorydonations" element={<CategoryDonations />} />
-              
+
               {/* Register donation taken from the donors! */}
               <Route path="/registerdonation" element={<DonationRegistration />} />
-              
+
               {/* Give donation to an Admin!! */}
               <Route path="/superdonation" element={<SuperDonation />} />
               <Route path="/graphs" element={<Graphs />} />

@@ -15,7 +15,10 @@ const Donations = () => {
   let [isLoading, setIsLoading] = useState(true)
   let [view, setView] = useState("donor")
 
+  
+
   const columns = [
+  
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "date", headerName: "Date" },
     {

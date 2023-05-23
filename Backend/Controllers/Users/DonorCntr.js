@@ -6,7 +6,6 @@ const DonorDonations = require("../../Models/Donations/DonationDonor")
 const SpecificCampaign = require("../../Models/Campaings/SpecificCampaign")
 const GeneralCampaign = require("../../Models/Campaings/GeneralCampaigns")
 
-const stripe = require('stripe')('sk_test_51N4jJpD4d2tkTPKs2hMsKxF6cI2qEJALDyfgJzoXzAP1sdplbgi8H4R7wOFomnMN722KG6pXBOlkeEERlBDyJiM300tMCNI0t1')
 
 
 const DonorSignUp = async (req, res, next) => {
@@ -109,89 +108,6 @@ const GetDonor = async (req, res, next) => {
 }
 
 
-/**
- * Donation flow.
- * Donor is making the donation -- so -- lets assume we are gonna use stripe for this.
- * ! Does the donor donate to the campain :: Currently ----NO----
- * ! Doesnt the SuperAdmin simple register the donor donation. SOME CASES. Donor has to be able to make donations on his own aswell
- * 
- * SECTION: Stripe Architecture
- * One main account - SuperAdmin Account!
- * SuperAdmin creates a payment intent -- But how?? the SA doesnt know how much the donor wants to donate
- * NOTE: Possible solution. Donor can select the amount he/she wants to donate from his/her portal.
- * The donor submits the form on the portal that conatains the details, the the stripe checkout the collects 
- * that information to make a custom checkout-page for the donation.  
- */
-const Donate = async (req, res, next) => {
-    // Must recieve data
-    // - Donation amount
-    // - Donor ID 
-    // - Donation Category
-    // - 
-    try {
-        console.log("Making the donatios as donor")
-
-        // Do the Stripe process first
-        let session = await stripe.checkout.sessions.create({
-            line_items: [
-                {
-                    price: "price_1N4l7LD4d2tkTPKse5AzTfAg",
-                    quantity: 1
-                },
-            ],
-            mode: 'payment',
-            submit_type: 'donate',
-
-            success_url: 'https://example.com/success',
-            cancel_url: 'https://example.com/cancel',
-        })
-
-
-
-
-        // Create a donation entry
-        let donation_entry = await DonorDonations.create(req.body)
-        if (!donation_entry) {
-            return res.send("Couldnt create a donation entry for the donor!!")
-        }
-
-        // ! This needs tobe looked into..
-        // ! As our donor can no longer directly donate to a campaign, this is no longer a valid operation!
-        // ! Keeping this so that maybe later, we may add fuctionality for direct donations.
-        // ! Which basically go directly to the Admin controlling the donation
-        // let campaign = null
-
-        // if (req.body.camp_type === "Specific") {
-        //     campaign = await SpecificCampaign.findByIdAndUpdate(
-        //         req.params.campaign_id,
-        //         { $push: { donations: donation_entry._id } }
-        //     )
-
-        //     await DonorModel.findByIdAndUpdate(
-        //         req.body.donor,
-        //         { $push: { donated_campaigns_specific: req.params.campaign_id } }
-        //     )
-        // } else if (req.body.camp_type === "General") {
-        //     campaign = await GeneralCampaign.findByIdAndUpdate(
-        //         req.params.campaign_id,
-        //         { $push: { donations: donation_entry._id } }
-        //     )
-
-        //     await DonorModel.findByIdAndUpdate(
-        //         req.body.donor,
-        //         { $push: { donated_campaigns_general: req.params.campaign_id } }
-        //     )
-        // }
-
-        // Redirect the user to the Stripe Page
-        return res.redirect(303, session.url)
-        // res.json(donation_entry)
-
-    } catch (error) {
-        console.log(error)
-        return res.send(error)
-    }
-}
 
 
 // Need to test this if this works fine.
@@ -422,7 +338,7 @@ module.exports = {
     // MarkDonorAsDeleted,
     AllDonors,
     GetDonor,
-    Donate,
+    
 
     // Today's work: Mai 11, 2023
     MarkDonorAsDeleted,

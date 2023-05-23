@@ -62,6 +62,7 @@ router.get('/range/:start_date/:category?', DonorDonationController.GetDonations
 // Get donations made by the Donors between a timeperiod
 router.get('/range/:start_date/:end_date/:category?', DonorDonationController.GetDonations_TimeRange)
 
+router.post('/donate/:donor_id', DonorDonationController.Donate)
 
 
 /**
