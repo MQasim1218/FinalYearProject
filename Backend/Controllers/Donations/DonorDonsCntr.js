@@ -332,6 +332,14 @@ const Donate = async (req, res, next) => {
     try {
         console.log("Making the donatios as donor")
 
+
+        // Create a donation entry
+        // I guess we need to create this request in the webhook response, only if the donation is successful.
+        let donation_entry = await DonorDons.create(req.body)
+        if (!donation_entry) {
+            return res.send("Couldnt create a donation entry for the donor!!")
+        }
+
         // Do the Stripe process first
         let session = await stripe.checkout.sessions.create({
             line_items: [
@@ -347,17 +355,7 @@ const Donate = async (req, res, next) => {
             cancel_url: 'https://example.com/cancel',
         })
 
-
-
-
-
-        // Create a donation entry
-        // I guess we need to create this request in the webhook response, only if the donation is successful.
-        // let donation_entry = await DonorDons.create(req.body)
-        // if (!donation_entry) {
-        //     return res.send("Couldnt create a donation entry for the donor!!")
-        // }
-
+        return res.redirect(303, session.url)
         // ! This needs tobe looked into..
         // ! As our donor can no longer directly donate to a campaign, this is no longer a valid operation!
         // ! Keeping this so that maybe later, we may add fuctionality for direct donations.
@@ -387,7 +385,7 @@ const Donate = async (req, res, next) => {
         // }
 
         // Redirect the user to the Stripe Page
-        return res.redirect(303, session.url)
+        
         // res.json(donation_entry)
 
     } catch (error) {
@@ -400,8 +398,43 @@ const Donate = async (req, res, next) => {
 /**
  * Listen to the Stripe events using webhook
  */
-const WebhookListen = async (req, res, next) => {
-    // Listen to the Stripe wehbook and create a donor donation object here!
+const WebhookListen = async (req, res) => {
+    const event = req.body;
+    // Process the event data received from Stripe
+    // Implement your logic based on the event type
+    console.log('Received event:', event);
+
+
+    switch (event.type) {
+        case 'checkout.session.completed':
+
+            
+
+            // Handle successful checkout session
+            const session = event.data.object;
+
+
+            // Access relevant information from the session object and perform desired actions
+            console.log('Checkout session completed:', session);
+            break;
+
+
+        case 'checkout.session.async_payment_failed':
+
+            // Handle failed payment in the checkout session
+            const sessionFailed = event.data.object;
+
+
+
+            // Access relevant information from the sessionFailed object and perform desired actions
+            console.log('Async payment failed:', sessionFailed);
+            break;
+
+        default:
+            console.log('Unhandled event type:', event.type);
+    }
+
+    res.sendStatus(200); // Acknowledge receipt of the event
 }
 
 module.exports = {
@@ -418,6 +451,8 @@ module.exports = {
     GetYearDonations,
     GetMonthDonations,
     SingleDonation,
+
+    WebhookListen,
 
 
     Donate

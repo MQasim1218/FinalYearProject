@@ -3,7 +3,7 @@ const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
 
 
-const pkgDef = protoLoader.loadSync('server.proto', {
+const pkgDef = protoLoader.loadSync('./server.proto', {
     keepCase: true,
     longs: String,
     enums: String,
