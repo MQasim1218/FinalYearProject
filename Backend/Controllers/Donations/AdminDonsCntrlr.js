@@ -786,37 +786,37 @@ const DonateToCampaign = async (req, res, next) => {
             camp.save()
             res.json({ don, camp })
 
-            // ANCHOR: Get the SuperAdmin Donation(where the admin donation originally came from!!) and ...!UPDATE!            
-            let saUpdResult = await SADonationModel.findByIdAndUpdate(
-                don.supAdminDonation,
-                {
-                    $inc: {
-                        donated: amount, // Increase the donated amount!
-                        remaining: -amount // Decrease the remaining amount!
-                    }
-                }
-            ).exec()
+            // // ANCHOR: Get the SuperAdmin Donation(where the admin donation originally came from!!) and ...!UPDATE!            
+            // let saUpdResult = await SADonationModel.findByIdAndUpdate(
+            //     don.supAdminDonation,
+            //     {
+            //         $inc: {
+            //             donated: amount, // Increase the donated amount!
+            //             remaining: -amount // Decrease the remaining amount!
+            //         }
+            //     }
+            // ).exec()
 
-            // Update the Donor and add this campaign to the
-            // list of Campaings supported by the donor!!
-            let resDonUpdate = await DonorModel.findOneAndUpdate(
-                { _id: don.donorId },
-                {
-                    // Add to set only adds the Campaigns that are 
-                    $addToSet: {
-                        // we can also use don.campaign to get the campaign id!!
-                        donated_campaigns_general: camp._id
-                    }
-                }
-            ).exec()
+            // // Update the Donor and add this campaign to the
+            // // list of Campaings supported by the donor!!
+            // let resDonUpdate = await DonorModel.findOneAndUpdate(
+            //     { _id: don.donorId },
+            //     {
+            //         // Add to set only adds the Campaigns that are 
+            //         $addToSet: {
+            //             // we can also use don.campaign to get the campaign id!!
+            //             donated_campaigns_general: camp._id
+            //         }
+            //     }
+            // ).exec()
 
-            // Amount available with the admin updated.
-            let resAdminUpd = await AdminModel.findByIdAndUpdate(
-                don.admin,
-                {
-                    $inc: { availableAmount: -amount }
-                }
-            )
+            // // Amount available with the admin updated.
+            // let resAdminUpd = await AdminModel.findByIdAndUpdate(
+            //     don.admin,
+            //     {
+            //         $inc: { availableAmount: -amount }
+            //     }
+            // )
 
 
             // res.send("The donation was sucessfull")

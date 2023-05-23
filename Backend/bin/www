@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+
 /**
  * Module dependencies.
  */
 
+// const { init_srv } = require('../utils/grpcClient');
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
@@ -89,5 +91,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
   console.log("Sucessfully Started Node App")
+
 
 }
