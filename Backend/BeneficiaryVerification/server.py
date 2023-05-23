@@ -12,8 +12,6 @@ sys.path.append(path)
 import proto.server_pb2 as server_pb2  
 import proto.server_pb2_grpc as server_pb2_grpc  
 
-# import server_pb2
-# import server_pb2_grpc
 
 class VerificationServicer(server_pb2_grpc.Ben_VerificationServicer):
     

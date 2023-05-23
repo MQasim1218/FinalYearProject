@@ -34,6 +34,8 @@ import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/
 import { useAuthContext } from "../../hooks/useAuthContext";
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
+
+
 //initializing all inputs with their keys
 const initialValues = {
   amount: "",
@@ -96,11 +98,19 @@ const CampaignInfo = () => {
   ] = useDonateToCampaignMutation(id)
 
 
-  const handleFormSubmit = async (values, {resetForm}) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
 
     values.admin = user?.user?._id
     values.campaign = id
 
+    // Get the relevant donor Id here!
+
+    /**
+     * Aik array of donor Ids mapped to superadmindonIds
+     */
+    let did = allDonsToAdmin.filter((don) => don.value == values.supAdminDonation)[0]?.donorId
+
+    console.log("Doror Id is: ", did)
 
     console.log("11111111111111111", values);
 
@@ -158,12 +168,21 @@ const CampaignInfo = () => {
       console.log("Dons to the admins are", allDonsToAdmin)
 
       allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
-        .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
+        .map((don, index) => (
+          {
+            name: don.donation_title,
+            value: don._id,
+            label: don.amount,
+            id: index,
+            category: don.category,
+            donorId: don.donordonationId?.donor
+          }))
         .map((opt) => (
-          <MenuItem key={opt.id} value={opt.value} id={opt.id}>
+          <MenuItem key={opt.id} value={opt.value} id={opt.donorId}>
             {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
           </MenuItem>
-        ))
+        )
+        )
     }
   }
   else if (isAllDonsToAdminError) console.log(allDonsToAdminError.message)
@@ -185,169 +204,25 @@ const CampaignInfo = () => {
   }, [campDonations, camp])
 
 
-  return (<Box m="20px">
+  return (
+    <Box m="20px">
 
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Header title="Camapign Info" subtitle="View information about your selected campaign" />
-    </Box>
-
-    <Box>
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
-    </Box>
-
-    {/* Grids and Charts */}
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px"
-    >
-      {/* ROW 1 */}
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {
-          isCampDonsLoading &&
-          <h3>Content Loading</h3>
-        }
-        {
-          isCampDonsSuccess &&
-          <StatBox
-            title={"Created By:"}
-            subtitle={admin?.name}
-            icon={
-              <PersonOutlineOutlined
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        }
-        {
-          isCampDonsError &&
-          <h3>{campDonsError.message}</h3>
-        }
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="Camapign Info" subtitle="View information about your selected campaign" />
       </Box>
 
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {
-          isCampDonsLoading &&
-          <h3>Content Loading</h3>
-        }
-        {
-          isCampDonsSuccess &&
-          <StatBox
-            title={camp?.campaign_title}
-            subtitle="Campaign Title"
-            icon={
-              <CampaignOutlined
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        }
-        {
-          isCampDonsError &&
-          <h3>{campDonsError.message}</h3>
-        }
+      <Box>
+        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
       </Box>
 
+      {/* Grids and Charts */}
       <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px"
       >
-        <StatBox
-          title={camp?.createdAt.slice(0, 10)}
-          subtitle="Creation Date"
-          icon={
-            <CalendarMonthOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={"$" + camp?.donated_amount}
-          subtitle="Donations Recieved"
-          increase={"Goal: $" + camp?.required_amount}
-          icon={
-            <AttachMoneyOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={campDonations?.length}
-          subtitle="Number of Donations"
-          icon={
-            <VolunteerActivismOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={"dyn"}
-          subtitle="Highest one time donation"
-          icon={
-            <EmojiEventsOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={"dyn"}
-          subtitle="Highest Donation By"
-          icon={
-            <PersonOutlineOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      {JSON.parse(userType) === "admin" ?
+        {/* ROW 1 */}
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
@@ -355,189 +230,335 @@ const CampaignInfo = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Box>
-            <Button sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }} onClick={handleModalOpen}>
-              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-              Donate Now!
-            </Button>
-
-          </Box>
+          {
+            isCampDonsLoading &&
+            <h3>Content Loading</h3>
+          }
+          {
+            isCampDonsSuccess &&
+            <StatBox
+              title={"Created By:"}
+              subtitle={admin?.name}
+              icon={
+                <PersonOutlineOutlined
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          }
+          {
+            isCampDonsError &&
+            <h3>{campDonsError.message}</h3>
+          }
         </Box>
-        : <Box></Box>}
-    </Box>
-    <>
-      <Box style={{ marginTop: '2%' }}>
 
-        <Modal open={openModal} onClose={handleModalClose}>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {
+            isCampDonsLoading &&
+            <h3>Content Loading</h3>
+          }
+          {
+            isCampDonsSuccess &&
+            <StatBox
+              title={camp?.campaign_title}
+              subtitle="Campaign Title"
+              icon={
+                <CampaignOutlined
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          }
+          {
+            isCampDonsError &&
+            <h3>{campDonsError.message}</h3>
+          }
+        </Box>
 
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={camp?.createdAt.slice(0, 10)}
+            subtitle="Creation Date"
+            icon={
+              <CalendarMonthOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={"$" + camp?.donated_amount}
+            subtitle="Donations Recieved"
+            increase={"Goal: $" + camp?.required_amount}
+            icon={
+              <AttachMoneyOutlinedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={campDonations?.length}
+            subtitle="Number of Donations"
+            icon={
+              <VolunteerActivismOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={"dyn"}
+            subtitle="Highest one time donation"
+            icon={
+              <EmojiEventsOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={"dyn"}
+            subtitle="Highest Donation By"
+            icon={
+              <PersonOutlineOutlined
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        {JSON.parse(userType) === "admin" ?
           <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: "80%",
-              height: "30%",
-              bgcolor: colors.primary[400],
-              border: '2px solid #000',
-              boxShadow: 24,
-              p: 4,
-            }}
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
           >
             <Box>
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donate To Campaign</Typography>
+              <Button sx={{
+                backgroundColor: colors.blueAccent[700],
+                color: colors.grey[100],
+                fontSize: "14px",
+                fontWeight: "bold",
+                padding: "10px 20px",
+              }} onClick={handleModalOpen}>
+                <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+                Donate Now!
+              </Button>
+
             </Box>
-
-            <Formik
-              onSubmit={handleFormSubmit}
-              initialValues={initialValues}
-              validationSchema={userSchema}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <Box
-                    display="grid"
-                    gap="30px"
-                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                    padding="40px"
-                    margin="0 15% 0 15%"
-                    borderRadius="50px"
-                    sx={{
-                      "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-                    }}
-                  >
-                    <TextField
-                      fullWidth
-                      variant="filled"
-                      type="number"
-                      label="Total Amount *"
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                      }}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.amount}
-                      name="amount"
-                      error={!!touched.amount && !!errors.amount}
-                      helperText={touched.amount && errors.amount}
-                      sx={{ gridColumn: "span 2" }}
-                    />
-
-                    <TextField
-                      fullWidth
-                      select
-                      variant="filled"
-                      type="text"
-                      label="From *"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.supAdminDonation}
-                      name="supAdminDonation"
-                      error={!!touched.supAdminDonation && !!errors.supAdminDonation}
-                      helperText={touched.supAdminDonation && errors.supAdminDonation}
-                      sx={{ gridColumn: "span 2" }}
-                    >{allDonsToAdmin}
-                    </TextField>
-                  </Box>
-
-                  <Box display="flex" justifyContent="center" mt="20px">
-                    <Button onClick={handleFormSubmit} type="submit" color="secondary" variant="contained">
-                      Make Donation
-                    </Button>
-                  </Box>
-                </form>
-              )}
-            </Formik>
           </Box>
-        </Modal>
+          : <Box></Box>}
       </Box>
-    </>
-    <Box mt="2rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Campaign Analyitcs</Typography>
-    </Box>
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px"
-    >
-      {/* ROW 2 */}
-      <Box
-        gridColumn="span 4"
-        gridRow="span 2"
-        backgroundColor={colors.primary[400]}
-        overflow="auto"
-      >
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          borderBottom={`4px solid ${colors.primary[500]}`}
-          colors={colors.grey[100]}
-          p="15px"
-        >
-          <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-            Donations to Campaign
-          </Typography>
-        </Box>
-        {campDonations?.map((transaction) => (
-          <Box
+      <>
+        <Box style={{ marginTop: '2%' }}>
 
-            key={`${transaction._id}`}
+          <Modal open={openModal} onClose={handleModalClose}>
+
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: "80%",
+                height: "30%",
+                bgcolor: colors.primary[400],
+                border: '2px solid #000',
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Box>
+                <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donate To Campaign</Typography>
+              </Box>
+
+              <Formik
+                onSubmit={handleFormSubmit}
+                initialValues={initialValues}
+                validationSchema={userSchema}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleBlur,
+                  handleChange,
+                  handleSubmit,
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    <Box
+                      display="grid"
+                      gap="30px"
+                      gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                      padding="40px"
+                      margin="0 15% 0 15%"
+                      borderRadius="50px"
+                      sx={{
+                        "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                      }}
+                    >
+                      <TextField
+                        fullWidth
+                        variant="filled"
+                        type="number"
+                        label="Total Amount *"
+                        InputProps={{
+                          startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        }}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.amount}
+                        name="amount"
+                        error={!!touched.amount && !!errors.amount}
+                        helperText={touched.amount && errors.amount}
+                        sx={{ gridColumn: "span 2" }}
+                      />
+
+                      <TextField
+                        fullWidth
+                        select
+                        variant="filled"
+                        type="text"
+                        label="From *"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.supAdminDonation}
+                        name="supAdminDonation"
+                        error={!!touched.supAdminDonation && !!errors.supAdminDonation}
+                        helperText={touched.supAdminDonation && errors.supAdminDonation}
+                        sx={{ gridColumn: "span 2" }}
+                      >
+                        {allDonsToAdmin}
+                      </TextField>
+                    </Box>
+
+                    <Box display="flex" justifyContent="center" mt="20px">
+                      <Button onClick={handleFormSubmit} type="submit" color="secondary" variant="contained">
+                        Make Donation
+                      </Button>
+                    </Box>
+                  </form>
+                )}
+              </Formik>
+            </Box>
+          </Modal>
+        </Box>
+      </>
+      <Box mt="2rem">
+        <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Campaign Analyitcs</Typography>
+      </Box>
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px"
+      >
+        {/* ROW 2 */}
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          overflow="auto"
+        >
+          <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
             borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
             p="15px"
           >
-            {/* {console.log(transaction)} */}
-            <Box>
-              <Typography
-                color={colors.greenAccent[500]}
-                variant="h5"
-                fontWeight="600"
-              >
-                {transaction._id.slice(0, 8)}
-              </Typography>
-              <Typography color={colors.grey[100]}>
-                {transaction.donorId?.name}
-              </Typography>
-            </Box>
-            <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
-            <Box
-              backgroundColor={colors.greenAccent[500]}
-              p="5px 10px"
-              borderRadius="4px"
-              color={colors.grey[900]}
-            >
-              ${transaction.amount}
-            </Box>
+            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              Donations to Campaign
+            </Typography>
           </Box>
-        ))}
-      </Box>
-      <Box
-        gridColumn="span 8"
-        gridRow="span 2"
-        backgroundColor={colors.primary[400]}
-      >
-        <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Weekly Donations</Typography>
-        <CampaignLineChart isDashboard={true} />
-      </Box>
+          {campDonations?.map((transaction) => (
+            <Box
 
-      {/* <Box
+              key={`${transaction._id}`}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              p="15px"
+            >
+              {/* {console.log(transaction)} */}
+              <Box>
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {transaction._id.slice(0, 8)}
+                </Typography>
+                <Typography color={colors.grey[100]}>
+                  {transaction.donorId?.name}
+                </Typography>
+              </Box>
+              <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
+              <Box
+                backgroundColor={colors.greenAccent[500]}
+                p="5px 10px"
+                borderRadius="4px"
+                color={colors.grey[900]}
+              >
+                ${transaction.amount}
+              </Box>
+            </Box>
+          ))}
+        </Box>
+        <Box
+          gridColumn="span 8"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Weekly Donations</Typography>
+          <CampaignLineChart isDashboard={true} />
+        </Box>
+
+        {/* <Box
         gridColumn="span 4"
         gridRow="span 2"
         backgroundColor={colors.primary[400]}
@@ -588,9 +609,9 @@ const CampaignInfo = () => {
           </Box>
         ))}
       </Box> */}
-    </Box>
+      </Box>
 
-    {/* <Box mt="2rem">
+      {/* <Box mt="2rem">
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "15px 0 10px 10px" }}>
         Browse Similar Campaigns - To make dynamic later on!!
       </Typography>
@@ -629,12 +650,12 @@ const CampaignInfo = () => {
     >
       <HomeScreenCampaigns isDashboard={true} title="" subtitle="" />
     </Box> */}
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-        Donation Made To Campaign Successfully!
-      </Alert>
-    </Snackbar>
-  </Box>)
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Donation Made To Campaign Successfully!
+        </Alert>
+      </Snackbar>
+    </Box>)
 }
 
 export default CampaignInfo
