@@ -70,6 +70,8 @@ def getPrediction(images):
 
     batch_input = preprocess_data(images)
 
+    
+
 
     # Create empty dictionaries to store the inference results
     inference_dict = {}

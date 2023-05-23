@@ -27,6 +27,8 @@ class VerificationServicer(server_pb2_grpc.Ben_VerificationServicer):
 
         # Get the image files from the request.
         images = request.images
+
+        images = ["temp/" + item for item in images]
         print("THE IMAGES RECIEVED ARE: ", images)
 
         # Send the image urls to the getPrediction function of the Model.
