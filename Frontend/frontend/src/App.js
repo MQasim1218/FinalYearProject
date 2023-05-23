@@ -48,6 +48,7 @@ import VerificationStatus from './scenes/verificationStatus';
 import RequestDonation from './scenes/requestDonation';
 import RequestCampaign from './scenes/requestCampaign';
 import RequestedDonations from './scenes/requestedDonations';
+import DonorDonation from './scenes/donorDonate';
 
 
 function App(props) {
@@ -101,6 +102,7 @@ function App(props) {
               {/* {accountType === "donor" ? (
                     <> */}
               <Route path="/donordashboard" element={<DonorDashboard />} />
+              <Route path="/donordonation" element={<DonorDonation />} />
               <Route path="/viewdonations" element={<ViewDonations />} />
               <Route path="/viewcampaigns" element={<AllCampaigns />} />
               <Route path="/useranalytics" element={<DonorInfo />} />
