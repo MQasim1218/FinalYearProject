@@ -93,7 +93,7 @@ const Campaign = ({
                     Completed:
                 </Typography>
                 
-                <LinearProgressWithLabel value={progress} />
+                <LinearProgressWithLabel value={progress >= 100? 100 : progress} />
 
 
                 {!isDashboard ? (<Collapse sx={{ justifyContent: "center", backgroundColor: colors.primary[500], borderRadius: "0.55rem", mt: "0.5rem" }} in={isExpanded} timeout="auto" unmountOnExit>
@@ -285,7 +285,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
                         <Header title="ALL CAMPAIGNS" subtitle="See the list of all campaigns" />
 
                         <Box style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                            <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
+                            {/* <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
                                 <InputLabel id='category-input-label'>Category</InputLabel>
                                 <Select
                                     id='category-input'
@@ -303,8 +303,8 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
                                         </MenuItem>
                                     ))}
                                 </Select>
-                            </FormControl>
-                            <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
+                            </FormControl> */}
+                            {/* <FormControl fullWidth variant='outlined' sx={{ mb: 2, mr: 2 }}>
                                 <InputLabel id='search-input-label'>Search</InputLabel>
                                 <OutlinedInput
                                     id='search-input'
@@ -320,11 +320,11 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
                                     }
                                     labelId='search-input-label'
                                 />
-                            </FormControl>
+                            </FormControl> */}
 
-                            <IconButton onClick={() => setIsExpanded(!isExpanded)} >
+                            {/* <IconButton onClick={() => setIsExpanded(!isExpanded)} >
                                 <TuneOutlinedIcon />
-                            </IconButton>
+                            </IconButton> */}
                         </Box>
                         <Collapse in={isExpanded}>
                             <Box m={2} p={5} sx={{ border: '1px solid gray', borderRadius: '4px', backgroundColor: colors.primary[400] }}>

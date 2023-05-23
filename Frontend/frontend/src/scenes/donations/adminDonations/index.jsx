@@ -58,14 +58,10 @@ const AdminDonations = ({ single_admin }) => {
         flex: 1,
       },
       {
-        field: "category",
-        headerName: "Category",
-        flex: 1,
-      },
-      {
         field: "campaign_title",
         headerName: "Campaign",
         flex: 1,
+        cellClassName: "name-column--cell",
       },
       {
         field: "amount",
@@ -123,19 +119,26 @@ const AdminDonations = ({ single_admin }) => {
         flex: 1,
       },
       {
-        field: "category",
-        headerName: "Category",
-        flex: 1,
-      },
-      {
         field: "campaign_title",
         headerName: "Campaign",
         flex: 1,
+        cellClassName: "name-column--cell",
       },
       {
         field: "amount",
         headerName: "Donation Amount",
         flex: 1,
+      },
+      {
+
+        // Okay
+        field: 'View',
+        type: 'actions',
+        headerName: "View",
+        width: 100,
+        getActions: (row) => [
+          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/admindonationinfo/${row.id}`)} />,
+        ],
       },
     ];
 
@@ -296,7 +299,7 @@ console.log("Latest createdAt date:", latestCreatedAt);
 
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="57vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",

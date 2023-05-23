@@ -27,6 +27,7 @@ var adminDonationRouter = require('./routes/Donations/AdminDonRouter');
 var donorDonationRouter = require('./routes/Donations/DonorDonRouter');
 var superAdminDonationRouter = require('./routes/Donations/SupAdminDonRtr');
 var chatRouter = require('./routes/Chat/chatRouter');
+const { init_srv } = require('./utils/grpcClient');
 
 // TODO: Reports and Analytics routers need to be configured as required!!  
 
@@ -81,6 +82,8 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+
+init_srv()
 
 
 module.exports = app;

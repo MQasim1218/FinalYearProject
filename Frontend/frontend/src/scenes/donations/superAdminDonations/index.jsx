@@ -253,12 +253,12 @@ const SuperAdminDonations = ({ single_admin }) => {
   });
 
   let DateData
-  if (isSuccess && adminIsSuccess) {
-    DateData = single_admin ? DonsToAdmin[0]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10)
+
+  if (single_admin ? isSuccess && adminIsSuccess : isSuccess ) {
+    DateData = single_admin ? DonsToAdmin[DonsToAdmin.length-1]?.createdAt.slice(0, 10) : Donations[0]?.createdAt.slice(0, 10)
   }
 
   return (
-
     <Box m="20px">
 
       <Header
@@ -302,8 +302,8 @@ const SuperAdminDonations = ({ single_admin }) => {
           justifyContent="center"
           borderRadius="10px"
         >
-          {
-            Donations && <StatBox
+          
+             <StatBox
               title={DateData}
               subtitle={"Latest Donation Made"}
               progress={false}
@@ -313,7 +313,7 @@ const SuperAdminDonations = ({ single_admin }) => {
                 />
               }
             />
-          }
+          
         </Box>
         <Box
           gridColumn="span 3"

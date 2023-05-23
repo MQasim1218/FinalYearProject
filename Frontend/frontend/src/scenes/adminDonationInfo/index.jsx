@@ -8,7 +8,6 @@ import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import AssistWalkerOutlinedIcon from '@mui/icons-material/AssistWalkerOutlined';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import AllCampaigns from "../allCampaigns";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import { useState, useEffect } from "react";
@@ -27,6 +26,8 @@ import { mockDataDonationInfo2 } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import {useGetDonationQuery} from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice'
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 
 const AdminDonationInfo = () => {
   const theme = useTheme();
@@ -36,12 +37,20 @@ const AdminDonationInfo = () => {
 
   const { data : adminDonationData, error, isLoading, isSuccess } = useGetDonationQuery(id)
 
-  
+  let Camapign_Category = "Loading..."
+  let Campaign_Amount = "Loading..."
+  let Campaign_DonatedBy = "Loading..."
+  let Campaign_DonatedAt = "Loading..."
+  let Campaign_Title = "Loading..."
+
 if(isSuccess){
-  console.log("DATA: ",adminDonationData[0]?.admin)
+  console.log("Data: ",adminDonationData)
+  Camapign_Category = adminDonationData[0]?.campaign.category;
+  Campaign_Amount = adminDonationData[0]?.amount;
+  Campaign_DonatedBy = adminDonationData[0]?.admin.name;
+  Campaign_DonatedAt = adminDonationData[0]?.createdAt.slice(0,10);
+  Campaign_Title = adminDonationData[0]?.campaign.campaign_title;
 }
-
-
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -74,7 +83,7 @@ if(isSuccess){
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Header title="Admin Donation Info" subtitle="View Admin to Beneficiary donation information" />
+      <Header title="Admin Donation Info" subtitle="View Admin to Campaign Donation Information" />
     </Box>
 
     <Box>
@@ -97,9 +106,9 @@ if(isSuccess){
         justifyContent="center"
       >
         <StatBox
-          title="Beneficiary 1"
-          subtitle="Donation Given To"
-          icon={<PersonOutlineOutlinedIcon
+          title={Campaign_Title}
+          subtitle="Campaign Title"
+          icon={<CampaignOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
         />
@@ -112,9 +121,9 @@ if(isSuccess){
         justifyContent="center"
       >
         <StatBox
-          title="$60"
+          title={Campaign_Amount}
           subtitle="Donation amount"
-          increase={"Donation ID: "}
+          increase={`Admin: ${Campaign_DonatedBy}`}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -130,7 +139,7 @@ if(isSuccess){
         justifyContent="center"
       >
         <StatBox
-          title={adminDonationData?.category}
+          title={Camapign_Category}
           subtitle="Donation Category"
           icon={
             <CategoryOutlinedIcon
@@ -147,8 +156,8 @@ if(isSuccess){
         justifyContent="center"
       >
         <StatBox
-          title="22-Feb-2023"
-          subtitle="Date Donation Given To Beneficiary"
+          title={Campaign_DonatedAt}
+          subtitle="Date Donation Given To Campaign"
           icon={
             <CalendarMonthOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -157,12 +166,12 @@ if(isSuccess){
         />
       </Box>
     </Box>
-    <Box mt="5rem">
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Donation Flow</Typography>
+    <Box mt="1rem">
+      <Typography variant="h4" color={colors.blueAccent[500]} >Donation Flow</Typography>
     </Box>
       <Box
-        m="40px 0 0 0"
-        height="40vh"
+        m="20px 0 0 0"
+        height="55vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
