@@ -48,6 +48,8 @@ import RequestDonation from './scenes/requestDonation';
 import RequestCampaign from './scenes/requestCampaign';
 import RequestedDonations from './scenes/requestedDonations';
 import DonorDonation from './scenes/donorDonate';
+import CaseVerification from './scenes/caseVerification';
+import DonationRequest from './scenes/donationRequest';
 
 
 function App(props) {
@@ -128,6 +130,9 @@ function App(props) {
               <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
               <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
               <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+              <Route path="/caseverification" element={<CaseVerification />} />
+              <Route path="/donationrequests" element={<DonationRequest />} />
+
 
               {/* <Route path="*" /> */}
               {/* </>

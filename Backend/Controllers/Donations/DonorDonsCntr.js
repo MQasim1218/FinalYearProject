@@ -11,9 +11,8 @@ const GetAllDonations = async (req, res, next) => {
             // Get all the donations made by the Donors
             let Dons = await DonorDons
                 .find({})
-                // .populate('donor', {
-
-                // })
+                .populate('donor', {
+                })
                 .exec()
             res.json(Dons)
         } else {
@@ -335,10 +334,10 @@ const Donate = async (req, res, next) => {
 
         // Create a donation entry
         // I guess we need to create this request in the webhook response, only if the donation is successful.
-        let donation_entry = await DonorDons.create(req.body)
-        if (!donation_entry) {
-            return res.send("Couldnt create a donation entry for the donor!!")
-        }
+        // let donation_entry = await DonorDons.create(req.body)
+        // if (!donation_entry) {
+        //     return res.send("Couldnt create a donation entry for the donor!!")
+        // }
 
         // Do the Stripe process first
         let session = await stripe.checkout.sessions.create({
@@ -354,6 +353,8 @@ const Donate = async (req, res, next) => {
             success_url: 'https://example.com/success',
             cancel_url: 'https://example.com/cancel',
         })
+
+        console.log("Session is: ", session)
 
         return res.redirect(303, session.url)
         // ! This needs tobe looked into..
