@@ -50,7 +50,7 @@ export const rootAdminDonationsApi = createApi({
 
 
         getDonation: builder.query({
-            query: (id) => `/don/${id}`,
+            query: (id) => `/donation/${id}`,
             providesTags: (id) => [{ type: 'AdminDonations', id: id }]
         }), // 
     })

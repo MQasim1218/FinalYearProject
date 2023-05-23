@@ -44,17 +44,7 @@ const SuperDonation = () => {
   //Code for the OnCLick POPUP
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [open, setOpen] = useState(false)
-
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-
+  const [open2, setOpen2] = useState(false)
 
   // NOTE: Getting all Admins for the admin entry
   let { isError: adminsIsError, isSuccess: adminsIsSuccess, isLoading: adminsIsLoading, error: adminsError, data: admins } = useAllAdminsQuery()
@@ -76,12 +66,16 @@ const SuperDonation = () => {
 
   // NOTE: Options for donor Donations
 
+  let {  data: dons2, } = useAllDonorsDonationsQuery()
+
+  console.log("Donations: ",dons2)
+
   let { isError: donsIsError, isSuccess: donsIsSuccess, error: donsError, data: dons, isLoading: donsIsLoading } = useAllDonorsDonationsQuery()
 
   if (!donsIsLoading) {
     if (donsIsSuccess)
       dons = dons
-        .filter((don) => don.amount !== 0) // NOTE: Filtering out the donations with amount 0 
+        .filter((don) => don.amountRemaining > 0) // NOTE: Filtering out the donations with amount 0 
         .map((don, index) => ({ value: don._id, label: don.amount, id: index, name: don.donor?.name, category: don.catagory }))
         .map((opt) => (
           <MenuItem key={opt.id} value={opt.value} id={opt.id}>
@@ -143,9 +137,17 @@ const SuperDonation = () => {
 
 
   //on submit, all inputs are stored in values
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
     console.log('About to send the backend request@@!')
+
+    const isGreater = dons2?.some(don => don._id === values.donordonationId && values.amount > don.amount);
+
+    // Output the result
+    if (isGreater) {
+      setOpen2(true)
+      return
+    } 
 
     await set_donation(values)
     if (isError && !isLoading) {
@@ -156,6 +158,7 @@ const SuperDonation = () => {
     setOpen(true);
 
     //To reset the forms values after submit.
+    resetForm()
   };
 
   const handleClose = (event, reason) => {
@@ -164,6 +167,8 @@ const SuperDonation = () => {
     }
 
     setOpen(false);
+    setOpen2(false);
+
   };
 
 
@@ -328,6 +333,11 @@ const SuperDonation = () => {
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Donation Given To Admin Successfully!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          Amount Can Not Be Greater Than Donor's Amount!
         </Alert>
       </Snackbar>
     </Box>

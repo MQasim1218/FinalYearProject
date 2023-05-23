@@ -17,6 +17,8 @@ const CalendarChart = ({ isDashboard = false , isAdmin = false}) => {
 
   const { data: donorDons } = queryResult;
 
+  console.log("Donor Dons: ", donorDons)
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -46,7 +48,7 @@ const CalendarChart = ({ isDashboard = false , isAdmin = false}) => {
 
     // If the date already exists in the counts object, increment its value by 1
     if (counts[date]) {
-      counts[date+"Donations"]++;
+      counts[date]++;
     } else {
       // Otherwise, initialize the count to 1
       counts[date] = 1;

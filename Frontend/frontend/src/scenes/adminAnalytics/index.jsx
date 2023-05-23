@@ -19,7 +19,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import UserBox from '../../components/UserBox';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
-import UserLineChart from '../../components/UserLineChart';
+import UserLineChart from '../../components/AdminLineChart';
 import { useParams } from "react-router-dom";
 import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { useGetAdminQuery } from '../../app/redux-features/users/AdminSlice';
@@ -86,7 +86,7 @@ const AdminAnalytics = () => {
             </Typography> */}
 
             <Typography color={colors.grey[100]}>
-              {transaction.admin.name}
+              {transaction?.admin?.name}
             </Typography>
 
           </Box>
@@ -112,13 +112,13 @@ const AdminAnalytics = () => {
   });
 
   useEffect(() => {
-    if (totalDonations <= 500) {
+    if (totalDonations <= 5000) {
       setAccountTier("Bronze")
     }
-    else if (totalDonations <= 1000) {
+    else if (totalDonations <= 10000) {
       setAccountTier("Silver")
     }
-    else if (totalDonations >= 5000) {
+    else if (totalDonations >= 10000) {
       setAccountTier("Gold")
     }
   }, [totalDonations]);
@@ -200,7 +200,7 @@ const highestDonation = adminDons?.reduce((highest, current) => {
           justifyContent="center"
         >
           <StatBox
-            title={`$${admin?.availableAmount + totalDonations}`}
+            title={`$${totalDonations}`}
             subtitle="Total Donations Made"
             icon={
               <AttachMoneyOutlinedIcon
@@ -357,13 +357,6 @@ const highestDonation = adminDons?.reduce((highest, current) => {
         gridAutoRows="140px"
         gap="20px"
       >
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 12"
-          gridRow="span 2"
-        >
-          <AllCampaigns isDashboard={true} title="Campaigns" subtitle="Latest campaigns made by this admin" id={admin?.general_campaigns} />
-        </Box>
       </Box>
     </Box>)
 }

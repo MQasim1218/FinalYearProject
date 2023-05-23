@@ -7,7 +7,7 @@ import { useSingleDonorDonationsQuery } from "../app/redux-features/donations/Do
 import { useParams } from "react-router-dom";
 import { useAuthContext } from '../hooks/useAuthContext';
 import { AccountTypeContext } from '../accountTypeContext';
-
+import { useSingleAdminDonationsQuery } from "../app/redux-features/donations/AdminDonations/AdminDonsSlice";
 
 const LineChart = ({ isDashboard = true }) => {
   const theme = useTheme();
@@ -24,7 +24,6 @@ const LineChart = ({ isDashboard = true }) => {
   }
 
   const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useSingleDonorDonationsQuery(id)
-
 
   // Array of months
   const months = [

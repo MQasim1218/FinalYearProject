@@ -42,7 +42,7 @@ const SuperAdminDonationInfo = () => {
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "index", headerName: "Num" },
 
-    { field: "amount", headerName: "Amount", flex: 0.5 },
+    { field: "amount", headerName: "Amount", flex: 0.5, cellClassName: "name-column--cell", },
 
 
     {
@@ -52,16 +52,9 @@ const SuperAdminDonationInfo = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "campaign_loc",
-      headerName: "Campaign Location",
+      field: "campaign_goal",
+      headerName: "Campaign Goal",
       flex: 0.5,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "campaign_required",
-      headerName: "Required Total",
-      flex: 0.5,
-      cellClassName: "name-column--cell",
     },
     {
       field: "createdAt",
@@ -109,7 +102,7 @@ const SuperAdminDonationInfo = () => {
   }
 
   else if (admindons_IsSuccess) {
-    adminDons = adminDons.map((don, ind) => ({ ...don, id: don._id, index: ind + 1 }))
+    adminDons = adminDons.map((don, ind) => ({ ...don, id: don._id, index: ind + 1, campaign_name: don.campaign.campaign_title, campaign_goal: don.campaign.required_amount, createdAt: don.createdAt.slice(0,10) }))
 
 
     console.log("Admin donations made from this SuperAdmin Donation are: ", adminDons)
@@ -132,6 +125,20 @@ const SuperAdminDonationInfo = () => {
     AdminDonsDataGrid = <>Error🥗🥡: {admindons_Error.message} </>
   }
   // }, [adminDons])
+
+
+  const uniqueCampaignIds = new Set();
+
+  // Iterate over each object in adminDons and add the IDs to the Set
+  adminDons?.forEach(item => {
+    const campaignId = item.campaign._id;
+    uniqueCampaignIds.add(campaignId);
+  });
+
+  // Get the count of unique campaign IDs
+  const uniqueCampaignCount = uniqueCampaignIds.size;
+
+  console.log(uniqueCampaignCount);
 
 
   return (<Box m="20px">
@@ -174,7 +181,7 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={"$"+singleDonation?.amount}
+          title={"$" + singleDonation?.amount}
           subtitle="Donation Amount"
           icon={
             <AttachMoneyOutlinedIcon
@@ -191,7 +198,7 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={singleDonation?.donated}
+          title={uniqueCampaignCount}
           subtitle="Campaigns Supported"
           icon={
             <VolunteerActivismOutlined
@@ -208,7 +215,7 @@ const SuperAdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={"$"+singleDonation?.donated}
+          title={"$" + singleDonation?.donated}
           subtitle="Donated To Campaign"
           icon={
             <AttachMoneyOutlinedIcon

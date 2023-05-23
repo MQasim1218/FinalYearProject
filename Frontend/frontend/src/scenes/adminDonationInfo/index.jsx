@@ -26,7 +26,7 @@ import { useParams } from "react-router-dom";
 import { mockDataDonationInfo2 } from '../../data/mockData';
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-
+import {useGetDonationQuery} from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice'
 
 const AdminDonationInfo = () => {
   const theme = useTheme();
@@ -34,105 +34,14 @@ const AdminDonationInfo = () => {
   let  {id}  = useParams();
   const [donations, setDonations] = useState([])
 
-  //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
-  //const { user } = useAuthContext('aown')
+  const { data : adminDonationData, error, isLoading, isSuccess } = useGetDonationQuery(id)
 
-  /**
-   * Lazy fetch all the dynamic data needed for the dashboard.
-   */
+  
+if(isSuccess){
+  console.log("DATA: ",adminDonationData[0]?.admin)
+}
 
-  //####################Commenting out useEffect cuz it gives me whitescreen as there is no backend######################//
 
-  useEffect(() => {
-
-    //   //   // Get all the campaigns and count them
-    //   //   // TODO: Cache these campaigns using context API
-    //   const getCampaigns = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-    //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-
-    //       if (gen_res.status < 300 && gen_res.status < 300) {
-    //         let data = gen_res.data.concat(spec_res.data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    //   const getDonors = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         console.log(data)
-    //         setActiveDonors(data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    //   const getBeneficiries = async () => {
-    //     // const res = await fetch('http://localhost:5000/admin')
-    //     try {
-    //       let res = await axios.get("http://localhost:5000/beneficiary/")
-    //       if (res.status < 300) {
-    //         let data = res.data
-    //         console.log(data)
-    //         if (data !== null) return data
-    //         else console.log("No data recieved!")
-    //       }
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    //COMMENTING OUT CUZ OF WHITESCREEN FOR ME (AOWN)
-    // const getDonations = async () => {
-    //   try {
-    //     let donor_id = user.user.user._id
-    //     let res = await axios.get(
-    //       `http://localhost:5000/donor/${donor_id}/donations`,
-    //       {
-    //         headers: {
-    //           'Authorization': `Bearer ${user.user.token}`
-    //         }
-    //       }
-    //     )
-    //     if (res.status < 400) {
-    //       if (res.data !== null) return res.data
-    //       else console.log("No data recieved!")
-    //     }
-
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
-
-    // getDonations().then((dons) => {
-    //   console.log(dons)
-    //   setDonations(dons)
-    // })
-
-    // //   getCampaigns().then((camps) => {
-    // //     setActiveCamps(camps)
-    // //   })
-    // //   getDonors().then((dons) => {
-    // //     setActiveDonors(dons)
-    // //   })
-    // //   getBeneficiries().then((benefs) => {
-    // //     setActiveBenefs(benefs)
-    // //   })
-
-    // return (() => console.log("No clean up"))
-  }, [])
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -205,7 +114,7 @@ const AdminDonationInfo = () => {
         <StatBox
           title="$60"
           subtitle="Donation amount"
-          increase={"Donation ID: "+id}
+          increase={"Donation ID: "}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -221,7 +130,7 @@ const AdminDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title="Food"
+          title={adminDonationData?.category}
           subtitle="Donation Category"
           icon={
             <CategoryOutlinedIcon

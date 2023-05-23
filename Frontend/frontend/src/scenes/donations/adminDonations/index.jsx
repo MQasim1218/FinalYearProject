@@ -58,11 +58,6 @@ const AdminDonations = ({ single_admin }) => {
         flex: 1,
       },
       {
-        field: "donorName",
-        headerName: "Donor Name",
-        flex: 1,
-      },
-      {
         field: "category",
         headerName: "Category",
         flex: 1,
@@ -128,11 +123,6 @@ const AdminDonations = ({ single_admin }) => {
         flex: 1,
       },
       {
-        field: "donorName",
-        headerName: "Donor Name",
-        flex: 1,
-      },
-      {
         field: "category",
         headerName: "Category",
         flex: 1,
@@ -146,17 +136,6 @@ const AdminDonations = ({ single_admin }) => {
         field: "amount",
         headerName: "Donation Amount",
         flex: 1,
-      },
-      {
-
-        // Okay
-        field: 'View',
-        type: 'actions',
-        headerName: "View",
-        width: 100,
-        getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/admindonationinfo/${row.id}`)} />,
-        ],
       },
     ];
 
@@ -184,10 +163,12 @@ const AdminDonations = ({ single_admin }) => {
       />
     } else if (singleIsError) { AdminsDonsGrid = <h3>Error: {singleError.message}</h3> }
   }
+
+  let donationsForStats = single_admin ? singleDonations : Donations
    
   let maxDonation = 0;
   // Loop through each donation object in the singleDonations array
-  singleDonations?.forEach(donation => {
+  donationsForStats?.forEach(donation => {
     // Check if the current donation amount is greater than the previous maximum donation amount
     if (donation.amount > maxDonation) {
       // Update the maximum donation amount if the current donation amount is greater
@@ -195,9 +176,18 @@ const AdminDonations = ({ single_admin }) => {
     }
   });
 
+  console.log("Max donation amount:", maxDonation)
+  
+  let allDonations = 0;
+  donationsForStats?.forEach(donation => {
+    allDonations += donation.amount;
+  });
+
+  console.log("All donations amount:", allDonations)
+
   let latestCreatedAt = null;
 
-  singleDonations?.forEach(donation => {
+  donationsForStats?.forEach(donation => {
   const createdAtDate = new Date(donation.createdAt);
   if (!latestCreatedAt || createdAtDate > latestCreatedAt) {
     latestCreatedAt = createdAtDate;
@@ -233,7 +223,7 @@ console.log("Latest createdAt date:", latestCreatedAt);
           borderRadius="10px"
         >
           <StatBox
-            title={single_admin ? singleDonations?.length : Donations?.length}
+            title={single_admin ? donationsForStats?.length : Donations?.length}
             subtitle="Total Donations Made"
             progress={false}
             icon={
@@ -271,8 +261,8 @@ console.log("Latest createdAt date:", latestCreatedAt);
           borderRadius="10px"
         >
           <StatBox
-            title="$8000 Not Dynamic"
-            subtitle="Highest Campaign Goal"
+            title={`$${allDonations}`}
+            subtitle="Total Donations To Campaigns"
             progress={false}
             icon={
               <CampaignOutlinedIcon
@@ -292,7 +282,7 @@ console.log("Latest createdAt date:", latestCreatedAt);
         >
           <StatBox
             title={maxDonation}
-            subtitle="Highest Donation To Beneficiary"
+            subtitle="Highest Donation To Campaign"
             progress={false}
             icon={
               <EmojiEventsOutlinedIcon
