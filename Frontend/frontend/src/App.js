@@ -43,7 +43,11 @@ import SuperAdminDonationInfo from './scenes/superAdminDonationInfo';
 import AdminDonationInfo from './scenes/adminDonationInfo';
 import Settings from './scenes/settings';
 import BeneficiaryDashboard from './scenes/beneficiaryDashboard';
-
+import UploadDocuments from './scenes/uploadDocuments';
+import VerificationStatus from './scenes/verificationStatus';
+import RequestDonation from './scenes/requestDonation';
+import RequestCampaign from './scenes/requestCampaign';
+import RequestedDonations from './scenes/requestedDonations';
 
 
 function App(props) {
@@ -80,7 +84,6 @@ function App(props) {
   const handleAccountTypeChange = (value) => {
     setAccountType(value);
   }
-
 
   return (
     //Context for colormode, so we can use it anywhere.
@@ -159,6 +162,14 @@ function App(props) {
 
               {/* BENEFICIARY ROUTES: */}
               <Route path="/beneficiarydashboard" element={< BeneficiaryDashboard />} />
+              <Route path="/uploaddocuments" element={< UploadDocuments />} />
+              <Route path="/verificationstatus" element={< VerificationStatus />} />
+              <Route path="/requestdonation" element={< RequestDonation />} />
+              <Route path="/requestcampaign" element={< RequestCampaign />} />
+              <Route path="/requesteddonations" element={< RequestedDonations />} />
+
+
+
 
               {/* <Route path="*" /> */}
               {/* </>

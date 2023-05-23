@@ -89,7 +89,7 @@ const Sidebar = () => {
                                             alt="Admin-photo"
                                             width="100px"
                                             height="100px"
-                                            src={user.user.picture}
+                                            src={user?.user?.picture}
                                             style={{ borderRadius: "50%", objectFit: "cover" }}
                                         />
 

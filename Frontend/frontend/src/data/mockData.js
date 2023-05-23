@@ -74,7 +74,7 @@ export const mockDonationRequests = [
     amount: "$200",
     category: "Education",
     allocated: "Admin 2"
-  },{
+  }, {
     id: 3,
     date: "25-Feb-2023",
     donor: "Aown Raza",
@@ -234,7 +234,7 @@ export const mockDataBeneficiary = [
     phone: "(222)444-5555",
     accounttype: "Beneficiary",
   },
-  
+
 ];
 
 export const mockDataDonor = [
@@ -579,7 +579,7 @@ export const mockBarData = [
   {
     City: "ISL",
     "Education": 137,
-    "EducationColor": "hsl(229, 70%, 50%)",
+    EducationColor: "hsl(229, 70%, 50%)",
     Meals: 96,
     MealsColor: "hsl(296, 70%, 50%)",
     NaturalDisaster: 72,
@@ -1030,6 +1030,10 @@ export const mockGeographyData = [
   },
   {
     id: "AUT",
+    value: 798526,
+  },
+  {
+    id: "AUS",
     value: 798526,
   },
   {
@@ -3124,7 +3128,7 @@ export const activityData = [
     "day": "2015-07-19"
   },
   {
-    "value": 209,
+    "value": 500,
     "day": "2021-01-09"
   },
   {

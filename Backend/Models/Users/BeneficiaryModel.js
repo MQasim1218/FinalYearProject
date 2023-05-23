@@ -55,15 +55,14 @@ const beneficiarySchema = mongoose.Schema({
     },
 
     location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            // required: true
-        },
-        coordinates: {
-            type: [Number],
-            // required: true
-        }
+        type: String,
+        // required: true,
+        trim: true,
+    },
+    city: {
+        type: String,
+        // required: true,
+        trim: true,
     },
 
 
@@ -118,7 +117,7 @@ beneficiarySchema.statics.login = async function (email, password) {
 
 beneficiarySchema.statics.signup = async function (beneficiary) {
     try {
-        let { name, email, password, chatId, picture } = beneficiary
+        let { name, email, password, chatId, picture, location, city } = beneficiary
         // FIXME: Set the inputs back to normal.
         // let { name, age, email, password, contact, location } = beneficiary
 
@@ -138,7 +137,8 @@ beneficiarySchema.statics.signup = async function (beneficiary) {
             password: passEncrypted,
             chatId: chatId,
             picture: picture,
-            // age: age, location: location,
+            location: location,
+            city: city,
             // contact: contact
         })
 

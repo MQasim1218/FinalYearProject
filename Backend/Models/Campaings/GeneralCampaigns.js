@@ -27,7 +27,7 @@ let generalCampaignSchema = mongoose.Schema({
 
     description: {
         type: String,
-        required: true
+        required: false,
     },
 
     location: {
@@ -49,7 +49,7 @@ let generalCampaignSchema = mongoose.Schema({
 
             // NOTE: Validation check to ensure that the gives thing is a url, will remove if it does not match our requirements.
             type: String,
-            required: true,
+            required: false,
             validate: {
                 validator: url => {
                     return /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/

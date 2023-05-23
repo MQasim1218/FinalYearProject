@@ -19,7 +19,7 @@ const ProgressCircle = ({ progress = "0", size = "35", beneficiary = 0 }) => {
       }}
     >
       <Box mt="40%" ml="18%">
-      <Typography variant="h6" color={colors.greenAccent[500]}>{percentage} {beneficiary === 0 ? "% Allocated" : "% Used"}</Typography>
+      <Typography variant="h6" color={colors.greenAccent[500]}>{percentage} {beneficiary === 0 ? "% Allocated" : "% Recieved"}</Typography>
       </Box>
       </Box>
   );

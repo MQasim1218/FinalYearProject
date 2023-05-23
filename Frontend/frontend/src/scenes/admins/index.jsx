@@ -81,24 +81,11 @@ const Admins = () => {
   // The columns gets all the data we specify below from the mockdata file and store it
   // ! We might hit some error here as most fields here are not part of Admin object
   const columns = [
-    { field: "id", headerName: "ID" },
     {
       field: "name",
       headerName: "Name",
-      flex: 1,
+      flex: 0.5,
       cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "contact",
-      headerName: "Phone Number",
-      flex: 1,
     },
     {
       field: "email",
@@ -106,14 +93,19 @@ const Admins = () => {
       flex: 1,
     },
     {
-      field: "totalcampaigns",
-      headerName: "Total Campaigns",
+      field: "createdAt",
+      headerName: "Date Joined",
       flex: 1,
     },
     {
-      field: "runningcampaigns",
-      headerName: "Running Campaigns",
-      flex: 1,
+      field: "availableAmount",
+      headerName: "Available Amount",
+      flex: 0.5,
+    },
+    {
+      field: "campaigns",
+      headerName: "Campaigns Created",
+      flex: 0.5,
     },
     {
       // Okay
@@ -129,18 +121,18 @@ const Admins = () => {
           onClick={() => navigate(`/adminanalytics/${row.id}`)} />,
       ],
     },
-    {
-      // Okay
-      field: 'Delete',
-      type: 'actions',
-      headerName: "Delete",
-      width: 100,
+    // {
+    //   // Okay
+    //   field: 'Delete',
+    //   type: 'actions',
+    //   headerName: "Delete",
+    //   width: 100,
 
-      getActions: (row) => [
-        <GridActionsCellItem icon={<DeleteIcon />} onClick={() => handleDelete(row.id)} label="Delete" />,
-      ],
+    //   getActions: (row) => [
+    //     <GridActionsCellItem icon={<DeleteIcon />} onClick={() => handleDelete(row.id)} label="Delete" />,
+    //   ],
 
-    },
+    // },
   ];
 
 
@@ -153,13 +145,15 @@ const Admins = () => {
     isLoading: adminsIsLoading,
   } = useAllAdminsQuery()
 
+  console.log("Admins:", admins)
+
   let AdminsStatBox = <></>, AdminsDataGrid = <></>, DonsToAdminsStatBox = <></>
 
   if (adminsIsLoading) {
     AdminsStatBox = <h3>Loading Content 🧇🧇🍖</h3>
   }
   else if (adminsIsSuccess) {
-    admins = admins.map(admin => ({ ...admin, id: admin._id }))
+    admins = admins?.map(admin => ({ ...admin, id: admin._id, createdAt: admin.createdAt.slice(0, 10), availableAmount: admin.availableAmount, campaigns: admin.general_campaigns.length + admin.specific_campaigns.length }))
 
     AdminsStatBox = (
       <StatBox
@@ -267,7 +261,7 @@ const Admins = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            {/* <CalendarChart isDashboard={true} /> */}
+            <CalendarChart isDashboard={true} isAdmin={true} />
           </Box>
         </Box>
 

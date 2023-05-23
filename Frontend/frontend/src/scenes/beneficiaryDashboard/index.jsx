@@ -38,7 +38,7 @@ const BeneficiaryDashboard = () => {
     isSuccess: isDonationsSuccess
   } = useGetSuperAdminDonationsToAdminQuery (user?.user?._id) //Change this mutation query with the one for beneficiary when it is created.
 
-  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount + don.donated, 0)
+  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount, 0)
   const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
 
   let remainingPercent = 0
@@ -197,7 +197,7 @@ const BeneficiaryDashboard = () => {
         </Box>
       </Box>
       <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>...</Typography>
+              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>Charity Analytics</Typography>
             </Box>
       <Box
         display="grid"

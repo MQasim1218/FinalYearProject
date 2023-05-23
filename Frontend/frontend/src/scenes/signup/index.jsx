@@ -20,6 +20,8 @@ const initialValues = {
   chatId: "",
   userType: "",
   picture: "",
+  location:"",
+  city:"",
 };
 
 const userSchema = yup.object().shape({
@@ -39,15 +41,41 @@ const Register = () => {
   const [open, setOpen] = useState(false)
   const [picture, setProfileImage] = useState("https://res-console.cloudinary.com/deymti8ua/thumbnails/v1/image/upload/v1680606112/Y2xkLXNhbXBsZS0y/grid_landscape");
   const [fileUrl, setFileUrl] = useState(null);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  
+//Get Location Code
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
 
+      // Send a GET request to the Google Maps Geocoding API
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBOcY605DxSnBRkhqfn1Mv0JHxlOiYJUUo`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // Extract the country and country from the API response
+          const addressComponents = data.results[0].address_components;
+          setCountry (addressComponents.find(component => component.types.includes("country")).long_name)
+          setCity (addressComponents.find(component => component.types.includes("locality")).long_name)
+        })
+        .catch(error => console.log(error));
+    });
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+    setCountry ("NA")
+  }
 
   // UseSignUp hook to authenticate and store user to the database!
   const { signup, loadn, err } = useSignUp()
 
   const handleFormSubmit = async (values) => {
     values.picture = picture;
+    values.location = country;
+    values.city = city
+    values.email = values.email.toLowerCase();
     console.log("Form values: ", values);
-    console.log("Checking with mubashir:", values.picture)
     try {
       const response = await signup(values);
       console.log("SignUP Response: ", response);

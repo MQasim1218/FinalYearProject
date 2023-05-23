@@ -252,16 +252,16 @@ const Dashboard = () => {
     isSuccess: isDonationsSuccess
   } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
 
-  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount + don.donated, 0)
+  const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount, 0)
   const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
 
   let remainingPercent = 0
 
   if (total === 0) {
-     remainingPercent = 0
+    remainingPercent = 0
   }
-  else{
-   remainingPercent = used / total
+  else {
+    remainingPercent = used / total
   }
 
   console.log("%: ", remainingPercent)
@@ -288,11 +288,12 @@ const Dashboard = () => {
               variant="h5"
               fontWeight="600"
             >
-              {transaction?._id.slice(0, 8)}
-            </Typography>
-            <Typography color={colors.grey[100]}>
               {transaction?.donor.name}
             </Typography>
+            <Typography color={colors.grey[100]}>
+              {transaction?.category}
+            </Typography>
+
           </Box>
           <Box color={colors.grey[100]}>{transaction.createdAt.slice(0, 10)}</Box>
           <Box

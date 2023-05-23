@@ -37,6 +37,8 @@ const DonorDonationInfo = () => {
   const [donations, setDonations] = useState([])
   const [open, setOpen] = useState(false)
 
+  console.log("Donor donation id is: ", id)
+
 
   const handleClose = () => {
     setOpen(false)
@@ -118,9 +120,9 @@ const DonorDonationInfo = () => {
       ...don,
       ind: ind,
       id: don._id,
-      createdAt: don.createdAt.slice(0, 10),
-      admin_name: don.admin.name,
-      admin_email: don.admin.email,
+      createdAt: don.createdAt?.slice(0, 10),
+      admin_name: don.admin?.name,
+      admin_email: don.admin?.email,
     }))
   }
 
@@ -216,13 +218,13 @@ const DonorDonationInfo = () => {
         justifyContent="center"
       >
         <UserBox
-          name={`${donor_donation?.donor.name}`}
+          name={`${donor_donation?.donor?.name}`}
           accounttype="Donor"
           picture={<PersonOutlineOutlinedIcon
             sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
           />}
           participated="5"
-          joindate={`${donor_donation?.donor.createdAt.slice(0, 10)}`}
+          joindate={`${donor_donation?.donor?.createdAt?.slice(0, 10)}`}
         // latestdonation="10-Dec-22"
         />
       </Box>
@@ -236,7 +238,7 @@ const DonorDonationInfo = () => {
         <StatBox
           title={`${donor_donation?.amount + donor_donation?.amountDonated}`}
           subtitle="Donation amount"
-          increase={"Date: " + donor_donation?.createdAt.slice(0, 10)}
+          increase={"Date: " + donor_donation?.createdAt?.slice(0, 10)}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

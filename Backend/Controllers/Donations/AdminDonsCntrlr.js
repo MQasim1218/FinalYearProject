@@ -118,7 +118,6 @@ const Superdonation = async (req, res, next) => {
             .find({ supAdminDonation: id }).populate("campaign").exec()
         // .populate('donorId')
 
-
         console.log("Admin donations are: ", Dons)
         res.json(Dons)
 

@@ -47,7 +47,7 @@ const DonorDonations = () => {
       flex: 1,
     },
     {
-      field: "amount",
+      field: "amountRemaining",
       headerName: "Remaining Donation Amount ($)",
       flex: 1,
     },
@@ -97,7 +97,7 @@ const DonorDonations = () => {
   else if (isSuccess) {
 
     let DonorDonations = Donations
-      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind, total: don.amount + don.amountDonated }))
+      .map((don, ind) => ({ ...don, createdAt: don?.createdAt.slice(0, 10), id: don._id, ind, total: don.amount, amountRemaining: don.amount - don.amountDonated }))
       .map((don) => flattenObj(don))
 
     DonorsDonsGrid = <DataGrid
@@ -117,8 +117,8 @@ const DonorDonations = () => {
   const maxDonation = {};
   for (const donation of donsFromDonors) {
     
-    const donorname = donation.donor.name;
-    const donationAmount = donation.amountDonated + donation.amount;
+    const donorname = donation?.donor?.name;
+    const donationAmount =  donation.amount;
   
     // Update donation count for each donor
     if (!donationCount[donorname]) {
@@ -134,7 +134,7 @@ const DonorDonations = () => {
   
   // Find the donor with the maximum donations
   let maxDonorname = null;
-  let maxDonations = -1;
+  let maxDonations = 0;
   for (const [name, count] of Object.entries(donationCount)) {
     if (count > maxDonations) {
       maxDonorname = name;
@@ -144,7 +144,7 @@ const DonorDonations = () => {
   
   // Find the donor with the highest one-time donation
   let maxOneTimeDonorname = null;
-  let maxOneTimeDonation = -1;
+  let maxOneTimeDonation = 0;
   for (const [name, amountDonate] of Object.entries(maxDonation)) {
     if (amountDonate > maxOneTimeDonation) {
       maxOneTimeDonorname = name;
@@ -179,7 +179,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount + don.amountDonated, 0)}
+            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
             subtitle="Total Funds Recieved"
             progress={false}
             icon={
@@ -198,7 +198,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
+            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount - don.amountDonated, 0)}
             subtitle="Total Unallocated Funds"
             progress={false}
             icon={
@@ -217,8 +217,8 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={maxDonorname}
-            subtitle="Most Donations Made By"
+            title={maxDonorname?maxDonorname:"No one"}
+            subtitle={ maxDonorname? "Most Donations Made By": "No Donations"}
             increase={"Donations: "+maxDonations}
             progress={false}
             icon={

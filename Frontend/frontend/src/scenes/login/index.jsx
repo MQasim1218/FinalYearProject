@@ -45,6 +45,7 @@ const Login = (props) => {
   const handleFormSubmit = async (values) => {
     //This setAccountType will help with the correct sidebar display on login.
     props.handleAccountTypeChange(values.userType);
+    values.email = values.email.toLowerCase()
     // console.log(props)
     // console.log("Form values: ", values);
     // // console.log("Here trying to login with a user!!")

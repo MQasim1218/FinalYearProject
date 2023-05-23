@@ -34,6 +34,8 @@ import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/
 import { useAuthContext } from "../../hooks/useAuthContext";
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
+import JSZip from 'jszip';
+
 
 
 //initializing all inputs with their keys
@@ -73,6 +75,8 @@ const CampaignInfo = () => {
   const [donations, setDonations] = useState([])
   const [openModal, setModalOpen] = useState(false)
   const [open, setOpen] = useState(false)
+  const [openDoc, setOpenDoc] = useState(false)
+
 
   let { user } = useAuthContext()
 
@@ -136,6 +140,7 @@ const CampaignInfo = () => {
     }
 
     setOpen(false);
+    setOpenDoc(false);
   };
 
   // ! Get total donations donations for the campaingn
@@ -166,7 +171,7 @@ const CampaignInfo = () => {
   if (!allDonsToAdminLoading) {
     if (allDonsToAdminSuccess) {
       console.log("Dons to the admins are", allDonsToAdmin)
-
+      if(allDonsToAdmin?.length > 0) {
       allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
         .map((don, index) => (
           {
@@ -181,9 +186,10 @@ const CampaignInfo = () => {
           <MenuItem key={opt.id} value={opt.value} id={opt.donorId}>
             {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
           </MenuItem>
-        )
-        )
+        ))
     }
+  }
+  }
   }
   else if (isAllDonsToAdminError) console.log(allDonsToAdminError.message)
 
@@ -202,6 +208,37 @@ const CampaignInfo = () => {
 
   useEffect(() => {
   }, [campDonations, camp])
+
+  const handleDownload = async () => {
+    if (camp?.campaign_docs.length === 0) {
+      setOpenDoc(true);
+      return;
+    }
+
+    const date = camp?.createdAt.slice(0,10);
+
+    const zip = new JSZip();
+
+    const downloadPromises = camp?.campaign_docs.map(async (fileUrl) => {
+      const response = await fetch(fileUrl);
+      const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+      const fileData = await response.blob();
+      zip.file(fileName, fileData);
+    });
+
+    await Promise.all(downloadPromises);
+
+    zip.generateAsync({ type: 'blob' }).then((content) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(content);
+      link.download = `${camp?.campaign_title} ${date}.zip`;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
+
 
 
   return (
@@ -281,118 +318,151 @@ const CampaignInfo = () => {
           }
         </Box>
 
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={camp?.createdAt.slice(0, 10)}
-            subtitle="Creation Date"
-            icon={
-              <CalendarMonthOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={"$" + camp?.donated_amount}
-            subtitle="Donations Recieved"
-            increase={"Goal: $" + camp?.required_amount}
-            icon={
-              <AttachMoneyOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={campDonations?.length}
-            subtitle="Number of Donations"
-            icon={
-              <VolunteerActivismOutlined
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={"dyn"}
-            subtitle="Highest one time donation"
-            icon={
-              <EmojiEventsOutlined
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={"dyn"}
-            subtitle="Highest Donation By"
-            icon={
-              <PersonOutlineOutlined
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        {JSON.parse(userType) === "admin" ?
-          <Box
-            gridColumn="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box>
-              <Button sx={{
-                backgroundColor: colors.blueAccent[700],
-                color: colors.grey[100],
-                fontSize: "14px",
-                fontWeight: "bold",
-                padding: "10px 20px",
-              }} onClick={handleModalOpen}>
-                <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-                Donate Now!
-              </Button>
-
-            </Box>
-          </Box>
-          : <Box></Box>}
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={camp?.createdAt.slice(0, 10)}
+          subtitle="Creation Date"
+          icon={
+            <CalendarMonthOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
       </Box>
-      <>
-        <Box style={{ marginTop: '2%' }}>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"$" + camp?.donated_amount}
+          subtitle="Donations Recieved"
+          increase={"Goal: $" + camp?.required_amount}
+          icon={
+            <AttachMoneyOutlinedIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={campDonations?.length}
+          subtitle="Number of Donations"
+          icon={
+            <VolunteerActivismOutlined
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"dyn"}
+          subtitle="Highest one time donation"
+          icon={
+            <EmojiEventsOutlined
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      <Box
+        gridColumn="span 3"
+        backgroundColor={colors.primary[400]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <StatBox
+          title={"dyn"}
+          subtitle="Highest Donation By"
+          icon={
+            <PersonOutlineOutlined
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        />
+      </Box>
+      {JSON.parse(userType) === "admin" ?
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box sx={{padding: "5px"}}>
+            <Button sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }} onClick={handleModalOpen}>
+              <AttachMoneyOutlinedIcon sx={{ mr: "10px" }} />
+              Donate Now!
+            </Button>
+
+          </Box>
+          <Box sx={{ padding: "5px" }}>
+            <Button sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }} onClick={handleDownload}>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Docs
+            </Button>
+
+          </Box>
+        </Box>
+        : <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box sx={{ padding: "5px" }}>
+            <Button sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }} onClick={handleDownload}>
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Docs
+            </Button>
+
+          </Box>
+        </Box>}
+    </Box>
+    <>
+      <Box style={{ marginTop: '2%' }}>
 
           <Modal open={openModal} onClose={handleModalClose}>
 
@@ -650,12 +720,17 @@ const CampaignInfo = () => {
     >
       <HomeScreenCampaigns isDashboard={true} title="" subtitle="" />
     </Box> */}
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Donation Made To Campaign Successfully!
-        </Alert>
-      </Snackbar>
-    </Box>)
+    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        Donation Made To Campaign Successfully!
+      </Alert>
+    </Snackbar>
+    <Snackbar open={openDoc} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+        No Files Available For Download!
+      </Alert>
+    </Snackbar>
+  </Box>)
 }
 
 export default CampaignInfo

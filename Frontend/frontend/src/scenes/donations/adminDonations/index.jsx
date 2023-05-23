@@ -184,7 +184,6 @@ const AdminDonations = ({ single_admin }) => {
       />
     } else if (singleIsError) { AdminsDonsGrid = <h3>Error: {singleError.message}</h3> }
   }
-
    
   let maxDonation = 0;
   // Loop through each donation object in the singleDonations array
@@ -253,8 +252,8 @@ console.log("Latest createdAt date:", latestCreatedAt);
           borderRadius="10px"
         >
           <StatBox
-            title={latestCreatedAt ? latestCreatedAt.toISOString().slice(0, 10).replace(/-/g, '/') : null}
-            subtitle="Latest Donation"
+            title={latestCreatedAt ? latestCreatedAt.toISOString().slice(0, 10).replace(/-/g, '/') : "None"}
+            subtitle={ latestCreatedAt ? "Latest Donation" : "No Donations"}
             progress={false}
             icon={
               <CalendarMonthOutlinedIcon
@@ -272,7 +271,7 @@ console.log("Latest createdAt date:", latestCreatedAt);
           borderRadius="10px"
         >
           <StatBox
-            title="$8000"
+            title="$8000 Not Dynamic"
             subtitle="Highest Campaign Goal"
             progress={false}
             icon={

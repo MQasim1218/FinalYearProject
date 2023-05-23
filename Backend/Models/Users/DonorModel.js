@@ -66,16 +66,14 @@ const donorSchema = mongoose.Schema({
     },
 
     location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            // required: true
-        },
-        coordinates: {
-            type: [Number],
-            // required: true
-            default: [0, 0]
-        }
+        type: String,
+        // required: true,
+        trim: true
+    },
+    city: {
+        type: String,
+        // required: true,
+        trim: true
     },
 
     donated_campaigns_specific: [{
@@ -124,7 +122,7 @@ donorSchema.statics.login = async function (email, password) {
 
 donorSchema.statics.signup = async function (donor) {
     try {
-        let { name, age, email, password, contact, chatId, picture, location } = donor
+        let { name, age, email, password, contact, chatId, picture, location, city } = donor
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
@@ -139,6 +137,7 @@ donorSchema.statics.signup = async function (donor) {
             name: name, email: email,
             password: passEncrypted,
             age: age, location: location,
+            city: city,
             contact: contact,
             chatId: chatId,
             picture: picture,

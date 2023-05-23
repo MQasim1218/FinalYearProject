@@ -58,16 +58,14 @@ const adminSchema = mongoose.Schema({
     },
 
     location: {
-        type: {
-            type: String,
-            enum: ['Point', 'Polygon'],
-            // required: true
-        },
-        coordinates: {
-            type: [Number],
-            // required: true
-        }
-
+        type: String,
+        // required: true,
+        trim: true,
+    },
+    city: {
+        type: String,
+        // required: true,
+        trim: true,
     },
 
     // Amount available with the Admin!!
@@ -123,7 +121,7 @@ adminSchema.statics.login = async function (email, password) {
 adminSchema.statics.signup = async function (admin) {
     try {
         console.log('admin vaklues at backend signup', admin)
-        let { name, age, email, password, chatId, picture, contact, location } = admin
+        let { name, age, email, password, chatId, picture, contact, location, city } = admin
         const salt = await bcrypt.genSalt(13)
         const passEncrypted = await bcrypt.hash(password, salt)
 
@@ -140,6 +138,7 @@ adminSchema.statics.signup = async function (admin) {
             chatId: chatId,
             picture: picture,
             age: age, location: location,
+            city: city,
             contact: contact
         })
         let token = await createJWT(user._id)

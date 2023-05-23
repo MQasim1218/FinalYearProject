@@ -126,16 +126,12 @@ const UserSidebar = () => {
                         <Box paddingLeft={isCollapsed ? undefined : '10%'}>
                             <Item title="Dashboard" to="/beneficiarydashboard" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Verification</Typography>
-                            <Item title="Upload Documents" to="/viewdonations" icon={<DriveFolderUploadOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Verification Status" to="/viewdonations" icon={<VerifiedOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                            <Item title="Upload Documents" to="/uploaddocuments" icon={<DriveFolderUploadOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                            <Item title="Verification Status" to="/verificationstatus" icon={<VerifiedOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Request</Typography>
                             {/* <Item title="Donate" to="/donate" icon={<VolunteerActivismOutlinedIcon/>} selected={selected} setSelected={setSelected} /> */}
-                            <Item title="Donation" to="/viewdonations" icon={<VolunteerActivismOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Campaign" to="/viewdonations" icon={<CampaignOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Requested Donations</Typography>
-                            <Item title="View Donations" to="/viewdonations" icon={< VisibilityOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Requested Campaigns</Typography>
-                            <Item title="View Campaigns" to="/viewcampaigns" icon={<CampaignOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                            <Item title="Donation" to="/requestdonation" icon={<VolunteerActivismOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                            <Item title="View Requests" to="/requesteddonations" icon={< VisibilityOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Analytics</Typography>
                             <Item title="User Analytics" to="/useranalytics" icon={<ContactsOutlinedIcon />} selected={selected} setSelected={setSelected} />
                         </Box>
