@@ -28,12 +28,11 @@ const userSchema = yup.object().shape({
     donation_title: yup.string().required("Required"),
     amount: yup.string().required("Required"),
     catagory: yup.string().required("Required"),
-    donor: yup.string().required("Required"),
 });
 
 const DonorDonation = () => {
 
-    const {user} = useAuthContext()
+    const { user } = useAuthContext()
 
     let userID = user?.user?._id
 
@@ -103,13 +102,21 @@ const DonorDonation = () => {
 
         values.donor = userID
 
-        console.log("HERE: ",values);
-        
-        await setDonorDonation(values)
+        console.log("HERE: ", values);
 
-        if (isError && !isLoading) {
-            console.log(error)
-        }
+        let donateResult = await axios.post(
+            `http://localhost:5000/donorDonations/donate/${userID}`,
+            //{values}
+        )
+
+        console.log("DONATE RESULT: ", donateResult)
+
+        const sessionUrl = donateResult.data.sessionUrl;
+
+        console.log("SESSION URL: ", sessionUrl)
+
+        // Redirect the user to the Stripe URL
+        //window.location.href = sessionUrl;
 
         //To show the popup component.
         setOpen(true);

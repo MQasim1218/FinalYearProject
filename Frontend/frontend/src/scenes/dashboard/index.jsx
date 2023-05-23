@@ -488,30 +488,12 @@ const Dashboard = () => {
             alignItems="center"
           >
             <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Donations Accumulated
+              <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+                Monthly Donations Recieved For This Year
               </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                {sa_donations?.length}
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="250px" m="0px 0 0 0">
             <LineChart isDashboard={true} />
           </Box>
         </Box>
@@ -531,6 +513,13 @@ const Dashboard = () => {
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
               Recent Donations Reveived from Super Admin
+            </Typography>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              color={colors.greenAccent[500]}
+            >
+              {sa_donations?.length}
             </Typography>
           </Box>
           {DonationsList}
