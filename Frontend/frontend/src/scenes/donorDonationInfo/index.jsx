@@ -99,17 +99,17 @@ const DonorDonationInfo = () => {
       headerName: "Category",
       flex: 0.5,
     },
-    {
+    // {
 
-      // Okay
-      field: 'View',
-      type: 'actions',
-      headerName: "View",
-      width: 100,
-      getActions: (row) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={handleOpen} />,
-      ],
-    },
+    //   // Okay
+    //   field: 'View',
+    //   type: 'actions',
+    //   headerName: "View",
+    //   width: 100,
+    //   getActions: (row) => [
+    //     <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={handleOpen} />,
+    //   ],
+    // },
   ];
 
   // Get the SuperAdmin Donations where this donor donation went.
@@ -236,7 +236,7 @@ const DonorDonationInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={`${donor_donation?.amount + donor_donation?.amountDonated}`}
+          title={`${donor_donation?.amount}`}
           subtitle="Donation amount"
           increase={"Date: " + donor_donation?.createdAt?.slice(0, 10)}
           icon={

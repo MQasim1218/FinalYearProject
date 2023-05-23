@@ -6,7 +6,10 @@ const ProgressCircle = ({ progress = "0", size = "35", beneficiary = 0 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const angle = progress * 360;
-  const percentage = Math.round(progress * 100);
+  let percentage = Math.round(progress * 100);
+  if (percentage > 100) {
+    percentage = 100;
+  }
   return (
     <Box
       sx={{
@@ -18,7 +21,7 @@ const ProgressCircle = ({ progress = "0", size = "35", beneficiary = 0 }) => {
         height: `${size}px`,
       }}
     >
-      <Box mt="40%" ml="18%">
+      <Box mt="40%" ml="15%">
       <Typography variant="h6" color={colors.greenAccent[500]}>{percentage} {beneficiary === 0 ? "% Allocated" : "% Recieved"}</Typography>
       </Box>
       </Box>

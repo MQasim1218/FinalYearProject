@@ -76,6 +76,7 @@ const CampaignInfo = () => {
   const [openModal, setModalOpen] = useState(false)
   const [open, setOpen] = useState(false)
   const [openDoc, setOpenDoc] = useState(false)
+  const [open2, setOpen2] = useState(false)
 
 
   let { user } = useAuthContext()
@@ -124,6 +125,14 @@ const CampaignInfo = () => {
 
     console.log("111111", values)
 
+    const isGreater = allDonsToAdmin2?.some(don => don._id === values.supAdminDonation && values.amount > don.remaining);
+
+    // Output the result
+    if (isGreater) {
+      setOpen2(true)
+      return
+    } 
+    
     let response = await setAdminToCampaignDonation({ ...values })
     if (isError && !isLoading) {
       console.log(error)
@@ -147,6 +156,7 @@ const CampaignInfo = () => {
 
     setOpen(false);
     setOpenDoc(false);
+    setOpen2(false);
   };
 
   // ! Get total donations donations for the campaingn
@@ -187,8 +197,8 @@ const CampaignInfo = () => {
     if (allDonsToAdminSuccess) {
       console.log("Dons to the admins are", allDonsToAdmin)
       if (allDonsToAdmin?.length > 0) {
-        allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
-          .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
+        allDonsToAdmin = allDonsToAdmin?.filter((don) => don.remaining > 0) // NOTE: Filtering out the donations with amount 0 
+          .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.remaining, id: index, category: don.category }))
           .map((opt) => (
             <MenuItem key={opt.id} value={opt.value} id={opt.id}>
               {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
@@ -384,7 +394,7 @@ const CampaignInfo = () => {
           justifyContent="center"
         >
           <StatBox
-            title={highestAmount}
+            title={`$${highestAmount}`}
             subtitle="Highest one time donation"
             icon={
               <EmojiEventsOutlined
@@ -706,6 +716,11 @@ const CampaignInfo = () => {
       <Snackbar open={openDoc} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
           No Files Available For Download!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          Amount Can Not Be Greater Than Donor's Amount!
         </Alert>
       </Snackbar>
     </Box>)
