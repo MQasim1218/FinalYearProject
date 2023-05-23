@@ -99,15 +99,21 @@ const CampaignInfo = () => {
   ] = useDonateToCampaignMutation(id)
 
 
-  const handleFormSubmit = async (values, {resetForm}) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
 
     values.admin = user?.user?._id
     values.campaign = id
 
 
-    console.log("11111111111111111", values);
+    const matchingDonor = allDonsToAdmin2?.find(don => don._id === values.supAdminDonation);
 
-    let response = await setAdminToCampaignDonation({ values })
+    let donorId = matchingDonor?.donor._id
+
+    values.donorId = donorId
+
+    console.log("111111", values)
+
+    let response = await setAdminToCampaignDonation({ ...values })
     if (isError && !isLoading) {
       console.log(error)
     }
@@ -147,6 +153,10 @@ const CampaignInfo = () => {
 
   console.log("Campaign Donations: ", campDonations)
 
+  var highestAmount = campDonations?.reduce(function (previousMax, current) {
+    return (current.amount > previousMax) ? current.amount : previousMax;
+  }, 0);
+
 
   let {
     data: allDonsToAdmin,
@@ -156,20 +166,25 @@ const CampaignInfo = () => {
     isSuccess: allDonsToAdminSuccess
   } = useGetSuperAdminDonationsToAdminQuery(camp?.admin)
 
+  let {
+    data: allDonsToAdmin2
+  } = useGetSuperAdminDonationsToAdminQuery(camp?.admin)
+
+
 
   if (!allDonsToAdminLoading) {
     if (allDonsToAdminSuccess) {
       console.log("Dons to the admins are", allDonsToAdmin)
-      if(allDonsToAdmin?.length > 0) {
-      allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
-        .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
-        .map((opt) => (
-          <MenuItem key={opt.id} value={opt.value} id={opt.id}>
-            {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
-          </MenuItem>
-        ))
+      if (allDonsToAdmin?.length > 0) {
+        allDonsToAdmin = allDonsToAdmin?.filter((don) => don.amount > 0) // NOTE: Filtering out the donations with amount 0 
+          .map((don, index) => ({ name: don.donation_title, value: don._id, label: don.amount, id: index, category: don.category }))
+          .map((opt) => (
+            <MenuItem key={opt.id} value={opt.value} id={opt.id}>
+              {opt.name + " ($" + opt.label + ")" + " - " + opt.category}
+            </MenuItem>
+          ))
+      }
     }
-  }
   }
   else if (isAllDonsToAdminError) console.log(allDonsToAdminError.message)
 
@@ -195,7 +210,7 @@ const CampaignInfo = () => {
       return;
     }
 
-    const date = camp?.createdAt.slice(0,10);
+    const date = camp?.createdAt.slice(0, 10);
 
     const zip = new JSZip();
 
@@ -218,7 +233,6 @@ const CampaignInfo = () => {
       document.body.removeChild(link);
     });
   };
-
 
 
   return (<Box m="20px">
@@ -357,7 +371,7 @@ const CampaignInfo = () => {
         justifyContent="center"
       >
         <StatBox
-          title={"dyn"}
+          title={highestAmount}
           subtitle="Highest one time donation"
           icon={
             <EmojiEventsOutlined
@@ -373,15 +387,19 @@ const CampaignInfo = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <StatBox
-          title={"dyn"}
-          subtitle="Highest Donation By"
-          icon={
-            <PersonOutlineOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
+        <Box sx={{ padding: "5px" }}>
+          <Button sx={{
+            backgroundColor: colors.blueAccent[700],
+            color: colors.grey[100],
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }} onClick={handleDownload}>
+            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            Download Docs
+          </Button>
+
+        </Box>
       </Box>
       {JSON.parse(userType) === "admin" ?
         <Box
@@ -391,7 +409,7 @@ const CampaignInfo = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Box sx={{padding: "5px"}}>
+          <Box sx={{ padding: "5px" }}>
             <Button sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -404,40 +422,8 @@ const CampaignInfo = () => {
             </Button>
 
           </Box>
-          <Box sx={{ padding: "5px" }}>
-            <Button sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }} onClick={handleDownload}>
-              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-              Download Docs
-            </Button>
-
-          </Box>
         </Box>
-        : <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box sx={{ padding: "5px" }}>
-            <Button sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }} onClick={handleDownload}>
-              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-              Download Docs
-            </Button>
-
-          </Box>
+        : <Box>
         </Box>}
     </Box>
     <>

@@ -784,7 +784,7 @@ const DonateToCampaign = async (req, res, next) => {
             let camp = await GenCamps.findById(camp_id).exec()
             camp.donated_amount += amount
             camp.save()
-            // res.json({ don, camp })
+            res.json({ don, camp })
 
             // ANCHOR: Get the SuperAdmin Donation(where the admin donation originally came from!!) and ...!UPDATE!            
             let saUpdResult = await SADonationModel.findByIdAndUpdate(
@@ -819,7 +819,7 @@ const DonateToCampaign = async (req, res, next) => {
             )
 
 
-            res.send("The donation was sucessfull")
+            // res.send("The donation was sucessfull")
         } else {
             res.send('Could not register the donation to the campaign!')
         }
