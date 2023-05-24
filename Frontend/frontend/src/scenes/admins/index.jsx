@@ -98,11 +98,6 @@ const Admins = () => {
       flex: 1,
     },
     {
-      field: "availableAmount",
-      headerName: "Available Amount",
-      flex: 0.5,
-    },
-    {
       field: "campaigns",
       headerName: "Campaigns Created",
       flex: 0.5,
@@ -251,13 +246,6 @@ const Admins = () => {
               >
                 Activity Calendar
               </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
