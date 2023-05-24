@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme, Snackbar, Alert } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -45,6 +45,15 @@ const Dashboard = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [open, setOpen] = useState(false)
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
 
   // console.log('user obtained is: ', user)
@@ -363,17 +372,26 @@ const Dashboard = () => {
   }
   else if (isCampaignsError) AdminCampaigns = <h3>{`Error: ${campaignsError.message}`}</h3>
 
+  const handleDownload = () => {
+    axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/adminAnalytics`), {
+  }
+    setOpen(true);
+}
+
+
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to admin dashboard" />
         <Box>
-          <Button sx={{
+          <Button onClick={handleDownload} sx={{
             backgroundColor: colors.blueAccent[700],
             color: colors.grey[100],
             fontSize: "14px",
             fontWeight: "bold",
             padding: "10px 20px",
+            
           }} >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
@@ -599,6 +617,11 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Reports Downloaded To The Downloads Folder!
+        </Alert>
+      </Snackbar>
     </Box >
   )
 }

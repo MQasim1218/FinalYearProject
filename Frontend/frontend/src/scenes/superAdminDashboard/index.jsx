@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme, Snackbar, Alert } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -20,6 +20,7 @@ import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporte
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 import { PersonOutlineOutlined } from "@mui/icons-material";
+import { useState } from "react";
 
 /**
  * NOTE: Data to be fetched 
@@ -37,6 +38,15 @@ const SuperAdminDashboard = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [open, setOpen] = useState(false)
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   let { data: donsFromDonors } = useAllDonorsDonationsQuery()
 
@@ -52,7 +62,7 @@ const SuperAdminDashboard = () => {
     isError: isAdminsError,
     isSuccess: adminsIsSuccess
   } = useAllAdminsQuery()
-  
+
   let AdminsStatBox = null
   if (adminsIsLoading) AdminsStatBox = <h3>Loading Content</h3>
   else if (adminsIsSuccess) {
@@ -191,7 +201,7 @@ const SuperAdminDashboard = () => {
 
   const total = donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)
   const used = donsFromDonors.reduce((partialTot, don) => partialTot + don.amountDonated, 0)
-  
+
   let remainingPercent = 0
 
   if (total === 0) {
@@ -203,12 +213,19 @@ const SuperAdminDashboard = () => {
 
   console.log("%: ", remainingPercent)
 
+  const handleDownload = () => {
+    axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/superadminAnalytics`), {
+    }
+    setOpen(true);
+
+  }
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to the Super Admin dashboard" />
         <Box>
-          <Button sx={{
+          <Button onClick={handleDownload} sx={{
             backgroundColor: colors.blueAccent[700],
             color: colors.grey[100],
             fontSize: "14px",
@@ -483,6 +500,11 @@ const SuperAdminDashboard = () => {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Reports Downloaded To The Downloads Folder!
+        </Alert>
+      </Snackbar>
     </Box >
   )
 }
