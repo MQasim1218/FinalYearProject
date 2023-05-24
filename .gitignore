@@ -3,3 +3,6 @@
 /Mobile/node_modules
 /Backend/node_modules
 /node_modules
+/BenificiaryVerificaion/client/node_modules
+/BenificiaryVerificaion/pretrained_weights
+/BenificiaryVerificaion/data
