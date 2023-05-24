@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 let benefAppealSchema = mongoose.Schema({
 
-    title: String,
+    case_title: String,
 
     benefId: {
         type: mongoose.Types.ObjectId,

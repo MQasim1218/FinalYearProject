@@ -131,6 +131,8 @@ router.delete('/:id', function (req, res, next) {
 router.post("/appeal/", async (req, res, next) => {
 
     try {
+
+        console.log(req.body)
         let appeal = await benefAppealModel.create(req.body)
         // console.log(sc)
 

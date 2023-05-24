@@ -13,12 +13,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import { ConstructionOutlined } from "@mui/icons-material";
 
+
 //initializing all inputs with their keys
 const initialValues = {
     case_title: "",
     description: "",
     category: "Education",
-    url_docs: []
+    url_docs: [],
+    benefId: ""
 };
 
 //schema for validation
@@ -30,6 +32,8 @@ const uploadSchema = yup.object().shape({
 
 
 const UploadDocuments = () => {
+
+
 
     let { user } = useAuthContext()
 
@@ -89,6 +93,8 @@ const UploadDocuments = () => {
 
     //on submit, all inputs are stored in values
     const handleFormSubmit = async (values, { resetForm }) => {
+
+        values.benefId = user?.user?._id
         console.log(values);
 
         values.url_docs = urls;
@@ -101,7 +107,7 @@ const UploadDocuments = () => {
         else {
             //Write code to send values to backend here
 
-            axios.post(`${REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
+            axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
 
             alert("Documents uploaded successfully")
 
