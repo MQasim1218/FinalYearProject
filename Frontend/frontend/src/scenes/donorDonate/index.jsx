@@ -106,10 +106,10 @@ const DonorDonation = () => {
 
         let donateResult = await axios.post(
             `http://localhost:5000/donorDonations/donate/${userID}`,
-            //{values}
+            // { values }
         )
 
-        console.log("DONATE RESULT: ", donateResult)
+        console.log("DONATE RESULT: ", donateResult.data)
 
         const sessionUrl = donateResult.data.sessionUrl;
 

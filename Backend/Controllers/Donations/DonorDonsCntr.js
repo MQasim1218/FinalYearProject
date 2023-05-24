@@ -340,19 +340,19 @@ const Donate = async (req, res, next) => {
         // }
 
         // Do the Stripe process first
-        // let session = await stripe.checkout.sessions.create({
-        //     line_items: [
-        //         {
-        //             price: "price_1N4l7LD4d2tkTPKse5AzTfAg",
-        //             quantity: 1
-        //         },
-        //     ],
-        //     mode: 'payment',
-        //     submit_type: 'donate',
+        let session = await stripe.checkout.sessions.create({
+            line_items: [
+                {
+                    price: "price_1N4l7LD4d2tkTPKse5AzTfAg",
+                    quantity: 1
+                },
+            ],
+            mode: 'payment',
+            submit_type: 'donate',
 
-        //     success_url: 'https://example.com/success',
-        //     cancel_url: 'https://example.com/cancel',
-        // })
+            success_url: 'https://example.com/success',
+            cancel_url: 'https://example.com/cancel',
+        })
 
         console.log("Session is: ", session)
 

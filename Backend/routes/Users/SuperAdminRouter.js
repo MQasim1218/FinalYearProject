@@ -61,7 +61,7 @@ router.get('/SpecificCampigns/:id', AdminController.ViewSpecificCampaigns)
 
 router.get('/rejectCampaignRequest/:campaign_id', AdminController.RejectCampiagnRequest)
 
-router.patch('/approveCampaign/:campaign_id', AdminController.ApproveCampaign)
+router.patch('/approveCampaign/:campaign_id', AdminController.ApproveAppeal)
 
 router.get('/rejectCampaign/:campaign_id', AdminController.RejectCampiagnRequest)
 
@@ -104,8 +104,8 @@ router.get('/archiveCampaign/:campaign_id', async (req, res, next) => {
 })
 
 router.get('download_reports', (req, res, next) => {
-    
-    
+
+
     res.sendFile()
 })
 
