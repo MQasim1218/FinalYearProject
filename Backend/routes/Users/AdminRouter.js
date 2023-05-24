@@ -33,8 +33,8 @@ router.get('/get/:id', AdminController.GetAdmin)
 
 // localhost:5000/admin/signup
 router.get(
-    '/appealedCampaigns',
-    AdminController.ViewAppealedCampaigns
+    '/appealedCases',
+    AdminController.ViewAppealedCases
 )
 
 

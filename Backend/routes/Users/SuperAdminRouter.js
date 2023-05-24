@@ -43,7 +43,7 @@ router.delete('', (req, res, next) => {
 // localhost:5000/admin/signup
 router.get(
     '/appealedCampaigns',
-    AdminController.ViewAppealedCampaigns
+    AdminController.ViewAppealedCases
 )
 
 // })

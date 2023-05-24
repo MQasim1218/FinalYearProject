@@ -211,10 +211,10 @@ const ViewSpecificCampaigns = async (req, res, next) => {
     }
 }
 
-const ViewAppealedCampaigns = async (req, res, next) => {
+const ViewAppealedCases = async (req, res, next) => {
     console.log("over here")
     try {
-        let appealed = await SpecificCampaignModel.find({ approved: false }).exec()
+        let appealed = await benefAppealModel.find({ verified: false }).populate('benefId').exec()
         res.send(appealed)
     } catch (error) {
         res.send(error)
@@ -268,6 +268,6 @@ module.exports = {
     ViewGeneralCampaigns,
     RejectCampiagnRequest,
     ViewSpecificCampaigns,
-    ViewAppealedCampaigns,
+    ViewAppealedCases,
     GetDonorsForAdminCampaigns
 }
