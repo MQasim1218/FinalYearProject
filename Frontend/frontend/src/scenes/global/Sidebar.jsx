@@ -20,8 +20,8 @@ import StickyBox from "react-sticky-box";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined'
 import { useAuthContext } from "../../hooks/useAuthContext";
-
-
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme()
@@ -125,6 +125,9 @@ const Sidebar = () => {
                             <Item title="Graphs" to="/graphs" icon={<BarChartOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Geography Map" to="/geography" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Item title="Self Analytics" to="/adminanalytics" icon={<AnalyticsOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Verification & Requests</Typography>
+                            <Item title="Case Verification" to="/caseverification" icon={<VerifiedUserOutlinedIcon />} selected={selected} setSelected={setSelected} />
+                            <Item title="Donation Requests" to="/donationrequests" icon={<RequestPageOutlinedIcon />} selected={selected} setSelected={setSelected} />
 
 
 

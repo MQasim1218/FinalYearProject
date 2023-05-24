@@ -28,6 +28,8 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import {useGetDonationQuery} from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice'
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import { useSingleAdminDonationsQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
+
 
 const AdminDonationInfo = () => {
   const theme = useTheme();
@@ -54,7 +56,8 @@ if(isSuccess){
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "date", headerName: "Date", flex: 0.5 },
+     {field: "index", headerName: "Num" },
+    { field: "createdAt", headerName: "Date", flex: 0.5 },
     {
       field: "givenby",
       headerName: "Given By",
@@ -62,10 +65,15 @@ if(isSuccess){
       cellClassName: "name-column--cell",
     },
     {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
         field: "givento",
         headerName: "Given To",
-        flex: 0.5,
-        cellClassName: "name-column--cell",
+        flex: 1,
       },
     {
       field: "amountused",
@@ -80,6 +88,38 @@ if(isSuccess){
       flex: 0.5,
     },
   ];
+
+
+  let AdminDonsDataGrid = <></>
+
+  let adminDonationDataFiltered = []
+
+
+  // useEffect(() => {
+
+  if (isLoading) {
+    AdminDonsDataGrid = <>Loading Data 🥗🥡</>
+  }
+
+  else if (isSuccess) {
+    adminDonationDataFiltered = adminDonationData.map((don, ind) => ({ ...don, category: don.campaign.category, id: don._id, index: ind + 1, campaign_name: don.campaign.campaign_title, campaign_goal: don.campaign.required_amount, createdAt: don.createdAt.slice(0, 10), givenby: don.admin.name, email: don.admin.email ,givento: don.campaign.campaign_title, amountused: don.amount }))
+
+    AdminDonsDataGrid = <DataGrid
+      columnVisibilityModel={{
+        id: false,
+      }}
+      checkboxSelection
+      rows={adminDonationDataFiltered}
+      columns={columns}
+      components={{ Toolbar: GridToolbar }}
+    />
+  }
+
+  else if (error) {
+    console.log("Error getting Admin donations data: ", admindons_Error.message)
+    AdminDonsDataGrid = <>Error🥗🥡: {admindons_Error.message} </>
+  }
+  // }, [adminDons])
 
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -123,7 +163,6 @@ if(isSuccess){
         <StatBox
           title={Campaign_Amount}
           subtitle="Donation amount"
-          increase={`Admin: ${Campaign_DonatedBy}`}
           icon={
             <AttachMoneyOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -201,12 +240,7 @@ if(isSuccess){
           },
         }}
       >
-        <DataGrid
-          checkboxSelection
-          rows={mockDataDonationInfo2}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+      {AdminDonsDataGrid}
       </Box>
   </Box>)
 }

@@ -14,7 +14,6 @@ import Login from './scenes/login';
 import Register from './scenes/signup';
 import AllCampaigns from './scenes/allCampaigns';
 import AreaAnalytics from './scenes/areaAnalytics';
-import Donate from './scenes/donate';
 import ViewDonations from './scenes/viewDonations';
 import TimeAnalytics from './scenes/timeAnalytics';
 import GeographyMapDonor from './scenes/geographyMapDonor';
@@ -49,6 +48,8 @@ import RequestDonation from './scenes/requestDonation';
 import RequestCampaign from './scenes/requestCampaign';
 import RequestedDonations from './scenes/requestedDonations';
 import DonorDonation from './scenes/donorDonate';
+import CaseVerification from './scenes/caseVerification';
+import DonationRequest from './scenes/donationRequest';
 
 
 function App(props) {
@@ -108,7 +109,6 @@ function App(props) {
               <Route path="/useranalytics" element={<DonorInfo />} />
               <Route path="/areaanalytics" element={<AreaAnalytics />} />
               <Route path="/timeanalytics" element={<TimeAnalytics />} />
-              <Route path="/donate" element={<Donate />} />
               <Route path="/geographymap" element={<GeographyMap />} />
               <Route path="/donationreports" element={<DonationReports />} />
               <Route path="/expenditurereports" element={<ExpenditureReports />} />
@@ -130,6 +130,9 @@ function App(props) {
               <Route path="/campaigninfo/:id" element={<CampaignInfo />} />
               <Route path="/superadmindonationinfo/:id" element={<SuperAdminDonationInfo />} />
               <Route path="/admindonationinfo/:id" element={<AdminDonationInfo />} />
+              <Route path="/caseverification" element={<CaseVerification />} />
+              <Route path="/donationrequests" element={<DonationRequest />} />
+
 
               {/* <Route path="*" /> */}
               {/* </>

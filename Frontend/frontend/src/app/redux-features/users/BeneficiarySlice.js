@@ -27,7 +27,7 @@ export const beneficiaryApi = createApi({
 
         // 👨‍👨‍👦 Fetch a particular Admin based on ones id 📷
         getBenef: builder.query({
-            query: (id) => `${id}`,
+            query: (id) => `/single/${id}`,
             providesTags: (id) => [{ type: 'Beneficiary', id: id }]
         }),
 

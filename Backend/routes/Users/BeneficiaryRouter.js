@@ -70,7 +70,7 @@ router.post("/login", async (req, res, next) => {
 // #################  CRUD  ##################
 
 // Get a particular beneficiary by his/her id
-router.get('/:id', (req, res, next) => {
+router.get('/single/:id', (req, res, next) => {
     beneficiaryModel.find({ _id: req.params.id })
         .exec(function (error, data) {
             if (error) {

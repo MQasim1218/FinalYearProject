@@ -15,7 +15,6 @@ import { PersonOutline } from "@mui/icons-material";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
-import { useQuery } from 'react-query';
 
 
 const DonorDonations = () => {
@@ -40,7 +39,7 @@ const DonorDonations = () => {
       field: "email",
       headerName: "Email",
       flex: 1.5,
-    }, 
+    },
     {
       field: "total",
       headerName: "Initial Donation ($)",
@@ -89,9 +88,9 @@ const DonorDonations = () => {
 
   let { data: donsFromDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllDonorsDonationsQuery()
 
-  console.log("Donor Data",donsFromDonors)
+  console.log("Donor Data", donsFromDonors)
 
-  if(donsFromDonors === undefined) donsFromDonors = []
+  if (donsFromDonors === undefined) donsFromDonors = []
 
   if (isLoading) DonorsDonsGrid = <h3>Content Loading</h3>
   else if (isSuccess) {
@@ -116,22 +115,22 @@ const DonorDonations = () => {
   const donationCount = {};
   const maxDonation = {};
   for (const donation of donsFromDonors) {
-    
+
     const donorname = donation?.donor?.name;
-    const donationAmount =  donation.amount;
-  
+    const donationAmount = donation.amount;
+
     // Update donation count for each donor
     if (!donationCount[donorname]) {
       donationCount[donorname] = 0;
     }
     donationCount[donorname]++;
-  
+
     // Update maximum donation amount for each donor
     if (!maxDonation[donorname] || donationAmount > maxDonation[donorname]) {
       maxDonation[donorname] = donationAmount;
     }
   }
-  
+
   // Find the donor with the maximum donations
   let maxDonorname = null;
   let maxDonations = 0;
@@ -141,7 +140,7 @@ const DonorDonations = () => {
       maxDonations = count;
     }
   }
-  
+
   // Find the donor with the highest one-time donation
   let maxOneTimeDonorname = null;
   let maxOneTimeDonation = 0;
@@ -169,7 +168,7 @@ const DonorDonations = () => {
 
         {/* ROW 1 */}
 
-       
+
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
@@ -179,7 +178,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
+            title={"$" + donsFromDonors.reduce((partialTot, don) => partialTot + don.amount, 0)}
             subtitle="Total Funds Recieved"
             progress={false}
             icon={
@@ -198,7 +197,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+donsFromDonors.reduce((partialTot, don) => partialTot + don.amount - don.amountDonated, 0)}
+            title={"$" + donsFromDonors.reduce((partialTot, don) => partialTot + don.amount - don.amountDonated, 0)}
             subtitle="Total Unallocated Funds"
             progress={false}
             icon={
@@ -217,9 +216,9 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={maxDonorname?maxDonorname:"No one"}
-            subtitle={ maxDonorname? "Most Donations Made By": "No Donations"}
-            increase={"Donations: "+maxDonations}
+            title={maxDonorname ? maxDonorname : "No one"}
+            subtitle={maxDonorname ? "Most Donations Made By" : "No Donations"}
+            increase={"Donations: " + maxDonations}
             progress={false}
             icon={
               <PersonOutline
@@ -238,7 +237,7 @@ const DonorDonations = () => {
           borderRadius="10px"
         >
           <StatBox
-            title={"$"+maxOneTimeDonation}
+            title={"$" + maxOneTimeDonation}
             subtitle="Highest One Time Donation"
             progress={false}
             icon={

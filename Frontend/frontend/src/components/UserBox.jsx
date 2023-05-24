@@ -18,7 +18,7 @@ const UserBox = ({ name, accounttype, picture, participated, latestdonation, joi
           >
             {name}
           </Typography>
-          <Typography variant="h5" sx={{ color: colors.greenAccent[500] }}>
+          <Typography variant="h5" sx={{ color: colors.greenAccent[500], textTransform: "capitalize" }}>
             {accounttype}
           </Typography>
 

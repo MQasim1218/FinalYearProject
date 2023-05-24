@@ -101,7 +101,7 @@ const GetDonor = async (req, res, next) => {
                 return next()
             }
 
-            if (donor.deteted == true) { }
+            if (donor.deleted == true) { }
 
             res.json(donor)
         })

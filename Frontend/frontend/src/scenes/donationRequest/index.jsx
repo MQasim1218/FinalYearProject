@@ -19,6 +19,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
 import { PersonOutlineOutlined } from "@mui/icons-material";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 const Donors = ({ single_donor }) => {
   let { data: donsFromDonors, isLoading: isDonsLoading, error: donsError, isError: isDonsError, isSuccess: IsDonsSuccess } = useAllDonorsDonationsQuery()
@@ -95,12 +96,23 @@ const Donors = ({ single_donor }) => {
       {
 
         // Okay
-        field: 'View',
+        field: 'download',
         type: 'actions',
-        headerName: "View",
+        headerName: "Download Files",
         width: 100,
         getActions: (row) => [
-          <GridActionsCellItem icon={<VisibilityOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
+          <GridActionsCellItem icon={<DownloadOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
+        ],
+      },
+      {
+
+        // Okay
+        field: 'verify',
+        type: 'actions',
+        headerName: "Verify",
+        width: 100,
+        getActions: (row) => [
+          <GridActionsCellItem icon={<CheckOutlinedIcon />} label="View" onClick={() => navigate(`/donorinfo/${row.id}`)} />,
         ],
       },
     ];
@@ -230,7 +242,7 @@ const Donors = ({ single_donor }) => {
   return (
     <Box m="20px">
 
-      <Header title="Donors" subtitle={"Manage Donors"} />
+      <Header title="DONATIONS REQUESTS" subtitle={"View Donation Requests"} />
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -269,32 +281,7 @@ const Donors = ({ single_donor }) => {
 
 
         {/* ROW 2 */}
-        <Box
-          gridColumn="span 12"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Activity Calendar
-              </Typography>
-            </Box>  
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <CalendarChart isDashboard={true} data={data} />
-          </Box>
-        </Box>
+
 
       </Box>
       <Box
