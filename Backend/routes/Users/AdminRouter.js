@@ -33,8 +33,8 @@ router.get('/get/:id', AdminController.GetAdmin)
 
 // localhost:5000/admin/signup
 router.get(
-    '/appealedCampaigns',
-    AdminController.ViewAppealedCampaigns
+    '/appealedCases',
+    AdminController.ViewAppealedCases
 )
 
 
@@ -67,7 +67,7 @@ router.get('/SpecificCampigns/:id', AdminController.ViewSpecificCampaigns)
 
 router.get('/rejectCampaignRequest/:campaign_id', AdminController.RejectCampiagnRequest)
 
-router.patch('/approveCampaign/:campaign_id', AdminController.ApproveCampaign)
+router.patch('/approveappeal/:appeal_id', AdminController.ApproveAppeal)
 
 router.get('/rejectCampaign/:campaign_id', AdminController.RejectCampiagnRequest)
 

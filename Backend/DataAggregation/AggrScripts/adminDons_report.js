@@ -27,7 +27,7 @@
 
 
 const { default: mongoose } = require('mongoose');
-const AdminDonations = require('../Models/Donations/DonationAdmin');
+const AdminDonations = require('../../Models/Donations/DonationAdmin');
 const createCSV = require('../createCSV');
 const getFilename = require('../utils/getFilename');
 const CreateMultisheetExcelFile = require('../createExcelFile');

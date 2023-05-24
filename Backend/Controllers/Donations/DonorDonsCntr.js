@@ -386,7 +386,7 @@ const Donate = async (req, res, next) => {
         // }
 
         // Redirect the user to the Stripe Page
-        
+
         // res.json(donation_entry)
 
     } catch (error) {
@@ -409,7 +409,7 @@ const WebhookListen = async (req, res) => {
     switch (event.type) {
         case 'checkout.session.completed':
 
-            
+
 
             // Handle successful checkout session
             const session = event.data.object;
