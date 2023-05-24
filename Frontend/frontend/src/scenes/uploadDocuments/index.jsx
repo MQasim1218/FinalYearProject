@@ -17,7 +17,6 @@ import { ConstructionOutlined } from "@mui/icons-material";
 const initialValues = {
     case_title: "",
     description: "",
-    For: "Self",
     category: "Education",
     url_docs: []
 };
@@ -26,7 +25,6 @@ const initialValues = {
 const uploadSchema = yup.object().shape({
     case_title: yup.string().required("Required"),
     category: yup.string().required("Required"),
-    For: yup.string().required("Required"),
     url_docs: yup.array().required("Required"),
 });
 
@@ -95,13 +93,15 @@ const UploadDocuments = () => {
 
         values.url_docs = urls;
 
-        console.log("Final values",values);
+        console.log("Final values", values);
 
         if (values.url_docs.length == 0) {
             alert("Please upload documents")
         }
-        else{
+        else {
             //Write code to send values to backend here
+
+            axios.post(`${REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
 
             alert("Documents uploaded successfully")
 
@@ -112,7 +112,7 @@ const UploadDocuments = () => {
         }
 
 
-        
+
     };
 
 
@@ -250,25 +250,7 @@ const UploadDocuments = () => {
                                 helperText={touched.case_title && errors.case_title}
                                 sx={{ gridColumn: "span 2" }}
                             />
-                            <TextField
-                                fullWidth
-                                select
-                                variant="filled"
-                                type="text"
-                                label="For *"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.For}
-                                name="For"
-                                error={!!touched.For && !!errors.For}
-                                helperText={touched.For && errors.For}
-                                sx={{ gridColumn: "span 2" }}
-                            >{For.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                            </TextField>
+
                             <TextField
                                 fullWidth
                                 select
