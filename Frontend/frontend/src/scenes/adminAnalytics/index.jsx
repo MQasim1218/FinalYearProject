@@ -209,25 +209,6 @@ const highestDonation = adminDons?.reduce((highest, current) => {
             }
           />
         </Box>
-        
-        <Box
-          gridColumn="span 4"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={`$${admin?.availableAmount}` || -1}
-            subtitle="Available Amount"
-            // increase="This Month: $190"
-            icon={
-              <AttachMoneyOutlinedIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
 
         <Box
           gridColumn="span 4"

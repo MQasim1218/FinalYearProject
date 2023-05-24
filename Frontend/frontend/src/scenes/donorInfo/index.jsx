@@ -32,6 +32,8 @@ const DonorInfo = () => {
   const { user } = useAuthContext()
   let accountType = useContext(AccountTypeContext)
 
+  accountType = accountType.userType
+
   if (id === undefined) {
     id = user?.user?._id
   }
@@ -39,9 +41,6 @@ const DonorInfo = () => {
   const { data: donorDons, isError: isDonorDonsErr, isLoading: isDonorDonsLoading, isSuccess: isDonorDonsSuccess, error: donorDonsErr } = useSingleDonorDonationsQuery(id)
   const { data: donor } = useGetDonorQuery(id)
 
-
-
-  accountType = "donor"
   let RecDonations = <></>
 
 
@@ -158,7 +157,7 @@ const DonorInfo = () => {
       >
         <UserBox
           name={donor?.name || "loading"}
-          accounttype={`(${accountType})` || ""}
+          accounttype={`(${accountType})` || ""}       
           picture={
             <PersonOutlineOutlinedIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

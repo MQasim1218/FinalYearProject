@@ -21,8 +21,11 @@ import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutl
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
 import { useGetSuperAdminDonationsToAdminQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
-
+import PieChart from "../../components/PieChart";
+import { useGetBenefQuery } from "../../app/redux-features/users/BeneficiarySlice";
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 
 const BeneficiaryDashboard = () => {
     const theme = useTheme();
@@ -37,6 +40,21 @@ const BeneficiaryDashboard = () => {
     isError: isDonationsError,
     isSuccess: isDonationsSuccess
   } = useGetSuperAdminDonationsToAdminQuery (user?.user?._id) //Change this mutation query with the one for beneficiary when it is created.
+
+  let { data: benef, isLoading: isBenefLoading, error: benefError, isError: isBenefError, isSuccess: isBenefSuccess } = useGetBenefQuery(user?.user?._id)
+
+
+  console.log("Donations: ", benef)
+
+  let beneemail = "Loading"
+  let benelocation = "Loading"
+  let benejoindate = "Loading"
+
+  if (isBenefSuccess) {
+    beneemail = benef[0]?.email
+    benelocation = benef[0]?.location + ", " + benef[0]?.city
+    benejoindate = benef[0]?.createdAt.slice(0, 10)
+  }
 
   const total = sa_donations?.reduce((partialTot, don) => partialTot + don.amount, 0)
   const used = sa_donations?.reduce((partialTot, don) => partialTot + don.donated, 0)
@@ -132,10 +150,10 @@ const BeneficiaryDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="$550"
-            subtitle="Donations Recieved"
+            title={beneemail}
+            subtitle="Email"
             icon={
-              <AttachMoneyOutlinedIcon
+              <EmailOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -149,10 +167,10 @@ const BeneficiaryDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="3"
-            subtitle="Campaigns Requested"
+            title={benelocation}
+            subtitle="Location"
             icon={
-              <VolunteerActivismOutlinedIcon
+              <AddLocationAltOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -185,11 +203,11 @@ const BeneficiaryDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1"
-            subtitle="Campaign Active"
+            title={benejoindate}
+            subtitle="Joined At"
             //increase="This Month: 1"
             icon={
-              <CampaignOutlinedIcon
+              <PersonAddAltOutlinedIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -225,14 +243,7 @@ const BeneficiaryDashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Donations Accumulated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
+                Donations Accumulated Worldwide
               </Typography>
             </Box>
           </Box>
@@ -255,10 +266,10 @@ const BeneficiaryDashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Donations Reveived
+              Category Wise Donations
             </Typography>
           </Box>
-          {DonationsList}
+          <PieChart />
         </Box>
 
 
@@ -315,89 +326,7 @@ const BeneficiaryDashboard = () => {
         </Box> */}
         </Box>
 
-        <Box> 
-              <Typography variant="h4" color={colors.blueAccent[500]} sx={{m: "15px 0 10px 10px"}}>...</Typography>
-            </Box>
-
-        <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Requested VS Recieved Donations
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle progress={remainingPercent} beneficiary={1} size="130" />
-
-          </Box>
-          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" mt="15px">
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{ mt: "15px" }}
-              >
-                {"$" + total}
-              </Typography>
-              <Typography color={colors.greenAccent[500]}>Total Donations Requested</Typography>
-            </Box>
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{ mt: "15px" }}
-              >
-                {"$" + used}
-              </Typography>
-              <Typography color={colors.blueAccent[500]}>Total Donations Recieved</Typography>
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          {/* <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            City Wise Donations
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
-          </Box> */}
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          {/* <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Geography Map
-          </Typography>
-          <Box height="200px" >
-            <Geography isDashboard={true}/>
-          </Box> */}
-        </Box>
+        <Box>
       </Box>
     </Box>)
 }

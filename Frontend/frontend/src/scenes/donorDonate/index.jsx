@@ -104,19 +104,13 @@ const DonorDonation = () => {
 
         console.log("HERE: ", values);
 
-        let donateResult = await axios.post(
-            `http://localhost:5000/donorDonations/donate/${userID}`,
-            //{values}
-        )
+        await setDonorDonation(values)
 
-        console.log("DONATE RESULT: ", donateResult)
-
-        const sessionUrl = donateResult.data.sessionUrl;
-
-        console.log("SESSION URL: ", sessionUrl)
-
-        // Redirect the user to the Stripe URL
-        //window.location.href = sessionUrl;
+        if (isError && !isLoading) {
+            console.log(error)
+        }
+        // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
+        // JSON.parse(data)
 
         //To show the popup component.
         setOpen(true);
