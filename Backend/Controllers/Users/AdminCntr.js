@@ -215,6 +215,7 @@ const ViewAppealedCases = async (req, res, next) => {
     console.log("over here")
     try {
         let appealed = await benefAppealModel.find({ verified: false }).populate('benefId').exec()
+        console.log(appealed)
         res.send(appealed)
     } catch (error) {
         res.send(error)

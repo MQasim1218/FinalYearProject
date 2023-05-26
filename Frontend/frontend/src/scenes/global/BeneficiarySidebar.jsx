@@ -127,13 +127,6 @@ const UserSidebar = () => {
                             <Item title="Dashboard" to="/beneficiarydashboard" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} />
                             <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Verification</Typography>
                             <Item title="Upload Documents" to="/uploaddocuments" icon={<DriveFolderUploadOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="Verification Status" to="/verificationstatus" icon={<VerifiedOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Request</Typography>
-                            {/* <Item title="Donate" to="/donate" icon={<VolunteerActivismOutlinedIcon/>} selected={selected} setSelected={setSelected} /> */}
-                            <Item title="Donation" to="/requestdonation" icon={<VolunteerActivismOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Item title="View Requests" to="/requesteddonations" icon={< VisibilityOutlinedIcon />} selected={selected} setSelected={setSelected} />
-                            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>Analytics</Typography>
-                            <Item title="User Analytics" to="/useranalytics" icon={<ContactsOutlinedIcon />} selected={selected} setSelected={setSelected} />
                         </Box>
 
 
