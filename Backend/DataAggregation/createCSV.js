@@ -33,16 +33,17 @@ function createCSV(data, headers, filename, info) {
 
 
         // Check if the directory exists, else create to store the files.
-        const directory = path.join(__dirname, 'Reports');
-        if (!fs.existsSync(directory)) {
-            fs.mkdirSync(directory);
-            console.log('Created the directory');
-        }
+        // const directory = path.join(__dirname, 'Reports');
+        // if (!fs.existsSync(directory)) {
+        //     fs.mkdirSync(directory);
+        //     console.log('Created the directory');
+        // }
 
+        const directory = 'C:/Users/ahsan/downloads/'
 
         console.log("Created the csv array!!")
 
-        console.log("the directory does exist!")
+        // console.log("the directory does exist!")
 
         const filePath = path.join(directory, `${filename}.csv`);
         fs.writeFileSync(filePath, csv);

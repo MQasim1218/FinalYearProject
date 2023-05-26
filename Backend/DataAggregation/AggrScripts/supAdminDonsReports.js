@@ -26,7 +26,7 @@
  */
 
 
-const SuperAdminDonations = require('../Models/Donations/DonationSuperAdmin');
+const SuperAdminDonations = require('../../Models/Donations/DonationSuperAdmin');
 const createCSV = require('../createCSV');
 
 const fields = [
@@ -66,6 +66,8 @@ function Get_All_SuperAdmin_Donations_Report() {
         "Amount_Received_from_Donor",
         "Donor_Location",
     ];
+
+    let fn = ""
 
     SuperAdminDonations
         .aggregate([
@@ -139,7 +141,7 @@ function Get_All_SuperAdmin_Donations_Report() {
         ]
         )
         .then(data => {
-            console.log(data)
+            // console.log(data)
 
             // lets reconstruct the data!
             let all_supadmin_dons = []
@@ -186,13 +188,19 @@ function Get_All_SuperAdmin_Donations_Report() {
             // Instead of returning here, I can simply write to the csv here!!
 
             // NOTE: Create the file name programatically below using the current time and the key `AllAdminDonationsReport`
-            console.log("All the admin donations are: ", all_supadmin_dons)
+            // console.log("All the admin donations are: ", all_supadmin_dons)
 
+            console.log("sdkfjsodijgsiovj")
 
-            createCSV(all_supadmin_dons, fields, "SuperAdminReport")
+            fn = createCSV(all_supadmin_dons, fields, "SuperAdminReport12345")
+
+            // console.log("fn: ", fn)
+
 
         }
         );
+
+    return fn
 
 }
 

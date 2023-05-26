@@ -3,3 +3,14 @@
 /Mobile/node_modules
 /Backend/node_modules
 /node_modules
+/Backend/BenificiaryVerificaion/pretrained_weights
+/Backend/BenificiaryVerificaion/data
+/Backend/BenificiaryVerificaion/test_images
+/Backend/BenificiaryVerificaion/test_images
+
+/BenificiaryVerificaion/test_images
+/BenificiaryVerificaion/pretrained_weights
+/BenificiaryVerificaion/data
+/BenificiaryVerificaion/trash
+/BenificiaryVerificaion/client/node_modules
+

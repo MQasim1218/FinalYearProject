@@ -28,6 +28,10 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { useGetSingleDonationQuery } from '../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice';
 import { useGetDonationsFromSingle_SADonationQuery } from '../../app/redux-features/donations/AdminDonations/AdminDonsSlice';
 import { VolunteerActivismOutlined } from '@mui/icons-material';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import JSZip from 'jszip';
+
 
 const CaseVerification = ({ single_donor }) => {
 
@@ -40,7 +44,7 @@ const CaseVerification = ({ single_donor }) => {
   let { id } = useParams();
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "_id", headerName: "ID", flex: 0.5 },
     { field: "index", headerName: "Num" },
     {
       field: "case_title",
@@ -49,13 +53,13 @@ const CaseVerification = ({ single_donor }) => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "",
-      headerName: "Campaign Goal",
+      field: "verified",
+      headerName: "Verified",
       flex: 0.5,
     },
     {
       field: "createdAt",
-      headerName: "Donated On",
+      headerName: "Appealed On",
       headerAlign: "left",
       align: "left",
       flex: 0.5
@@ -65,21 +69,60 @@ const CaseVerification = ({ single_donor }) => {
       headerName: "Category",
       flex: 0.5,
     },
+    {
+
+      // Okay
+      field: 'Download',
+      type: 'actions',
+      headerName: "Download Files",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<DownloadOutlinedIcon />} label="View" onClick={handleDownload} />,
+      ],
+    },
+    {
+
+      // Okay
+      field: 'Approve',
+      type: 'actions',
+      headerName: "Approve Case",
+      width: 100,
+      getActions: (row) => [
+        <GridActionsCellItem icon={<CheckOutlinedIcon />} label="View" onClick={(row) => {
+          
+          axios.post(`${REACT_APP_BACKEND_BASE_ROUTE}/admin/approveappeal/${row._id}`)
+        }} />,
+      ],
+    },
   ];
 
-  const getData = async () => {
-    let benefCaseData = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin/appealedCases`)
-  }
 
-  getData().then((res) => {
-    setDonationInfo(res.data)
-  })
+  useEffect(() => {
+    const getData = async () => {
+
+      console.log("Called getData")
+
+      try {
+        const benefCaseData = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin/appealedCases`);
+        console.log(benefCaseData)
+        setDonationInfo(benefCaseData.data);
+        console.log("The applead case sre: ", donationInfo)
+      } catch (error) {
+        // Handle error if necessary
+      }
+    };
+
+    getData();
+  }, []);
+
+  console.log("The applead case sre: ", donationInfo)
+
 
   let AdminDonsDataGrid = <></>
 
 
 
-  adminDons = donationInfo?.map((don, ind) => ({ ...don, id: don._id, index: ind + 1, campaign_name: don.campaign.campaign_title, campaign_goal: don.campaign.required_amount, createdAt: don.createdAt.slice(0, 10) }))
+  let adminDons = donationInfo?.map((don, ind) => ({ ...don, id: don._id, index: ind + 1 }))
 
 
   console.log("Admin donations made from this SuperAdmin Donation are: ", adminDons)
@@ -103,8 +146,9 @@ const CaseVerification = ({ single_donor }) => {
 
   // Iterate over each object in adminDons and add the IDs to the Set
   adminDons?.forEach(item => {
-    const campaignId = item.campaign._id;
-    uniqueCampaignIds.add(campaignId);
+    // const campaignId = item.campaign._id;
+    // uniqueCampaignIds.add(campaignId);
+    console.log("kfasdkf: ", item)
   });
 
   // Get the count of unique campaign IDs
@@ -113,91 +157,43 @@ const CaseVerification = ({ single_donor }) => {
   console.log(uniqueCampaignCount);
 
 
+
+  const handleDownload = async () => {
+    const date = adminDons?.createdAt.slice(0, 10);
+
+    const zip = new JSZip();
+
+    const downloadPromises = adminDons?.campaign_docs.map(async (fileUrl) => {
+      const response = await fetch(fileUrl);
+      const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+      const fileData = await response.blob();
+      zip.file(fileName, fileData);
+    });
+
+    await Promise.all(downloadPromises);
+
+    zip.generateAsync({ type: 'blob' }).then((content) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(content);
+      link.download = `BeneFiles.zip`;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
+  const handleApprove = (row) => {
+    clg
+  }
+
   return (<Box m="20px">
     <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Header title="Super Admin Donation Info" subtitle="View SuperAdmin to Admin donation information" />
+      <Header title="Beneficiary Case Verification" />
     </Box>
 
-    <Box>
-      <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0px 0 10px 10px" }}>General Information</Typography>
-    </Box>
 
-    {/* Grids and Charts */}
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(12, 1fr)"
-      gridAutoRows="140px"
-      gap="20px"
-    >
-      {/* ROW 1 */}
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={singleDonation?.admin?.name}
-          subtitle="Admin Donation Allocated To"
-          icon={<PersonOutlineOutlinedIcon
-            sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-          />}
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={"$" + singleDonation?.amount}
-          subtitle="Donation Amount"
-          icon={
-            <AttachMoneyOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={uniqueCampaignCount}
-          subtitle="Campaigns Supported"
-          icon={
-            <VolunteerActivismOutlined
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-      <Box
-        gridColumn="span 3"
-        backgroundColor={colors.primary[400]}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <StatBox
-          title={"$" + singleDonation?.donated}
-          subtitle="Donated To Campaign"
-          icon={
-            <AttachMoneyOutlinedIcon
-              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-            />
-          }
-        />
-      </Box>
-    </Box>
-    <Box mt="5rem">
+    <Box mt="0.5rem">
       <Typography variant="h4" color={colors.blueAccent[500]} sx={{ m: "0 0 10px 10px" }}>Admin Donations from this Super Donations</Typography>
     </Box>
     <Box

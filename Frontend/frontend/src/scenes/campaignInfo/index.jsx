@@ -131,8 +131,8 @@ const CampaignInfo = () => {
     if (isGreater) {
       setOpen2(true)
       return
-    } 
-    
+    }
+
     let response = await setAdminToCampaignDonation({ ...values })
     if (isError && !isLoading) {
       console.log(error)
@@ -612,7 +612,7 @@ const CampaignInfo = () => {
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-          <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Weekly Donations</Typography>
+          <Typography padding="10px 0 0 10px" variant="h6" color={colors.grey[100]}>Monthly Donations</Typography>
           <CampaignLineChart isDashboard={true} />
         </Box>
 

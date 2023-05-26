@@ -3,6 +3,7 @@ const GeneralCampaignModel = require("../../Models/Campaings/GeneralCampaigns")
 const SpecificCampaignModel = require("../../Models/Campaings/SpecificCampaign")
 const AdminDonations = require("../../Models/Donations/DonationAdmin")
 const DonorModel = require("../../Models/Users/DonorModel")
+const benefAppealModel = require("../../Models/Campaings/benifAppeal")
 
 // Crud Operations
 const GetAdmin = async (req, res, next) => {
@@ -210,27 +211,26 @@ const ViewSpecificCampaigns = async (req, res, next) => {
     }
 }
 
-const ViewAppealedCampaigns = async (req, res, next) => {
+const ViewAppealedCases = async (req, res, next) => {
     console.log("over here")
     try {
-        let appealed = await SpecificCampaignModel.find({ approved: false }).exec()
+        let appealed = await benefAppealModel.find({ verified: false }).populate('benefId').exec()
+        console.log(appealed)
         res.send(appealed)
     } catch (error) {
         res.send(error)
     }
 }
 
-const ApproveCampaign = async (req, res, next) => {
+const ApproveAppeal = async (req, res, next) => {
     try {
-        let camp = await SpecificCampaignModel.findById(req.params.campaign_id).exec()
-        console.log(camp)
-        if (camp.rejected === true) {
-            res.send("This campaign is already rejected, Cant be approved!")
-        } else if (camp.approved === false) {
-            camp.approved = true
-            res.send(camp)
-            camp.save()
-        }
+        let appeal = await benefAppealModel.findById(req.params.appeal_id).exec()
+        console.log(appeal)
+        appeal.verified = true
+        res.send(appeal)
+        appeal.save()
+
+        return
     } catch (err) {
         console.log(err)
         res.status(400).send(err)
@@ -263,12 +263,12 @@ module.exports = {
     SignInAdmin,
     GetAllAdmins,
     ChangeDetails,
-    ApproveCampaign,
+    ApproveAppeal,
     ChangeAuthDetails,
     AddGeneralCampaign,
     ViewGeneralCampaigns,
     RejectCampiagnRequest,
     ViewSpecificCampaigns,
-    ViewAppealedCampaigns,
+    ViewAppealedCases,
     GetDonorsForAdminCampaigns
 }
