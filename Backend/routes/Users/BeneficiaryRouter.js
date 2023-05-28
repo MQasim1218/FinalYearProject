@@ -154,7 +154,9 @@ router.post("/appeal/", upload.array('images'), async (req, res, next) => {
         console.log("The uploaded files are:", req.files);
 
         // Access the form data
-        const { case_title, description, category, benefId } = req.body;
+        const { case_title, description, category, benefId, campaign_docs } = req.body;
+
+        console.log("THe docs are: ", campaign_docs)
 
         // Access the uploaded files
         const uploadedFiles = req.files.map((file) => file.filename);
@@ -164,15 +166,36 @@ router.post("/appeal/", upload.array('images'), async (req, res, next) => {
             case_title,
             description,
             category,
-            url_docs: uploadedFiles,
+            campaign_docs,
             benefId,
         });
 
         // Send the response
         res.status(200).json(appeal);
 
+
         // Send the files to the backend for verification
         // You can perform any required operations with the uploaded files here
+
+        // Send the files to the backend for verification
+        const verificationPayload = {
+            files: uploadedFiles,
+            // Include any additional data required for verification
+        };
+
+        const verificationEndpoint = "http://localhost:3003/verify"; // Replace with the actual endpoint URL
+
+        // Make the Axios POST request to the verification endpoint
+        console.log("Sending the backend request for verification!")
+        try {
+            // let preds = await axios.post(verificationEndpoint, verificationPayload);
+            console.log("The predictions returned are: Nothing for now!")
+
+        } catch (error) {
+            console.log("Failed in verifiaction!")
+        }
+
+        // You can handle the response from the verification server here
 
     } catch (error) {
         console.log("Error:", error.message);

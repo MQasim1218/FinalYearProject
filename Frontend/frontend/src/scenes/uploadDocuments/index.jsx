@@ -118,11 +118,19 @@ const UploadDocuments = () => {
 
             // ! =============================== !
             try {
+
+                console.log("The valeus are: ", values)
                 const formData = new FormData();
-                
-                values.url_docs.forEach((url) => {
-                    formData.append("images", url);
+
+                //  This part is wrongly done!
+                values.file.forEach((file) => {
+                    formData.append("images", file);
                 });
+
+
+                console.log("The url docs are: ", values.url_docs)
+
+                formData.append("campaign_docs", values.url_docs)
                 formData.append("case_title", values.case_title);
                 formData.append("description", values.description);
                 formData.append("category", values.category);

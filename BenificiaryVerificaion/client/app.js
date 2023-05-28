@@ -5,9 +5,9 @@ const { callVerifyImages, init_srv } = require('./grpcClient');
 const fs = require('fs');
 const app = express();
 const benifAppeal = require('./Models/verificaion')
-
+const mongoose = require('mongoose')
 require('dotenv').config()
-mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfully Connected to DB") })
+// mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfully Connected to DB") })
 
 
 const validIncidents = [
@@ -66,42 +66,43 @@ app.post('/verify', upload_files.array('images'), async (req, res) => {
         // Call the function for image verification and obtain predictions
         let predictions = await callVerifyImages(imagePaths);
 
-        let prs = Object.values(predictions)
+        // let prs = Object.values(predictions)
 
-        prs.forEach((pred, index) => {
-            if (pred.incidents.length != 0) {
-                pred.incidents.forEach(val => {
-                    if (validIncidents.includes(val)) {
+        // prs.forEach((pred, index) => {
+        //     if (pred.incidents.length != 0) {
+        //         pred.incidents.forEach(val => {
+        //             if (validIncidents.includes(val)) {
 
-                        // Save the value to be added to the database!
-                        console.log("Updating the Benificiary Appeal")
+        //                 // Save the value to be added to the database!
+        //                 console.log("Updating the Benificiary Appeal")
 
-                        benifAppeal.findByIdAndUpdate(
-                            req.params.appeal_id,
-                            {
-                                // Set verified to true!
-                                verified: true,
+        //                 benifAppeal.findByIdAndUpdate(
+        //                     req.params.appeal_id,
+        //                     {
+        //                         // Set verified to true!
+        //                         verified: true,
 
-                                // Add the prediction values to the array!
-                                $push: {
-                                    docs_predictions: {
-                                        imgName: imagePaths[index],
-                                        prediction: val
-                                    }
-                                }
-                            },
-                        )
-                    }
-                })
-            }
-        })
-
-
+        //                         // Add the prediction values to the array!
+        //                         $push: {
+        //                             docs_predictions: {
+        //                                 imgName: imagePaths[index],
+        //                                 prediction: val
+        //                             }
+        //                         }
+        //                     },
+        //                 )
+        //             }
+        //         })
+        //     }
+        // })
 
 
-        console.log("The values are: ", prs)
+
+
+        // console.log("The values are: ", prs)
 
         // Send the response 
+        // Just return the predictions for now!
         res.json(predictions);
 
 
@@ -126,8 +127,8 @@ app.post('/verify', upload_files.array('images'), async (req, res) => {
 
 
 
-app.listen(3000, () => {
-    console.log('Express server listening on port 3000');
+app.listen(3003, () => {
+    console.log('Express server listening on port 3003');
 
     // When the server starts, initialize the ML models aswell
     init_srv()
