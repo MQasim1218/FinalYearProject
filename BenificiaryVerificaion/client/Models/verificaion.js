@@ -30,15 +30,20 @@ let benefAppealSchema = mongoose.Schema({
         }
     ],
 
-    docs_predictions: {
-        type: mongoose.Schema({
+    docs_predictions: [
+        new mongoose.Schema({
             imgName: String,
             prediction: String
         })
-    },
+    ],
 
     // If the docs_preds is good, then the verified should get true~
     verified: {
+        type: Boolean,
+        default: false
+    },
+
+    approved: {
         type: Boolean,
         default: false
     },

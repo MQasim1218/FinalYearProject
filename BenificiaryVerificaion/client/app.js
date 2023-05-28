@@ -3,9 +3,40 @@ const multer = require('multer')
 // const upload = require("express-fileupload")
 const { callVerifyImages, init_srv } = require('./grpcClient');
 const fs = require('fs');
-
-
 const app = express();
+const benifAppeal = require('./Models/verificaion')
+
+require('dotenv').config()
+mongoose.connect(process.env.MONGODB_PATH).then(() => { console.log("Successfully Connected to DB") })
+
+
+const validIncidents = [
+    "earthquake",
+    "flooded",
+    "ice storm",
+    "burned",
+    "collapsed",
+    "earthquake",
+    "fire whirl",
+    "car accident",
+    "van accident",
+    "truck accident",
+    "train accident",
+    "bus accident",
+    "motorcycle accident",
+    "earthquake",
+    "landslide",
+    "mudslide mudflow",
+    "rockslide rockfall",
+    "snowslide avalanche",
+    "thunderstorm",
+    "wildfire",
+    "tropical cyclone",
+    "heavy rainfall",
+    "tornado",
+    "drought",
+    "damaged"
+]
 
 
 // Set up Multer for handling file uploads
@@ -30,8 +61,45 @@ app.post('/verify', upload_files.array('images'), async (req, res) => {
         const imagePaths = req.files.map(file => file.path.slice(8));
         console.log('Image Paths:', imagePaths);
 
+        // we need to save these image paths to database to be able to store additional info related to them
+
         // Call the function for image verification and obtain predictions
         let predictions = await callVerifyImages(imagePaths);
+
+        let prs = Object.values(predictions)
+
+        prs.forEach((pred, index) => {
+            if (pred.incidents.length != 0) {
+                pred.incidents.forEach(val => {
+                    if (validIncidents.includes(val)) {
+
+                        // Save the value to be added to the database!
+                        console.log("Updating the Benificiary Appeal")
+
+                        benifAppeal.findByIdAndUpdate(
+                            req.params.appeal_id,
+                            {
+                                // Set verified to true!
+                                verified: true,
+
+                                // Add the prediction values to the array!
+                                $push: {
+                                    docs_predictions: {
+                                        imgName: imagePaths[index],
+                                        prediction: val
+                                    }
+                                }
+                            },
+                        )
+                    }
+                })
+            }
+        })
+
+
+
+
+        console.log("The values are: ", prs)
 
         // Send the response 
         res.json(predictions);

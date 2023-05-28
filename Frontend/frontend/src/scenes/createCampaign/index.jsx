@@ -118,8 +118,7 @@ const CreateCampaign = () => {
       `http://localhost:5000/admin/${user?.user?._id}/addGeneralCampaign`,
       { ...values, admin: user?.user?._id }
     )
-    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    // JSON.parse(data)
+    
 
     console.log("camp created: ", camp)
     //To show the popup component.

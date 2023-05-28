@@ -107,18 +107,49 @@ const UploadDocuments = () => {
         else {
             //Write code to send values to backend here
 
-            axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
+            // axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
 
-            alert("Documents uploaded successfully")
+            // alert("Documents uploaded successfully")
 
-            resetForm()
-            setFileUrl(null)
-            setUrls([])
-            setOpen(true);
+            // resetForm()
+            // setFileUrl(null)
+            // setUrls([])
+            // setOpen(true);
+
+            // ! =============================== !
+            try {
+                const formData = new FormData();
+                
+                values.url_docs.forEach((url) => {
+                    formData.append("images", url);
+                });
+                formData.append("case_title", values.case_title);
+                formData.append("description", values.description);
+                formData.append("category", values.category);
+                formData.append("benefId", values.benefId);
+
+                // Send formData to the backend
+                await axios.post(
+                    `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+
+                alert("Documents uploaded successfully");
+
+                resetForm();
+                setFileUrl(null);
+                setUrls([]);
+                setOpen(true);
+            } catch (error) {
+                console.error("Error uploading documents:", error);
+                alert("Error uploading documents. Please try again.");
+            }
         }
-
-
-
     };
 
 

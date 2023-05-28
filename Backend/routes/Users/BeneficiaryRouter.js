@@ -6,6 +6,10 @@ const authorize = require('../../middleware/authorization')
 const multer = require('multer')
 const { AppealCampaign } = require('../../Controllers/Campaigns/SpecCampaignCntrlr')
 const benefAppealModel = require('../../Models/Campaings/benifAppeal')
+const axios = require('axios')
+
+
+
 // const { callVerifyImages } = require('../../utils/grpcClient')
 
 
@@ -108,7 +112,7 @@ router.delete('/:id', function (req, res, next) {
 
 // // Create a storage for multer
 // const storage = multer.diskStorage({
-//     // ! Will need to change the storage destination in the main code! 
+//     // ! Will need to change the storage destination in the main code!
 //     destination: '../temp/',
 //     filename: function (req, file, cb) {
 //         cb(null, Date.now() + '_' + file.originalname);
@@ -127,20 +131,52 @@ router.delete('/:id', function (req, res, next) {
 // #################  Capmaigns  ##################
 
 
+// Create a multer storage instance
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        // Set the destination folder for uploaded files
+        cb(null, "./temp/");
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${file.originalname}`);
+    },
+});
+
+
+// Create a multer upload instance
+const upload = multer({ storage });
+
 // Appeal a campaign
-router.post("/appeal/", async (req, res, next) => {
+router.post("/appeal/", upload.array('images'), async (req, res, next) => {
 
     try {
+        console.log("The request received is:", req.body);
+        console.log("The uploaded files are:", req.files);
 
-        console.log(req.body)
-        let appeal = await benefAppealModel.create(req.body)
-        // console.log(sc)
+        // Access the form data
+        const { case_title, description, category, benefId } = req.body;
 
+        // Access the uploaded files
+        const uploadedFiles = req.files.map((file) => file.filename);
 
-        return res.status(200).json(appeal)
+        // Create the appeal object
+        const appeal = await benefAppealModel.create({
+            case_title,
+            description,
+            category,
+            url_docs: uploadedFiles,
+            benefId,
+        });
+
+        // Send the response
+        res.status(200).json(appeal);
+
+        // Send the files to the backend for verification
+        // You can perform any required operations with the uploaded files here
+
     } catch (error) {
-        console.log("Error: ", error.message)
-        next(error)
+        console.log("Error:", error.message);
+        next(error);
     }
 })
 
