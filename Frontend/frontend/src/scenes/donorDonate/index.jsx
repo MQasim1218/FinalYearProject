@@ -1,4 +1,4 @@
-import { Box, Button, Snackbar, Alert, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
+import { Box, Button, Snackbar, Alert, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -7,10 +7,12 @@ import { tokens } from "../../theme";
 import { useAllDonorsQuery } from "../../app/redux-features/users/DonorSlice";
 import { useRegisterDonorDonationMutation } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import AlertModal from "../../components/AlertModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSA_RegisterDonorDonationMutation } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from "axios";
+import Payment from "../../components/Payment";
+import { useStripe } from "@stripe/react-stripe-js";
 
 // import axios from "axios"
 
@@ -33,6 +35,8 @@ const userSchema = yup.object().shape({
 const DonorDonation = () => {
 
     const { user } = useAuthContext()
+    const [stripeAmount, setStripeAmount] = useState(0)
+    const stripe = useStripe()
 
     let userID = user?.user?._id
 
@@ -47,6 +51,7 @@ const DonorDonation = () => {
     };
 
     const [open, setOpen] = useState(false)
+    const [modalOpen, setModalOpen] = useState(false)
 
     //Options for category entry
     const catagorys = [
@@ -97,6 +102,49 @@ const DonorDonation = () => {
         }
     ] = useSA_RegisterDonorDonationMutation()
 
+
+    useEffect(() => {
+        if (!stripe) {
+            return;
+        }
+
+        const clientSecret = new URLSearchParams(window.location.search).get(
+            'payment_intent_client_secret',
+        );
+
+        const paymentIntentId = new URLSearchParams(window.location.search).get(
+            'payment_intent',
+        );
+        console.log('paymentIntentId', paymentIntentId);
+
+        if (!clientSecret) {
+            return;
+        }
+
+        stripe.retrievePaymentIntent(clientSecret).then(async ({ paymentIntent }) => {
+            switch (paymentIntent.status) {
+                case 'succeeded':
+                    console.log('Payment succeeded!');
+
+                    let data = localStorage.getItem('donorDonation')
+
+                    const result = await setDonorDonation(JSON.parse(data))
+
+                    console.log("RESULT", result)
+
+                    setOpen(true);
+
+                    if (isError && !isLoading) {
+                        console.log(error)
+                    }
+                    break
+                
+                default:
+                    break
+            }
+        });
+    }, [stripe]);
+
     // On submit, all inputs are stored in values
     const handleFormSubmit = async (values) => {
 
@@ -104,19 +152,12 @@ const DonorDonation = () => {
 
         console.log("HERE: ", values);
 
-        await setDonorDonation(values)
+        localStorage.setItem('donorDonation', JSON.stringify(values));
 
-        if (isError && !isLoading) {
-            console.log(error)
-        }
-        // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-        // JSON.parse(data)
+        setStripeAmount(values.amount)
 
-        //To show the popup component.
-        setOpen(true);
+        setModalOpen(true)
 
-        //To reset the forms values after submit.
-        //resetForm()
     };
 
     const handleClose = (event, reason) => {
@@ -247,6 +288,27 @@ const DonorDonation = () => {
                     </form>
                 )}
             </Formik>
+
+            <Dialog
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                disableBackdropClick
+                sx={{
+                    '& .css-1qxadfk-MuiPaper-root-MuiDialog-paper': {
+                        backgroundColor: colors.primary[500],
+                    },
+                }}
+            >
+                <DialogTitle sx={{ color: 'white'  }}> Make Donation </DialogTitle>
+                <DialogContent>
+                    <Payment amount={stripeAmount} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setModalOpen(false)} color="secondary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
         </Box>
     );

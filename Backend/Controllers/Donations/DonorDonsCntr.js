@@ -1,5 +1,5 @@
 const DonorDons = require('../../Models/Donations/DonationDonor')
-const stripe = require('stripe')('sk_test_51N4jJpD4d2tkTPKs2hMsKxF6cI2qEJALDyfgJzoXzAP1sdplbgi8H4R7wOFomnMN722KG6pXBOlkeEERlBDyJiM300tMCNI0t1')
+const stripe = require('stripe')('sk_test_51MvPDHKczTjNEdSl45s7WqJQAskQ2PlTorvlEPJw7AIoOAuA7MoVCRjMXmwaQv5Azu8GtetRGLluuaXqFwiQUFm400iF0z5Tpo')
 
 const donorFeilds = ['id', 'name', 'age', 'email', 'contact', 'createdAt']
 
@@ -322,6 +322,39 @@ const DonorMonthDonations = async (req, res, next) => {
  * The donor submits the form on the portal that conatains the details, the the stripe checkout the collects 
  * that information to make a custom checkout-page for the donation.  
  */
+
+const makePayment = async (req, res) => {
+    const int = req.body;
+    const amount = parseInt(Object.keys(int)[0], 10);
+    console.log("IN BACKEND", amount);
+
+    try {
+        // Retrieve the contract from the database
+
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount * 100,
+            currency: 'usd',
+            payment_method_types: ['card', 'link'],
+            metadata: {  },
+            // automatic_payment_methods: {
+            //   enabled: true,
+            // },
+        });
+        console.log("PAYMENT INTENT", paymentIntent)
+        // Update the contract with the payment ID
+        // contract.paymentId = paymentIntent.id;
+        // contract.paymentStatus = 'pending';
+        // await contract.save();
+
+
+        res.json({ message: 'Payment initiated', paymentId: paymentIntent.id, clientSecret: paymentIntent.client_secret, });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Something went wrong. Payment not initiated.' });
+    }
+};
+
+
 const Donate = async (req, res, next) => {
     // Must recieve data
     // - Donation amount
@@ -452,6 +485,7 @@ module.exports = {
     GetYearDonations,
     GetMonthDonations,
     SingleDonation,
+    makePayment,
 
     WebhookListen,
 
