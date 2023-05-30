@@ -16,8 +16,8 @@ const useSignUp = () => {
         console.log('signup values at use signup',user)
         const {email, chatId} = user
         
-        const chatSignup = await axios.post('http://localhost:5000/chat/signup',user)
-        console.log('chat signup response',chatSignup)
+        // const chatSignup = await axios.post('http://localhost:5000/chat/signup',user)
+        // console.log('chat signup response',chatSignup)
 
         const res = await axios.post(`http://localhost:5000/${user.userType}/signup`, user, {
             headers: {
