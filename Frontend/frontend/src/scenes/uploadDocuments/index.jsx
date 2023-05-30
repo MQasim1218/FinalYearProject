@@ -107,18 +107,57 @@ const UploadDocuments = () => {
         else {
             //Write code to send values to backend here
 
-            axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
+            // axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`, values)
 
-            alert("Documents uploaded successfully")
+            // alert("Documents uploaded successfully")
 
-            resetForm()
-            setFileUrl(null)
-            setUrls([])
-            setOpen(true);
+            // resetForm()
+            // setFileUrl(null)
+            // setUrls([])
+            // setOpen(true);
+
+            // ! =============================== !
+            try {
+
+                console.log("The valeus are: ", values)
+                const formData = new FormData();
+
+                //  This part is wrongly done!
+                values.file.forEach((file) => {
+                    formData.append("images", file);
+                });
+
+
+                console.log("The url docs are: ", values.url_docs)
+
+                formData.append("campaign_docs", values.url_docs)
+                formData.append("case_title", values.case_title);
+                formData.append("description", values.description);
+                formData.append("category", values.category);
+                formData.append("benefId", values.benefId);
+
+                // Send formData to the backend
+                await axios.post(
+                    `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+
+                alert("Documents uploaded successfully");
+
+                resetForm();
+                setFileUrl(null);
+                setUrls([]);
+                setOpen(true);
+            } catch (error) {
+                console.error("Error uploading documents:", error);
+                alert("Error uploading documents. Please try again.");
+            }
         }
-
-
-
     };
 
 
