@@ -33,7 +33,7 @@ const SignIn = async (req, res, next) => {
             res.json({ user, token })
         } else {
             console.log("Incorrect Credentials!!")
-            res.send("Incorrect Credentials")
+            res.status(500).send("Incorrect Credentials")
         }
     } catch (error) {
         console.log("Error encountered: ", error.message)

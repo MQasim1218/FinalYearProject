@@ -52,14 +52,17 @@ const Login = (props) => {
     // console.log("Form values: ", values);
     // console.log("Here trying to login with a user!!")
     let { email, password, userType } = values
-    try{
-    await login(email, password, userType)
 
-    console.log(`${userType} login sucessful`)
-    console.log(`navigating now!`)
-    navigate(`/${userType}dashboard`)
+    console.log("The user type for login is: ", userType)
+
+    try {
+      await login(email, password, userType)
+
+      console.log(`${userType} login sucessful`)
+      console.log(`navigating now!`)
+      navigate(`/${userType}dashboard`)
     }
-    catch(err){
+    catch (err) {
       setOpen(true)
     }
 
@@ -167,7 +170,7 @@ const Login = (props) => {
 
             <Box display="grid" justifyContent="center" mt="20px">
               {/* <Button type="submit" color="secondary" variant="contained" /> */}
-              <Button type="submit" disabled={isSubmitting} color="secondary" variant="contained"> {isSubmitting? "Loading...":"Login"} </Button>
+              <Button type="submit" disabled={isSubmitting} color="secondary" variant="contained"> {isSubmitting ? "Loading..." : "Login"} </Button>
               <Typography variant="h6" color={colors.blueAccent[300]} sx={{ m: "20px 0 5px 0" }}>Dont have an account?</Typography>
               <Button onClick={() => navigate('/register')} type="submit" color="primary" variant="contained">
                 Register
