@@ -16,15 +16,15 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Settings = () => {
 
-  const {user} = useAuthContext()
+  const { user } = useAuthContext()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const navigate = useNavigate();
   const [open, setOpen] = useState(false)
   const [openTrue, setOpenTrue] = useState(false)
   const [profileImage, setProfileImage] = useState(user?.user?.picture);
-  const [fileUrl, setFileUrl] = useState(user?.user?.picture);
-  
+  const [fileUrl, setFileUrl] = useState(user?.user?.picture);
+
   const initialValues = {
     name: user?.user?.name || "",
     email: user?.user?.email || "",
@@ -32,7 +32,7 @@ const Settings = () => {
     chatId: "",
     picture: user?.user?.picture,
   };
-  
+
   const userSchema = yup.object().shape({
     name: yup.string().required("Required"),
     email: yup.string().required("Required"),
@@ -42,34 +42,34 @@ const Settings = () => {
 
   const id = user?.user?._id;
 
-  console.log("Checking Admin ID: ",id)
+  console.log("Checking Admin ID: ", id)
 
   const userType = JSON.parse(localStorage.getItem('userType'));
 
   const handleFormSubmit = async (values) => {
-    
+
     // values.picture = picture;
 
-    console.log("Checking Values: ",values)
-    const { name, email, password, chatId, picture} = values;
-    const data = { name, email, password, chatId, picture:profileImage };
-    console.log("Checking Data: ",data)
+    console.log("Checking Values: ", values)
+    const { name, email, password, chatId, picture } = values;
+    const data = { name, email, password, chatId, picture: profileImage };
+    console.log("Checking Data: ", data)
     try {
-      const response = await axios.patch( `http://localhost:5000/${userType}/update/${id}`,data);
+      const response = await axios.patch(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/${userType}/update/${id}`, data);
       console.log("Update Response: ", response);
 
-      const {email, chatId} = response.data
-     
+      const { email, chatId } = response.data
+
       const userChatID = localStorage.getItem('chatId');
-    
+
       const chatUpdate = await axios.patch(`https://api.chatengine.io/users/${userChatID}/`, {
         username: email,
         secret: chatId,
       }, {
         headers: {
           'Private-Key': process.env.REACT_APP_PRIVATE_KEY,
-        },
-      });
+        },
+      });
     } catch (error) {
       console.log(error);
       setOpen(true);
@@ -78,7 +78,7 @@ const Settings = () => {
   };
 
 
-  
+
 
 
   const handleClose = (event, reason) => {
@@ -136,7 +136,7 @@ const Settings = () => {
 
 
   return (
-    <Box  margin padding="20px" m="0 0 0 30%" height="auto" width="40%" border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]}>
+    <Box margin padding="20px" m="0 0 0 30%" height="auto" width="40%" border={`1px solid ${colors.grey[100]}`} borderRadius="4px" backgroundColor={colors.primary[400]}>
       <Header title="Settings" subtitle="Update your account details" />
 
       <Formik
@@ -164,8 +164,8 @@ const Settings = () => {
               }}
             >
               <Box>
-                     <Dropzone value={profileImage} setFieldValue={setFieldValue} />
-                   </Box>
+                <Dropzone value={profileImage} setFieldValue={setFieldValue} />
+              </Box>
               <TextField
                 fullWidth
                 variant="filled"
@@ -221,7 +221,7 @@ const Settings = () => {
 
             <Box display="grid" justifyContent="center" mt="20px">
               <Button disabled={isSubmitting} type="submit" color="secondary" variant="contained">
-              {isSubmitting? "Loading...":"Update"}
+                {isSubmitting ? "Loading..." : "Update"}
               </Button>
             </Box>
           </form>

@@ -109,7 +109,7 @@ const HomeScreenCampaigns = ({ isDashboard = false, title, subtitle, data }) => 
         const fetchCampaigns = async () => {
             try {
                 let gen_res = await axios.get(
-                    "http://localhost:5000/gen_campaigns/",
+                    `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/gen_campaigns/`,
                     {
                         headers: {
                             'Content-Type': 'application-json',
@@ -119,7 +119,7 @@ const HomeScreenCampaigns = ({ isDashboard = false, title, subtitle, data }) => 
                     }
                 )
                 let spec_res = await axios.get(
-                    "http://localhost:5000/spec_campaigns",
+                    `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/spec_campaigns`,
                     {
                         headers: {
                             'Content-Type': 'application-json',

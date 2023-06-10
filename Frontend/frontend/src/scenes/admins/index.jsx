@@ -37,7 +37,7 @@ const Admins = () => {
 
   const handleDelete = async (id) => {
 
-    const getRespose = await axios.get(`http://localhost:5000/admin/get/${id}`);
+    const getRespose = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin/get/${id}`);
     let chatEmail = getRespose.data.email
     let chatPassword = getRespose.data.chatId
     console.log(chatEmail, chatPassword)
@@ -57,7 +57,7 @@ const Admins = () => {
     console.log("Chat Get:", chatGet)
 
 
-    const response = await axios.delete(`http://localhost:5000/admin/delete/${id}`);
+    const response = await axios.delete(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin/delete/${id}`);
 
 
     setOpen(true);

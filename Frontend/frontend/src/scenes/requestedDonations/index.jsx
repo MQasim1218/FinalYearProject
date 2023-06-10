@@ -83,7 +83,7 @@ const ViewDonations = () => {
             console.log("Token: ", user.user.token)
             console.log("User Id: ", user.user.user._id)
             let res = await axios.get(
-                `http://localhost:5000/donor/${id}/donations`,
+                `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/donor/${id}/donations`,
                 {
                     headers: {
                         'Authorization': `Bearer ${user.user.token}`,

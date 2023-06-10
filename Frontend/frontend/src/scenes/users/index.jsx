@@ -105,7 +105,7 @@ const Users = () => {
         let res = null
         if (view === "donors") {
           res = await axios.get(
-            "http://localhost:5000/donor/allDonors",
+            `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/donor/allDonors`,
             {
               headers: {
                 'Authorization': `Bearer ${user.user.token}`
@@ -115,7 +115,7 @@ const Users = () => {
           )
           setIsLoading(false)
         } else {
-          res = await axios.get("http://localhost:5000/beneficiary")
+          res = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary`)
           setIsLoading(false)
         }
 

@@ -18,9 +18,11 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Topbar = () => {
     const navigate = useNavigate();
-    const {user} = useAuthContext()
+    const { user } = useAuthContext()
 
     const userType = JSON.parse(localStorage.getItem('userType'));
+
+
 
 
     //Grabs the theme in react using mui
@@ -33,6 +35,7 @@ const Topbar = () => {
     // Get the logout function from the context-hook
     const { logout } = useLogout()
 
+    console.log("llllll: ", user?.user?.userType)
 
     return (
         //Box is basically div component from mui, but you can put CSS props in it
@@ -46,19 +49,32 @@ const Topbar = () => {
 
             {/*Icons*/}
             <Box display="flex">
-                {userType === "admin" || "superadmin" ? (<IconButton onClick={async () => { navigate('/chat')
+                {userType === "admin" || "superadmin" ? (<IconButton onClick={async () => {
+                    navigate('/chat')
                         ;
-                    }}>
+                }}>
                     <MessageOutlinedIcon />
                 </IconButton>) : (null)}
-                
-                
 
-                <IconButton onClick={async () => { navigate('/settings')
-                        ;
-                    }}>
+                {/* <IconButton onClick={async () => {
+                    navigate('/settings')
+                    ;
+                }}>
                     <SettingsOutlinedIcon />
-                </IconButton>
+                </IconButton> */}
+
+
+
+                {
+                    user?.user?.userType !== undefined ? (
+                        <IconButton onClick={async () => {
+                            navigate('/settings')
+                                ;
+                        }}>
+                            <SettingsOutlinedIcon />
+                        </IconButton>
+                    ) : (null)
+                }
 
                 <IconButton onClick={colorMode.toggleColorMode}>
                     {theme.palette.mode === "dark" ? (

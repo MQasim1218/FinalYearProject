@@ -1,4 +1,4 @@
-import { Box, Button, Snackbar, Alert , TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
+import { Box, Button, Snackbar, Alert, TextField, useTheme, Checkbox, FormControlLabel, InputAdornment, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -65,27 +65,6 @@ const DonationRegistration = () => {
     },
   ];
 
-
-  //   useEffect(() => {
-
-  //     const getData = async () => {
-  //       const res = await fetch('http://localhost:5000/admin')
-  //       console.log("Got some data!")
-
-  //       if (res.ok) {
-  //         let data = await res.json()
-  //         console.log(data)
-  //         if (data !== null) console.log(data)
-  //         else console.log("No data recieved!")
-  //       }
-  //     }
-
-  //     getData()
-  //     return (() => console.log("No clean up"))
-
-  //   }, [])
-
-
   //force width to not go below 600px
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
@@ -123,8 +102,6 @@ const DonationRegistration = () => {
     if (isError && !isLoading) {
       console.log(error)
     }
-    // let data = await axios.post("http://localhost:3000/", JSON.stringify(values))
-    // JSON.parse(data)
 
     //To show the popup component.
     setOpen(true);
@@ -146,12 +123,12 @@ const DonationRegistration = () => {
   const colors = tokens(theme.palette.mode)
 
   return (
-    <Box m="20px">      
+    <Box m="20px">
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-    Donation From Donor Registered Successfully!
-    </Alert>
-</Snackbar>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Donation From Donor Registered Successfully!
+        </Alert>
+      </Snackbar>
 
       <Header title="REGISTER DONATIONS" subtitle="Register Donations from Donors" />
 
@@ -280,7 +257,7 @@ const DonationRegistration = () => {
           </form>
         )}
       </Formik>
-      
+
     </Box>
   );
 }

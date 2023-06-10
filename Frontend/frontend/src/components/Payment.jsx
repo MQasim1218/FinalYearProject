@@ -27,7 +27,7 @@ const PaymentForm = ({ clientSecret }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://localhost:3000/donordonation`,
+        return_url: `${process.env.REACT_APP_FRONTEND_BASE_ROUTE}/donordonation`,
 
       },
     });
@@ -53,7 +53,7 @@ const PaymentForm = ({ clientSecret }) => {
   );
 };
 
-const Payment = ( {amount} ) => {
+const Payment = ({ amount }) => {
   const [clientSecret, setClientSecret] = useState(null);
   const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
@@ -71,7 +71,7 @@ const Payment = ( {amount} ) => {
         //   { headers: { 'x-auth-token': token } },
         // );
         const { data } = await axios.post(
-          `http://localhost:5000/donorDonations/makePayment/`, int,
+          `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/donorDonations/makePayment/`, int,
         );
         console.log('data', data);
         setClientSecret(data.clientSecret);

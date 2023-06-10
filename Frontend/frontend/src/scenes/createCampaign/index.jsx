@@ -115,10 +115,10 @@ const CreateCampaign = () => {
 
 
     let camp = await axios.post(
-      `http://localhost:5000/admin/${user?.user?._id}/addGeneralCampaign`,
+      `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin/${user?.user?._id}/addGeneralCampaign`,
       { ...values, admin: user?.user?._id }
     )
-    
+
 
     console.log("camp created: ", camp)
     //To show the popup component.
@@ -146,31 +146,31 @@ const CreateCampaign = () => {
       for (let i = 0; i < acceptedFiles.length; i++) {
         const formData = new FormData();
 
-      // Appending all the files to the formData.
+        // Appending all the files to the formData.
         let file = acceptedFiles[i];
 
         formData.append('file', file);
 
-      // Accept all the files from ??
-      // fidazzwm => File upload access
-      formData.append('preset', 'pj7wsjbl');
+        // Accept all the files from ??
+        // fidazzwm => File upload access
+        formData.append('preset', 'pj7wsjbl');
 
 
-      const results = await axios.post('https://api.cloudinary.com/v1_1/deymti8ua/auto/upload', formData, {
-        params: {
-          upload_preset: 'pj7wsjbl',
-        },
-      });
+        const results = await axios.post('https://api.cloudinary.com/v1_1/deymti8ua/auto/upload', formData, {
+          params: {
+            upload_preset: 'pj7wsjbl',
+          },
+        });
 
-      console.log("URLS: "+results.data.secure_url)
+        console.log("URLS: " + results.data.secure_url)
         URLs.push(results.data.secure_url);
-        
-    }
+
+      }
 
 
       setFieldValue('file', acceptedFiles);
 
-      setFileUrl( acceptedFiles.length + " files selected" )
+      setFileUrl(acceptedFiles.length + " files selected")
 
       setUrls(URLs);
 

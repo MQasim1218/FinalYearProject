@@ -75,25 +75,25 @@ const Campaign = ({
     return (
         <Card sx={{ backgroundImage: "none", backgroundColor: colors.primary[400], borderRadius: "0.55rem", }}>
             <CardContent>
-            <Button onClick={() => navigate(`/campaigninfo/${id}`)}>
-                <Typography variant='h3' color={colors.grey[100]} gutterBottom>
-                    {campaign_title}
-                </Typography>
+                <Button onClick={() => navigate(`/campaigninfo/${id}`)}>
+                    <Typography variant='h3' color={colors.grey[100]} gutterBottom>
+                        {campaign_title}
+                    </Typography>
                 </Button>
                 <Typography variant='h4' color={colors.blueAccent[400]}>
                     {category}
                 </Typography>
                 <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
-                    Campaign Target: ${""+Number(required_amount).toFixed(2)}
+                    Campaign Target: ${"" + Number(required_amount).toFixed(2)}
                 </Typography>
                 <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
-                Accumulated: ${""+Number(donated_amount).toFixed(2)}
+                    Accumulated: ${"" + Number(donated_amount).toFixed(2)}
                 </Typography>
                 <Typography sx={{ mb: "0.5rem", mt: "0.3rem" }} variant='h5' color={colors.primary[200]}>
                     Completed:
                 </Typography>
-                
-                <LinearProgressWithLabel value={progress >= 100? 100 : progress} />
+
+                <LinearProgressWithLabel value={progress >= 100 ? 100 : progress} />
 
 
                 {!isDashboard ? (<Collapse sx={{ justifyContent: "center", backgroundColor: colors.primary[500], borderRadius: "0.55rem", mt: "0.5rem" }} in={isExpanded} timeout="auto" unmountOnExit>
@@ -187,6 +187,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
 
     const handleSearchChange = (event) => {
         setSearch(event.target.value);
+        // Need to implement this. Really important.
     };
 
     const handleBudgetChange = (event, newValue) => {
@@ -224,7 +225,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
         const fetchCampaigns = async () => {
             try {
                 let gen_res = await axios.get(
-                    "http://localhost:5000/gen_campaigns/",
+                    `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/gen_campaigns/`,
                     {
                         headers: {
                             'Content-Type': 'application-json',
@@ -234,7 +235,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
                     }
                 )
                 let spec_res = await axios.get(
-                    "http://localhost:5000/spec_campaigns",
+                    `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/spec_campaigns`,
                     {
                         headers: {
                             'Content-Type': 'application-json',
@@ -261,7 +262,7 @@ const AllCampaigns = ({ isDashboard = false, title, subtitle, id }) => {
             fetchCampaigns().then((data) => {
                 setIsLoadn(false)
                 let camps = data.map((camp, indx) => ({ ...camp, id: indx + 1 }))
-                console.log("HERE IS CAMPAIGN DATA:"+camps)             
+                console.log("HERE IS CAMPAIGN DATA:" + camps)
                 setCampaigns(camps)
             })
         } else {

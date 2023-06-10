@@ -55,110 +55,6 @@ const Dashboard = () => {
     setOpen(false);
   };
 
-
-  // console.log('user obtained is: ', user)
-
-
-
-  /**
-   * Lazy fetch all the dynamic data needed for the dashboard.
-   * Previously, all this was done using Axios Right within the component!
-   * However, due to complexity, the statemanagement logic has been offloaded from componenets into redux
-   */
-  // useEffect(() => {
-
-  //   //   // Get all the campaigns and count them
-  //   //   // TODO: Cache these campaigns using context API
-  //   const getCampaigns = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let gen_res = await axios.get("http://localhost:5000/gen_campaigns/")
-  //       let spec_res = await axios.get("http://localhost:5000/spec_campaigns")
-  //       if (gen_res.status < 300 && gen_res.status < 300) {
-  //         let data = gen_res.data.concat(spec_res.data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-
-  //   const getDonors = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donor/allDonors")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         setActiveDonors(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-
-  //   const geeBeneficiries = async () => {
-  //     // const res = await fetch('http://localhost:5000/admin')
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/beneficiary/")
-  //       if (res.status < 300) {
-  //         let data = res.data
-  //         console.log(data)
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-
-  //   const getDonations = async () => {
-  //     try {
-  //       let res = await axios.get("http://localhost:5000/donations/all/")
-  //       if (res.status < 400) {
-  //         let data = res.data
-  //         if (data !== null) return data
-  //         else console.log("No data recieved!")
-  //       }
-
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-
-  //   getDonations().then((dons) => {
-  //     console.log(dons)
-  //     setDonations(dons)
-
-  //     let tot = 0
-  //     dons.forEach(don => {
-  //       tot += don.amount
-  //     });
-  //     console.log(tot)
-  //     // alert(tot)
-  //     setTotDon(tot)
-  //   })
-
-  //   getCampaigns().then((camps) => {
-  //     setActiveCamps(camps)
-  //   })
-  //   getDonors().then((dons) => {
-  //     setActiveDonors(dons)
-  //   })
-  //   e().then((benefs) => {
-  //     setActiveBenefs(benefs)
-  //   })
-
-  //   return (() => console.log("No clean up"))
-  // }, [])
-
-
-
-
-
   // ! Admins StatBox
 
   /**
@@ -374,9 +270,9 @@ const Dashboard = () => {
 
   const handleDownload = () => {
     axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/adminAnalytics`), {
-  }
+    }
     setOpen(true);
-}
+  }
 
 
 
@@ -391,7 +287,7 @@ const Dashboard = () => {
             fontSize: "14px",
             fontWeight: "bold",
             padding: "10px 20px",
-            
+
           }} >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports

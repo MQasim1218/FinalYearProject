@@ -66,9 +66,9 @@ const SuperDonation = () => {
 
   // NOTE: Options for donor Donations
 
-  let {  data: dons2, } = useAllDonorsDonationsQuery()
+  let { data: dons2, } = useAllDonorsDonationsQuery()
 
-  console.log("Donations: ",dons2)
+  console.log("Donations: ", dons2)
 
   let { isError: donsIsError, isSuccess: donsIsSuccess, error: donsError, data: dons, isLoading: donsIsLoading } = useAllDonorsDonationsQuery()
 
@@ -112,7 +112,7 @@ const SuperDonation = () => {
   // useEffect(() => {
 
   //   const getData = async () => {
-  //     const res = await fetch('http://localhost:5000/admin')
+  //     const res = await fetch(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/admin`)
   //     console.log("Got some data!")
 
   //     if (res.ok) {
@@ -147,7 +147,7 @@ const SuperDonation = () => {
     if (isGreater) {
       setOpen2(true)
       return
-    } 
+    }
 
     await set_donation(values)
     if (isError && !isLoading) {
