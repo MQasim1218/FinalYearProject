@@ -5,6 +5,7 @@ const DonorModel = require('../../Models/Users/DonorModel')
 const AdminModel = require('../../Models/Users/AdminModel')
 
 const toISODate = require('../../utils/isoDate')
+const DonationModel = require('../../Models/Donations/DonationDonor')
 
 const adminFeilds = ['id', 'name', 'age', 'email', 'contact']
 const campFeilds = ['id', 'campaign_title', 'category', 'location']
@@ -765,6 +766,14 @@ const DonateToCampaign = async (req, res, next) => {
 
         console.log("Request recieved is: ", req.body)
 
+        let { supAdminDonation } = req.body
+
+        let supdon = await SADonationModel.findOne({ _id: supAdminDonation })
+        let donordon = await DonationModel.findOne({ _id: supdon.donordonationId })
+
+        req.body.donorId = donordon.donor
+
+
         console.log("here to create donation in the admin")
         let don = await AdminDons.create(req.body)
         if (don) {
@@ -773,6 +782,8 @@ const DonateToCampaign = async (req, res, next) => {
             let amount = parseInt(req.body.amount)
 
             // Update the amount donated to campaign
+
+
 
             // This is to update the campaign details.
             /**

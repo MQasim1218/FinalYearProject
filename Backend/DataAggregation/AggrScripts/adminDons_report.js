@@ -31,6 +31,7 @@ const AdminDonations = require('../../Models/Donations/DonationAdmin');
 const createCSV = require('../createCSV');
 const getFilename = require('../utils/getFilename');
 const CreateMultisheetExcelFile = require('../createExcelFile');
+const toISODate = require('../../utils/isoDate');
 
 const fields = [
     "Donation_Date",
@@ -94,6 +95,12 @@ async function Get_All_Admin_Donations_Report(year) {
         "Campaign_Location",
     ];
 
+    let st = toISODate(`${year}-01-01T00:00:00Z`)
+    let end = toISODate(`${year + 1}-01-01T00:00:00Z`)
+
+    console.log("Start val: ", st)
+    console.log("END Start val: ", end)
+
     let data = await AdminDonations
         .aggregate([
 
@@ -139,6 +146,15 @@ async function Get_All_Admin_Donations_Report(year) {
                     localField: "supAdminDonation",
                     foreignField: "_id",
                     as: "superAdminDonationDetails"
+                }
+            },
+
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(st), // Start of the year
+                        $lt: new Date(end) // Start of the next year
+                    }
                 }
             },
 
@@ -236,7 +252,7 @@ async function Get_All_Admin_Donations_Report(year) {
 
 }
 
-function Get_All_Admin_Category_Donations_Report() {
+async function Get_All_Admin_Category_Donations_Report(year) {
 
     const fields = [
         "Admin_Email",
@@ -253,7 +269,14 @@ function Get_All_Admin_Category_Donations_Report() {
         "Campaign_Location",
     ];
 
-    AdminDonations
+    let st = toISODate(`${year}-01-01T00:00:00Z`)
+    let end = toISODate(`${year + 1}-01-01T00:00:00Z`)
+
+    console.log("Start val: ", st)
+    console.log("END Start val: ", end)
+
+
+    let data = await AdminDonations
         .aggregate([
 
             {
@@ -302,6 +325,15 @@ function Get_All_Admin_Category_Donations_Report() {
             },
 
             {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(st), // Start of the year
+                        $lt: new Date(end) // Start of the next year
+                    }
+                }
+            },
+
+            {
                 $group: {
                     // * Need to check y the grouping itself is even required in the first place!
 
@@ -330,47 +362,24 @@ function Get_All_Admin_Category_Donations_Report() {
                     total_number_of_donations_in_category: { $sum: 1 }, // Add one for each campaign
                 }
             },
-
-            // {
-            //     $unwind: {
-            //         path: "$data.Admin_Name"
-            //     }
-            // },
-            // {
-            //     $unwind: {
-            //         path: "$data.Admin_Email"
-            //     }
-            // }
         ]
         )
-        .then(data => {
 
-            // NOTE: Testing the option for seperate csv sheets for each category..
-            // console.log(data)
+    let sheetnames = data.map(
 
-            // let sheetnames = data1.map(obj => {
-            //     let sn = null
-
-            //     if (obj._id != null) {
-
-            //         sn = (typeof obj._id == 'object') ? Object.values(obj._id).join('-') : obj._id // If the sn value hasn't been assigned yet, then assign it the value of `_id`
-            //     }
-
-            //     return sn || 'sheet' // If the `_id` is null, simply return the string sheet 
-
-            // })
-            let sheetnames = data.map(
-                obj => (obj._id == null) ?
-                    'sheet' :
-                    (
-                        (typeof obj._id === 'object') ? Object.values(obj._id).join('-') : obj._id
-                    )
+        // If the object Id is null, then just call it a sheet, otherwise,
+        // Use the id as the sheetname (if id is an object, then join the values with a '-' inbetween).
+        obj => (obj._id == null) ?
+            'sheet' :
+            (
+                (typeof obj._id === 'object') ? Object.values(obj._id).join('-') : obj._id
             )
+    )
 
-            CreateMultisheetExcelFile(data, fields, "AdminsCategoryDonations", sheetnames)
-        }
-        );
+    let fn = getFilename("AdminsCategoryDonations")
+    let filePath = CreateMultisheetExcelFile(data, fields, fn, sheetnames)
 
+    return filePath
 }
 
 const Get_Single_Admin_Donations_Report = (admin_id) => {

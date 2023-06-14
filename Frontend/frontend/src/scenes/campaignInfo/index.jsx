@@ -161,7 +161,15 @@ const CampaignInfo = () => {
 
   // ! Get total donations donations for the campaingn
 
-  let { data: campDonations, isError: isCampDonsError, isLoading: isCampDonsLoading, error: campDonsError, isSuccess: isCampDonsSuccess } = useSingleCampaignDonationsQuery(id)
+  let {
+    data: campDonations,
+    isError: isCampDonsError,
+    isLoading: isCampDonsLoading,
+    error: campDonsError,
+    isSuccess: isCampDonsSuccess
+  } = useSingleCampaignDonationsQuery(id)
+
+
   let { data: camp } = useSingleCampaignQuery(id)
 
   const { data: admin } = useGetAdminQuery(camp?.admin)
@@ -185,7 +193,7 @@ const CampaignInfo = () => {
     isError: isAllDonsToAdminError,
     isLoading: allDonsToAdminLoading,
     isSuccess: allDonsToAdminSuccess
-  } = useGetSuperAdminDonationsToAdminQuery(camp?.admin)
+  } = useGetSuperAdminDonationsToAdminQuery(user?.user?._id)
 
   let {
     data: allDonsToAdmin2
@@ -215,15 +223,12 @@ const CampaignInfo = () => {
 
   useEffect(() => {
     setTotDon(campDonations?.reduce((acc, curr) => acc + curr.amount, 0))
-    setDonors(new Set(campDonations?.map(don => don.donorId._id)).size)
-
-
-
+    // setDonors(new Set(campDonations?.map(don => don.donorId._id)).size)
 
   }, [campDonations, camp])
 
-  useEffect(() => {
-  }, [campDonations, camp])
+  // useEffect(() => {
+  // }, [campDonations, camp])
 
   const handleDownload = async () => {
     if (camp?.campaign_docs.length === 0) {
