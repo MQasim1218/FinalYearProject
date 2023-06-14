@@ -72,7 +72,7 @@ router.post('/adminsAnalytics/all', async function (req, res, next) {
 
 
 // Get_All_Admin_Category_Donations_Report
-router.post('/adminAnalytics/categories', async function (req, res, next) {
+router.post('/adminsAnalytics/cat', async function (req, res, next) {
 
     try {
         let d = new Date()

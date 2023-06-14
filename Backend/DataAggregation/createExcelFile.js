@@ -1,7 +1,6 @@
 const xlsx = require('xlsx');
 const fs = require('fs');
-const getFilename = require('./utils/getFilename');
-
+const path = require('path');
 
 // NOTE: MA💖 MA💖 this function is finalized, takes custom sheet names too now. MA
 function CreateMultisheetExcelFile(data, fields, filename, sheetnames) {
@@ -12,7 +11,7 @@ function CreateMultisheetExcelFile(data, fields, filename, sheetnames) {
     // First we need to create a notebook.
     const workbook = xlsx.utils.book_new();
 
-    console.log(data.length)
+    console.log("data length: ", data.length)
 
 
     // Loop for the length of data recieved!
@@ -44,18 +43,20 @@ function CreateMultisheetExcelFile(data, fields, filename, sheetnames) {
     // Create a buffer from the binary data
     const buffer = Buffer.from(excelData);
 
+
+    console.log("\n\nDone till here!")
     // Check if the directory exists, else create to store the files.
 
 
     // Save the buffer to the output file
-    fs.writeFileSync(`./Reports/${filename}.xlsx`, buffer);
 
-    console.log("The file has been written!!")
 
 
     const directory = path.join(__dirname, 'Reports');
-    const filePath = path.join(directory, `${filename}.csv`);
+    const filePath = path.join(directory, `${filename}.xlsx`);
+    fs.writeFileSync(filePath, buffer);
 
+    console.log("The file has been written!!", filePath)
     // Ruturning the actual filepath!?
     return filePath
 }
