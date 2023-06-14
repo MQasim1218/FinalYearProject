@@ -49,6 +49,11 @@ function CreateMultisheetExcelFile(data, fields, filename, sheetnames) {
 
     // Save the buffer to the output file
     fs.writeFileSync(`C:/Users/ahsan/downloads/${fn}.xlsx`, buffer);
+
+    console.log("The file has been written!!")
+
+    // Testing if the return file name is going to work or not?
+    return fn
 }
 
 

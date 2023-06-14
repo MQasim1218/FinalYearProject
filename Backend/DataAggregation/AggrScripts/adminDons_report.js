@@ -52,20 +52,6 @@ const fields = [
 
 
 function Get_All_Admin_yearly_Donations_Report() {
-    // const fields = [
-    //     "Admin_Email",
-    //     "Admin_Name",
-    //     "Donation_Date",
-    //     "Amount_Received",
-    //     "Amount_Donated",
-    //     "Donor_Name",
-    //     "Donor_Contact",
-    //     "Donor_Email",
-    //     "Donor_Location",
-    //     "Campaign_Target",
-    //     "Campaign_Amount_Reveived",
-    //     "Campaign_Location",
-    // ];
 
     AdminDonations
         .aggregate([
@@ -107,7 +93,7 @@ function Get_All_Admin_Donations_Report() {
         "Campaign_Location",
     ];
 
-    AdminDonations
+    returned_str = AdminDonations
         .aggregate([
 
             {
@@ -186,7 +172,11 @@ function Get_All_Admin_Donations_Report() {
         ]
         )
         .then(data => {
-            console.log(data)
+            console.log("The data extracted is: ", data)
+
+            if (data.length == 0) {
+                return
+            }
 
             // lets reconstruct the data!
             // let all_admin_dons = []
@@ -197,13 +187,9 @@ function Get_All_Admin_Donations_Report() {
             //     let admin_dons = []
             // admin_dons.donations = obj.donations. This will work, but throw dab data into the fonal result.
             // for (let indx = 0; indx < donations.length; indx++) {
-
             //     const don = donations[indx];
-
             //     // Create an empty object for donations.
             //     let donation = {}
-
-
             //     // Populate the fields of the donation...
             //     donation.Admin_Id = don.Admin_Id
             //     donation.Admin_Name = don.Admin_Name
@@ -219,7 +205,6 @@ function Get_All_Admin_Donations_Report() {
             //     donation.Campaign_Target = don.Campaign_Target[0]
             //     donation.Campaign_Amount_Reveived = don.Campaign_Amount_Reveived[0]
             //     donation.Campaign_Location = don.Campaign_Location[0]
-
             //     // Add the donation to the Admin dons
             //     admin_dons.push(donation)
             // }
@@ -240,6 +225,9 @@ function Get_All_Admin_Donations_Report() {
 
             CreateMultisheetExcelFile(data, fields, "AllAdminsReport", sheetnames)
 
+
+            // The problem I suspect was that nothing ever got returned here!
+            return "job completed"
         }
         );
 

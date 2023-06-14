@@ -30,20 +30,23 @@ function createCSV(data, headers, filename, info) {
             csvRows.push(row.join(','));
         }
         const csv = csvRows.join('\n');
+        console.log("Created the csv array!!")
 
 
         // Check if the directory exists, else create to store the files.
-        // const directory = path.join(__dirname, 'Reports');
-        // if (!fs.existsSync(directory)) {
-        //     fs.mkdirSync(directory);
-        //     console.log('Created the directory');
-        // }
+        const directory = path.join(__dirname, 'Reports');
+        if (!fs.existsSync(directory)) {
+            fs.mkdirSync(directory);
+            console.log('Created the directory');
+        }
 
-        const directory = 'C:/Users/ahsan/downloads/'
-
-        console.log("Created the csv array!!")
+        console.log(directory)
 
         // console.log("the directory does exist!")
+
+        // The cheating that we are doing here is that we are manually sending the hardcoded filepath back.. 
+        // Lets save the file in a reports directory and send back only the filename.
+        // maybe, we dont even need to send back the filename, just confirm that it has been saved.
 
         const filePath = path.join(directory, `${filename}.csv`);
         fs.writeFileSync(filePath, csv);
