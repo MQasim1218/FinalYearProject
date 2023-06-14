@@ -51,6 +51,7 @@ const fields = [
 ];
 
 
+// These funcs can get more than one param
 function Get_All_Admin_yearly_Donations_Report() {
 
     AdminDonations
@@ -76,7 +77,7 @@ function Get_All_Admin_yearly_Donations_Report() {
         ]).then(data => { console.log(data) })
 }
 
-async function Get_All_Admin_Donations_Report() {
+async function Get_All_Admin_Donations_Report(year) {
 
     const fields = [
         "Admin_Email",
@@ -93,7 +94,7 @@ async function Get_All_Admin_Donations_Report() {
         "Campaign_Location",
     ];
 
-    returned_str = AdminDonations
+    let data = await AdminDonations
         .aggregate([
 
             {
@@ -171,65 +172,67 @@ async function Get_All_Admin_Donations_Report() {
 
         ]
         )
-        .then(data => {
-            console.log("The data extracted is: ", data)
 
-            if (data.length == 0) {
-                return
-            }
+    console.log("The data extracted is: ", data)
 
-            // lets reconstruct the data!
-            // let all_admin_dons = []
-            // REVIEW: Removing the old crappy code that just threw all the grouping out of the window and to no avail.
-            // for (let i = 0; i < data.length; i++) {
-            //     const obj = data[i];
-            //     const donations = data[i].donations;
-            //     let admin_dons = []
-            // admin_dons.donations = obj.donations. This will work, but throw dab data into the fonal result.
-            // for (let indx = 0; indx < donations.length; indx++) {
-            //     const don = donations[indx];
-            //     // Create an empty object for donations.
-            //     let donation = {}
-            //     // Populate the fields of the donation...
-            //     donation.Admin_Id = don.Admin_Id
-            //     donation.Admin_Name = don.Admin_Name
-            //     donation.Admin_Email = don.Admin_Email
-            //     donation.Donation_Date = don.Donation_Date.toString().slice(0, 24)
-            //     donation.Amount_Received = don.Amount_Received
-            //     donation.Amount_Donated = don.Amount_Donated // This is returned as array for no ... reason!
-            //     donation.Donor_Name = don.Donor_Name[0] // This is returned as array for no ... reason!
-            //     donation.Donor_Contact = don.Donor_Contact[0] // This is returned as array for no ... reason!
-            //     donation.Donor_Email = don.Donor_Email[0] // This is returned as array for no ... reason!
-            //     donation.Donor_Location = don.Donor_Location[0] // This is returned as array for no ... reason!
-            //     donation.Campaign_ID = don.Campaign_ID // This is returned as array for no ... reason!
-            //     donation.Campaign_Target = don.Campaign_Target[0]
-            //     donation.Campaign_Amount_Reveived = don.Campaign_Amount_Reveived[0]
-            //     donation.Campaign_Location = don.Campaign_Location[0]
-            //     // Add the donation to the Admin dons
-            //     admin_dons.push(donation)
-            // }
-            // console.log(admin_dons)
-            // all_admin_dons.push(...admin_dons)
-            // }
-            // Instead of returning here, I can simply write to the csv here!!
-            // NOTE: Create the file name programatically below using the current time and the key `AllAdminDonationsReport`
-            // console.log("All the admin donations are: ", all_admin_dons)
 
-            let sheetnames = data.map(
-                (obj, ind) => (obj._id == null) ?
-                    `sheet${ind}` :
-                    (
-                        (typeof obj._id === 'object') ? Object.values(obj._id).join('-') : obj._id
-                    )
+    if (data.length == 0) {
+        return null // Returning null as the filepath!
+    }
+
+    // lets reconstruct the data!
+    // let all_admin_dons = []
+    // REVIEW: Removing the old crappy code that just threw all the grouping out of the window and to no avail.
+    // for (let i = 0; i < data.length; i++) {
+    //     const obj = data[i];
+    //     const donations = data[i].donations;
+    //     let admin_dons = []
+    // admin_dons.donations = obj.donations. This will work, but throw dab data into the fonal result.
+    // for (let indx = 0; indx < donations.length; indx++) {
+    //     const don = donations[indx];
+    //     // Create an empty object for donations.
+    //     let donation = {}
+    //     // Populate the fields of the donation...
+    //     donation.Admin_Id = don.Admin_Id
+    //     donation.Admin_Name = don.Admin_Name
+    //     donation.Admin_Email = don.Admin_Email
+    //     donation.Donation_Date = don.Donation_Date.toString().slice(0, 24)
+    //     donation.Amount_Received = don.Amount_Received
+    //     donation.Amount_Donated = don.Amount_Donated // This is returned as array for no ... reason!
+    //     donation.Donor_Name = don.Donor_Name[0] // This is returned as array for no ... reason!
+    //     donation.Donor_Contact = don.Donor_Contact[0] // This is returned as array for no ... reason!
+    //     donation.Donor_Email = don.Donor_Email[0] // This is returned as array for no ... reason!
+    //     donation.Donor_Location = don.Donor_Location[0] // This is returned as array for no ... reason!
+    //     donation.Campaign_ID = don.Campaign_ID // This is returned as array for no ... reason!
+    //     donation.Campaign_Target = don.Campaign_Target[0]
+    //     donation.Campaign_Amount_Reveived = don.Campaign_Amount_Reveived[0]
+    //     donation.Campaign_Location = don.Campaign_Location[0]
+    //     // Add the donation to the Admin dons
+    //     admin_dons.push(donation)
+    // }
+    // console.log(admin_dons)
+    // all_admin_dons.push(...admin_dons)
+    // }
+    // Instead of returning here, I can simply write to the csv here!!
+    // NOTE: Create the file name programatically below using the current time and the key `AllAdminDonationsReport`
+    // console.log("All the admin donations are: ", all_admin_dons)
+
+    let sheetnames = data.map(
+        (obj, ind) => (obj._id == null) ?
+            `sheet${ind}` :
+            (
+                (typeof obj._id === 'object') ? Object.values(obj._id).join('-') : obj._id
             )
+    )
 
-            CreateMultisheetExcelFile(data, fields, "AllAdminsReport", sheetnames)
+    let fn = getFilename("AllAdminsReport")
+
+    let filePath = CreateMultisheetExcelFile(data, fields, fn, sheetnames)
 
 
-            // The problem I suspect was that nothing ever got returned here!
-            return "job completed"
-        }
-        );
+    // The problem I suspect was that nothing ever got returned here!
+    return filePath
+
 
 }
 

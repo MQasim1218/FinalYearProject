@@ -44,16 +44,20 @@ function CreateMultisheetExcelFile(data, fields, filename, sheetnames) {
     // Create a buffer from the binary data
     const buffer = Buffer.from(excelData);
 
-    // Get the name for the file!!
-    let fn = getFilename(filename)
+    // Check if the directory exists, else create to store the files.
+
 
     // Save the buffer to the output file
-    fs.writeFileSync(`C:/Users/ahsan/downloads/${fn}.xlsx`, buffer);
+    fs.writeFileSync(`./Reports/${filename}.xlsx`, buffer);
 
     console.log("The file has been written!!")
 
-    // Testing if the return file name is going to work or not?
-    return fn
+
+    const directory = path.join(__dirname, 'Reports');
+    const filePath = path.join(directory, `${filename}.csv`);
+
+    // Ruturning the actual filepath!?
+    return filePath
 }
 
 

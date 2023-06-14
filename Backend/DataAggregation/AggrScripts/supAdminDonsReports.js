@@ -68,6 +68,14 @@ async function Get_All_SuperAdmin_Donations_Report(year) {
         "Donor_Location",
     ];
 
+    console.log(year)
+
+    let st = toISODate(`${year}-01-01T00:00:00Z`)
+    let end = toISODate(`${year + 1}-01-01T00:00:00Z`)
+
+    console.log("Start val: ", st)
+    console.log("END Start val: ", end)
+
     let data = await SuperAdminDonations
         .aggregate([
 
@@ -100,14 +108,14 @@ async function Get_All_SuperAdmin_Donations_Report(year) {
                 }
             },
 
-            // {
-            //     $match: {
-            //         createdAt: {
-            //             $gte: toISODate(`${year}-01-01T00:00:00Z`), // Start of the year
-            //             $lt: toISODate(`${year}-01-01T00:00:00Z`) // Start of the next year
-            //         }
-            //     }
-            // },
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(st), // Start of the year
+                        $lt: new Date(end) // Start of the next year
+                    }
+                }
+            },
 
             {
                 $group: {
@@ -147,6 +155,9 @@ async function Get_All_SuperAdmin_Donations_Report(year) {
         )
 
     console.log("Data extracted is: ", data)
+    if (data.length === 0) {
+        return null
+    }
 
 
     // lets reconstruct the data!
