@@ -27,6 +27,7 @@
 
 
 const SuperAdminDonations = require('../../Models/Donations/DonationSuperAdmin');
+const toISODate = require('../../utils/isoDate');
 const createCSV = require('../createCSV');
 const getFilename = require('../utils/getFilename');
 
@@ -49,166 +50,7 @@ const fields = [
 ];
 
 
-
-async function Get_All_SuperAdmin_Donations_Report() {
-
-    console.log("Here for the sup admin reports!!")
-    const fields = [
-        "Donation_Date",
-        "Donation_Categroy",
-        "Donation_Amount",
-        "Amount_Forwarded_To_Campaigns",
-        "Amount_Remaining_To_Be_Forwarded",
-        "Admin_Name",
-        "Admin_Email",
-        "Donor_Name",
-        "Donor_Email",
-        "Donor_Contact",
-        "Amount_Received_from_Donor",
-        "Donor_Location",
-    ];
-
-    let filename = ""
-
-    SuperAdminDonations
-        .aggregate([
-
-            // NOTE: Not looking for the campaigns
-
-            {
-                $lookup: {
-                    from: "donordonations",
-                    localField: "donordonationId",
-                    foreignField: "_id",
-                    as: "donorDonDetails"
-                }
-            },
-
-            {
-                $lookup: {
-                    from: "admins",
-                    localField: "admin",
-                    foreignField: "_id",
-                    as: "adminDetails"
-                }
-            },
-
-
-            {
-                $lookup: {
-                    from: "donors",
-                    localField: "donorDonDetails.donor",
-                    foreignField: "_id",
-                    as: "donorDetails"
-                }
-            },
-
-
-
-            {
-                $group: {
-                    // * Need to check y the grouping itself is even required in the first place!
-                    _id: "$category",
-                    donations: {
-
-                        $push: {
-                            Donation_Date: "$createdAt",
-                            Donation_Categroy: "$category",
-                            Donation_Amount: "$amount",
-                            Amount_Forwarded_To_Campaigns: "$donated",
-                            Amount_Remaining_To_Be_Forwarded: "$remaining",
-                            Admin_Name: "$adminDetails.name",
-                            Admin_Email: "$adminDetails.email",
-                            Donor_Name: "$donorDetails.name",
-                            Donor_Email: "$donorDetails.email",
-                            Donor_Contact: "$donorDetails.contact",
-                            Amount_Received_from_Donor: "$donorDonDetails.amount",
-                            Donor_Location: "$donorDetails.location",
-                        }
-                    },
-
-                    //         // total_amount_donated: { $sum: "$amount" },
-                    //         // total_amount_received: { $sum: "$superAdminDonationDetails.amount" },
-                    //         // total_number_of_donations: { $sum: 1 } // Add one for each campaign
-                }
-            },
-
-            // We are not getting the Admin Id seperately, rahter we are addming it to the documents feilds
-            {
-                $project: {
-                    _id: 0
-                }
-            }
-        ]
-        )
-        .then(data => {
-            // console.log(data)
-
-            // lets reconstruct the data!
-            let all_supadmin_dons = []
-
-            for (let i = 0; i < data.length; i++) {
-                const obj = data[i];
-
-                const donations = data[i].donations;
-
-                let supadmin_dons = []
-
-
-                // admin_dons.donations = obj.donations. This will work, but throw dab data into the fonal result.
-                for (let indx = 0; indx < donations.length; indx++) {
-
-                    const don = donations[indx];
-
-                    // Create an empty object for donations.
-                    let donation = {}
-
-
-                    // Populate the fields of the donation...
-                    donation.Donation_Date = don.Donation_Date.toString().slice(0, 24)
-                    donation.Donation_Categroy = don.Donation_Categroy
-                    donation.Donation_Amount = don.Donation_Amount // This is returned as array for no ... reason!
-                    donation.Amount_Forwarded_To_Campaigns = don.Amount_Forwarded_To_Campaigns
-                    donation.Amount_Remaining_To_Be_Forwarded = don.Amount_Remaining_To_Be_Forwarded
-                    donation.Admin_Name = don.Admin_Name
-                    donation.Admin_Email = don.Admin_Email
-                    donation.Donor_Name = don.Donor_Name[0] // This is returned as array for no ... reason!
-                    donation.Donor_Email = don.Donor_Email[0] // This is returned as array for no ... reason!
-                    donation.Donor_Contact = don.Donor_Contact[0] // This is returned as array for no ... reason!
-                    donation.Donor_Location = don.Donor_Location[0] // This is returned as array for no ... reason!
-                    donation.Amount_Received_from_Donor = don.Amount_Received_from_Donor
-
-                    // Add the donation to the Admin dons
-                    console.log(donation)
-                    supadmin_dons.push(donation)
-                }
-                // console.log(supadmin_dons)
-                all_supadmin_dons.push(...supadmin_dons)
-            }
-
-            // Instead of returning here, I can simply write to the csv here!!
-
-            // NOTE: Create the file name programatically below using the current time and the key `AllAdminDonationsReport`
-            // console.log("All the admin donations are: ", all_supadmin_dons)
-
-            console.log("sdkfjsodijgsiovj")
-
-            fn = createCSV(all_supadmin_dons, fields, "SuperAdminReport12345")
-
-            console.log("file path returned is: ", fn)
-
-
-        }
-        );
-
-    // lets play with the outer filename!
-    console.log("Outer filename is: ", filename)
-
-    return filename
-
-}
-
-async function Get_All_SuperAdmin_Donations_Report_await() {
+async function Get_All_SuperAdmin_Donations_Report(year) {
 
     console.log("Here for the sup admin reports!!")
     const fields = [
@@ -225,8 +67,6 @@ async function Get_All_SuperAdmin_Donations_Report_await() {
         "Amount_Received_from_Donor",
         "Donor_Location",
     ];
-
-    let filename = ""
 
     let data = await SuperAdminDonations
         .aggregate([
@@ -251,7 +91,6 @@ async function Get_All_SuperAdmin_Donations_Report_await() {
                 }
             },
 
-
             {
                 $lookup: {
                     from: "donors",
@@ -261,7 +100,14 @@ async function Get_All_SuperAdmin_Donations_Report_await() {
                 }
             },
 
-
+            // {
+            //     $match: {
+            //         createdAt: {
+            //             $gte: toISODate(`${year}-01-01T00:00:00Z`), // Start of the year
+            //             $lt: toISODate(`${year}-01-01T00:00:00Z`) // Start of the next year
+            //         }
+            //     }
+            // },
 
             {
                 $group: {
@@ -350,26 +196,26 @@ async function Get_All_SuperAdmin_Donations_Report_await() {
     // NOTE: Create the file name programatically below using the current time and the key `AllAdminDonationsReport`
     // console.log("All the admin donations are: ", all_supadmin_dons)
 
-    console.log("sdkfjsodijgsiovj")
+    // console.log("sdkfjsodijgsiovj")
 
-    fn = getFilename(SuperAdminReport)
-    fn = createCSV(all_supadmin_dons, fields, fn)
-
-    console.log("file path returned is: ", fn)
+    fn = getFilename("SuperAdminReport")
 
 
-    filename = fn
+    filepath = createCSV(all_supadmin_dons, fields, fn)
+
+    // console.log("file name returned is: ", fn)
+
+
 
     // lets play with the outer filename!
-    console.log("Outer filename is: ", filename)
+    // console.log("Outer filename is: ", fn)
 
-    return filename
+    return filepath
 
 }
 
 
 module.exports = {
     Get_All_SuperAdmin_Donations_Report,
-    Get_All_SuperAdmin_Donations_Report_await
 }
 

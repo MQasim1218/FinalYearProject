@@ -76,7 +76,7 @@ function Get_All_Admin_yearly_Donations_Report() {
         ]).then(data => { console.log(data) })
 }
 
-function Get_All_Admin_Donations_Report() {
+async function Get_All_Admin_Donations_Report() {
 
     const fields = [
         "Admin_Email",

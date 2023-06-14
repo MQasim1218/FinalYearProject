@@ -51,8 +51,9 @@ function createCSV(data, headers, filename, info) {
         const filePath = path.join(directory, `${filename}.csv`);
         fs.writeFileSync(filePath, csv);
 
-        console.log('File saved:', filePath);
-        return filePath;
+        console.log('File saved:');
+        return filePath
+
 
     } catch (err) {
         console.log(err.message)
