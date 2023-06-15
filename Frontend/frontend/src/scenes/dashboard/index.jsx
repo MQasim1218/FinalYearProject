@@ -268,11 +268,104 @@ const Dashboard = () => {
   }
   else if (isCampaignsError) AdminCampaigns = <h3>{`Error: ${campaignsError.message}`}</h3>
 
-  const handleDownload = () => {
-    axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/adminAnalytics`), {
+  // const handleDownload = async () => {
+  //   let res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/adminsAnalytics/all`,
+  //     {
+  //       contentType: 'blob',
+  //     }
+  //   )
+
+  //   const blob = new Blob(
+  //     [res.data],
+  //     { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+  //   );
+
+  //   // res.data
+
+  //   const link = document.createElement('a');
+  //   link.href = URL.createObjectURL(blob);
+
+
+  //   link.setAttribute('download', 'Admins_Report.xlsx'); // Set the desired file name
+
+  //   // Trigger the download by programmatically clicking the link
+  //   link.click();
+
+  //   // Cleanup
+  //   URL.revokeObjectURL(link.href);
+  //   link.remove();
+  //   setOpen(true);
+  // }
+
+
+  // const handleDownload = async () => {
+  //   try {
+  //     const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/adminsAnalytics/all`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         contentType: 'blob',
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to download file');
+  //     }
+
+  //     const blob = await response.blob();
+
+  //     const link = document.createElement('a');
+  //     link.href = URL.createObjectURL(blob);
+  //     link.setAttribute('download', 'Admins_Report.xlsx');
+
+  //     link.click();
+
+  //     URL.revokeObjectURL(link.href);
+  //     link.remove();
+  //     setOpen(true);
+  //   } catch (error) {
+  //     console.error('Error occurred while downloading file:', error);
+  //     // Handle error scenario
+  //   }
+  // };
+
+
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/adminsAnalytics/all`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+        responseType: 'blob',
+        body: JSON.stringify({
+          contentType: 'blob',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to download file');
+      }
+
+      const blob = await response.blob();
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'Admins_Report.xlsx');
+
+      link.click();
+
+      URL.revokeObjectURL(link.href);
+      link.remove();
+      setOpen(true);
+    } catch (error) {
+      console.error('Error occurred while downloading file:', error);
+      // Handle error scenario
     }
-    setOpen(true);
-  }
+  };
 
 
 

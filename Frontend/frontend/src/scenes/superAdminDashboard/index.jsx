@@ -20,7 +20,7 @@ import { useAllCampaignsQuery } from "../../app/redux-features/Campaigns/exporte
 import { useAllSuperAdminDonationsQuery } from "../../app/redux-features/donations/SupAdminDonations/SupAdminDonationsSlice";
 import { useAllDonorsDonationsQuery } from "../../app/redux-features/donations/DonorDonations/DonorDonsSlice";
 import { PersonOutlineOutlined } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * NOTE: Data to be fetched 
@@ -213,9 +213,26 @@ const SuperAdminDashboard = () => {
 
   console.log("%: ", remainingPercent)
 
-  const handleDownload = () => {
-    axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/superadminAnalytics`), {
-    }
+  // The page rerenders too many times. trying to stop that!
+  useEffect(() => { }, [])
+
+  const handleDownload = async () => {
+    let res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/analytics/superadminAnalytics`, {
+      responseType: 'blob',
+    })
+    // res.data
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([res.data]));
+    link.setAttribute('download', 'SuperAdmin_Report.csv'); // Set the desired file name
+
+    // Trigger the download by programmatically clicking the link
+    link.click();
+
+    // Cleanup
+    URL.revokeObjectURL(link.href);
+    link.remove();
+
     setOpen(true);
 
   }
