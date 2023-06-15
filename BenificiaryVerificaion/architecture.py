@@ -272,12 +272,16 @@ def preprocess_data(image_filenames):
     # Load and preprocess the images
     preprocessed_images = []
     for filename in image_filenames:
+        print("Opening the image file")
         image = Image.open(filename)
+        print("Did not fail!!")
         preprocessed_image = inference_loader(image)
         preprocessed_images.append(preprocessed_image)
 
     # Convert the list of preprocessed images into a batch tensor
     batch_input = torch.stack(preprocessed_images)
+
+    print("Done preprocessing")
 
     return batch_input
 

@@ -110,18 +110,6 @@ router.delete('/:id', function (req, res, next) {
 })
 
 
-// // Create a storage for multer
-// const storage = multer.diskStorage({
-//     // ! Will need to change the storage destination in the main code!
-//     destination: '../temp/',
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + '_' + file.originalname);
-//     }
-// });
-
-// const upload_files = multer({ storage: storage });
-
-
 // NOTE - This is to update or upload a file for the beneficiary
 // router.put('/upload_file', upload_files.array('images'), (req, res, next) => { })
 // router.post('/upload_file', upload_files.array('images'), (req, res, next) => { })
@@ -174,8 +162,8 @@ router.post("/appeal/", upload.array('images'), async (req, res, next) => {
         res.status(200).json(appeal);
 
 
-        // Send the files to the backend for verification
-        // You can perform any required operations with the uploaded files here
+        // ! Send the files to the backend for verification
+        // ! You can perform any required operations with the uploaded files.
 
         // Send the files to the backend for verification
         const verificationPayload = {
@@ -183,17 +171,20 @@ router.post("/appeal/", upload.array('images'), async (req, res, next) => {
             // Include any additional data required for verification
         };
 
+        // ! Instead of doing this, we can simply call the grpc server and send it the files. No need to send it to an intermediarary host!
         const verificationEndpoint = "http://localhost:3003/verify"; // Replace with the actual endpoint URL
 
         // Make the Axios POST request to the verification endpoint
         console.log("Sending the backend request for verification!")
         try {
-            // let preds = await axios.post(verificationEndpoint, verificationPayload);
-            console.log("The predictions returned are: Nothing for now!")
+            let preds = await axios.post(verificationEndpoint, verificationPayload);
+            console.log("The predictions returned are: ", preds)
 
         } catch (error) {
             console.log("Failed in verifiaction!")
         }
+
+        // console.log("The predictions returned are: ", preds)
 
         // You can handle the response from the verification server here
 

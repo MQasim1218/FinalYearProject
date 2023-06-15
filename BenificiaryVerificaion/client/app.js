@@ -52,9 +52,13 @@ const storage = multer.diskStorage({
 
 const upload_files = multer({ storage: storage });
 
+// Get an aray of images and store them!!
+
+// Safest bet. Call verify, send it all the files and then use it to call the grpc python server 
+
 app.post('/verify', upload_files.array('images'), async (req, res) => {
     try {
-        // ! Will also need to settle this path in the main project
+        // ? Will also need to settle this path in the main project
 
         let paths = req.files.map(file => file.path)
 
@@ -68,6 +72,7 @@ app.post('/verify', upload_files.array('images'), async (req, res) => {
 
         // let prs = Object.values(predictions)
 
+        // ! The better option would be to return the predoctions to the other backend to handle there instead of here!
         // prs.forEach((pred, index) => {
         //     if (pred.incidents.length != 0) {
         //         pred.incidents.forEach(val => {
