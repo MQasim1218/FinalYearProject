@@ -197,6 +197,8 @@ def get_trunk_model(arch="resnet50", pretrained_with_places=True):
 
         # Get the current working directory
         dir_path = os.getcwd()
+
+        # This path doesnt feel correct!!
         print("Current Directory:", dir_path)
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -267,13 +269,17 @@ def get_incident_layer(activation="sigmoid", fc_dim=1024, num_incidents=43):
         return nn.Linear(fc_dim, num_incidents)
 
 
-def preprocess_data(image_filenames):
+def preprocess_data(image_filenames: list):
     preprocessed_images = []
     # Load and preprocess the images
     preprocessed_images = []
+
+    current_dir = os.getcwd()
+
     for filename in image_filenames:
-        print("Opening the image file")
-        image = Image.open(filename)
+        print("Opening the image file", filename)
+        image_path = os.path.join(current_dir, "temp", filename)
+        image = Image.open(image_path)
         print("Did not fail!!")
         preprocessed_image = inference_loader(image)
         preprocessed_images.append(preprocessed_image)

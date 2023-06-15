@@ -65,8 +65,13 @@ def getPrediction(images):
 
     global model, inference_loader
 
-    print("We have the model!!")
+    if model:
+        print("We have the model!!")
+
+    print("The images are:", images)
     # images = get_data()
+
+
 
     batch_input = preprocess_data(images)
 
