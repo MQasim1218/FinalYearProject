@@ -108,6 +108,8 @@ app.post('/verify', upload_files.array('images'), async (req, res) => {
 
         // Send the response 
         // Just return the predictions for now!
+
+        console.log("Predictions: ", predictions)
         res.json(predictions);
 
 

@@ -7,7 +7,7 @@ let benefAppealSchema = mongoose.Schema({
     benefId: {
         type: mongoose.Types.ObjectId,
         ref: "beneficiary",
-        required: true
+        // required: true
     },
 
     // Add the urls of cloud documents
@@ -47,7 +47,7 @@ let benefAppealSchema = mongoose.Schema({
     category: {
         type: String,
         // Enum: ["ABC", "DEF", "GHI"],
-        required: true
+        // required: true
     },
 
 },

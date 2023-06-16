@@ -7,6 +7,8 @@ const multer = require('multer')
 const { AppealCampaign } = require('../../Controllers/Campaigns/SpecCampaignCntrlr')
 const benefAppealModel = require('../../Models/Campaings/benifAppeal')
 const axios = require('axios')
+const fs = require('fs')
+const FormData = require('form-data');
 
 
 
@@ -135,16 +137,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Appeal a campaign
-router.post("/appeal/", upload.array('images'), async (req, res, next) => {
+router.post("/appeal", upload.array('images'), async (req, res, next) => {
 
+    console.log("Started the request")
     try {
+        console.log("Trying to find where the error would be!!")
+
+
         console.log("The request received is:", req.body);
         console.log("The uploaded files are:", req.files);
 
         // Access the form data
         const { case_title, description, category, benefId, campaign_docs } = req.body;
 
-        console.log("THe docs are: ", campaign_docs)
+        // console.log("THe docs are: ", campaign_docs)
 
         // Access the uploaded files
         const uploadedFiles = req.files.map((file) => file.filename);
@@ -159,35 +165,55 @@ router.post("/appeal/", upload.array('images'), async (req, res, next) => {
         });
 
         // Send the response
-        res.status(200).json(appeal);
+        // res.status(200).json(appeal);
 
 
         // ! Send the files to the backend for verification
         // ! You can perform any required operations with the uploaded files.
 
-        // Send the files to the backend for verification
-        const verificationPayload = {
-            files: uploadedFiles,
-            // Include any additional data required for verification
-        };
+        console.log(uploadedFiles)
 
-        // ! Instead of doing this, we can simply call the grpc server and send it the files. No need to send it to an intermediarary host!
         const verificationEndpoint = "http://localhost:3003/verify"; // Replace with the actual endpoint URL
 
         // Make the Axios POST request to the verification endpoint
         console.log("Sending the backend request for verification!")
         try {
-            let preds = await axios.post(verificationEndpoint, verificationPayload);
-            console.log("The predictions returned are: ", preds)
+
+            console.log("New logic used@!!")
+
+
+            let fileStreams = []
+            uploadedFiles.forEach(filename => {
+                // Creating a File-Stream to read the file!
+                fileStr = fs.createReadStream(`./temp/${filename}`)
+                fileStreams.push(fileStr)
+            });
+
+            console.log("Made the filestreams@!!")
+
+
+            // Create formdata to get the files!!
+            const formData = new FormData();
+            fileStreams.forEach((fileStream, index) => {
+                formData.append('images', fileStream);
+            });
+
+            console.log("Done creating the formdata!@!!")
+
+            res.send(formData)
+
+            let response = await axios.post(
+                verificationEndpoint,
+                formData,
+                {
+                    headers: 'multipart/form-data'
+                }
+            );
+            console.log("The predictions returned are: ", response.data)
 
         } catch (error) {
-            console.log("Failed in verifiaction!")
+            console.log("Failed in verifiaction!, Err: ", error.message)
         }
-
-        // console.log("The predictions returned are: ", preds)
-
-        // You can handle the response from the verification server here
-
     } catch (error) {
         console.log("Error:", error.message);
         next(error);

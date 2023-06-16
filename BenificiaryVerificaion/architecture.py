@@ -278,7 +278,7 @@ def preprocess_data(image_filenames: list):
 
     for filename in image_filenames:
         print("Opening the image file", filename)
-        image_path = os.path.join(current_dir, "temp", filename)
+        image_path = os.path.join(current_dir,filename)
         image = Image.open(image_path)
         print("Did not fail!!")
         preprocessed_image = inference_loader(image)
