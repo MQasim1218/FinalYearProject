@@ -184,14 +184,7 @@ router.post("/appeal", upload.array('images'), async (req, res, next) => {
         // Access the uploaded files
         const uploadedFiles = req.files.map((file) => file.filename);
 
-        // Create the appeal object
-        const appeal = await benefAppealModel.create({
-            case_title,
-            description,
-            category,
-            campaign_docs,
-            benefId,
-        });
+
 
         // Send the response
         // res.status(200).json(appeal);
@@ -229,7 +222,7 @@ router.post("/appeal", upload.array('images'), async (req, res, next) => {
 
             console.log("Done creating the formdata!@!!")
 
-            res.send(formData)
+
 
             let response = await axios.post(
                 verificationEndpoint,
@@ -238,24 +231,56 @@ router.post("/appeal", upload.array('images'), async (req, res, next) => {
                     headers: 'multipart/form-data'
                 }
             );
-            console.log("The predictions returned are: ", response.data)
 
-            let pred = response.data
 
+
+            let pred = Object.values(response.data)
+
+            console.log("The predictions returned are: ", pred[0].incidents)
+            // console.log(pred)
+            // 
+
+            let incident = pred[0].incidents[0]
 
             // ! Check against the accpetable list of incident.
             let genuine = false
 
             // Tomoroow, test this piece of code!!
             validIncidents.forEach((indType) => {
-                if (indType === pred.incidents[0]) {
+                if (indType === incident) {
                     genuine = true
+                    console.log("Genuine has been converted to true!!")
                 }
             })
 
             // ! If genuine, then Update the Appeal object based on the returned predictions.
+            // Create the appeal object
+            const appeal = await benefAppealModel.create({
+                case_title,
+                description,
+                category,
+                campaign_docs,
+                benefId,
+                verified: genuine
+            });
+
+            res.json({ incident, appeal })
 
             // * Delete the temporarily stored filesss
+
+            console.log("Deleting the files now!!")
+
+            uploadedFiles.forEach(filename => {
+                fs.unlink(`./temp/${filename}`, err => {
+                    if (err) {
+                        console.log("failed to delete the file. Err: ", err.message)
+                    } else {
+                        console.log("File deleted!!")
+                    }
+                })
+            })
+
+
 
         } catch (error) {
             console.log("Failed in verifiaction!, Err: ", error.message)

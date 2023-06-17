@@ -137,7 +137,7 @@ const UploadDocuments = () => {
                 formData.append("benefId", values.benefId);
 
                 // Send formData to the backend
-                await axios.post(
+                let response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_BASE_ROUTE}/beneficiary/appeal`,
                     formData,
                     {
@@ -147,7 +147,11 @@ const UploadDocuments = () => {
                     }
                 );
 
-                alert("Documents uploaded successfully");
+                console.log(response.data)
+
+                alert("Detected image case: " + response.data.incident)
+
+                // alert("Documents uploaded successfully");
 
                 resetForm();
                 setFileUrl(null);

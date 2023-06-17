@@ -21,12 +21,12 @@ const useLogin = () => {
             { email, password }
         )
 
-        // const chatLogin = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/chat/login`,{email, password},{
-        //             headers: {
-        //                 "Project-ID": process.env.REACT_APP_PROJECT_ID,
-        //             }
-        // }
-        //         )
+        const chatLogin = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/chat/login`,{email, password},{
+                    headers: {
+                        "Project-ID": process.env.REACT_APP_PROJECT_ID,
+                    }
+        }
+                )
 
         if (res.status < 400) {
 
@@ -35,7 +35,7 @@ const useLogin = () => {
             // Add the user to the localstorage
             localStorage.setItem("user", JSON.stringify(user))
             localStorage.setItem("userType", JSON.stringify(userType))
-            //localStorage.setItem("chatId", (chatLogin.data.response.id))
+            localStorage.setItem("chatId", (chatLogin.data.response.id))
             dispatch(
                 {
                     type: 'LOGIN',

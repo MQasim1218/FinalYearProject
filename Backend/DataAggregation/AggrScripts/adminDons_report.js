@@ -45,7 +45,7 @@ const fields = [
     "Campaign_ID",
     "Campaign_Target",
     "Campaign_Amount_Reveived",
-    "Campaign_Location",
+    // "Campaign_Location",
     "Campaign_Url",
     "Admin_Donation_Remarks",
     "Super_Admin_Remarks",
@@ -92,7 +92,7 @@ async function Get_All_Admin_Donations_Report(year) {
         "Donor_Location",
         "Campaign_Target",
         "Campaign_Amount_Reveived",
-        "Campaign_Location",
+        // "Campaign_Location",
     ];
 
     let st = toISODate(`${year}-01-01T00:00:00Z`)
@@ -176,7 +176,7 @@ async function Get_All_Admin_Donations_Report(year) {
                             Donor_Location: "$donorDetails.location",
                             Campaign_Target: { $max: ["$campaignSpecDetails.required_amount", "$campaignGenDetails.required_amount"] },
                             Campaign_Amount_Reveived: { $max: ["$campaignSpecDetails.donated_amount", "$campaignGenDetails.donated_amount"] },
-                            Campaign_Location: { $max: ["$campaignSpecDetails.location", "$campaignGenDetails.location"] },
+                            // Campaign_Location: { $max: ["$campaignSpecDetails.location", "$campaignGenDetails.location"] },
                         }
                     },
 
@@ -266,7 +266,7 @@ async function Get_All_Admin_Category_Donations_Report(year) {
         "Donor_Location",
         "Campaign_Target",
         "Campaign_Amount_Reveived",
-        "Campaign_Location",
+        // "Campaign_Location",
     ];
 
     let st = toISODate(`${year}-01-01T00:00:00Z`)
@@ -353,7 +353,7 @@ async function Get_All_Admin_Category_Donations_Report(year) {
                             Donor_Location: "$donorDetails.location",
                             Campaign_Target: { $max: ["$campaignSpecDetails.required_amount", "$campaignGenDetails.required_amount"] },
                             Campaign_Amount_Reveived: { $max: ["$campaignSpecDetails.donated_amount", "$campaignGenDetails.donated_amount"] },
-                            Campaign_Location: { $max: ["$campaignSpecDetails.location", "$campaignGenDetails.location"] },
+                            // Campaign_Location: { $max: ["$campaignSpecDetails.location", "$campaignGenDetails.location"] },
                         }
                     },
 
@@ -396,7 +396,7 @@ const Get_Single_Admin_Donations_Report = (admin_id) => {
         "Donor_Location",
         "Campaign_Target",
         "Campaign_Amount_Reveived",
-        "Campaign_Location",
+        // "Campaign_Location",
     ];
 
     admin_id = mongoose.Types.ObjectId(admin_id)
@@ -475,7 +475,7 @@ const Get_Single_Admin_Donations_Report = (admin_id) => {
                             Donor_Location: "$donorDetails.location",
                             Campaign_Target: { $max: ["$campaignSpecDetails.required_amount", "$campaignGenDetails.required_amount"] },
                             Campaign_Amount_Reveived: { $max: ["$campaignSpecDetails.donated_amount", "$campaignGenDetails.donated_amount"] },
-                            Campaign_Location: { $max: ["$campaignSpecDetails.location", "$campaignGenDetails.location"] },
+                            // Campaign_Location: { $max: ["$campaignSpecDetails.location", "$campaignGenDetails.location"] },
 
                         }
                     }
@@ -519,7 +519,7 @@ const Get_Single_Admin_Donations_Report = (admin_id) => {
                 donation.Donor_Location = don.Donor_Location[0] // This is returned as array for no ... reason!
                 donation.Campaign_Target = don.Campaign_Target[0]
                 donation.Campaign_Amount_Reveived = don.Campaign_Amount_Reveived[0]
-                donation.Campaign_Location = don.Campaign_Location[0]
+                // donation.Campaign_Location = don.Campaign_Location[0]
 
                 //         // Add the donation to the Admin dons
                 admin_dons.push(donation)

@@ -16,8 +16,8 @@ const useSignUp = () => {
             console.log('signup values at use signup', user)
             const { email, chatId } = user
 
-            // const chatSignup = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/chat/signup`,user)
-            // console.log('chat signup response',chatSignup)
+            const chatSignup = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/chat/signup`,user)
+            console.log('chat signup response',chatSignup)
 
             const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_ROUTE}/${user.userType}/signup`, user, {
                 headers: {
