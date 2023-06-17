@@ -139,6 +139,35 @@ const upload = multer({ storage });
 // Appeal a campaign
 router.post("/appeal", upload.array('images'), async (req, res, next) => {
 
+    const validIncidents = [
+        "earthquake",
+        "flooded",
+        "ice storm",
+        "burned",
+        "collapsed",
+        "earthquake",
+        "fire whirl",
+        "car accident",
+        "van accident",
+        "truck accident",
+        "train accident",
+        "bus accident",
+        "motorcycle accident",
+        "earthquake",
+        "landslide",
+        "mudslide mudflow",
+        "rockslide rockfall",
+        "snowslide avalanche",
+        "thunderstorm",
+        "wildfire",
+        "tropical cyclone",
+        "heavy rainfall",
+        "tornado",
+        "drought",
+        "damaged"
+    ]
+
+
     console.log("Started the request")
     try {
         console.log("Trying to find where the error would be!!")
@@ -210,6 +239,23 @@ router.post("/appeal", upload.array('images'), async (req, res, next) => {
                 }
             );
             console.log("The predictions returned are: ", response.data)
+
+            let pred = response.data
+
+
+            // ! Check against the accpetable list of incident.
+            let genuine = false
+
+            // Tomoroow, test this piece of code!!
+            validIncidents.forEach((indType) => {
+                if (indType === pred.incidents[0]) {
+                    genuine = true
+                }
+            })
+
+            // ! If genuine, then Update the Appeal object based on the returned predictions.
+
+            // * Delete the temporarily stored filesss
 
         } catch (error) {
             console.log("Failed in verifiaction!, Err: ", error.message)
